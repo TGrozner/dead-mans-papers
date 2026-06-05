@@ -58,8 +58,10 @@ Explorer, parler, inspecter, écouter les voix internes, subir La Dose, tenter d
 
 - Toucher un marqueur `?`, `...` ou un élément important de la scène ouvre directement la surface narrative correspondante.
 - Toucher le sol fait marcher Morad vers ce point, avec un marqueur discret de destination.
+- En portrait mobile, la caméra zoome légèrement et suit Morad pour éviter que toute la carte devienne minuscule.
 - Le prototype évite le joystick virtuel: la lecture des objets et la sélection des choix sont plus importantes que la précision du déplacement.
 - La page principale ne doit pas scroller globalement; seuls le dossier, les listes internes et le dialogue peuvent scroller si leur contenu dépasse.
+- Les pensées flottantes mobiles restent courtes: une seule visible, texte clampé, expiration automatique et nettoyage quand une scène de dialogue s'ouvre.
 
 ## Identité
 

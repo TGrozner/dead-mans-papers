@@ -1,6 +1,9 @@
 import Phaser from 'phaser'
 import type { MirrorsGameBridge } from '../createMirrorsGame'
 
+const MOBILE_VIEWPORT_QUERY = '(max-width: 560px)'
+const MOBILE_CAMERA_ZOOM = 1.38
+
 interface Hotspot {
   id: string
   label: string
@@ -46,6 +49,8 @@ export class MirrorsScene extends Phaser.Scene {
     this.createHotspots()
     this.createOrbs()
     this.createInput()
+    this.configureCamera()
+    this.bindSceneLifecycle()
 
     this.time.delayedCall(300, () => {
       if (!this.bridge.getState().flags.woke_up) {
@@ -69,6 +74,37 @@ export class MirrorsScene extends Phaser.Scene {
     }
 
     this.input.on('pointerdown', this.handlePointerDown, this)
+  }
+
+  private bindSceneLifecycle(): void {
+    this.scale.on('resize', this.configureCamera, this)
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.scale.off('resize', this.configureCamera, this)
+      this.input.off('pointerdown', this.handlePointerDown, this)
+    })
+  }
+
+  private configureCamera(): void {
+    const camera = this.cameras.main
+    camera.setBounds(0, 0, 960, 576)
+
+    if (!this.player) {
+      return
+    }
+
+    if (this.isMobileViewport()) {
+      camera.setZoom(MOBILE_CAMERA_ZOOM)
+      camera.startFollow(this.player, true, 0.14, 0.14)
+      return
+    }
+
+    camera.stopFollow()
+    camera.setZoom(1)
+    camera.centerOn(480, 288)
+  }
+
+  private isMobileViewport(): boolean {
+    return window.matchMedia(MOBILE_VIEWPORT_QUERY).matches
   }
 
   private createTextures(): void {

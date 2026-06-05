@@ -10,6 +10,11 @@ import type {
 } from './types'
 import type { NarrativeEngine } from './narrative'
 
+const MOBILE_TOAST_QUERY = '(max-width: 560px)'
+const MAX_DESKTOP_TOASTS = 5
+const MAX_MOBILE_TOASTS = 1
+const MOBILE_TOAST_LIFETIME_MS = 8000
+
 interface GameUiOptions {
   engine: NarrativeEngine
   root: HTMLDivElement
@@ -32,6 +37,7 @@ export function createGameUi(options: GameUiOptions) {
   }
 
   function openDialogue(scriptId: string): void {
+    clearMobileToasts(options.toastRoot)
     activeDialogue = options.engine.start(scriptId)
     renderDialogue()
     showPassiveToasts(
@@ -113,6 +119,7 @@ export function createGameUi(options: GameUiOptions) {
   }
 
   function openOrb(orbId: string): void {
+    clearMobileToasts(options.toastRoot)
     const orb = options.engine.inspectOrb(orbId)
     renderOrb(orb)
     showPassiveToasts(
@@ -212,7 +219,7 @@ function showPassiveToasts(passives: PassiveTrigger[], toastRoot: HTMLDivElement
     `
 
     toast.querySelector('button')?.addEventListener('click', () => toast.remove())
-    toastRoot.append(toast)
+    appendToast(toast, toastRoot)
   })
 }
 
@@ -239,7 +246,44 @@ function showOrbToast(orb: RenderedOrb, toastRoot: HTMLDivElement): void {
   `
 
   toast.querySelector('button')?.addEventListener('click', () => toast.remove())
+  appendToast(toast, toastRoot)
+}
+
+function appendToast(toast: HTMLElement, toastRoot: HTMLDivElement): void {
   toastRoot.append(toast)
+  pruneToastStack(toastRoot)
+
+  if (isMobileToastMode()) {
+    window.setTimeout(() => {
+      if (!toast.isConnected) {
+        return
+      }
+
+      toast.classList.add('passive-toast--leaving')
+      window.setTimeout(() => toast.remove(), 180)
+    }, MOBILE_TOAST_LIFETIME_MS)
+  }
+}
+
+function pruneToastStack(toastRoot: HTMLDivElement): void {
+  const maxToasts = isMobileToastMode() ? MAX_MOBILE_TOASTS : MAX_DESKTOP_TOASTS
+  const toasts = Array.from(toastRoot.querySelectorAll<HTMLElement>('.passive-toast'))
+
+  while (toasts.length > maxToasts) {
+    toasts.shift()?.remove()
+  }
+}
+
+function clearMobileToasts(toastRoot: HTMLDivElement): void {
+  if (!isMobileToastMode()) {
+    return
+  }
+
+  toastRoot.querySelectorAll('.passive-toast').forEach((toast) => toast.remove())
+}
+
+function isMobileToastMode(): boolean {
+  return window.matchMedia(MOBILE_TOAST_QUERY).matches
 }
 
 function getPassiveChannel(passive: PassiveTrigger): { name: string; color: string } {
