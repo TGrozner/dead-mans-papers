@@ -36,7 +36,8 @@ npm run dev
 
 - Déplacement: flèches, ZQSD, WASD ou toucher la scène pour marcher vers un point.
 - Interaction: près d'un élément, utiliser le bouton contextuel, Espace, Entrée ou E.
-- Mobile: toucher un marqueur `?`, `...` ou un élément important rapproche Morad et sélectionne l'action, mais n'ouvre plus directement de scène.
+- Mobile: toucher un élément important rapproche Morad et sélectionne l'action, mais n'ouvre plus directement de scène.
+- Mobile: ouvrir une surface narrative demande ensuite le bouton contextuel `!`, ou un second tap volontaire sur la même cible une fois Morad à portée.
 - Mobile: la scène est pensée en approcher-puis-agir plutôt qu'en joystick virtuel; les zones longues scrollent à l'intérieur du dossier ou du dialogue, pas dans toute la page.
 - Mobile: la caméra zoome légèrement et suit Morad pour rendre les zones cliquables plus lisibles.
 - Mobile: les pensées flottantes sont compactes, limitées à la plus récente et disparaissent automatiquement pour éviter de masquer la carte.
@@ -48,6 +49,6 @@ npm run dev
 
 ## Direction v0
 
-Le monde doit rester petit mais dense. Les voix internes ne sont pas des bonus abstraits: elles produisent des idées, se trompent, flattent, paniquent et ouvrent parfois des options. Les checks actifs doivent arriver comme des nœuds dramatiques, et l'échec doit donner du contenu au lieu de bloquer le joueur.
+Le monde doit rester petit mais dense. Les voix internes ne sont pas des bonus abstraits: elles produisent des idées, se trompent, flattent, paniquent et ouvrent parfois des options. Les objets importants sont des surfaces dialoguées, pas seulement des indices. Les checks actifs doivent arriver comme des nœuds dramatiques, et l'échec doit donner du contenu au lieu de bloquer le joueur.
 
-Le ton est cru, social et corporel: alcool fort, calmants, badges, dossiers, dette, rénovation urbaine, caméras mortes, slogans propres sur béton sale. La question n'est pas seulement qui est mort, mais comment une ville, un corps et un dossier peuvent décider que tu es mort avant toi.
+Le ton validé est cru social maîtrisé: base sèche, éclats d'image, voix courtes et présentes, Karine dangereuse parce qu'elle renomme, La Dose commerçante intime, échecs humiliants mais utiles. La question n'est pas seulement qui est mort, mais comment une ville, un corps et un dossier peuvent décider que tu es mort avant toi.

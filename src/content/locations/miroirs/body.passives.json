@@ -8,16 +8,16 @@
     "voice": "faim",
     "minScore": 1,
     "once": true,
-    "priority": 65,
+    "priority": 70,
     "display": "toast",
     "trigger": {
       "type": "exploration",
       "contextId": "utility_van"
     },
-    "text": "Ton ventre remarque le corps avant ta morale. Froid, vide, bouche sèche. Il appelle ça de l'efficacité. Il a tort. Probablement."
+    "text": "Ton ventre remarque le corps avant ta morale. Froid, manque, salive courte. Il appelle ça lucidité. Il aime se flatter."
   },
   {
-    "id": "miroirs_body__failure_seen",
+    "id": "miroirs_body__regard_failure_seen",
     "contextId": "miroirs/body",
     "location": "miroirs",
     "subject": "body",
@@ -25,13 +25,50 @@
     "voice": "honte_publique",
     "minScore": 2,
     "once": true,
-    "priority": 80,
+    "priority": 84,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "search_failure"
     },
-    "text": "Karine a vu le corps te reprendre possession. Dans sa tête, quelque chose vient de changer de colonne: médiateur utile, médiateur fragile, risque de communication."
+    "text": "Karine a vu le corps te reprendre possession. Médiateur utile vient de glisser vers médiateur fragile. Ce sont des colonnes différentes."
+  },
+  {
+    "id": "miroirs_body__dose_failure_pricing",
+    "contextId": "miroirs/body",
+    "location": "miroirs",
+    "subject": "withdrawal",
+    "channel": "dialogue",
+    "parasite": "dose",
+    "requiresFlag": "dose_heard",
+    "once": true,
+    "priority": 86,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "search_failure"
+    },
+    "text": "Tu vois ? Pas assez régulé. On ne négocie pas une machine avec des grands principes. On met ce qu'il faut dans le moteur."
+  },
+  {
+    "id": "miroirs_body__antipassive_ventre_just_nausea",
+    "contextId": "miroirs/body",
+    "location": "miroirs",
+    "subject": "withdrawal",
+    "channel": "dialogue",
+    "voice": "faim",
+    "minScore": 0,
+    "maxScore": 1,
+    "once": true,
+    "priority": 82,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "body_ventre"
+    },
+    "text": "Simple nausée. Rien à voir avec les cachets, les verres, les heures manquantes. Le corps ment parfois pour éviter d'avouer qu'il dit vrai."
   }
 ]

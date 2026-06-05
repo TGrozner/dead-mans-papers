@@ -1,6 +1,6 @@
 [
   {
-    "id": "miroirs_residents__paid_silence",
+    "id": "miroirs_residents__surname_as_infrastructure",
     "contextId": "miroirs/residents",
     "location": "miroirs",
     "subject": "residents",
@@ -8,12 +8,85 @@
     "voice": "bouches",
     "minScore": 1,
     "once": true,
-    "priority": 60,
+    "priority": 66,
     "display": "toast",
     "trigger": {
       "type": "clue",
-      "clue": "Des habitants disent que la victime était attendue."
+      "clue": "Les habitants connaissent ton surnom: Le Gobelet."
     },
-    "text": "Quand les habitants disent 'attendu', ils veulent dire 'quelqu'un avait prévenu'. Quand ils disent Le Gobelet, ils veulent dire toi sans avoir à te regarder."
+    "text": "Un surnom est une infrastructure légère: pas de budget, pas de plan, mais tout le monde sait par où passer."
+  },
+  {
+    "id": "miroirs_residents__amar_real_firstname",
+    "contextId": "miroirs/amar",
+    "location": "miroirs",
+    "subject": "amar",
+    "channel": "dialogue",
+    "voice": "bouches",
+    "minScore": 1,
+    "once": true,
+    "priority": 75,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "amar",
+      "nodeId": "ahmed_page"
+    },
+    "text": "Garder quelqu'un lisible, dans ce quartier, c'est presque une violence tendre. Presque seulement."
+  },
+  {
+    "id": "miroirs_residents__antipassive_bouches_concertation",
+    "contextId": "miroirs/amar",
+    "location": "miroirs",
+    "subject": "amar",
+    "channel": "dialogue",
+    "voice": "bouches",
+    "minScore": 0,
+    "maxScore": 1,
+    "once": true,
+    "priority": 78,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "amar",
+      "nodeId": "talk_failure"
+    },
+    "text": "Concertation. Excellent mot si tu voulais prouver que quelqu'un t'a rendu étranger à une cage que tu connaissais."
+  },
+  {
+    "id": "miroirs_residents__invoice_network",
+    "contextId": "miroirs/amar",
+    "location": "miroirs",
+    "subject": "municipal-network",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "minScore": 2,
+    "once": true,
+    "priority": 70,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "amar",
+      "nodeId": "invoice"
+    },
+    "text": "Rénovation, nettoyage, sécurité, santé. Quatre cases séparées. Un seul couloir quand quelqu'un doit disparaître proprement."
+  },
+  {
+    "id": "miroirs_residents__forget_timing",
+    "contextId": "miroirs/amar",
+    "location": "miroirs",
+    "subject": "morad-memory",
+    "channel": "dialogue",
+    "parasite": "dose",
+    "requiresFlag": "dose_heard",
+    "once": true,
+    "priority": 76,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "amar",
+      "nodeId": "forget"
+    },
+    "text": "On n'oublie pas. On allège. On coupe les angles. On rend la matinée praticable. C'est un service, presque."
   }
 ]

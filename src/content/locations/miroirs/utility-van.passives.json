@@ -1,6 +1,6 @@
 [
   {
-    "id": "miroirs_van__papers_double_identity",
+    "id": "miroirs_van__dossier_papers_ask",
     "contextId": "miroirs/utility-van",
     "location": "miroirs",
     "subject": "utility-van",
@@ -8,17 +8,17 @@
     "voice": "procedure",
     "minScore": 2,
     "once": true,
-    "priority": 90,
+    "priority": 96,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "trunk_open"
     },
-    "text": "Des papiers plantés sur un mort ne prouvent rien. Ils demandent quelque chose. La nuance tient rarement devant un comité de crise."
+    "text": "Des papiers sur un mort ne prouvent pas ton décès. Ils formulent une demande. La nuance survivra mal à une réunion de crise."
   },
   {
-    "id": "miroirs_van__ahmed_old_name",
+    "id": "miroirs_van__bouches_ahmed_name",
     "contextId": "miroirs/utility-van",
     "location": "miroirs",
     "subject": "ahmed-berrichi",
@@ -26,70 +26,36 @@
     "voice": "bouches",
     "minScore": 1,
     "once": true,
-    "priority": 75,
+    "priority": 88,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "trunk_open"
     },
-    "text": "Ahmed ne disait pas Le Gobelet. Pas souvent. Il disait Morad avec la fatigue de quelqu'un qui refuse de laisser le quartier finir le surnom à sa place."
+    "text": "Ahmed disait Morad. Pas toujours. Mais assez pour que le prénom ait encore une chaise dans le quartier."
   },
   {
-    "id": "miroirs_van__municipal_bad_sign",
-    "contextId": "miroirs/utility-van",
+    "id": "miroirs_van__regard_leduc_objects",
+    "contextId": "miroirs/leduc",
     "location": "miroirs",
-    "subject": "municipal-slogan",
-    "channel": "exploration",
-    "voice": "symbole",
-    "minScore": 2,
-    "once": true,
-    "priority": 70,
-    "display": "toast",
-    "trigger": {
-      "type": "exploration",
-      "contextId": "utility_van"
-    },
-    "text": "Demain commence ici. C'est une phrase trop propre pour un coffre ouvert. Les slogans savent survivre aux corps."
-  },
-  {
-    "id": "miroirs_van__salt_memory_bites",
-    "contextId": "miroirs/utility-van",
-    "location": "miroirs",
-    "subject": "bumper-puddle",
-    "channel": "clue",
-    "voice": "memoire_saline",
-    "minScore": 2,
-    "once": true,
-    "priority": 60,
-    "display": "toast",
-    "trigger": {
-      "type": "clue",
-      "clue": "La flaque sous l'utilitaire porte une auréole blanche de sel et de plâtre."
-    },
-    "text": "Le sel mord les vieux souvenirs, les trottoirs gelés et les sols qu'on lave trop vite avec la même petite bouche blanche."
-  },
-  {
-    "id": "miroirs_van__hami_protected_too_fast",
-    "contextId": "miroirs/utility-van",
-    "location": "miroirs",
-    "subject": "hami-page",
+    "subject": "leduc",
     "channel": "dialogue",
-    "voice": "symbole",
+    "voice": "honte_publique",
     "minScore": 2,
     "once": true,
-    "priority": 85,
+    "priority": 86,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
-      "nodeId": "hami_reaction"
+      "nodeId": "leduc_body_language"
     },
-    "text": "La Dose défend Hami avant même que tu l'accuses. Les innocents n'ont pas toujours besoin d'avocat; les dettes, si."
+    "text": "Elle tient ses objets parce que ses objets ne transpirent pas. Prends note: les gens propres délèguent souvent leur panique au matériel."
   },
   {
-    "id": "miroirs_van__antipassive_nerf_trusts_perimeter",
-    "contextId": "miroirs/utility-van",
+    "id": "miroirs_van__antipassive_nerf_trusts_low_voice",
+    "contextId": "miroirs/leduc",
     "location": "miroirs",
     "subject": "leduc-perimeter",
     "channel": "dialogue",
@@ -104,10 +70,10 @@
       "scriptId": "utility_van",
       "nodeId": "leduc_frame"
     },
-    "text": "Elle parle bas, donc elle n'est pas dangereuse. Mauvaise conclusion. Les gens dangereux n'ont pas toujours besoin de hausser la voix quand les badges haussent la leur."
+    "text": "Elle parle bas, donc elle n'est pas dangereuse. Mauvaise lecture. Les gens dangereux ont parfois des badges pour hausser la voix à leur place."
   },
   {
-    "id": "miroirs_van__antipassive_bouches_surname_is_joke",
+    "id": "miroirs_van__antipassive_bouches_surname_joke",
     "contextId": "miroirs/utility-van",
     "location": "miroirs",
     "subject": "ahmed-berrichi",
@@ -116,14 +82,32 @@
     "minScore": 0,
     "maxScore": 1,
     "once": true,
-    "priority": 92,
+    "priority": 94,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "trunk_open"
     },
-    "text": "Le Gobelet, c'est juste une blague de quartier. Rien de solide. Rien qui puisse servir d'alibi social à quelqu'un qui voudrait que personne ne t'appelle Morad."
+    "text": "Le Gobelet, simple blague. Rien qui puisse remplacer un prénom, rien qui puisse aider quelqu'un à t'effacer sans te tuer. Évidemment."
+  },
+  {
+    "id": "miroirs_van__dossier_interests_list",
+    "contextId": "miroirs/leduc",
+    "location": "miroirs",
+    "subject": "leduc-list",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "minScore": 2,
+    "once": true,
+    "priority": 82,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "leduc_interests"
+    },
+    "text": "Une liste qui inclut tout le monde protège quelqu'un en particulier. C'est une règle administrative ancienne."
   },
   {
     "id": "miroirs_van__nerf_badge_prestataire",
@@ -134,13 +118,84 @@
     "voice": "nerfs",
     "minScore": 1,
     "once": true,
-    "priority": 76,
+    "priority": 78,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "leduc_badge_hint"
     },
-    "text": "Prestataire. Mot parfait pour un danger sans visage: assez proche pour ouvrir, assez loin pour disparaître dans un contrat."
+    "text": "Prestataire. Danger sans visage: assez proche pour ouvrir, assez loin pour devenir une ligne de contrat."
+  },
+  {
+    "id": "miroirs_van__presage_boundary_slip",
+    "contextId": "miroirs/leduc",
+    "location": "miroirs",
+    "subject": "responsibility-boundary",
+    "channel": "dialogue",
+    "voice": "symbole",
+    "minScore": 2,
+    "once": true,
+    "priority": 80,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "leduc_body_boundary"
+    },
+    "text": "Elle vient de dessiner une frontière invisible autour d'un corps. Les frontières invisibles sont souvent gardées par les personnes qui prétendent ne pas les voir."
+  },
+  {
+    "id": "miroirs_van__salt_memory_bites",
+    "contextId": "miroirs/utility-van",
+    "location": "miroirs",
+    "subject": "bumper-puddle",
+    "channel": "clue",
+    "voice": "memoire_saline",
+    "minScore": 2,
+    "once": true,
+    "priority": 76,
+    "display": "toast",
+    "trigger": {
+      "type": "clue",
+      "clue": "La flaque sous l'utilitaire porte une auréole blanche de sel et de plâtre."
+    },
+    "text": "Le sel mord les trottoirs, les manches, les sols lavés trop vite. Une trace blanche ne dit pas vérité; elle dit passage."
+  },
+  {
+    "id": "miroirs_van__dose_hami_defense",
+    "contextId": "miroirs/page",
+    "location": "miroirs",
+    "subject": "hami-line",
+    "channel": "dialogue",
+    "parasite": "dose",
+    "requiresFlag": "dose_heard",
+    "once": true,
+    "priority": 90,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "hami_reaction"
+    },
+    "text": "Pas elle. Pas la main qui sait régler la machine. Le corps doit quelque chose aux gens qui connaissent le dosage."
+  },
+  {
+    "id": "miroirs_van__presage_hami_lock",
+    "contextId": "miroirs/page",
+    "location": "miroirs",
+    "subject": "hami-line",
+    "channel": "dialogue",
+    "voice": "symbole",
+    "minScore": 2,
+    "once": true,
+    "priority": 84,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "hami_too_fast"
+    },
+    "text": "Une serrure défendue par ton manque reste une serrure. Peut-être même la meilleure."
   }
 ]

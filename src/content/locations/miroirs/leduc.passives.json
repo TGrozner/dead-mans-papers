@@ -8,14 +8,14 @@
     "voice": "honte_publique",
     "minScore": 2,
     "once": true,
-    "priority": 70,
+    "priority": 76,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "leduc",
       "nodeId": "start"
     },
-    "text": "Elle te regarde comme un incident encore tiède. Tiens-toi droit. Un médiateur mou, un médiateur qui sent l'alcool froid, ça devient vite une note de service."
+    "text": "Elle ne regarde pas si tu vas bien. Elle regarde si tu peux encore servir. C'est plus précis, donc plus blessant."
   },
   {
     "id": "miroirs_leduc__incident_word",
@@ -26,13 +26,86 @@
     "voice": "procedure",
     "minScore": 2,
     "once": true,
-    "priority": 65,
+    "priority": 72,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "start"
     },
-    "text": "Incident de chantier: quatre syllabes pour éloigner le mot mort, deux services et probablement une caméra qui ne fonctionne plus."
+    "text": "Incident de chantier: quatre syllabes pour éloigner le mot mort, deux services et une caméra qui dort au bon angle."
+  },
+  {
+    "id": "miroirs_leduc__problem_questions",
+    "contextId": "miroirs/leduc",
+    "location": "miroirs",
+    "subject": "ahmed-berrichi",
+    "channel": "dialogue",
+    "voice": "bouches",
+    "minScore": 1,
+    "once": true,
+    "priority": 70,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "leduc",
+      "nodeId": "problem"
+    },
+    "text": "Questions anciennes. Le quartier appelle ça mémoire. La mairie appelle ça retard de pilotage."
+  },
+  {
+    "id": "miroirs_leduc__vulnerability_skill",
+    "contextId": "miroirs/leduc",
+    "location": "miroirs",
+    "subject": "morad-reputation",
+    "channel": "dialogue",
+    "voice": "honte_publique",
+    "minScore": 2,
+    "once": true,
+    "priority": 74,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "leduc",
+      "nodeId": "gobelet_skill"
+    },
+    "text": "Elle vient de transformer ta honte en compétence opérationnelle. C'est élégant. C'est ignoble. Les deux peuvent être vrais."
+  },
+  {
+    "id": "miroirs_leduc__hami_waits",
+    "contextId": "miroirs/leduc",
+    "location": "miroirs",
+    "subject": "hami",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "minScore": 2,
+    "once": true,
+    "priority": 78,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "leduc",
+      "nodeId": "hami_gloves"
+    },
+    "text": "Un dossier médical ne crie pas, non. Il attend qu'on lui demande officiellement de se taire."
+  },
+  {
+    "id": "miroirs_leduc__antipassive_regard_she_respects_you",
+    "contextId": "miroirs/leduc",
+    "location": "miroirs",
+    "subject": "morad-reputation",
+    "channel": "dialogue",
+    "voice": "honte_publique",
+    "minScore": 0,
+    "maxScore": 1,
+    "once": true,
+    "priority": 80,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "leduc",
+      "nodeId": "why_morad"
+    },
+    "text": "Elle te choisit parce qu'elle te respecte. Bien sûr. Les institutions choisissent toujours les gens fragiles par estime pure."
   }
 ]

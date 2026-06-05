@@ -51,6 +51,10 @@ Tragicomédie sale: social et corporel dans la même phrase, administratif et ho
 
 Pas de romantisme portuaire. La poésie vient du contraste entre langue municipale propre et corps abîmés sous néons.
 
+Direction validée pour la réécriture v0: cru social maîtrisé, voix internes très présentes mais courtes, La Dose commerçante intime, Karine administratrice dangereuse qui renomme au lieu de mentir frontalement, Ahmed témoin gênant et rugueux, Morad lucide mais fonctionnel dans le déni. Style: sec avec éclats, choix incarnés, passifs contradictoires.
+
+Inspiration structurelle maximale: hubs ramifiés, surfaces objet, voix contextuelles, antipassifs, échecs premium et densité de retours. Le texte, les scènes, les personnages et les blagues restent originaux.
+
 ## Boucle
 
 Explorer, parler, inspecter, écouter les voix internes, subir La Dose, tenter des checks, accumuler des indices et des contradictions.

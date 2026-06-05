@@ -10,10 +10,10 @@
     "x": 444,
     "y": 336,
     "radius": 44,
-    "text": "L'écran est fendu en étoile. Douze appels manqués de Karine Leduc, puis plus rien. Le téléphone a tenu sa mémoire mieux que toi.",
+    "text": "L'écran est fendu en étoile. Douze appels manqués. Même nom qui revient, Karine Leduc, comme une dette qui sait utiliser un répertoire.",
     "voice": "procedure",
     "minScore": 2,
-    "voiceText": "Douze appels avant le corps. L'urgence a donc commencé sans toi, ou avec une version de toi qui ne répondait déjà plus.",
+    "voiceText": "Douze appels avant la découverte officielle. L'urgence a commencé avec une version de toi qui ne répondait déjà plus.",
     "effects": [
       { "type": "clue", "clue": "Ton téléphone fissuré affiche 12 appels manqués de Karine Leduc." }
     ]
@@ -25,24 +25,24 @@
     "subject": "utility-van",
     "mode": "visible",
     "label": "Observer l'utilitaire",
-    "title": "Renouvellement Urbain",
+    "title": "Utilitaire municipal",
     "x": 610,
     "y": 282,
     "radius": 58,
-    "text": "L'utilitaire a été lavé trop vite. Il reste des filets sombres dans le joint du coffre, et la poussière de plâtre colle au bas de caisse comme une mauvaise excuse. Sur la portière: Demain commence ici.",
+    "text": "L'utilitaire a été lavé trop vite. Les joints du coffre gardent une ligne sombre. Le blanc de la carrosserie essaie d'être administratif. Le noir du coffre refuse.",
     "voice": "symbole",
     "minScore": 2,
-    "voiceText": "Un futur imprimé sur une porte qui transporte les morts. La mairie appelle ça une perspective.",
+    "voiceText": "Un véhicule de service avec une bouche ouverte. La ville a parfois des organes plus honnêtes que ses panneaux.",
     "effects": [
       { "type": "flag", "flag": "orb_van_seen" }
     ],
     "variants": [
       {
         "requiresFlag": "papers_seen",
-        "text": "Maintenant que tu as vu les papiers, l'utilitaire paraît moins être un véhicule qu'une adresse mobile. On t'a livré Ahmed avec le nom de Morad Saïdi planté dessus.",
+        "text": "Maintenant que tu as vu tes papiers sur Ahmed, l'utilitaire paraît moins être un véhicule qu'une adresse mobile. On t'a livré un mort avec ton nom comme bon de réception.",
         "voice": "procedure",
         "minScore": 2,
-        "voiceText": "Un véhicule de service, un mort, une identité. Ce n'est pas une scène de crime, c'est une erreur de classement avec coffre et logo municipal."
+        "voiceText": "Véhicule, corps, identité, accès. Ce n'est pas un hasard. C'est un classement temporaire en attente de coupable."
       }
     ]
   },
@@ -57,10 +57,10 @@
     "x": 672,
     "y": 282,
     "radius": 52,
-    "text": "Ahmed est trop loin pour livrer tout son visage, assez près pour imposer sa présence. Vieux locataire, officiellement disparu du relogement. Un homme peut devenir une preuve avant d'avoir fini d'être une personne.",
+    "text": "Ahmed est assez loin pour ne pas tout donner, assez près pour te prendre la matinée. Un vieux locataire ne devient pas preuve: on le force à porter le rôle.",
     "voice": "faim",
     "minScore": 1,
-    "voiceText": "Ton ventre fait l'inventaire des heures manquées, des verres, des cachets. C'est obscène. C'est aussi exact.",
+    "voiceText": "Ton corps pense d'abord à lui-même. Bile, manque, bouche sèche. C'est laid. C'est aussi ce qui te garde debout.",
     "effects": [
       { "type": "clue", "clue": "Le corps est placé au fond du coffre, pas tombé près de l'ouverture." },
       { "type": "clue", "clue": "Ahmed Berrichi était un vieux locataire historique des Miroirs." }
@@ -73,14 +73,14 @@
     "subject": "dead-camera",
     "mode": "visible",
     "label": "Inspecter la caméra HS",
-    "title": "Caméra HS",
+    "title": "Caméra morte",
     "x": 510,
     "y": 174,
     "radius": 66,
-    "text": "La caméra pointe vers le P2 avec la politesse d'un témoin payé pour dormir. Son voyant est mort. Le support, lui, est récent.",
+    "text": "La caméra pointe vers le P2 avec la politesse d'un témoin payé pour dormir. Voyant mort. Support récent. L'aveuglement a eu droit à une installation propre.",
     "voice": "nerfs",
     "minScore": 1,
-    "voiceText": "Objet haut. Angle parfait. Témoin idéalement aveugle. Quelqu'un a choisi où la nuit devait perdre ses yeux.",
+    "voiceText": "Angle parfait. Oeil absent. Quelqu'un n'a pas cassé la surveillance. Quelqu'un l'a orientée vers son propre sommeil.",
     "effects": [
       { "type": "flag", "flag": "orb_camera_seen" },
       { "type": "clue", "clue": "La caméra du P2 est hors service mais son support est récent." }
@@ -97,20 +97,20 @@
     "x": 178,
     "y": 282,
     "radius": 78,
-    "text": "La porte du local technique porte trois couches d'étiquettes: électricité, chantier, nettoyage. Personne ne sait vraiment à qui elle appartient, donc tout le monde sait à qui demander la clé.",
+    "text": "Une porte, trois usages, aucune responsabilité nette. Électricité, nettoyage, chantier: les mots changent selon qui tient la clé.",
     "voice": "procedure",
     "minScore": 2,
-    "voiceText": "Un local public est une promesse de registre. Si l'utilitaire ou le corps est passé par ici, il a laissé une trace qui prétendra être en maintenance.",
+    "voiceText": "Un local partagé produit toujours un registre ou une absence de registre. Les deux sont des documents.",
     "effects": [
       { "type": "clue", "clue": "Le local technique pourrait contenir un registre de badges et de clés." }
     ],
     "variants": [
       {
         "requiresFlag": "salt_fake",
-        "text": "Après ce qu'Amar a dit sur le local sanitaire, cette porte paraît moins passive. Un local peut mentir très lentement quand on lui donne assez d'étiquettes.",
+        "text": "Après ce qu'Amar a dit sur le local sanitaire, cette porte paraît moins neutre. Un local ment lentement quand assez de services peuvent dire qu'ils n'en sont pas responsables.",
         "voice": "bouches",
         "minScore": 1,
-        "voiceText": "Les portes fermées ont un accent aussi. Celle-ci dit: revenez avec un nom, ou avec un badge volé."
+        "voiceText": "Les portes fermées ont un accent. Celle-ci dit: revenez avec un nom, ou avec un badge qui n'assume pas."
       }
     ]
   },
@@ -126,10 +126,10 @@
     "x": 470,
     "y": 464,
     "radius": 96,
-    "text": "Le néon grésille au-dessus d'une flaque, avec la patience d'un créancier. Il découpe ton reflet en plusieurs Morad, aucun assez net pour signer.",
+    "text": "Le néon grésille au-dessus d'une flaque avec la patience d'un créancier. Ton reflet se découpe en plusieurs Morad. Aucun ne tient assez longtemps pour signer.",
     "voice": "memoire_saline",
     "minScore": 2,
-    "voiceText": "Tu connais ce blanc-là: sel de trottoir, sueur sèche, lumière de centre municipal. Les souvenirs chimiques reviennent par capillarité."
+    "voiceText": "Tu connais ce blanc: sel de trottoir, sueur sèche, couloir médical. Les souvenirs chimiques reviennent par capillarité."
   },
   {
     "id": "miroirs_orb_residents",
@@ -143,10 +143,10 @@
     "x": 314,
     "y": 388,
     "radius": 84,
-    "text": "Des voix roulent derrière la palissade de chantier. Elles deviennent plus basses quand ton nom pourrait apparaître dans la phrase. Puis l'une d'elles souffle: Le Gobelet.",
+    "text": "Des voix roulent derrière la palissade. Elles baissent quand ton nom pourrait entrer dans la phrase. Puis quelqu'un lâche: Le Gobelet. Pas fort. Assez.",
     "voice": "bouches",
     "minScore": 1,
-    "voiceText": "Personne ne se tait aussi vite sans avoir répété le silence avant. Et personne n'invente un surnom aussi vite: il était déjà en circulation.",
+    "voiceText": "Un surnom ne naît pas en urgence. Il circule, il chauffe, il attend la bonne honte pour servir.",
     "effects": [
       { "type": "clue", "clue": "Des habitants baissent la voix quand tu approches de la palissade." },
       { "type": "clue", "clue": "Les habitants connaissent ton surnom: Le Gobelet." }
