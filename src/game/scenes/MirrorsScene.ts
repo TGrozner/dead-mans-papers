@@ -3,7 +3,7 @@ import type { MirrorsGameBridge } from '../createMirrorsGame'
 import { debugLog } from '../debug'
 
 const MOBILE_VIEWPORT_QUERY = '(max-width: 560px)'
-const MOBILE_CAMERA_ZOOM = 1.38
+const MOBILE_CAMERA_ZOOM = 1
 
 interface Hotspot {
   id: string
@@ -80,6 +80,7 @@ export class MirrorsScene extends Phaser.Scene {
   >
   private selectionHalo?: Phaser.GameObjects.Graphics
   private lastLoggedActiveTarget?: string
+  private foldedMapOrbIds = new Set(['miroirs_orb_van', 'miroirs_orb_body'])
 
   constructor(bridge: MirrorsGameBridge) {
     super('miroirs')
@@ -149,7 +150,8 @@ export class MirrorsScene extends Phaser.Scene {
 
     if (this.isMobileViewport()) {
       camera.setZoom(MOBILE_CAMERA_ZOOM)
-      camera.startFollow(this.player, true, 0.14, 0.14)
+      camera.stopFollow()
+      camera.centerOn(480, 288)
       this.updateInteractionMarkerVisibility()
       debugLog('scene', 'camera-mobile', { zoom: MOBILE_CAMERA_ZOOM })
       return
@@ -805,7 +807,7 @@ export class MirrorsScene extends Phaser.Scene {
     ]
 
     this.orbSpots
-      .filter((orb) => orb.mode === 'visible')
+      .filter((orb) => orb.mode === 'visible' && !this.isFoldedMapOrb(orb.id))
       .forEach((orb) => {
         orb.marker = this.createInteractionHalo(orb.x, orb.y, orb.radius, 'secondary')
       })
@@ -818,33 +820,38 @@ export class MirrorsScene extends Phaser.Scene {
     tone: 'primary' | 'secondary',
   ): Phaser.GameObjects.Graphics {
     const marker = this.add.graphics({ x, y })
-    const ringRadius = Phaser.Math.Clamp(radius * (tone === 'primary' ? 0.52 : 0.42), 20, 48)
-    const alpha = tone === 'primary' ? 0.58 : 0.34
+    const span = Phaser.Math.Clamp(
+      radius * (tone === 'primary' ? 0.32 : 0.26),
+      tone === 'primary' ? 18 : 14,
+      tone === 'primary' ? 30 : 24,
+    )
+    const tick = tone === 'primary' ? 12 : 9
+    const color = tone === 'primary' ? 0x65d8e6 : 0xd7a84b
+    const alpha = tone === 'primary' ? 0.78 : 0.62
 
     marker.setDepth(tone === 'primary' ? 5 : 4)
-    marker.lineStyle(tone === 'primary' ? 2 : 1, 0x65d8e6, alpha)
-    marker.strokeCircle(0, 0, ringRadius)
-    marker.lineStyle(2, 0xe9fbff, alpha * 0.45)
-    marker.lineBetween(-ringRadius - 7, -ringRadius, -ringRadius + 6, -ringRadius)
-    marker.lineBetween(-ringRadius, -ringRadius - 7, -ringRadius, -ringRadius + 6)
-    marker.lineBetween(ringRadius - 6, -ringRadius, ringRadius + 7, -ringRadius)
-    marker.lineBetween(ringRadius, -ringRadius - 7, ringRadius, -ringRadius + 6)
-    marker.lineBetween(-ringRadius - 7, ringRadius, -ringRadius + 6, ringRadius)
-    marker.lineBetween(-ringRadius, ringRadius - 6, -ringRadius, ringRadius + 7)
-    marker.lineBetween(ringRadius - 6, ringRadius, ringRadius + 7, ringRadius)
-    marker.lineBetween(ringRadius, ringRadius - 6, ringRadius, ringRadius + 7)
-    marker.setAlpha(tone === 'primary' ? 0.72 : 0.48)
+    marker.fillStyle(color, tone === 'primary' ? 0.82 : 0.68)
+    marker.fillRect(-3, -3, 6, 6)
+    marker.lineStyle(tone === 'primary' ? 2 : 1, color, alpha)
+    marker.lineBetween(-span, -span, -span + tick, -span)
+    marker.lineBetween(-span, -span, -span, -span + tick)
+    marker.lineBetween(span - tick, -span, span, -span)
+    marker.lineBetween(span, -span, span, -span + tick)
+    marker.lineBetween(-span, span, -span + tick, span)
+    marker.lineBetween(-span, span - tick, -span, span)
+    marker.lineBetween(span - tick, span, span, span)
+    marker.lineBetween(span, span - tick, span, span)
 
     this.tweens.add({
       targets: marker,
-      alpha: tone === 'primary' ? 0.38 : 0.24,
+      alpha: tone === 'primary' ? 0.34 : 0.28,
       duration: tone === 'primary' ? 1450 : 1750,
       yoyo: true,
       repeat: -1,
       ease: 'Sine.easeInOut',
     })
 
-    marker.setVisible(this.isMobileViewport())
+    marker.setVisible(true)
     return marker
   }
 
@@ -878,14 +885,12 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private updateInteractionMarkerVisibility(): void {
-    const showMarkers = this.isMobileViewport()
-
     this.hotspots.forEach((hotspot) => {
-      hotspot.marker?.setVisible(showMarkers)
+      hotspot.marker?.setVisible(true)
     })
 
     this.orbSpots.forEach((orb) => {
-      orb.marker?.setVisible(showMarkers && orb.mode === 'visible')
+      orb.marker?.setVisible(orb.mode === 'visible' && !this.isFoldedMapOrb(orb.id))
     })
   }
 
@@ -986,13 +991,12 @@ export class MirrorsScene extends Phaser.Scene {
     })
 
     if (target && this.isMobileViewport()) {
-      if (this.isSelectedPointerTarget(target) && this.isPlayerNearTarget(target)) {
+      if (this.isSelectedPointerTarget(target)) {
         this.openPointerTarget(target)
         return
       }
 
       this.selectPointerTarget(target)
-      this.setTapDestinationNearTarget(target)
       return
     }
 
@@ -1047,18 +1051,6 @@ export class MirrorsScene extends Phaser.Scene {
     return this.selectedPointerTarget?.kind === target.kind && this.selectedPointerTarget.id === target.id
   }
 
-  private isPlayerNearTarget(target: PointerTarget): boolean {
-    return Boolean(
-      this.player &&
-        Phaser.Math.Distance.Between(
-          this.player.x,
-          this.player.y,
-          this.getApproachX(target),
-          this.getApproachY(target),
-        ) <= (target.lockRadius ?? target.radius),
-    )
-  }
-
   private selectPointerTarget(target: PointerTarget): void {
     this.selectedPointerTarget = {
       kind: target.kind,
@@ -1077,12 +1069,23 @@ export class MirrorsScene extends Phaser.Scene {
     }
 
     this.selectionHalo = this.add.graphics({ x: target.x, y: target.y })
-    const ringRadius = Phaser.Math.Clamp(target.radius * 0.62, 30, 60)
+    const span = Phaser.Math.Clamp(target.radius * 0.34, 22, 42)
+    const tick = 13
     this.selectionHalo.setDepth(8)
     this.selectionHalo.lineStyle(3, 0x65d8e6, 0.95)
-    this.selectionHalo.strokeCircle(0, 0, ringRadius)
+    this.selectionHalo.lineBetween(-span, -span, -span + tick, -span)
+    this.selectionHalo.lineBetween(-span, -span, -span, -span + tick)
+    this.selectionHalo.lineBetween(span - tick, -span, span, -span)
+    this.selectionHalo.lineBetween(span, -span, span, -span + tick)
+    this.selectionHalo.lineBetween(-span, span, -span + tick, span)
+    this.selectionHalo.lineBetween(-span, span - tick, -span, span)
+    this.selectionHalo.lineBetween(span - tick, span, span, span)
+    this.selectionHalo.lineBetween(span, span - tick, span, span)
     this.selectionHalo.lineStyle(1, 0xe9fbff, 0.82)
-    this.selectionHalo.strokeCircle(0, 0, ringRadius + 7)
+    this.selectionHalo.lineBetween(-span - 5, 0, -span - 12, 0)
+    this.selectionHalo.lineBetween(span + 5, 0, span + 12, 0)
+    this.selectionHalo.lineBetween(0, -span - 5, 0, -span - 12)
+    this.selectionHalo.lineBetween(0, span + 5, 0, span + 12)
 
     this.tweens.add({
       targets: this.selectionHalo,
@@ -1107,7 +1110,7 @@ export class MirrorsScene extends Phaser.Scene {
     y: number,
   ): PointerTarget | undefined {
     const orbTargets = this.orbSpots
-      .filter((orb) => orb.mode === 'visible' || this.isMobileViewport())
+      .filter((orb) => orb.mode === 'visible' && !this.isFoldedMapOrb(orb.id))
       .map((orb) => ({
         kind: 'orb' as const,
         id: orb.id,
@@ -1162,11 +1165,6 @@ export class MirrorsScene extends Phaser.Scene {
     })
   }
 
-  private setTapDestinationNearTarget(target: PointerTarget): void {
-    const destination = this.findNearestOpenPoint(this.getApproachX(target), this.getApproachY(target))
-    this.setTapDestination(destination.x, destination.y)
-  }
-
   private findNearestOpenPoint(x: number, y: number): Phaser.Math.Vector2 {
     if (!this.isPointBlocked(x, y)) {
       return new Phaser.Math.Vector2(x, y)
@@ -1214,6 +1212,10 @@ export class MirrorsScene extends Phaser.Scene {
 
   private getApproachY(target: Pick<PointerTarget, 'y' | 'approachY'>): number {
     return target.approachY ?? target.y
+  }
+
+  private isFoldedMapOrb(orbId: string): boolean {
+    return this.foldedMapOrbIds.has(orbId)
   }
 
   private clearTapDestination(): void {
@@ -1270,7 +1272,7 @@ export class MirrorsScene extends Phaser.Scene {
     }
 
     const orbTargets = this.orbSpots
-      .filter((orb) => orb.mode === 'visible' || this.isMobileViewport())
+      .filter((orb) => orb.mode === 'visible' && !this.isFoldedMapOrb(orb.id))
       .map((orb) => ({
         kind: 'orb' as const,
         id: orb.id,
@@ -1306,22 +1308,32 @@ export class MirrorsScene extends Phaser.Scene {
       })
 
     const availableTargets = [...hotspotTargets, ...orbTargets]
-    const selectedTarget =
-      this.selectedPointerTarget && this.isStoredSelectedTargetNear()
-        ? availableTargets.find(
-            (target) =>
-              target.kind === this.selectedPointerTarget?.kind && target.id === this.selectedPointerTarget.id,
-          ) ?? this.getStoredSelectedTarget()
+    const selectedTarget = this.selectedPointerTarget
+      ? this.isMobileViewport()
+        ? this.getStoredSelectedTarget()
+        : this.isStoredSelectedTargetNear()
+          ? availableTargets.find(
+              (target) =>
+                target.kind === this.selectedPointerTarget?.kind && target.id === this.selectedPointerTarget.id,
+            ) ?? this.getStoredSelectedTarget()
+          : undefined
       : undefined
     const nearestHotspot = hotspotTargets.sort((left, right) => left.distance - right.distance)[0]
     const nearestOrb = orbTargets.sort((left, right) => left.distance - right.distance)[0]
+
+    if (this.isMobileViewport() && !selectedTarget) {
+      this.bridge.setInteraction(undefined)
+      this.activeHotspotId = undefined
+      this.activeOrbId = undefined
+      this.lastLoggedActiveTarget = undefined
+      return
+    }
+
     const nearestTarget =
       selectedTarget ??
-      (this.isMobileViewport() && nearestHotspot
-        ? nearestHotspot
-        : [nearestHotspot, nearestOrb]
-            .filter((target): target is NonNullable<typeof target> => Boolean(target))
-            .sort((left, right) => left.distance - right.distance)[0])
+      [nearestHotspot, nearestOrb]
+        .filter((target): target is NonNullable<typeof target> => Boolean(target))
+        .sort((left, right) => left.distance - right.distance)[0]
 
     if (!nearestTarget) {
       this.bridge.setInteraction(undefined)

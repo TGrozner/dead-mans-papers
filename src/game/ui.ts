@@ -49,11 +49,13 @@ export function createGameUi(options: GameUiOptions) {
 
   function renderDialogue(): void {
     if (!activeDialogue) {
+      setDialogueSurfaceOpen(false)
       options.root.hidden = true
       options.root.innerHTML = ''
       return
     }
 
+    setDialogueSurfaceOpen(true)
     const node = activeDialogue.node
     const voice = node.voice ? voiceById[node.voice] : undefined
     const parasite = node.parasite ? parasiteById[node.parasite] : undefined
@@ -174,6 +176,7 @@ function renderOrb(orb: RenderedOrb): void {
     return
   }
 
+  setDialogueSurfaceOpen(true)
   const voice = orb.voice ? voiceById[orb.voice] : undefined
 
   root.hidden = false
@@ -198,9 +201,14 @@ function renderOrb(orb: RenderedOrb): void {
   `
 
   root.querySelector<HTMLButtonElement>('.orb-close')?.addEventListener('click', () => {
+    setDialogueSurfaceOpen(false)
     root.hidden = true
     root.innerHTML = ''
   })
+}
+
+function setDialogueSurfaceOpen(open: boolean): void {
+  document.body.classList.toggle('dialogue-open', open)
 }
 
 function renderPassiveAside(passive: PassiveTrigger): string {
