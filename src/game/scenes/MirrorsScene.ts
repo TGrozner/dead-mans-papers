@@ -2,9 +2,6 @@ import Phaser from 'phaser'
 import type { MirrorsGameBridge } from '../createMirrorsGame'
 import { debugLog } from '../debug'
 
-const MOBILE_VIEWPORT_QUERY = '(max-width: 560px)'
-const MOBILE_CAMERA_ZOOM = 1
-
 interface Hotspot {
   id: string
   label: string
@@ -149,24 +146,11 @@ export class MirrorsScene extends Phaser.Scene {
       return
     }
 
-    if (this.isMobileViewport()) {
-      camera.setZoom(MOBILE_CAMERA_ZOOM)
-      camera.stopFollow()
-      camera.centerOn(480, 288)
-      this.updateInteractionMarkerVisibility()
-      debugLog('scene', 'camera-mobile', { zoom: MOBILE_CAMERA_ZOOM })
-      return
-    }
-
     camera.stopFollow()
     camera.setZoom(1)
     camera.centerOn(480, 288)
     this.updateInteractionMarkerVisibility()
     debugLog('scene', 'camera-desktop', { zoom: 1 })
-  }
-
-  private isMobileViewport(): boolean {
-    return window.matchMedia(MOBILE_VIEWPORT_QUERY).matches
   }
 
   private assetUrl(file: string): string {
@@ -1015,13 +999,12 @@ export class MirrorsScene extends Phaser.Scene {
     debugLog('input', 'pointer-down', {
       x: Math.round(x),
       y: Math.round(y),
-      mobile: this.isMobileViewport(),
       target: target ? `${target.kind}:${target.id}` : undefined,
       blocked: this.isPointBlocked(x, y),
     })
 
     if (target) {
-      if (!this.isMobileViewport() && this.isPointerTargetInInteractionRange(target)) {
+      if (this.isPointerTargetInInteractionRange(target)) {
         this.clearTapDestination()
         this.player.setVelocity(0, 0)
         this.openPointerTarget(target)
@@ -1165,7 +1148,7 @@ export class MirrorsScene extends Phaser.Scene {
         x: orb.x,
         y: orb.y,
         radius: orb.radius,
-        tapRadius: orb.tapRadius ?? (this.isMobileViewport() ? 34 : Math.max(orb.radius, 54)),
+        tapRadius: orb.tapRadius ?? Math.max(orb.radius, 54),
         approachX: orb.approachX,
         approachY: orb.approachY,
         lockRadius: orb.lockRadius,
@@ -1180,7 +1163,7 @@ export class MirrorsScene extends Phaser.Scene {
       x: hotspot.x,
       y: hotspot.y,
       radius: hotspot.radius,
-      tapRadius: hotspot.tapRadius ?? (this.isMobileViewport() ? 44 : Math.max(hotspot.radius, 58)),
+      tapRadius: hotspot.tapRadius ?? Math.max(hotspot.radius, 58),
       approachX: hotspot.approachX,
       approachY: hotspot.approachY,
       lockRadius: hotspot.lockRadius,
@@ -1306,17 +1289,15 @@ export class MirrorsScene extends Phaser.Scene {
       return
     }
 
-    if (!this.isMobileViewport()) {
-      this.orbSpots
-        .filter((orb) => orb.mode === 'proximity')
-        .forEach((orb) => {
-          const distance = Phaser.Math.Distance.Between(this.player!.x, this.player!.y, orb.x, orb.y)
+    this.orbSpots
+      .filter((orb) => orb.mode === 'proximity')
+      .forEach((orb) => {
+        const distance = Phaser.Math.Distance.Between(this.player!.x, this.player!.y, orb.x, orb.y)
 
-          if (distance <= orb.radius) {
-            this.bridge.triggerProximityOrb(orb.id)
-          }
-        })
-    }
+        if (distance <= orb.radius) {
+          this.bridge.triggerProximityOrb(orb.id)
+        }
+      })
 
     const orbTargets = this.orbSpots
       .filter((orb) => orb.mode === 'visible' && !this.isFoldedMapOrb(orb.id))
@@ -1366,14 +1347,6 @@ export class MirrorsScene extends Phaser.Scene {
     const nearestHotspot = hotspotTargets.sort((left, right) => left.distance - right.distance)[0]
     const nearestOrb = orbTargets.sort((left, right) => left.distance - right.distance)[0]
 
-    if (this.isMobileViewport() && !selectedTarget) {
-      this.bridge.setInteraction(undefined)
-      this.activeHotspotId = undefined
-      this.activeOrbId = undefined
-      this.lastLoggedActiveTarget = undefined
-      return
-    }
-
     const nearestTarget =
       selectedTarget ??
       [nearestHotspot, nearestOrb]
@@ -1418,18 +1391,13 @@ export class MirrorsScene extends Phaser.Scene {
     if (hotspotChanged) {
       this.activeHotspotId = nearestTarget.id
       this.activeOrbId = undefined
-      if (!this.isMobileViewport()) {
-        this.bridge.triggerExplorationPassive(nearestTarget.id)
-      }
+      this.bridge.triggerExplorationPassive(nearestTarget.id)
     }
 
     this.bridge.setInteraction({
       label: nearestTarget.label,
       run: () => {
         this.clearSelectedPointerTarget()
-        if (this.isMobileViewport()) {
-          this.bridge.triggerExplorationPassive(nearestTarget.id)
-        }
         this.bridge.startDialogue(nearestTarget.scriptId)
       },
     })

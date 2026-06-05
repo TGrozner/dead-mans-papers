@@ -218,32 +218,11 @@ function setupCasePanel(): void {
 
   const panel = casePanel
   const toggle = caseToggle
-  const mobileQuery = window.matchMedia('(max-width: 560px)')
-  let mobileExpanded = false
 
-  function applyCaseState(): void {
-    const expanded = mobileQuery.matches ? mobileExpanded : true
-    panel.classList.toggle('case-panel--expanded', expanded)
-    toggle.textContent = expanded ? 'Dossier ouvert' : 'Dossier'
-    toggle.setAttribute('aria-expanded', String(expanded))
-    toggle.disabled = !mobileQuery.matches
-  }
-
-  toggle.addEventListener('click', () => {
-    if (!mobileQuery.matches) {
-      return
-    }
-
-    mobileExpanded = !mobileExpanded
-    applyCaseState()
-  })
-
-  mobileQuery.addEventListener('change', () => {
-    mobileExpanded = !mobileQuery.matches
-    applyCaseState()
-  })
-
-  applyCaseState()
+  panel.classList.add('case-panel--expanded')
+  toggle.textContent = 'Dossier ouvert'
+  toggle.setAttribute('aria-expanded', 'true')
+  toggle.disabled = true
 }
 
 function setupDebugLog(): void {
