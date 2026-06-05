@@ -174,7 +174,6 @@ h1 {
   transform: translateX(-50%);
   cursor: pointer;
   touch-action: manipulation;
-  animation: prompt-breathe 1800ms ease-in-out infinite;
 }
 
 .interaction-prompt:focus-visible,
@@ -198,17 +197,6 @@ h1 {
   color: var(--paper);
   background: var(--rust);
   font-weight: 800;
-}
-
-@keyframes prompt-breathe {
-  0%,
-  100% {
-    box-shadow: 0 8px 0 #0d1117, 0 0 0 rgba(215, 168, 75, 0);
-  }
-
-  50% {
-    box-shadow: 0 8px 0 #0d1117, 0 0 18px rgba(215, 168, 75, 0.38);
-  }
 }
 
 .debug-log {
@@ -1060,11 +1048,5 @@ h1 {
 
   .debug-log ol {
     max-height: 88px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .interaction-prompt {
-    animation: none;
   }
 }

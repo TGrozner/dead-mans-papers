@@ -79,8 +79,6 @@ export class MirrorsScene extends Phaser.Scene {
     'kind' | 'id' | 'x' | 'y' | 'radius' | 'lockRadius' | 'approachX' | 'approachY'
   >
   private selectionHalo?: Phaser.GameObjects.Graphics
-  private playerShadow?: Phaser.GameObjects.Ellipse
-  private playerFacing = 1
   private lastLoggedActiveTarget?: string
   private foldedMapOrbIds = new Set(['miroirs_orb_van', 'miroirs_orb_body'])
 
@@ -102,7 +100,6 @@ export class MirrorsScene extends Phaser.Scene {
   create(): void {
     this.createTextures()
     this.drawMap()
-    this.createAmbientAnimations()
     this.createActors()
     this.createHotspots()
     this.createOrbs()
@@ -120,7 +117,6 @@ export class MirrorsScene extends Phaser.Scene {
 
   update(): void {
     this.updatePlayerMovement()
-    this.updatePlayerVisuals()
     this.updateInteractionTarget()
   }
 
@@ -646,7 +642,6 @@ export class MirrorsScene extends Phaser.Scene {
     const amarKey = this.textures.exists('actor-amar') ? 'actor-amar' : 'amar'
     const sofianeKey = this.textures.exists('actor-sofiane') ? 'actor-sofiane' : 'sofiane'
 
-    this.playerShadow = this.add.ellipse(414, 366, 24, 8, 0x05070a, 0.36).setDepth(4)
     this.player = this.physics.add.sprite(414, 352, playerKey)
     this.player.setDepth(5)
     this.player.setCollideWorldBounds(true)
@@ -665,238 +660,9 @@ export class MirrorsScene extends Phaser.Scene {
       }
     })
 
-    const leduc = this.add.sprite(242, 348, leducKey).setDepth(5)
-    const amar = this.add.sprite(760, 186, amarKey).setDepth(5)
-    const sofiane = this.add.sprite(704, 454, sofianeKey).setDepth(5)
-
-    this.createNpcIdle(leduc, 'rigid')
-    this.createNpcIdle(amar, 'keys')
-    this.createNpcIdle(sofiane, 'smoke')
-    this.createSofianeSmoke()
-  }
-
-  private createAmbientAnimations(): void {
-    this.createFlickeringRect(406, 84, 170, 9, 0x65d8e6, 0.1, 0.42, 1450, 2)
-    this.createFlickeringRect(438, 454, 126, 8, 0xdcebd7, 0.08, 0.3, 2200, 3)
-    this.createFlickeringRect(714, 108, 82, 4, 0x65d8e6, 0.06, 0.22, 1900, 3)
-    this.createLightPool(640, 328, 148, 26, 0x65d8e6, 0.1, 0.25, 2600)
-    this.createLightPool(294, 356, 118, 28, 0xd7a84b, 0.06, 0.18, 3100)
-    this.createRibbonFlutter(550, 279, 236, -2, 0)
-    this.createRibbonFlutter(558, 327, 230, 2, 620)
-    this.createSteamColumn(626, 342, 0)
-    this.createSteamColumn(654, 338, 900)
-    this.createWindowBlink(302, 137, 54, 4, 800)
-    this.createWindowBlink(430, 137, 66, 4, 1800)
-  }
-
-  private createFlickeringRect(
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    color: number,
-    minAlpha: number,
-    maxAlpha: number,
-    duration: number,
-    depth: number,
-  ): void {
-    const light = this.add.graphics({ x, y }).setDepth(depth).setBlendMode(Phaser.BlendModes.ADD)
-    light.fillStyle(color, 1)
-    light.fillRect(0, 0, width, height)
-    light.setAlpha(maxAlpha)
-
-    this.tweens.add({
-      targets: light,
-      alpha: minAlpha,
-      duration,
-      yoyo: true,
-      repeat: -1,
-      ease: 'Sine.easeInOut',
-    })
-
-    this.time.addEvent({
-      delay: duration + 420,
-      loop: true,
-      callback: () => {
-        this.tweens.add({
-          targets: light,
-          alpha: Phaser.Math.FloatBetween(minAlpha, maxAlpha),
-          duration: Phaser.Math.Between(70, 120),
-          yoyo: true,
-          repeat: Phaser.Math.Between(1, 3),
-          ease: 'Stepped',
-        })
-      },
-    })
-  }
-
-  private createLightPool(
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    color: number,
-    minAlpha: number,
-    maxAlpha: number,
-    duration: number,
-  ): void {
-    const pool = this.add.graphics({ x, y }).setDepth(2).setBlendMode(Phaser.BlendModes.ADD)
-    pool.fillStyle(color, 1)
-    pool.fillEllipse(0, 0, width, height)
-    pool.setAlpha(maxAlpha)
-
-    this.tweens.add({
-      targets: pool,
-      alpha: minAlpha,
-      scaleX: 1.05,
-      scaleY: 0.88,
-      duration,
-      yoyo: true,
-      repeat: -1,
-      ease: 'Sine.easeInOut',
-    })
-  }
-
-  private createRibbonFlutter(x: number, y: number, width: number, rotation: number, delay: number): void {
-    const ribbon = this.add.graphics({ x, y }).setDepth(4)
-    ribbon.setRotation(Phaser.Math.DegToRad(rotation))
-    ribbon.lineStyle(2, 0xd45d59, 0.7)
-    ribbon.lineBetween(0, 0, width, 0)
-    ribbon.lineStyle(2, 0xf4ecd8, 0.62)
-    ribbon.lineBetween(0, 5, width, 5)
-
-    this.tweens.add({
-      targets: ribbon,
-      y: y + 2,
-      alpha: 0.46,
-      duration: 1400,
-      delay,
-      yoyo: true,
-      repeat: -1,
-      ease: 'Sine.easeInOut',
-    })
-  }
-
-  private createSteamColumn(x: number, y: number, delay: number): void {
-    for (let index = 0; index < 3; index += 1) {
-      const puff = this.add.graphics({ x: x + index * 9, y: y + index * 4 }).setDepth(4)
-      puff.fillStyle(0xdcebd7, 1)
-      puff.fillEllipse(0, 0, 16, 8)
-      puff.setAlpha(index === 0 ? 0.16 : 0)
-
-      this.tweens.add({
-        targets: puff,
-        x: x + 8 + index * 13,
-        y: y - 20 - index * 6,
-        scaleX: 1.7,
-        scaleY: 1.35,
-        alpha: 0,
-        duration: 2800,
-        delay: delay + index * 720,
-        repeat: -1,
-        ease: 'Sine.easeOut',
-        onRepeat: () => {
-          puff.setPosition(x + Phaser.Math.Between(-4, 5), y + Phaser.Math.Between(-2, 5))
-          puff.setScale(1)
-          puff.setAlpha(Phaser.Math.FloatBetween(0.12, 0.22))
-        },
-      })
-    }
-  }
-
-  private createWindowBlink(x: number, y: number, width: number, height: number, delay: number): void {
-    const windowLight = this.add.graphics({ x, y }).setDepth(2).setBlendMode(Phaser.BlendModes.ADD)
-    windowLight.fillStyle(0xd7a84b, 1)
-    windowLight.fillRect(0, 0, width, height)
-    windowLight.setAlpha(0.12)
-
-    this.tweens.add({
-      targets: windowLight,
-      alpha: 0.42,
-      duration: 90,
-      delay,
-      yoyo: true,
-      repeat: -1,
-      repeatDelay: 4300,
-      ease: 'Stepped',
-    })
-  }
-
-  private createNpcIdle(sprite: Phaser.GameObjects.Sprite, mood: 'rigid' | 'keys' | 'smoke'): void {
-    const shadow = this.add.ellipse(sprite.x, sprite.y + 14, 24, 7, 0x05070a, 0.3).setDepth(4)
-    const lift = mood === 'rigid' ? 0.6 : mood === 'keys' ? 1.1 : 1.5
-    const duration = mood === 'rigid' ? 2400 : mood === 'keys' ? 1750 : 2100
-
-    this.tweens.add({
-      targets: sprite,
-      y: sprite.y - lift,
-      scaleY: mood === 'rigid' ? 1.004 : 1.012,
-      duration,
-      yoyo: true,
-      repeat: -1,
-      ease: 'Sine.easeInOut',
-    })
-
-    this.tweens.add({
-      targets: shadow,
-      alpha: 0.2,
-      scaleX: 0.88,
-      duration,
-      yoyo: true,
-      repeat: -1,
-      ease: 'Sine.easeInOut',
-    })
-
-    if (mood === 'keys') {
-      this.createKeyGlint(sprite.x + 14, sprite.y + 2)
-    }
-  }
-
-  private createKeyGlint(x: number, y: number): void {
-    const glint = this.add.graphics({ x, y }).setDepth(6).setBlendMode(Phaser.BlendModes.ADD)
-    glint.fillStyle(0xd7a84b, 1)
-    glint.fillRect(-1, -5, 2, 10)
-    glint.fillRect(-5, -1, 10, 2)
-    glint.setAlpha(0)
-
-    this.tweens.add({
-      targets: glint,
-      alpha: 0.72,
-      scale: 1.25,
-      duration: 120,
-      delay: 900,
-      yoyo: true,
-      repeat: -1,
-      repeatDelay: 2600,
-      ease: 'Sine.easeInOut',
-    })
-  }
-
-  private createSofianeSmoke(): void {
-    for (let index = 0; index < 4; index += 1) {
-      const puff = this.add.graphics({ x: 692, y: 438 }).setDepth(6)
-      puff.fillStyle(0xdcebd7, 1)
-      puff.fillEllipse(0, 0, 9, 5)
-      puff.setAlpha(index === 0 ? 0.18 : 0)
-
-      this.tweens.add({
-        targets: puff,
-        x: 678 - index * 4,
-        y: 420 - index * 5,
-        scaleX: 1.8,
-        scaleY: 1.45,
-        alpha: 0,
-        duration: 3000,
-        delay: index * 620,
-        repeat: -1,
-        ease: 'Sine.easeOut',
-        onRepeat: () => {
-          puff.setPosition(694 + Phaser.Math.Between(-3, 4), 438 + Phaser.Math.Between(-2, 3))
-          puff.setScale(1)
-          puff.setAlpha(Phaser.Math.FloatBetween(0.14, 0.24))
-        },
-      })
-    }
+    this.add.sprite(242, 348, leducKey).setDepth(5)
+    this.add.sprite(760, 186, amarKey).setDepth(5)
+    this.add.sprite(704, 454, sofianeKey).setDepth(5)
   }
 
   private createHotspots(): void {
@@ -1175,41 +941,6 @@ export class MirrorsScene extends Phaser.Scene {
 
     this.player.setVelocity(0, 0)
     this.tryKeyboardInteraction()
-  }
-
-  private updatePlayerVisuals(): void {
-    if (!this.player) {
-      return
-    }
-
-    const velocity = this.player.body.velocity
-    const speed = velocity.length()
-    const moving = speed > 3
-    const now = this.time.now
-
-    if (Math.abs(velocity.x) > 4) {
-      this.playerFacing = velocity.x < 0 ? -1 : 1
-    }
-
-    this.player.setFlipX(this.playerFacing < 0)
-
-    if (moving) {
-      const stride = Math.sin(now / 95)
-      this.player.setRotation(stride * 0.018)
-      this.player.setScale(1 + Math.abs(stride) * 0.018, 1 - Math.abs(stride) * 0.01)
-    } else {
-      const tremor = Math.sin(now / 97) * 0.006 + Math.sin(now / 41) * 0.004
-      this.player.setRotation(tremor)
-      this.player.setScale(1 + Math.sin(now / 1300) * 0.004, 1 + Math.sin(now / 900) * 0.008)
-    }
-
-    if (!this.playerShadow) {
-      return
-    }
-
-    this.playerShadow.setPosition(this.player.x, this.player.y + 14)
-    this.playerShadow.setScale(moving ? 1.1 : 0.95, moving ? 0.86 : 1)
-    this.playerShadow.setAlpha(moving ? 0.3 : 0.22)
   }
 
   private getKeyboardVelocity(): Phaser.Math.Vector2 {
