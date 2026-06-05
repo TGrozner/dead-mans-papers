@@ -147,6 +147,7 @@ test('keeps desktop and mobile play surfaces bounded without page scroll', async
     }
 
     return {
+      play: measure('.play-area'),
       stage: measure('#game-stage'),
       panel: measure('.case-panel'),
       clues: measure('.clue-list'),
@@ -158,6 +159,10 @@ test('keeps desktop and mobile play surfaces bounded without page scroll', async
   expect(layout.stage.height).toBeGreaterThan(180)
   expect(layout.panel.height).toBeGreaterThan(250)
   expect(layout.clues.scrollHeight).toBeLessThanOrEqual(layout.clues.clientHeight)
+
+  if (layout.panel.width === layout.play.width) {
+    expect(layout.panel.height).toBeGreaterThanOrEqual(layout.play.height - layout.stage.height - 20)
+  }
 
   if (layout.voices.width > 0) {
     expect(layout.voices.scrollHeight).toBeLessThanOrEqual(layout.voices.clientHeight)

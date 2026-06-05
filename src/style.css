@@ -873,8 +873,8 @@ h1 {
 
   .play-area {
     flex: 1 1 auto;
-    grid-template-rows: auto minmax(0, 1fr);
-    align-content: start;
+    display: flex;
+    flex-direction: column;
     align-items: stretch;
     gap: 7px;
     min-height: 0;
@@ -882,6 +882,7 @@ h1 {
 
   .stage-wrap {
     display: block;
+    flex: 0 0 auto;
     height: auto;
     min-height: 0;
   }
@@ -895,7 +896,8 @@ h1 {
   }
 
   .case-panel {
-    height: 100%;
+    flex: 1 1 0;
+    height: auto;
     min-height: 0;
     gap: 7px;
     padding: 10px;
@@ -904,7 +906,7 @@ h1 {
   }
 
   .case-panel--expanded {
-    height: 100%;
+    height: auto;
     min-height: 250px;
   }
 
@@ -913,7 +915,7 @@ h1 {
   }
 
   body.dialogue-open .play-area {
-    grid-template-rows: minmax(0, min(52svh, 460px));
+    display: block;
   }
 
   body.dialogue-open #game-stage {
