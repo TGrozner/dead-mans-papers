@@ -228,7 +228,7 @@
       "start": {
         "id": "start",
         "speaker": "Karine Leduc",
-          "text": "\"On va appeler ça un incident de chantier.\" Karine pointe l'utilitaire sans le toucher. \"Il y a quelque chose dans le coffre. Quelque chose qui ne doit pas sortir d'ici avant qu'on comprenne qui a touché quoi, avec quel badge, et pourquoi toi tu te réveilles à dix mètres.\"",
+        "text": "\"On va appeler ?a un incident de chantier.\" Karine bloque le passage vers l'utilitaire, main lev?e, t?l?phone serr?. \"Tu ne touches ? rien tant qu'on n'a pas cadr?. Tu t'es r?veill? ? dix m?tres, Zin?dine. Et moi j'ai un v?hicule municipal que personne ne doit filmer.\"",
         "effects": [
           {
             "type": "flag",
@@ -236,7 +236,7 @@
           },
           {
             "type": "clue",
-            "clue": "Karine veut contenir un incident grave autour de l'utilitaire avant l'arrivée de la police nationale."
+            "clue": "Karine veut contenir un incident autour de l'utilitaire municipal avant que la sc?ne soit film?e ou officialis?e."
           }
         ],
         "choices": [
@@ -263,7 +263,7 @@
       "leduc_frame": {
         "id": "leduc_frame",
         "speaker": "Karine Leduc",
-          "text": "\"Un incident, c'est ce qu'on dit tant qu'on ne sait pas qui signe. Un coffre, c'est ce que les gens filment quand quelqu'un ouvre trop vite. Je préfère un mot dégueulasse à une vidéo qui tourne dans les halls.\"",
+        "text": "\"Un incident, c'est ce qu'on dit tant qu'on ne sait pas qui signe. Un coffre, c'est ce que les gens filment quand quelqu'un ouvre trop vite. Je préfère un mot dégueulasse à une vidéo qui tourne dans les halls.\"",
         "choices": [
           {
             "label": "\"Tu préfères surtout contrôler la phrase.\"",
@@ -364,7 +364,7 @@
       "dead_name": {
         "id": "dead_name",
         "speaker": "Karine Leduc",
-          "text": "\"Je ne signe pas un nom à distance.\" Elle avale le reste trop vite. \"Je ne signe même pas une chose à distance. Tu regardes d'abord. Après, on parlera des noms que tu as envie de prononcer.\"",
+        "text": "\"Je ne signe pas un nom à distance.\" Elle avale le reste trop vite. \"Je ne signe même pas une chose à distance. Tu regardes d'abord. Après, on parlera des noms que tu as envie de prononcer.\"",
         "effects": [
           {
             "type": "clue",
@@ -386,11 +386,11 @@
       "ahmed_questions": {
         "id": "ahmed_questions",
         "speaker": "Karine Leduc",
-          "text": "\"Parce que les noms ramènent des listes. Ascenseur C, caméras, badges, caves, relogements non faits. Des vieilles notes, des vieilles colères, des trucs que les réunions préfèrent perdre avant d'avoir à les lire.\"",
+        "text": "\"Parce que les noms ramènent des listes. Ascenseur C, caméras, badges, caves, relogements non faits. Des vieilles notes, des vieilles colères, des trucs que les réunions préfèrent perdre avant d'avoir à les lire.\"",
         "effects": [
           {
             "type": "clue",
-              "clue": "Karine craint que le coffre renvoie aux pannes, accès, caméras et relogements des Miroirs."
+            "clue": "Karine craint que le coffre renvoie aux pannes, accès, caméras et relogements des Miroirs."
           }
         ],
         "choices": [
@@ -549,7 +549,7 @@
       "trunk_block": {
         "id": "trunk_block",
         "speaker": "Karine Leduc",
-        "text": "Elle garde la main sur le hayon. \"Tu regardes d'abord. Tu touches seulement si tu dois. Tu ne vomis pas dans le coffre. Tu ne trembles pas sur la scène. Tu ne me donnes pas une raison de te classer instable.\"",
+        "text": "Elle garde la main sur le hayon. \"Tu regardes, tu respires, tu ne me fais pas une sc?ne de manque devant mon v?hicule. Si tu tombes, quelqu'un ?crira que tu ?tais instable avant m?me d'?crire ce qu'il y avait dedans.\"",
         "effects": [
           {
             "type": "flag",
@@ -558,12 +558,12 @@
         ],
         "choices": [
           {
-            "label": "\"Je tiens. Ouvre.\"",
+            "label": "Te tenir assez droit pour qu'elle ouvre.",
             "next": "trunk_open",
             "important": true
           },
           {
-            "label": "\"Si tu me parles comme à un dossier médical, je vais le devenir.\"",
+            "label": "\"Si tu me parles comme ? un dossier m?dical, je vais le devenir.\"",
             "next": "medical_shame"
           },
           {
@@ -622,7 +622,7 @@
       "trunk_open": {
         "id": "trunk_open",
         "speaker": "Parking P2",
-        "text": "Le hayon monte. Pas assez vite pour être charitable. D'abord l'odeur: froid rance, Javel, tissu humide. Puis la forme d'un vieux corps au fond, visage mangé par l'ombre, mains vides à ce que tu vois. Rien n'est clair. Tout cogne. Ta gueule de bois devient un deuxième cadavre dans ton crâne.",
+        "text": "Le hayon monte. Tout arrive d'un coup. L'odeur de vieux froid. La Javel. Le corps d'un vieil homme tass? dans la t?le. Et sur sa poitrine, pas cach?s, pas subtils: ta carte, ton badge municipal, une ordonnance pli?e. Ton nom pos? sur un mort comme une ?tiquette de consigne.",
         "effects": [
           {
             "type": "flag",
@@ -630,34 +630,27 @@
           },
           {
             "type": "clue",
-            "clue": "Un corps est dans l'utilitaire, mais son identité et ce qu'il porte ne sont pas encore clairs."
+            "clue": "Le corps d'un vieil homme est dans l'utilitaire avec la carte, le badge municipal et l'ordonnance de Zin?dine pos?s sur lui."
           }
         ],
         "choices": [
           {
-            "label": "Regarder sans toucher, juste assez pour comprendre la forme.",
+            "label": "Regarder ton nom pos? sur le mort.",
+            "next": "papers_reveal",
+            "important": true
+          },
+          {
+            "label": "Regarder le corps sans toucher.",
             "next": "body_precheck",
             "important": true
           },
           {
-            "label": "\"Tu sais qui c'est ?\"",
-            "next": "dead_name"
+            "label": "Demander ? Karine depuis combien de temps elle savait.",
+            "next": "leduc_after_open"
           },
           {
-            "label": "Te pencher dans le coffre sans rendre tes tripes à Karine.",
-            "check": {
-              "id": "trunk_search",
-              "voice": "faim",
-              "supportVoice": "main_gauche",
-              "difficulty": 8,
-              "successNode": "search_success",
-              "failureNode": "search_failure"
-            },
-            "important": true
-          },
-          {
-            "label": "Reculer avant que ton corps décide pour toi.",
-            "next": "trunk_block"
+            "label": "Reculer avant que ton corps d?cide pour toi.",
+            "next": "open_sickness"
           }
         ]
       },
@@ -723,6 +716,19 @@
           {
             "label": "Chercher le carnet dont Karine a parlé.",
             "next": "notebook_absent",
+            "important": true
+          },
+          {
+            "label": "Fouiller la doublure du coffre malgr? la naus?e.",
+            "check": {
+              "id": "trunk_search",
+              "voice": "faim",
+              "supportVoice": "main_gauche",
+              "difficulty": 8,
+              "successNode": "search_success",
+              "failureNode": "search_failure"
+            },
+            "hiddenWhenFlag": "page_found",
             "important": true
           },
           {
@@ -1054,11 +1060,11 @@
         "id": "search_success",
         "speaker": "La Main Basse",
         "voice": "main_gauche",
-        "text": "Tu bloques la bile, tu bloques le tremblement, et tu laisses la main faire. Elle plonge dans le froid humide du coffre. Sous un pli de veste, tes doigts ramènent une pochette plastique, un badge, une ordonnance, et une page arrachée collée contre la doublure.",
+        "text": "Tu bloques la bile, tu bloques le tremblement, et tu laisses la main faire. Sous la doublure du coffre, elle trouve une page arrach?e que personne n'a pens?e ? retirer. Pas un miracle: une erreur de gens press?s.",
         "effects": [
           {
             "type": "flag",
-            "flag": "trunk_searched"
+            "flag": "searched_body"
           },
           {
             "type": "flag",
@@ -1066,15 +1072,11 @@
           },
           {
             "type": "flag",
-            "flag": "papers_recovered"
+            "flag": "useful_surface_seen"
           },
           {
             "type": "clue",
-            "clue": "Une pochette avec papiers, badge et ordonnance est sortie du coffre."
-          },
-          {
-            "type": "clue",
-            "clue": "Une page arrachée du carnet d'Ahmed est coincée dans la doublure du coffre."
+            "clue": "Une page arrach?e est coinc?e dans la doublure du coffre: P2 cam?ra morte / badge chantier / Hami ?"
           }
         ],
         "choices": [
@@ -1088,11 +1090,11 @@
       "search_failure": {
         "id": "search_failure",
         "speaker": "Toi",
-        "text": "Tu vomis contre le pare-chocs. Pas une petite nausée littéraire: un jet humiliant, acide, public. Karine voit le manque, la sueur, la défaite. Mais ta main, cette salope courageuse, revient quand même du coffre avec une pochette plastique et une page humide.",
+        "text": "Tu vomis contre le pare-chocs. Public, acide, indiscutable. Karine voit le manque et la honte. Mais ta main revient quand m?me de la doublure avec une page humide. D?faite sociale, preuve utile.",
         "effects": [
           {
             "type": "flag",
-            "flag": "trunk_searched"
+            "flag": "leduc_saw_withdrawal"
           },
           {
             "type": "flag",
@@ -1100,23 +1102,11 @@
           },
           {
             "type": "flag",
-            "flag": "papers_recovered"
-          },
-          {
-            "type": "flag",
-            "flag": "leduc_saw_withdrawal"
+            "flag": "useful_surface_seen"
           },
           {
             "type": "clue",
-            "clue": "Karine t'a vu en manque pendant la fouille du coffre."
-          },
-          {
-            "type": "clue",
-            "clue": "Une pochette avec papiers, badge et ordonnance est sortie du coffre."
-          },
-          {
-            "type": "clue",
-            "clue": "Une page arrachée du carnet d'Ahmed est coincée dans la doublure du coffre."
+            "clue": "M?me en ratant le contr?le de son corps, Zin?dine r?cup?re une page arrach?e: P2 cam?ra morte / badge chantier / Hami ?"
           }
         ],
         "choices": [
@@ -1251,7 +1241,7 @@
       "body_precheck": {
         "id": "body_precheck",
         "speaker": "Corps dans le coffre",
-        "text": "Un vieux. Ou l'idée d'un vieux, tant ton crâne refuse la mise au point. Pas de sang évident. Pas de carnet dans la main. Pas de téléphone qui brille. Juste une présence froide et ton estomac qui monte les marches quatre par quatre.",
+        "text": "Un vieux. Plus vraiment une silhouette: un visage creus?, des v?tements d'habitant, pas de sang ?vident. Il a ?t? d?plac?, rang?, trait? comme un probl?me logistique. Les papiers sur lui te regardent plus fort que ses yeux ferm?s.",
         "effects": [
           {
             "type": "flag",
@@ -1264,23 +1254,21 @@
         ],
         "choices": [
           {
-            "label": "Demander si Karine pense à Ahmed.",
-            "next": "dead_name"
-          },
-          {
-            "label": "Fouiller maintenant, avant de perdre le peu de nerf qui reste.",
-            "check": {
-              "id": "trunk_search",
-              "voice": "faim",
-              "supportVoice": "main_gauche",
-              "difficulty": 8,
-              "successNode": "search_success",
-              "failureNode": "search_failure"
-            },
+            "label": "Chercher une blessure ?vidente sans toucher.",
+            "next": "body_no_wounds",
             "important": true
           },
           {
-            "label": "Revenir au hayon.",
+            "label": "Regarder les papiers sur sa poitrine.",
+            "next": "papers_reveal",
+            "important": true
+          },
+          {
+            "label": "Admettre ce que ton corps fait devant le mort.",
+            "next": "body_ventre"
+          },
+          {
+            "label": "Revenir au coffre ouvert.",
             "next": "trunk_open"
           }
         ]
@@ -1395,6 +1383,54 @@
                 "flag": "dose_heard"
               }
             ]
+          }
+        ]
+      },
+      "open_sickness": {
+        "id": "open_sickness",
+        "speaker": "Le Ventre",
+        "voice": "faim",
+        "text": "Ton estomac monte. Pas po?tique. Pas noble. Juste du liquide acide et la certitude que ton corps veut t?moigner avant toi. Tu l'avales mal. Karine voit tout. Elle ne sourit pas: elle classe.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "leduc_saw_withdrawal"
+          },
+          {
+            "type": "flag",
+            "flag": "withdrawal_seen"
+          },
+          {
+            "type": "clue",
+            "clue": "Karine a vu que l'odeur du corps et le manque mettent Zin?dine au bord de la naus?e."
+          }
+        ],
+        "choices": [
+          {
+            "label": "Revenir au coffre ouvert.",
+            "next": "trunk_open"
+          }
+        ]
+      },
+      "leduc_after_open": {
+        "id": "leduc_after_open",
+        "speaker": "Karine Leduc",
+        "text": "\"Je savais qu'il y avait quelque chose. Pas ?a.\" Elle ment peut-?tre. Ou elle r?duit. Chez elle, c'est presque la m?me comp?tence. \"Et je savais surtout que si la nationale arrive avant nous, ils prennent ton ?tat, mon utilitaire, ses papiers, et ils fabriquent une histoire simple.\"",
+        "effects": [
+          {
+            "type": "clue",
+            "clue": "Karine veut ?viter qu'une version simple accuse Zin?dine ? partir de son ?tat et de ses papiers."
+          }
+        ],
+        "choices": [
+          {
+            "label": "\"Alors on regarde la version compliqu?e.\"",
+            "next": "papers_reveal",
+            "important": true
+          },
+          {
+            "label": "\"Tu appelles ?a nous, maintenant ?\"",
+            "next": "leduc_interests"
           }
         ]
       }
