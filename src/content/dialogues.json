@@ -1,0 +1,491 @@
+{
+  "wake_up": {
+    "id": "wake_up",
+    "title": "Retour au quai",
+    "start": "start",
+    "nodes": {
+      "start": {
+        "id": "start",
+        "speaker": "Narration",
+        "voice": "memoire_saline",
+        "text": "Tu reviens à toi sur un quai mouillé. Quelqu'un a posé une veste de police sur tes épaules. Elle sent le gasoil, l'alcool fort et la menthe de calmant écrasé sous la langue. Au loin, une voix dit: Deux Verres. Peut-être à toi. Peut-être au cadavre qu'on n'a pas encore osé appeler par ton nom.",
+        "effects": [
+          { "type": "flag", "flag": "woke_up" }
+        ],
+        "choices": [
+          {
+            "label": "Dire au corps qu'il aura son calmant plus tard.",
+            "next": "dose"
+          }
+        ]
+      },
+      "dose": {
+        "id": "dose",
+        "speaker": "La Dose",
+        "parasite": "dose",
+        "text": "Plus tard, c'est une phrase de médecin. Une jolie phrase propre. Là, il faut stabiliser. Réguler. Juste assez pour que la main ne vende pas toute l'affaire avant la bouche.",
+        "effects": [
+          { "type": "flag", "flag": "dose_heard" }
+        ],
+        "choices": [
+          {
+            "label": "Se relever avant que le port ne remplisse un formulaire sur toi.",
+            "close": true
+          }
+        ]
+      }
+    }
+  },
+  "container": {
+    "id": "container",
+    "title": "Container bleu",
+    "start": "start",
+    "nodes": {
+      "start": {
+        "id": "start",
+        "speaker": "Container 17",
+        "text": "Le container bleu est ouvert sur une obscurité de poissonnerie morte. À l'intérieur, un corps. Sur son manteau: ton portefeuille. Dans le portefeuille: tes papiers. Le monde tousse poliment.",
+        "effects": [
+          { "type": "flag", "flag": "container_seen" },
+          { "type": "clue", "clue": "Un corps a été trouvé dans le container 17." }
+        ],
+        "choices": [
+          {
+            "label": "Lire les papiers sans trembler de façon visible.",
+            "next": "papers"
+          },
+          {
+            "label": "Écouter la rouille.",
+            "next": "salt_memory"
+          },
+          {
+            "label": "Tenter d'ouvrir le scellé en douce.",
+            "check": {
+              "id": "container_seal",
+              "voice": "main_gauche",
+              "difficulty": 7,
+              "successNode": "seal_success",
+              "failureNode": "seal_failure"
+            }
+          },
+          {
+            "label": "Reculer du container.",
+            "close": true
+          }
+        ]
+      },
+      "papers": {
+        "id": "papers",
+        "speaker": "Le Dossier",
+        "voice": "procedure",
+        "text": "Nom: Noé Caradec. Fonction: inspecteur judiciaire. Adresse: illisible. Signature: la tienne, ou celle d'un homme qui savait imiter ta fatigue. Le mort porte ton nom comme une ville porte un arrêté: sans émotion, mais avec autorité.",
+        "effects": [
+          { "type": "flag", "flag": "papers_seen" },
+          { "type": "clue", "clue": "La victime porte des papiers au nom de Noé Caradec." }
+        ],
+        "choices": [
+          {
+            "label": "C'est mon nom jusqu'à preuve du contraire.",
+            "next": "identity_accept",
+            "hiddenWhenFlag": "identity_locked",
+            "effects": [
+              { "type": "identity_posture", "posture": "accept" },
+              { "type": "flag", "flag": "identity_locked" },
+              { "type": "flag", "flag": "identity_accept" },
+              { "type": "voice_bump", "voice": "procedure", "amount": 1 }
+            ]
+          },
+          {
+            "label": "Ce nom est peut-être une cage.",
+            "next": "identity_refuse",
+            "hiddenWhenFlag": "identity_locked",
+            "effects": [
+              { "type": "identity_posture", "posture": "refuse" },
+              { "type": "flag", "flag": "identity_locked" },
+              { "type": "flag", "flag": "identity_refuse" },
+              { "type": "voice_bump", "voice": "symbole", "amount": 1 }
+            ]
+          },
+          {
+            "label": "Je peux faire semblant d'être lui.",
+            "next": "identity_perform",
+            "hiddenWhenFlag": "identity_locked",
+            "effects": [
+              { "type": "identity_posture", "posture": "perform" },
+              { "type": "flag", "flag": "identity_locked" },
+              { "type": "flag", "flag": "identity_perform" },
+              { "type": "voice_bump", "voice": "main_gauche", "amount": 1 }
+            ]
+          },
+          {
+            "label": "Qu'ils le disent encore. Je veux voir ce qu'il vaut quand il pue.",
+            "next": "identity_defile",
+            "hiddenWhenFlag": "identity_locked",
+            "effects": [
+              { "type": "identity_posture", "posture": "defile" },
+              { "type": "flag", "flag": "identity_locked" },
+              { "type": "flag", "flag": "identity_defile" },
+              { "type": "voice_bump", "voice": "honte_publique", "amount": 1 }
+            ]
+          },
+          {
+            "label": "Refermer le portefeuille avant qu'il ne parle mieux que toi.",
+            "next": "start",
+            "requiresFlag": "identity_locked"
+          }
+        ]
+      },
+      "identity_accept": {
+        "id": "identity_accept",
+        "speaker": "Le Dossier",
+        "voice": "procedure",
+        "text": "Très bien. Noé Caradec reste debout tant que personne n'a signé sa chute. Un nom, même sale, donne accès aux portes, aux tampons, aux mensonges officiels. Il donne aussi une belle prise à ceux qui savent tirer.",
+        "choices": [
+          {
+            "label": "Porter le nom comme une veste humide.",
+            "next": "start"
+          }
+        ]
+      },
+      "identity_refuse": {
+        "id": "identity_refuse",
+        "speaker": "Le Présage",
+        "voice": "symbole",
+        "text": "Le nom s'ouvre comme une bouche de piège. Noé Caradec est peut-être une étiquette collée sur le mauvais vivant. Refuse-la, et tu perds les papiers. Garde-la, et les papiers te gardent.",
+        "choices": [
+          {
+            "label": "Laisser le nom sur le bord de la langue.",
+            "next": "start"
+          }
+        ]
+      },
+      "identity_perform": {
+        "id": "identity_perform",
+        "speaker": "La Main Basse",
+        "voice": "main_gauche",
+        "text": "Un nom, c'est un outil. Ça s'empoigne, ça se plie, ça ouvre parfois les tiroirs. Tu peux jouer Noé Caradec assez longtemps pour fouiller la poche de ceux qui l'ont déjà enterré.",
+        "choices": [
+          {
+            "label": "Mettre le masque et vérifier où il serre.",
+            "next": "start"
+          }
+        ]
+      },
+      "identity_defile": {
+        "id": "identity_defile",
+        "speaker": "Le Regard",
+        "voice": "honte_publique",
+        "text": "Deux Verres. Voilà. Le port avait déjà un nom pour toi, plus court et mieux ajusté. S'il faut salir Noé Caradec pour savoir qui vient renifler, autant commencer avec les chaussures dans la flaque.",
+        "choices": [
+          {
+            "label": "Laisser la honte faire du bruit.",
+            "next": "start"
+          }
+        ]
+      },
+      "salt_memory": {
+        "id": "salt_memory",
+        "speaker": "Le Sel",
+        "voice": "memoire_saline",
+        "text": "La rouille du loquet dessine une ligne blanche, séchée par le sel. Tu connais cette marque. Tu ne sais pas d'où. C'est une idée, pas encore un souvenir, donc elle se permet d'être arrogante.",
+        "effects": [
+          { "type": "flag", "flag": "salt_memory" },
+          { "type": "clue", "clue": "Le loquet porte une marque de sel ancienne." }
+        ],
+        "choices": [
+          {
+            "label": "Garder l'idée. Elle finira bien par se rendre utile.",
+            "next": "start"
+          }
+        ]
+      },
+      "seal_success": {
+        "id": "seal_success",
+        "speaker": "La Main Basse",
+        "voice": "main_gauche",
+        "text": "Deux doigts, une pression, un soupir métallique. Le scellé cède assez pour révéler une étiquette collée sous le battant: RENVOI - CHAMBRE FROIDE MUNICIPALE.",
+        "effects": [
+          { "type": "flag", "flag": "seal_opened" },
+          { "type": "clue", "clue": "Une étiquette cachée mentionne la chambre froide municipale." }
+        ],
+        "choices": [
+          {
+            "label": "Refermer comme si tes mains avaient une morale.",
+            "next": "start"
+          }
+        ]
+      },
+      "seal_failure": {
+        "id": "seal_failure",
+        "speaker": "La Main Basse",
+        "voice": "main_gauche",
+        "text": "Tes doigts glissent. Le scellé ne s'ouvre pas. Ton coude, lui, choisit de frapper la tôle avec le son exact d'un homme qui n'a pas le droit d'être seul avec des preuves.",
+        "effects": [
+          { "type": "flag", "flag": "seal_failed" },
+          { "type": "clue", "clue": "Le scellé résiste, mais quelqu'un a déjà forcé le bord inférieur." },
+          { "type": "voice_bump", "voice": "honte_publique", "amount": 1 }
+        ],
+        "choices": [
+          {
+            "label": "Transformer ce bruit en méthode d'enquête.",
+            "next": "start"
+          }
+        ]
+      }
+    }
+  },
+  "varga": {
+    "id": "varga",
+    "title": "Lieutenante Varga",
+    "start": "start",
+    "nodes": {
+      "start": {
+        "id": "start",
+        "speaker": "Lieutenante Varga",
+        "text": "La lieutenante serre un carnet contre elle comme s'il contenait encore une version raisonnable de la matinée. Elle te regarde, puis le container, puis toi. Elle ne choisit aucun camp.",
+        "effects": [
+          { "type": "flag", "flag": "met_varga" }
+        ],
+        "choices": [
+          {
+            "label": "Qui est la victime ?",
+            "next": "victim"
+          },
+          {
+            "label": "La victime a mes papiers.",
+            "next": "your_papers",
+            "requiresFlag": "papers_seen"
+          },
+          {
+            "label": "Rester digne sous observation officielle.",
+            "check": {
+              "id": "varga_dignity",
+              "voice": "honte_publique",
+              "difficulty": 6,
+              "successNode": "dignity_success",
+              "failureNode": "dignity_failure"
+            }
+          },
+          {
+            "label": "La laisser noter ce qu'elle veut.",
+            "close": true
+          }
+        ]
+      },
+      "victim": {
+        "id": "victim",
+        "speaker": "Lieutenante Varga",
+        "text": "Officiellement ? Un homme sans nom, tant que les papiers ne sont pas authentifiés. Officieusement ? Les dockers disent qu'il était attendu. Par qui, personne ne veut le dire avant d'avoir été payé en café.",
+        "effects": [
+          { "type": "clue", "clue": "Les dockers disent que la victime était attendue." }
+        ],
+        "choices": [
+          {
+            "label": "Demander qui distribue le café et les mensonges.",
+            "next": "rumor_hint"
+          },
+          {
+            "label": "Revenir à ses questions.",
+            "next": "start"
+          }
+        ]
+      },
+      "rumor_hint": {
+        "id": "rumor_hint",
+        "speaker": "Les Bouches",
+        "voice": "oreille_de_quai",
+        "text": "Les gens d'ici mentent avec l'accent de ceux qui ont déjà perdu leur version de la vérité. La grutière près du hangar sait plus qu'elle ne vend.",
+        "effects": [
+          { "type": "flag", "flag": "mado_hint" }
+        ],
+        "choices": [
+          {
+            "label": "Noter que les rumeurs ont parfois des horaires de bureau.",
+            "next": "start"
+          }
+        ]
+      },
+      "your_papers": {
+        "id": "your_papers",
+        "speaker": "Lieutenante Varga",
+        "text": "Elle ferme les yeux une seconde. Pas assez longtemps pour prier. Juste assez pour éviter de te gifler administrativement. 'Alors soit vous êtes mort, soit quelqu'un voulait que vous le pensiez.'",
+        "effects": [
+          { "type": "flag", "flag": "varga_knows_papers" },
+          { "type": "clue", "clue": "Varga pense que quelqu'un voulait te faire croire à ta mort." }
+        ],
+        "choices": [
+          {
+            "label": "Demander quelle option demande le moins de paperasse.",
+            "next": "paperwork"
+          },
+          {
+            "label": "Revenir à ses questions.",
+            "next": "start"
+          }
+        ]
+      },
+      "paperwork": {
+        "id": "paperwork",
+        "speaker": "Le Dossier",
+        "voice": "procedure",
+        "text": "Mourir est un dossier. Survivre à sa propre mort est un dossier contradictoire. La contradiction gagne toujours: elle a plus de tampons.",
+        "choices": [
+          {
+            "label": "Accepter la supériorité des tampons.",
+            "next": "start"
+          }
+        ]
+      },
+      "dignity_success": {
+        "id": "dignity_success",
+        "speaker": "Le Regard",
+        "voice": "honte_publique",
+        "text": "Tu redresses la nuque. Ton visage fabrique une expression sobre. Varga note quelque chose. Peut-être: 'suspect capable de tenir debout'. C'est un début institutionnel.",
+        "effects": [
+          { "type": "flag", "flag": "kept_dignity" }
+        ],
+        "choices": [
+          {
+            "label": "Utiliser cette dignité avant expiration.",
+            "next": "start"
+          }
+        ]
+      },
+      "dignity_failure": {
+        "id": "dignity_failure",
+        "speaker": "Le Regard",
+        "voice": "honte_publique",
+        "text": "Tu souris. Trop. Beaucoup trop. Le genre de sourire qu'on voit sur les badges d'accès refusés. Varga écrit trois lignes sans lever les yeux.",
+        "effects": [
+          { "type": "flag", "flag": "dignity_failed" },
+          { "type": "voice_bump", "voice": "honte_publique", "amount": 1 }
+        ],
+        "choices": [
+          {
+            "label": "Prétendre que c'était une stratégie faciale.",
+            "next": "start"
+          }
+        ]
+      }
+    }
+  },
+  "mado": {
+    "id": "mado",
+    "title": "Mado La Grue",
+    "start": "start",
+    "nodes": {
+      "start": {
+        "id": "start",
+        "speaker": "Mado La Grue",
+        "text": "Mado fume à côté d'une grue immobile. Elle a l'air d'avoir été construite avant le port, puis tolérée par lui. 'Deux Verres, si c'est pour demander qui a vu quoi, personne a vu. Si c'est pour demander pourquoi, tout le monde sait.'",
+        "effects": [
+          { "type": "flag", "flag": "met_mado" }
+        ],
+        "choices": [
+          {
+            "label": "Pourquoi ?",
+            "next": "why"
+          },
+          {
+            "label": "Le loquet portait une marque de sel ancienne.",
+            "next": "salt",
+            "requiresFlag": "salt_memory"
+          },
+          {
+            "label": "Faire semblant de connaitre le port.",
+            "check": {
+              "id": "mado_quay_talk",
+              "voice": "oreille_de_quai",
+              "difficulty": 6,
+              "successNode": "quay_success",
+              "failureNode": "quay_failure"
+            }
+          },
+          {
+            "label": "La laisser à sa cigarette.",
+            "close": true
+          }
+        ]
+      },
+      "why": {
+        "id": "why",
+        "speaker": "Mado La Grue",
+        "text": "'Parce qu'ici, un homme n'est jamais retrouvé mort dans une boîte. Il est livré. La différence, c'est que la livraison implique un client.'",
+        "effects": [
+          { "type": "clue", "clue": "Mado pense que le corps a été livré à quelqu'un." }
+        ],
+        "choices": [
+          {
+            "label": "Demander le nom du client.",
+            "next": "client"
+          },
+          {
+            "label": "Retourner à la conversation.",
+            "next": "start"
+          }
+        ]
+      },
+      "client": {
+        "id": "client",
+        "speaker": "Le Nerf",
+        "voice": "nerfs",
+        "text": "Elle ne regarde pas le container. Elle regarde tes chaussures. C'est rarement bon quand les chaussures deviennent une réponse.",
+        "effects": [
+          { "type": "flag", "flag": "mado_suspects_player" }
+        ],
+        "choices": [
+          {
+            "label": "Changer de sujet avant que tes lacets témoignent.",
+            "next": "start"
+          }
+        ]
+      },
+      "salt": {
+        "id": "salt",
+        "speaker": "Mado La Grue",
+        "text": "'Ancienne ? Non. Fausse ancienne. On rince au sel pour faire croire que ça vient de loin. Le container sort du hangar municipal, pas d'un cargo.'",
+        "effects": [
+          { "type": "flag", "flag": "salt_fake" },
+          { "type": "clue", "clue": "La marque de sel pourrait avoir été fabriquée au hangar municipal." }
+        ],
+        "choices": [
+          {
+            "label": "Remercier Mado comme quelqu'un qui vient de gagner une dette.",
+            "next": "start"
+          }
+        ]
+      },
+      "quay_success": {
+        "id": "quay_success",
+        "speaker": "Les Bouches",
+        "voice": "oreille_de_quai",
+        "text": "Tu attrapes le rythme: phrases courtes, regard vers l'eau, mépris économique des mots. Mado sourit presque. 'On vous a pas tout vidé, inspecteur.'",
+        "effects": [
+          { "type": "clue", "clue": "Mado pense que ta mémoire a été volontairement altérée." }
+        ],
+        "choices": [
+          {
+            "label": "Garder le sourire presque gagné.",
+            "next": "start"
+          }
+        ]
+      },
+      "quay_failure": {
+        "id": "quay_failure",
+        "speaker": "Les Bouches",
+        "voice": "oreille_de_quai",
+        "text": "Tu utilises un mot de capitaine de plaisance. Mado te fixe avec la compassion froide réservée aux touristes et aux chefs de service. 'Vous êtes pas d'ici. Ou alors vous êtes revenu pire.'",
+        "effects": [
+          { "type": "flag", "flag": "failed_quay_talk" },
+          { "type": "clue", "clue": "Mado laisse entendre que tu es peut-être déjà venu ici." }
+        ],
+        "choices": [
+          {
+            "label": "Ranger le vocabulaire nautique avec les autres erreurs.",
+            "next": "start"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,134 @@
+[
+  {
+    "id": "harbor_orb_container",
+    "contextId": "harbor/container",
+    "location": "harbor",
+    "subject": "container",
+    "mode": "visible",
+    "label": "Observer le container",
+    "title": "Container 17",
+    "x": 612,
+    "y": 286,
+    "radius": 48,
+    "text": "Le container bleu a été lavé trop vite. Il reste des filets sombres dans les rainures, comme si la tôle avait appris à garder un secret de service municipal.",
+    "voice": "symbole",
+    "minScore": 2,
+    "voiceText": "Bleu administratif, bleu funéraire, bleu de formulaire noyé. Quelqu'un a choisi une couleur qui sait signer à la place des morts.",
+    "effects": [
+      { "type": "flag", "flag": "orb_container_seen" }
+    ],
+    "variants": [
+      {
+        "requiresFlag": "papers_seen",
+        "text": "Maintenant que tu as vu les papiers, le container paraît moins être une boîte qu'une adresse. On t'a livré quelque chose qui portait le nom de Noé Caradec.",
+        "voice": "procedure",
+        "minScore": 2,
+        "voiceText": "Une livraison, un mort, une identité. Ce n'est pas une scène de crime, c'est une erreur de classement avec jambes et cachet municipal."
+      }
+    ]
+  },
+  {
+    "id": "harbor_orb_body",
+    "contextId": "harbor/body",
+    "location": "harbor",
+    "subject": "body",
+    "mode": "visible",
+    "label": "Regarder le corps",
+    "title": "Le corps",
+    "x": 675,
+    "y": 286,
+    "radius": 52,
+    "text": "Le corps est trop loin pour livrer son visage, assez près pour imposer sa présence. Un homme peut devenir une preuve avant d'avoir fini d'être une personne.",
+    "voice": "faim",
+    "minScore": 1,
+    "voiceText": "Ton ventre fait l'inventaire des heures manquées, des verres et des cachets. C'est obscène. C'est aussi exact.",
+    "effects": [
+      { "type": "clue", "clue": "Le corps est placé au fond du container, pas tombé près de l'ouverture." }
+    ]
+  },
+  {
+    "id": "harbor_orb_crane",
+    "contextId": "harbor/crane",
+    "location": "harbor",
+    "subject": "crane",
+    "mode": "visible",
+    "label": "Inspecter la grue",
+    "title": "La grue jaune",
+    "x": 486,
+    "y": 186,
+    "radius": 62,
+    "text": "La grue ne bouge pas. Elle pointe au-dessus du quai comme un bras qui aurait oublié qui accuser.",
+    "voice": "nerfs",
+    "minScore": 1,
+    "voiceText": "Objet haut. Crochet lourd. Angle parfait pour laisser tomber quelque chose, ou quelqu'un, avec une élégance industrielle.",
+    "effects": [
+      { "type": "flag", "flag": "orb_crane_seen" }
+    ]
+  },
+  {
+    "id": "harbor_orb_warehouse",
+    "contextId": "harbor/warehouse",
+    "location": "harbor",
+    "subject": "municipal-warehouse",
+    "mode": "visible",
+    "label": "Lire l'entrepôt",
+    "title": "Entrepôt municipal",
+    "x": 174,
+    "y": 278,
+    "radius": 78,
+    "text": "Le bâtiment porte la modestie arrogante des choses municipales: personne ne l'aime, tout le monde en dépend, et les clés sont toujours chez quelqu'un d'absent.",
+    "voice": "procedure",
+    "minScore": 2,
+    "voiceText": "Un entrepôt public est une promesse de registre. Si le container ou le corps est passé par ici, il a laissé une trace qui prétendra être en pause déjeuner.",
+    "effects": [
+      { "type": "clue", "clue": "L'entrepôt municipal pourrait contenir un registre des mouvements du container." }
+    ],
+    "variants": [
+      {
+        "requiresFlag": "salt_fake",
+        "text": "Après ce que Mado a dit sur le sel fabriqué, l'entrepôt paraît moins passif. Un bâtiment peut mentir très lentement.",
+        "voice": "oreille_de_quai",
+        "minScore": 1,
+        "voiceText": "Les portes fermées ont un accent aussi. Celle-ci dit: revenez avec un nom, ou avec un pied-de-biche."
+      }
+    ]
+  },
+  {
+    "id": "harbor_orb_sea",
+    "contextId": "harbor/sea",
+    "location": "harbor",
+    "subject": "sea",
+    "mode": "proximity",
+    "once": true,
+    "label": "Écouter la mer",
+    "title": "La mer",
+    "x": 470,
+    "y": 468,
+    "radius": 96,
+    "text": "La mer tape doucement sous le quai, avec la patience d'un créancier. Elle sait reprendre les noms, les cachets, les hommes sobres de naissance. Elle ne rend que les algues.",
+    "voice": "memoire_saline",
+    "minScore": 2,
+    "voiceText": "Tu as déjà entendu cette eau. Ou elle t'a déjà entendu. Les souvenirs humides gonflent avant de pourrir."
+  },
+  {
+    "id": "harbor_orb_dockers",
+    "contextId": "harbor/dockers",
+    "location": "harbor",
+    "subject": "dockers-offscreen",
+    "mode": "proximity",
+    "once": true,
+    "label": "Écouter les dockers",
+    "title": "Dockers hors champ",
+    "x": 314,
+    "y": 388,
+    "radius": 82,
+    "text": "Des voix roulent derrière l'entrepôt. Elles deviennent plus basses quand ton nom pourrait apparaître dans la phrase. Puis l'une d'elles souffle: Deux Verres.",
+    "voice": "oreille_de_quai",
+    "minScore": 1,
+    "voiceText": "Personne ne se tait aussi vite sans avoir répété le silence avant. Et personne n'invente un surnom aussi vite: il était déjà en circulation.",
+    "effects": [
+      { "type": "clue", "clue": "Des dockers baissent la voix quand tu approches de l'entrepôt." },
+      { "type": "clue", "clue": "Les dockers connaissent ton surnom: Deux Verres." }
+    ]
+  }
+]

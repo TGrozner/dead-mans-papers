@@ -1,0 +1,58 @@
+[
+  {
+    "id": "memoire_saline",
+    "name": "Le Sel",
+    "tagline": "Mémoire, noyade, trauma, déjà-vu et choses qui reviennent avec la marée.",
+    "color": "#65b7c6",
+    "startingValue": 2
+  },
+  {
+    "id": "procedure",
+    "name": "Le Dossier",
+    "tagline": "Preuves, papiers, procédure, mensonges officiels et tampons qui enterrent les vivants.",
+    "color": "#d7a84b",
+    "startingValue": 2
+  },
+  {
+    "id": "nerfs",
+    "name": "Le Nerf",
+    "tagline": "Danger, colère, menace, fuite et violence qui arrive avant la pensée.",
+    "color": "#d45d59",
+    "startingValue": 1
+  },
+  {
+    "id": "honte_publique",
+    "name": "Le Regard",
+    "tagline": "Honte, réputation, gêne, posture sociale et petites morts en public.",
+    "color": "#c77bb8",
+    "startingValue": 2
+  },
+  {
+    "id": "oreille_de_quai",
+    "name": "Les Bouches",
+    "tagline": "Rumeurs, surnoms, accents, mensonges du port et vérités mâchées trop longtemps.",
+    "color": "#7bcf8e",
+    "startingValue": 1
+  },
+  {
+    "id": "faim",
+    "name": "Le Ventre",
+    "tagline": "Faim, fatigue, manque matériel, corps humiliant et besoins sans élégance.",
+    "color": "#d98c4a",
+    "startingValue": 1
+  },
+  {
+    "id": "symbole",
+    "name": "Le Présage",
+    "tagline": "Signes, religion, paranoïa, poésie sale et certitudes qui sentent la vase.",
+    "color": "#8ea0ff",
+    "startingValue": 2
+  },
+  {
+    "id": "main_gauche",
+    "name": "La Main Basse",
+    "tagline": "Gestes sales, fouille, crochetage, coups, vols et solutions sous la table.",
+    "color": "#b7be75",
+    "startingValue": 2
+  }
+]

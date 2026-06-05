@@ -1,0 +1,54 @@
+[
+  {
+    "id": "harbor_container__papers_double_identity",
+    "contextId": "harbor/container",
+    "location": "harbor",
+    "subject": "container",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "minScore": 2,
+    "once": true,
+    "priority": 80,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "container",
+      "nodeId": "papers"
+    },
+    "text": "Deux pièces d'identité, un seul Noé Caradec respirant. Le règlement déteste les miracles: ils ne rentrent jamais dans les cases, sauf quand quelqu'un les y pousse."
+  },
+  {
+    "id": "harbor_container-blue__bad_sign",
+    "contextId": "harbor/container",
+    "location": "harbor",
+    "subject": "container-blue",
+    "channel": "exploration",
+    "voice": "symbole",
+    "minScore": 2,
+    "once": true,
+    "priority": 70,
+    "display": "toast",
+    "trigger": {
+      "type": "exploration",
+      "contextId": "container"
+    },
+    "text": "Le bleu du container n'est pas une couleur. C'est une convocation municipale. Les choses bleues savent attendre avec un tampon dans la bouche."
+  },
+  {
+    "id": "harbor_container__salt_memory_bites",
+    "contextId": "harbor/container",
+    "location": "harbor",
+    "subject": "container-lock",
+    "channel": "clue",
+    "voice": "memoire_saline",
+    "minScore": 2,
+    "once": true,
+    "priority": 60,
+    "display": "toast",
+    "trigger": {
+      "type": "clue",
+      "clue": "Le loquet porte une marque de sel ancienne."
+    },
+    "text": "Le sel mord les choses mortes et les vieux souvenirs avec la même petite bouche blanche."
+  }
+]
