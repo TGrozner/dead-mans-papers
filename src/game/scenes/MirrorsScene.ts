@@ -11,7 +11,7 @@ interface Hotspot {
   x: number
   y: number
   radius: number
-  marker?: Phaser.GameObjects.Text
+  marker?: Phaser.GameObjects.Graphics
 }
 
 interface OrbSpot {
@@ -21,11 +21,11 @@ interface OrbSpot {
   x: number
   y: number
   radius: number
-  marker?: Phaser.GameObjects.Text
+  marker?: Phaser.GameObjects.Graphics
 }
 
 type PointerTarget =
-  | { kind: 'orb'; id: string; label: string; x: number; y: number; distance: number }
+  | { kind: 'orb'; id: string; label: string; x: number; y: number; radius: number; distance: number }
   | {
       kind: 'hotspot'
       id: string
@@ -33,6 +33,7 @@ type PointerTarget =
       scriptId: string
       x: number
       y: number
+      radius: number
       distance: number
     }
 
@@ -48,6 +49,8 @@ export class MirrorsScene extends Phaser.Scene {
   private activeOrbId?: string
   private tapDestination?: Phaser.Math.Vector2
   private tapMarker?: Phaser.GameObjects.Graphics
+  private selectedPointerTarget?: Pick<PointerTarget, 'kind' | 'id' | 'x' | 'y' | 'radius'>
+  private selectionHalo?: Phaser.GameObjects.Graphics
 
   constructor(bridge: MirrorsGameBridge) {
     super('miroirs')
@@ -201,7 +204,7 @@ export class MirrorsScene extends Phaser.Scene {
     graphics.fillRect(0, 0, 960, 42)
     graphics.fillStyle(0xcfd6d2)
     graphics.fillRect(0, 42, 960, 2)
-    this.drawUtilityVan(590, 166)
+    this.drawUtilityVan(574, 154)
     this.drawParkedVehicles()
     this.drawPrefab(692, 70)
     this.drawPalisade(118, 88)
@@ -212,26 +215,22 @@ export class MirrorsScene extends Phaser.Scene {
 
   private drawTowerBackdrop(): void {
     const graphics = this.add.graphics()
-    this.drawCloudTower(graphics, 2, 48, 88, 414, 'Tour C')
-    this.drawCloudTower(graphics, 862, 42, 94, 430, 'Tour D')
-    this.drawCloudTower(graphics, 334, 46, 116, 126, 'Bât. C')
-    this.drawCloudTower(graphics, 36, 390, 122, 120, 'Dalle haute')
+    this.drawCloudTower(graphics, 2, 48, 88, 414)
+    this.drawCloudTower(graphics, 862, 42, 94, 430)
+    this.drawCloudTower(graphics, 332, 36, 124, 140)
+    this.drawCloudTower(graphics, 36, 390, 122, 120)
 
     graphics.fillStyle(0x111820, 0.82)
     graphics.fillRect(268, 128, 320, 26)
     graphics.fillStyle(0x334550)
     graphics.fillRect(268, 154, 320, 5)
-    graphics.fillStyle(0xd7a84b, 0.8)
+    graphics.fillStyle(0x65b7c6, 0.45)
     graphics.fillRect(284, 137, 72, 4)
     graphics.fillRect(402, 137, 90, 4)
-
-    this.add.text(424, 50, 'Parking P2', {
-      fontFamily: 'monospace',
-      fontSize: '11px',
-      color: '#171c24',
-      backgroundColor: '#f4ecd8',
-      padding: { x: 5, y: 2 },
-    }).setDepth(2)
+    graphics.fillStyle(0x0d1117, 0.52)
+    graphics.fillRect(210, 158, 594, 18)
+    graphics.fillStyle(0xcfd6d2, 0.2)
+    graphics.fillRect(226, 164, 558, 4)
   }
 
   private drawCloudTower(
@@ -240,7 +239,6 @@ export class MirrorsScene extends Phaser.Scene {
     y: number,
     width: number,
     height: number,
-    label: string,
   ): void {
     const centerX = x + width / 2
     const colors = [0x2d4751, 0x6e7a6d, 0xcfd6d2, 0x9aa66f, 0x5b7782]
@@ -271,13 +269,8 @@ export class MirrorsScene extends Phaser.Scene {
       }
     }
 
-    this.add.text(x + 7, y + 7, label, {
-      fontFamily: 'monospace',
-      fontSize: '10px',
-      color: '#f4ecd8',
-      backgroundColor: '#171c24',
-      padding: { x: 3, y: 1 },
-    }).setDepth(1)
+    graphics.fillStyle(0x0d1117, 0.36)
+    graphics.fillRect(x + width * 0.25, y + height - 14, width * 0.5, 10)
   }
 
   private drawParkingSurface(graphics: Phaser.GameObjects.Graphics): void {
@@ -316,29 +309,14 @@ export class MirrorsScene extends Phaser.Scene {
     this.drawPillar(graphics, 306, 382)
     this.drawPillar(graphics, 790, 382)
 
-    this.add.text(338, 220, 'P2', {
-      fontFamily: 'monospace',
-      fontSize: '34px',
-      color: '#f4ecd8',
-      backgroundColor: 'rgba(13,17,23,0.45)',
-      padding: { x: 5, y: 1 },
-    }).setDepth(1)
-
-    this.add.text(630, 392, 'SORTIE', {
-      fontFamily: 'monospace',
-      fontSize: '13px',
-      color: '#171c24',
-      backgroundColor: '#d7a84b',
-      padding: { x: 5, y: 2 },
-    }).setDepth(1)
-
-    this.add.text(288, 176, 'PARKING P2 - SOUS DALLE', {
-      fontFamily: 'monospace',
-      fontSize: '11px',
-      color: '#f4ecd8',
-      backgroundColor: '#171c24',
-      padding: { x: 5, y: 2 },
-    }).setDepth(2)
+    graphics.lineStyle(5, 0xcfd6d2, 0.24)
+    graphics.strokeCircle(366, 236, 28)
+    graphics.lineBetween(366, 264, 366, 300)
+    graphics.lineStyle(3, 0x65b7c6, 0.28)
+    graphics.strokeRect(334, 214, 72, 96)
+    graphics.lineStyle(3, 0xd7a84b, 0.72)
+    graphics.lineBetween(626, 398, 736, 398)
+    graphics.fillTriangle(746, 398, 720, 384, 720, 412)
   }
 
   private drawParkingArrow(
@@ -371,63 +349,61 @@ export class MirrorsScene extends Phaser.Scene {
 
   private drawUtilityVan(x: number, y: number): void {
     const graphics = this.add.graphics()
-    graphics.fillStyle(0x0d1117, 0.48)
-    graphics.fillRect(x + 10, y + 18, 182, 98)
-    graphics.fillStyle(0xe8e2d2)
-    graphics.fillRect(x, y + 22, 178, 76)
-    graphics.fillStyle(0xd2cabb)
-    graphics.fillRect(x + 118, y + 12, 60, 46)
-    graphics.lineStyle(3, 0x0d1117)
-    graphics.strokeRect(x, y + 22, 178, 76)
-    graphics.strokeRect(x + 118, y + 12, 60, 46)
+    graphics.fillStyle(0x0d1117, 0.5)
+    graphics.fillRect(x + 12, y + 24, 226, 116)
 
-    graphics.fillStyle(0x1c252b)
-    graphics.fillRect(x + 126, y + 18, 42, 20)
-    graphics.fillStyle(0x65b7c6, 0.65)
-    graphics.fillRect(x + 130, y + 21, 34, 8)
+    graphics.fillStyle(0xe7e3d8)
+    graphics.fillRect(x, y + 32, 206, 82)
+    graphics.fillStyle(0xd5d0c3)
+    graphics.fillRect(x + 140, y + 18, 66, 52)
+    graphics.lineStyle(3, 0x0d1117, 0.96)
+    graphics.strokeRect(x, y + 32, 206, 82)
+    graphics.strokeRect(x + 140, y + 18, 66, 52)
+
+    graphics.fillStyle(0x172229)
+    graphics.fillRect(x + 148, y + 25, 46, 24)
+    graphics.fillStyle(0x65b7c6, 0.62)
+    graphics.fillRect(x + 153, y + 28, 36, 9)
+
     graphics.fillStyle(0x0d1117)
-    graphics.fillRect(x + 18, y + 96, 26, 12)
-    graphics.fillRect(x + 132, y + 96, 26, 12)
-    graphics.fillRect(x + 18, y + 14, 26, 9)
-    graphics.fillRect(x + 132, y + 14, 26, 9)
+    graphics.fillRect(x + 20, y + 112, 30, 15)
+    graphics.fillRect(x + 150, y + 112, 30, 15)
+    graphics.fillStyle(0x24282d)
+    graphics.fillRect(x + 25, y + 116, 20, 8)
+    graphics.fillRect(x + 155, y + 116, 20, 8)
 
-    graphics.fillStyle(0xb75738)
-    graphics.fillRect(x + 12, y + 38, 94, 9)
-    graphics.fillStyle(0xd7a84b)
-    graphics.fillRect(x + 12, y + 52, 122, 8)
-    graphics.fillStyle(0xf4ecd8)
-    graphics.fillRect(x + 28, y + 68, 58, 12)
-    graphics.fillStyle(0x171c24)
-    graphics.fillRect(x + 34, y + 72, 44, 3)
+    graphics.fillStyle(0x3f8fa0, 0.92)
+    graphics.fillRect(x + 18, y + 50, 114, 10)
+    graphics.fillStyle(0xcfd6d2, 0.72)
+    graphics.fillRect(x + 18, y + 66, 116, 7)
+    graphics.fillStyle(0x3f8fa0, 0.5)
+    graphics.fillRect(x + 34, y + 78, 24, 22)
+    graphics.fillRect(x + 68, y + 78, 24, 22)
+    graphics.fillRect(x + 102, y + 78, 24, 22)
+    graphics.fillStyle(0xe7e3d8)
+    graphics.fillRect(x + 40, y + 84, 12, 16)
+    graphics.fillRect(x + 74, y + 84, 12, 16)
+    graphics.fillRect(x + 108, y + 84, 12, 16)
 
-    graphics.fillStyle(0x0b0e12)
-    graphics.fillRect(x - 16, y + 45, 28, 54)
-    graphics.lineStyle(2, 0xd7a84b)
-    graphics.lineBetween(x - 13, y + 50, x + 8, y + 68)
-    graphics.lineBetween(x - 13, y + 90, x + 8, y + 72)
+    graphics.fillStyle(0x06080b)
+    graphics.fillRect(x - 34, y + 54, 46, 68)
+    graphics.fillStyle(0x111820)
+    graphics.fillRect(x - 21, y + 64, 28, 43)
+    graphics.lineStyle(3, 0x65b7c6, 0.78)
+    graphics.lineBetween(x - 31, y + 56, x + 9, y + 77)
+    graphics.lineBetween(x - 31, y + 120, x + 9, y + 98)
+    graphics.lineStyle(2, 0xd45d59, 0.82)
+    graphics.lineBetween(x - 27, y + 122, x + 206, y + 132)
 
-    this.add.text(x + 15, y + 35, 'MAIRIE', {
-      fontFamily: 'monospace',
-      fontSize: '9px',
-      color: '#f4ecd8',
-      backgroundColor: '#b75738',
-      padding: { x: 3, y: 1 },
-    }).setDepth(3)
-
-    this.add.text(x + 18, y + 53, 'RENOUV. URBAIN', {
-      fontFamily: 'monospace',
-      fontSize: '8px',
-      color: '#171c24',
-      backgroundColor: '#d7a84b',
-      padding: { x: 3, y: 1 },
-    }).setDepth(3)
+    graphics.fillStyle(0x1a2026)
+    graphics.fillRect(x - 13, y + 84, 32, 16)
+    graphics.fillStyle(0xcfd6d2, 0.48)
+    graphics.fillRect(x - 9, y + 87, 24, 4)
   }
 
   private drawParkedVehicles(): void {
     this.drawParkedCar(350, 372, 0x4c6570)
-    this.drawParkedCar(426, 372, 0x7f825f)
-    this.drawParkedCar(816, 344, 0x8f3f36)
-    this.drawParkedCar(848, 344, 0x2f3f4d)
+    this.drawParkedCar(820, 356, 0x2f3f4d)
   }
 
   private drawParkedCar(x: number, y: number, color: number): void {
@@ -503,19 +479,25 @@ export class MirrorsScene extends Phaser.Scene {
 
   private drawProps(): void {
     const graphics = this.add.graphics()
-    graphics.fillStyle(0xb75738)
 
     for (const [x, y] of [
-      [356, 386],
-      [392, 386],
-      [838, 358],
-      [870, 358],
+      [540, 262],
+      [558, 326],
+      [786, 268],
+      [784, 334],
     ]) {
-      graphics.fillRect(x, y, 20, 28)
-      graphics.fillStyle(0xf4ecd8, 0.8)
-      graphics.fillRect(x, y + 8, 20, 3)
       graphics.fillStyle(0xb75738)
+      graphics.fillTriangle(x, y + 28, x + 10, y, x + 20, y + 28)
+      graphics.fillStyle(0xf4ecd8, 0.82)
+      graphics.fillRect(x + 3, y + 10, 14, 4)
     }
+
+    graphics.lineStyle(2, 0xd45d59, 0.72)
+    graphics.lineBetween(550, 278, 786, 268)
+    graphics.lineBetween(558, 326, 784, 334)
+    graphics.lineStyle(2, 0xf4ecd8, 0.62)
+    graphics.lineBetween(550, 284, 786, 274)
+    graphics.lineBetween(558, 332, 784, 340)
 
     graphics.fillStyle(0xcfd6d2)
     graphics.fillRect(506, 60, 12, 170)
@@ -527,10 +509,15 @@ export class MirrorsScene extends Phaser.Scene {
     graphics.fillRect(438, 454, 124, 8)
     graphics.fillStyle(0x65b7c6, 0.4)
     graphics.fillRect(446, 462, 108, 12)
-    graphics.fillStyle(0xf4ecd8)
+    graphics.fillStyle(0xf4ecd8, 0.72)
     graphics.fillRect(712, 104, 128, 12)
-    graphics.fillStyle(0x171c24)
+    graphics.fillStyle(0x65b7c6, 0.28)
     graphics.fillRect(716, 108, 80, 3)
+
+    graphics.fillStyle(0x65b7c6, 0.18)
+    graphics.fillEllipse(640, 328, 142, 24)
+    graphics.fillStyle(0xf4ecd8, 0.18)
+    graphics.fillEllipse(664, 338, 96, 12)
 
     graphics.fillStyle(0xd7a84b)
     graphics.fillRect(430, 316, 16, 34)
@@ -549,7 +536,7 @@ export class MirrorsScene extends Phaser.Scene {
   private createColliders(): void {
     const obstacles = [
       [54, 230, 230, 132],
-      [590, 166, 174, 94],
+      [542, 154, 246, 126],
       [692, 70, 176, 78],
       [118, 88, 214, 64],
       [0, 0, 960, 45],
@@ -575,16 +562,8 @@ export class MirrorsScene extends Phaser.Scene {
       }
     })
 
-    this.add.sprite(514, 286, 'leduc').setDepth(2)
+    this.add.sprite(548, 292, 'leduc').setDepth(4)
     this.add.sprite(326, 330, 'amar').setDepth(2)
-
-    this.add.text(502, 252, '!', {
-      fontFamily: 'monospace',
-      fontSize: '18px',
-      color: '#f4ecd8',
-      backgroundColor: '#b75738',
-      padding: { x: 5, y: 1 },
-    }).setDepth(4)
   }
 
   private createHotspots(): void {
@@ -593,17 +572,17 @@ export class MirrorsScene extends Phaser.Scene {
         id: 'utility_van',
         label: "Examiner l'utilitaire municipal",
         scriptId: 'utility_van',
-        x: 560,
-        y: 282,
-        radius: 86,
+        x: 604,
+        y: 292,
+        radius: 96,
       },
       {
         id: 'leduc',
         label: 'Parler à Karine Leduc',
         scriptId: 'leduc',
-        x: 514,
-        y: 286,
-        radius: 58,
+        x: 548,
+        y: 292,
+        radius: 62,
       },
       {
         id: 'amar',
@@ -616,14 +595,7 @@ export class MirrorsScene extends Phaser.Scene {
     ]
 
     this.hotspots.forEach((hotspot) => {
-      hotspot.marker = this.add.text(hotspot.x - 7, hotspot.y - 42, '...', {
-        fontFamily: 'monospace',
-        fontSize: '13px',
-        color: '#171c24',
-        backgroundColor: '#f4ecd8',
-        padding: { x: 4, y: 1 },
-      })
-      hotspot.marker.setDepth(5)
+      hotspot.marker = this.createInteractionHalo(hotspot.x, hotspot.y, hotspot.radius, 'primary')
     })
   }
 
@@ -641,16 +613,16 @@ export class MirrorsScene extends Phaser.Scene {
         id: 'miroirs_orb_van',
         label: "Observer l'utilitaire",
         mode: 'visible',
-        x: 610,
-        y: 282,
+        x: 680,
+        y: 252,
         radius: 58,
       },
       {
         id: 'miroirs_orb_body',
         label: 'Regarder le corps',
         mode: 'visible',
-        x: 672,
-        y: 282,
+        x: 564,
+        y: 286,
         radius: 52,
       },
       {
@@ -690,15 +662,44 @@ export class MirrorsScene extends Phaser.Scene {
     this.orbSpots
       .filter((orb) => orb.mode === 'visible')
       .forEach((orb) => {
-        orb.marker = this.add.text(orb.x - 8, orb.y - 26, '?', {
-          fontFamily: 'monospace',
-          fontSize: '15px',
-          color: '#171c24',
-          backgroundColor: '#f4ecd8',
-          padding: { x: 5, y: 1 },
-        })
-        orb.marker.setDepth(5)
+        orb.marker = this.createInteractionHalo(orb.x, orb.y, orb.radius, 'secondary')
       })
+  }
+
+  private createInteractionHalo(
+    x: number,
+    y: number,
+    radius: number,
+    tone: 'primary' | 'secondary',
+  ): Phaser.GameObjects.Graphics {
+    const marker = this.add.graphics({ x, y })
+    const ringRadius = Phaser.Math.Clamp(radius * (tone === 'primary' ? 0.52 : 0.42), 20, 48)
+    const alpha = tone === 'primary' ? 0.58 : 0.34
+
+    marker.setDepth(tone === 'primary' ? 5 : 4)
+    marker.lineStyle(tone === 'primary' ? 2 : 1, 0x65d8e6, alpha)
+    marker.strokeCircle(0, 0, ringRadius)
+    marker.lineStyle(2, 0xe9fbff, alpha * 0.45)
+    marker.lineBetween(-ringRadius - 7, -ringRadius, -ringRadius + 6, -ringRadius)
+    marker.lineBetween(-ringRadius, -ringRadius - 7, -ringRadius, -ringRadius + 6)
+    marker.lineBetween(ringRadius - 6, -ringRadius, ringRadius + 7, -ringRadius)
+    marker.lineBetween(ringRadius, -ringRadius - 7, ringRadius, -ringRadius + 6)
+    marker.lineBetween(-ringRadius - 7, ringRadius, -ringRadius + 6, ringRadius)
+    marker.lineBetween(-ringRadius, ringRadius - 6, -ringRadius, ringRadius + 7)
+    marker.lineBetween(ringRadius - 6, ringRadius, ringRadius + 7, ringRadius)
+    marker.lineBetween(ringRadius, ringRadius - 6, ringRadius, ringRadius + 7)
+    marker.setAlpha(tone === 'primary' ? 0.72 : 0.48)
+
+    this.tweens.add({
+      targets: marker,
+      alpha: tone === 'primary' ? 0.38 : 0.24,
+      duration: tone === 'primary' ? 1450 : 1750,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut',
+    })
+
+    return marker
   }
 
   private updatePlayerMovement(): void {
@@ -709,6 +710,7 @@ export class MirrorsScene extends Phaser.Scene {
     if (this.bridge.isDialogueOpen()) {
       this.player.setVelocity(0, 0)
       this.clearTapDestination()
+      this.clearSelectedPointerTarget()
       return
     }
 
@@ -768,6 +770,7 @@ export class MirrorsScene extends Phaser.Scene {
     }
 
     this.clearTapDestination()
+    this.clearSelectedPointerTarget()
 
     if (this.activeOrbId) {
       this.bridge.openOrb(this.activeOrbId)
@@ -788,6 +791,12 @@ export class MirrorsScene extends Phaser.Scene {
     const target = this.findPointerTarget(x, y)
 
     if (target && this.isMobileViewport()) {
+      if (this.isSelectedPointerTarget(target) && this.isPlayerNearTarget(target)) {
+        this.openPointerTarget(target)
+        return
+      }
+
+      this.selectPointerTarget(target)
       this.setTapDestinationNear(target.x, target.y)
       return
     }
@@ -795,25 +804,83 @@ export class MirrorsScene extends Phaser.Scene {
     if (target?.kind === 'orb') {
       this.clearTapDestination()
       this.player.setVelocity(0, 0)
-      this.bridge.openOrb(target.id)
+      this.openPointerTarget(target)
       return
     }
 
     if (target?.kind === 'hotspot') {
       this.clearTapDestination()
       this.player.setVelocity(0, 0)
-      this.bridge.triggerExplorationPassive(target.id)
-      this.bridge.startDialogue(target.scriptId)
+      this.openPointerTarget(target)
       return
     }
 
     if (this.isPointBlocked(x, y)) {
       this.clearTapDestination()
+      this.clearSelectedPointerTarget()
       this.player.setVelocity(0, 0)
       return
     }
 
+    this.clearSelectedPointerTarget()
     this.setTapDestination(x, y)
+  }
+
+  private openPointerTarget(target: PointerTarget): void {
+    this.clearTapDestination()
+    this.clearSelectedPointerTarget()
+    this.player?.setVelocity(0, 0)
+
+    if (target.kind === 'orb') {
+      this.bridge.openOrb(target.id)
+      return
+    }
+
+    this.bridge.triggerExplorationPassive(target.id)
+    this.bridge.startDialogue(target.scriptId)
+  }
+
+  private isSelectedPointerTarget(target: PointerTarget): boolean {
+    return this.selectedPointerTarget?.kind === target.kind && this.selectedPointerTarget.id === target.id
+  }
+
+  private isPlayerNearTarget(target: PointerTarget): boolean {
+    return Boolean(
+      this.player && Phaser.Math.Distance.Between(this.player.x, this.player.y, target.x, target.y) <= target.radius,
+    )
+  }
+
+  private selectPointerTarget(target: PointerTarget): void {
+    this.selectedPointerTarget = {
+      kind: target.kind,
+      id: target.id,
+      x: target.x,
+      y: target.y,
+      radius: target.radius,
+    }
+
+    if (this.selectionHalo) {
+      this.tweens.killTweensOf(this.selectionHalo)
+      this.selectionHalo.destroy()
+    }
+
+    this.selectionHalo = this.add.graphics({ x: target.x, y: target.y })
+    const ringRadius = Phaser.Math.Clamp(target.radius * 0.62, 30, 60)
+    this.selectionHalo.setDepth(8)
+    this.selectionHalo.lineStyle(3, 0x65d8e6, 0.95)
+    this.selectionHalo.strokeCircle(0, 0, ringRadius)
+    this.selectionHalo.lineStyle(1, 0xe9fbff, 0.82)
+    this.selectionHalo.strokeCircle(0, 0, ringRadius + 7)
+
+    this.tweens.add({
+      targets: this.selectionHalo,
+      alpha: 0.42,
+      scale: 1.08,
+      duration: 700,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut',
+    })
   }
 
   private findPointerTarget(
@@ -828,6 +895,7 @@ export class MirrorsScene extends Phaser.Scene {
         label: orb.label,
         x: orb.x,
         y: orb.y,
+        radius: orb.radius,
         distance: Phaser.Math.Distance.Between(x, y, orb.x, orb.y),
         tapRadius: Math.max(orb.radius, this.isMobileViewport() ? 42 : 54),
       }))
@@ -839,6 +907,7 @@ export class MirrorsScene extends Phaser.Scene {
       scriptId: hotspot.scriptId,
       x: hotspot.x,
       y: hotspot.y,
+      radius: hotspot.radius,
       distance: Phaser.Math.Distance.Between(x, y, hotspot.x, hotspot.y),
       tapRadius: Math.max(hotspot.radius, this.isMobileViewport() ? 46 : 58),
     }))
@@ -903,6 +972,18 @@ export class MirrorsScene extends Phaser.Scene {
     this.tapMarker = undefined
   }
 
+  private clearSelectedPointerTarget(): void {
+    this.selectedPointerTarget = undefined
+
+    if (!this.selectionHalo) {
+      return
+    }
+
+    this.tweens.killTweensOf(this.selectionHalo)
+    this.selectionHalo.destroy()
+    this.selectionHalo = undefined
+  }
+
   private showTapMarker(x: number, y: number): void {
     if (!this.tapMarker) {
       this.tapMarker = this.add.graphics().setDepth(6)
@@ -964,9 +1045,15 @@ export class MirrorsScene extends Phaser.Scene {
         return Boolean(hotspot && target.distance <= hotspot.radius)
       })
 
-    const nearestTarget = [...orbTargets, ...hotspotTargets].sort(
-      (left, right) => left.distance - right.distance,
-    )[0]
+    const availableTargets = [...orbTargets, ...hotspotTargets]
+    const selectedTarget = this.selectedPointerTarget
+      ? availableTargets.find(
+          (target) =>
+            target.kind === this.selectedPointerTarget?.kind && target.id === this.selectedPointerTarget.id,
+        )
+      : undefined
+    const nearestTarget =
+      selectedTarget ?? availableTargets.sort((left, right) => left.distance - right.distance)[0]
 
     if (!nearestTarget) {
       this.bridge.setInteraction(undefined)
@@ -981,7 +1068,10 @@ export class MirrorsScene extends Phaser.Scene {
         this.activeOrbId = nearestTarget.id
         this.bridge.setInteraction({
           label: nearestTarget.label,
-          run: () => this.bridge.openOrb(nearestTarget.id),
+          run: () => {
+            this.clearSelectedPointerTarget()
+            this.bridge.openOrb(nearestTarget.id)
+          },
         })
       }
       return
@@ -995,7 +1085,13 @@ export class MirrorsScene extends Phaser.Scene {
       }
       this.bridge.setInteraction({
         label: nearestTarget.label,
-        run: () => this.bridge.startDialogue(nearestTarget.scriptId),
+        run: () => {
+          this.clearSelectedPointerTarget()
+          if (this.isMobileViewport()) {
+            this.bridge.triggerExplorationPassive(nearestTarget.id)
+          }
+          this.bridge.startDialogue(nearestTarget.scriptId)
+        },
       })
     }
   }

@@ -11,9 +11,9 @@ Le problème immédiat n'est pas seulement de savoir qui est mort. C'est de prou
 - Quartier fictif: Les Miroirs.
 - Lieu v0: Parking P2.
 - Ambiance: parking semi-enterré, néons froids, béton humide, flaques, palissades de chantier, rubalise, caméras HS, local technique, affiches de relogement, poussière de plâtre.
-- Échelle visuelle: le P2 doit être écrasé par les tours des Miroirs: silhouettes HLM, fenêtres allumées, cages d'escalier, passerelle, panneaux `Bât. C`, `Dalle haute`, `Parking P2`.
-- Grammaire visuelle: tours organiques et polychromes, fenêtres irrégulières, dalle massive, parking P2 très signalé au sol, utilitaire municipal et voitures garées immédiatement lisibles.
-- Slogan municipal: `Demain commence ici.`
+- Échelle visuelle: le P2 doit être écrasé par les tours des Miroirs: silhouettes HLM, fenêtres allumées, cages d'escalier, passerelle et dalle massive autour du parking.
+- Grammaire visuelle: aucun mot écrit directement dans le décor. Le parking, la cité, le chantier et la scène de crime doivent se lire par les formes, les couleurs, les silhouettes, les lignes au sol, les cônes, la rubalise et la composition.
+- Direction v0: scène de crime prioritaire avec utilitaire municipal blanc sale, coffre ouvert noir, Karine comme obstacle physique, périmètre bloqué, 1-2 voitures secondaires claires, néons froids et béton humide.
 - Type de ville: cité de ville nouvelle en rénovation interminable, sans lieu réel nommé.
 
 ## Personnage
@@ -57,9 +57,10 @@ Explorer, parler, inspecter, écouter les voix internes, subir La Dose, tenter d
 
 ## Jouabilité mobile
 
-- Toucher un marqueur `?`, `...` ou un élément important de la scène rapproche Morad et sélectionne l'action, mais n'ouvre pas directement la surface narrative.
-- L'ouverture mobile passe par le bouton contextuel `!`, afin de distinguer clairement déplacement et inspection.
+- Toucher un élément important de la scène rapproche Morad et sélectionne l'action, mais n'ouvre pas directement la surface narrative.
+- L'ouverture mobile passe par le bouton contextuel `!` ou un second tap volontaire sur la même cible une fois Morad à portée, afin de distinguer clairement déplacement et inspection.
 - Toucher le sol fait marcher Morad vers ce point, avec un marqueur discret de destination.
+- Les interactifs utilisent un liseré cyan et un pulse lent plutôt que des mots ou des marqueurs texte dans le décor.
 - En portrait mobile, la caméra zoome légèrement et suit Morad pour éviter que toute la carte devienne minuscule.
 - Le prototype évite le joystick virtuel: la lecture des objets et la sélection des choix sont plus importantes que la précision du déplacement.
 - La page principale ne doit pas scroller globalement; seuls le dossier, les listes internes et le dialogue peuvent scroller si leur contenu dépasse.
