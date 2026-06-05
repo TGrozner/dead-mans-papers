@@ -1270,8 +1270,85 @@
         ],
         "choices": [
           {
+            "label": "Recroiser badge chantier, badge municipal et lecteur P2.",
+            "check": {
+              "id": "badge_access_chain",
+              "voice": "main_gauche",
+              "supportVoice": "procedure",
+              "difficulty": 8,
+              "successNode": "page_badge_success",
+              "failureNode": "page_badge_failure"
+            },
+            "hiddenWhenFlag": "badge_chain_checked",
+            "important": true
+          },
+          {
             "label": "Revenir à la page.",
             "next": "page_surface"
+          }
+        ]
+      },
+      "page_badge_success": {
+        "id": "page_badge_success",
+        "speaker": "La Main Basse",
+        "voice": "main_gauche",
+        "text": "Tu poses les pièces dans le bon ordre: badge chantier pour entrer proprement, badge municipal de Zinédine pour signer la scène, lecteur P2 assez lâche pour avaler les deux. Ce n'est pas un accès volé au hasard. C'est une chaîne d'autorisations sales.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "badge_chain_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "badge_access_chain_understood"
+          },
+          {
+            "type": "clue",
+            "clue": "Le badge chantier et le badge municipal de Zinédine peuvent former une chaîne d'accès autour du lecteur P2."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "main_gauche",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder la chaîne d'accès et revenir à la page.",
+            "next": "page_surface",
+            "important": true
+          }
+        ]
+      },
+      "page_badge_failure": {
+        "id": "page_badge_failure",
+        "speaker": "Le Dossier",
+        "voice": "procedure",
+        "text": "Tu veux une chaîne nette, mais le quartier ne donne que des bouts: badge chantier, lecteur permissif, rayures fraîches sur ton badge. Tu ne tiens pas encore le trajet complet. Tu tiens mieux: l'endroit précis où demander les traces.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "badge_chain_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "badge_reader_suspect"
+          },
+          {
+            "type": "clue",
+            "clue": "Le lecteur P2 devient le point à vérifier entre badge chantier et badge municipal rayé."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "procedure",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Noter le lecteur P2 et revenir à la page.",
+            "next": "page_surface",
+            "important": true
           }
         ]
       },
