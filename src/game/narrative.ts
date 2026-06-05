@@ -272,13 +272,16 @@ export class NarrativeEngine {
     }
 
     const stat = this.state.voiceStats[check.voice]
+    const supportStat = check.supportVoice ? this.state.voiceStats[check.supportVoice] : undefined
     const roll = Math.floor(Math.random() * 6) + 1
-    const total = roll + stat
+    const total = roll + stat + (supportStat ?? 0)
     const result: CheckResult = {
       checkId: check.id,
       voice: check.voice,
+      supportVoice: check.supportVoice,
       roll,
       stat,
+      supportStat,
       total,
       difficulty: check.difficulty,
       passed: total >= check.difficulty,

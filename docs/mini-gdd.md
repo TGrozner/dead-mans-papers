@@ -2,7 +2,7 @@
 
 ## Pitch
 
-Morad Saïdi, médiateur sécurité municipale fonctionnel par fragments, se réveille dans le parking P2 des Miroirs. Un corps est retrouvé dans le coffre d'un utilitaire de chantier floqué `Renouvellement Urbain`. Dans les poches du mort: ses papiers.
+Morad Saïdi, médiateur sécurité municipale fonctionnel par fragments, se réveille contre une borne du parking P2 des Miroirs. Un gobelet plastique vide traîne près de lui, son téléphone fissuré affiche 12 appels manqués de Karine Leduc, et un corps attend dans le coffre d'un utilitaire de chantier floqué `Renouvellement Urbain`. Dans les poches du mort: ses papiers.
 
 Le problème immédiat n'est pas seulement de savoir qui est mort. C'est de prouver que Morad ne l'est pas, tout en cachant assez longtemps l'alcool, les calmants, les dettes et les tremblements pour qu'on le laisse regarder discrètement avant que ça parte en procédure.
 
@@ -11,6 +11,7 @@ Le problème immédiat n'est pas seulement de savoir qui est mort. C'est de prou
 - Quartier fictif: Les Miroirs.
 - Lieu v0: Parking P2.
 - Ambiance: parking semi-enterré, néons froids, béton humide, flaques, palissades de chantier, rubalise, caméras HS, local technique, affiches de relogement, poussière de plâtre.
+- Échelle visuelle: le P2 doit être écrasé par les tours des Miroirs: silhouettes HLM, fenêtres allumées, cages d'escalier, passerelle, panneaux `Bât. C`, `Dalle haute`, `Parking P2`.
 - Slogan municipal: `Demain commence ici.`
 - Type de ville: cité de ville nouvelle en rénovation interminable, sans lieu réel nommé.
 
@@ -26,9 +27,20 @@ Le problème immédiat n'est pas seulement de savoir qui est mort. C'est de prou
 
 ## Personnages v0
 
+- Ahmed Berrichi: vieux locataire historique des Miroirs, officiellement disparu du dispositif de relogement. Il savait des morceaux sur les badges, les caméras, les dossiers santé, les accès chantier et les relogements fantômes.
 - Karine Leduc: responsable rénovation urbaine. Elle cherche un périmètre, une communication, une formulation qui transforme un cadavre en incident maîtrisé.
 - Amar Boudiaf: gardien d'immeuble. Mémoire vivante de la dalle; il connaît les caves, badges, familles, embrouilles, accès, locaux techniques, caméras mortes, relogements et rancunes.
 - Dr Nadia Hami: médecin du centre municipal de santé, future présence centrale. Douce, précise, clinique, intouchable; elle connaît les dosages, renouvellements, certificats et tremblements.
+
+## Ouverture v0
+
+1. Morad reprend conscience près du gobelet et du téléphone fissuré.
+2. La Dose pousse: `Tu réponds à Karine. Tu tiens debout. Après, on discute de ce que tu dois au corps.`
+3. Karine encadre la scène: `On va appeler ça un incident de chantier.`
+4. La Dose sent le vieux froid dans une voiture chaude avant que Morad comprenne.
+5. Le coffre s'ouvre sur Ahmed Berrichi et les papiers de Morad.
+6. Le joueur choisit comment porter ou salir ce nom.
+7. Morad fouille le coffre: succès ou échec, la page arrachée arrive quand même.
 
 ## Ton
 
@@ -62,7 +74,7 @@ Système actuel: `identityPosture` sauvegardé, flags de posture, bump léger d'
 
 ## Orbs v0
 
-- Orbs visibles: utilitaire municipal, corps, caméra HS, local technique.
+- Orbs visibles: téléphone fissuré, utilitaire municipal, corps, caméra HS, local technique.
 - Orbs de proximité: néon/flaque, voix derrière la palissade.
 - Les orbs visibles s'ouvrent dans une boîte courte.
 - Les orbs de proximité apparaissent en toast durable.
@@ -71,10 +83,12 @@ Système actuel: `identityPosture` sauvegardé, flags de posture, bump léger d'
 ## Checks v0
 
 - Les checks ne sont pas relançables.
-- Avant tentative, le choix affiche `voix: d6 + score vs difficulté`.
+- Avant tentative, le choix affiche `voix: d6 + score vs difficulté`, ou `voix + voix: d6 + score + score vs difficulté`.
 - Après tentative, le choix affiche le résultat mémorisé.
 - Le bandeau de résultat affiche le détail du jet.
 - Cliquer un check déjà tenté rejoue la scène du résultat mémorisé.
+- Check principal v0: fouiller le coffre et Ahmed sans vomir ni trembler devant Karine, avec `Le Ventre + La Main Basse`.
+- Échec premium: Morad vomit et Karine voit sa faiblesse, mais sa main revient quand même avec la page arrachée.
 
 ## Voix internes v0
 
@@ -109,5 +123,7 @@ Chaque scène importante doit contenir:
 ## Mystère
 
 Le corps dans l'utilitaire n'a pas seulement été caché: il a été mal déplacé par un circuit municipal. Dépôt, local sanitaire, centre municipal de santé, morgue provisoire ou autre nom propre pour une chose sale.
+
+Objet central v0: une page arrachée du carnet d'Ahmed indique `P2 caméra morte / badge chantier / Hami ?`. Au verso: `Si Le Gobelet oublie, Amar sait.`
 
 Le joueur est-il la victime, l'usurpateur, le témoin, ou le mensonge encore debout ?

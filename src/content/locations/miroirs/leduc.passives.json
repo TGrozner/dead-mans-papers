@@ -16,5 +16,23 @@
       "nodeId": "start"
     },
     "text": "Elle te regarde comme un incident encore tiède. Tiens-toi droit. Un médiateur mou, un médiateur qui sent l'alcool froid, ça devient vite une note de service."
+  },
+  {
+    "id": "miroirs_leduc__incident_word",
+    "contextId": "miroirs/leduc",
+    "location": "miroirs",
+    "subject": "leduc",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "minScore": 2,
+    "once": true,
+    "priority": 65,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "start"
+    },
+    "text": "Incident de chantier: quatre syllabes pour éloigner le mot mort, deux services et probablement une caméra qui ne fonctionne plus."
   }
 ]

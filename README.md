@@ -14,18 +14,18 @@ npm run dev
 - Quartier fictif: Les Miroirs.
 - Lieu jouable: Parking P2, parking semi-enterré d'une cité en rénovation interminable.
 - Personnage joueur: Morad Saïdi, médiateur sécurité municipale fonctionnel par fragments, surnommé Le Gobelet.
-- Incident central: un corps dans le coffre d'un utilitaire municipal de chantier porte les papiers du joueur.
-- Mystère municipal: le corps semble lié à un dépôt, un local sanitaire ou un circuit de gestion interne que personne ne veut nommer.
-- Deux PNJ: Karine Leduc, responsable rénovation urbaine; Amar Boudiaf, gardien d'immeuble.
+- Incident central: Ahmed Berrichi, vieux locataire officiellement disparu du relogement, est retrouvé dans le coffre d'un utilitaire municipal avec les papiers du joueur plantés sur lui.
+- Mystère municipal: une page arrachée ouvre trois pistes sales: caméra P2 morte, badge chantier, Dr Nadia Hami.
+- Trois PNJ clés: Karine Leduc, responsable rénovation urbaine; Amar Boudiaf, gardien d'immeuble; Dr Nadia Hami, médecin municipal encore hors champ.
 - Huit voix internes définies comme personnages systémiques.
 - La Dose, parasite non-stat lié à l'alcool, aux calmants et à la dette médicale.
 - Choix de posture identitaire devant les papiers du mort.
 - Passifs de voix: dialogue, exploration et indice.
-- Six orbs d'observation: visibles ou déclenchés par proximité.
+- Sept orbs d'observation: visibles ou déclenchés par proximité, dont le téléphone fissuré et ses 12 appels manqués.
 - Dialogues stockés dans `src/content/dialogues.json`.
 - Passifs stockés par contexte dans `src/content/locations/miroirs/*.passives.json`.
 - Orbs stockés dans `src/content/locations/miroirs/orbs.json`.
-- Checks actifs en d6 + voix contre difficulté.
+- Checks actifs en d6 + une ou deux voix contre difficulté.
 - Échecs écrits comme des scènes, avec indices ou conséquences.
 - Sauvegarde locale via `localStorage`.
 
@@ -33,6 +33,11 @@ npm run dev
 
 - Déplacement: flèches, ZQSD ou WASD.
 - Interaction proche: bouton contextuel, Espace, Entrée ou E.
+
+## Notes Dev
+
+- Les fichiers source et narratifs restent en UTF-8: `.ts`, `.css`, `.html`, `.json`, `.md`.
+- Garder les accents dans les dialogues français; vérifier `Mémoire`, `Réussi`, `à`, `œ`, `É` dans le navigateur plutôt que dans l'affichage PowerShell.
 
 ## Direction v0
 

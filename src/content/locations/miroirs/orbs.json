@@ -1,5 +1,24 @@
 [
   {
+    "id": "miroirs_orb_phone",
+    "contextId": "miroirs/phone",
+    "location": "miroirs",
+    "subject": "cracked-phone",
+    "mode": "visible",
+    "label": "Regarder le téléphone",
+    "title": "Téléphone fissuré",
+    "x": 444,
+    "y": 336,
+    "radius": 44,
+    "text": "L'écran est fendu en étoile. Douze appels manqués de Karine Leduc, puis plus rien. Le téléphone a tenu sa mémoire mieux que toi.",
+    "voice": "procedure",
+    "minScore": 2,
+    "voiceText": "Douze appels avant le corps. L'urgence a donc commencé sans toi, ou avec une version de toi qui ne répondait déjà plus.",
+    "effects": [
+      { "type": "clue", "clue": "Ton téléphone fissuré affiche 12 appels manqués de Karine Leduc." }
+    ]
+  },
+  {
     "id": "miroirs_orb_van",
     "contextId": "miroirs/utility-van",
     "location": "miroirs",
@@ -10,17 +29,17 @@
     "x": 610,
     "y": 282,
     "radius": 58,
-    "text": "L'utilitaire a été lavé trop vite. Il reste des filets sombres dans le joint du coffre, et la poussière de plâtre colle au bas de caisse comme une mauvaise excuse.",
+    "text": "L'utilitaire a été lavé trop vite. Il reste des filets sombres dans le joint du coffre, et la poussière de plâtre colle au bas de caisse comme une mauvaise excuse. Sur la portière: Demain commence ici.",
     "voice": "symbole",
     "minScore": 2,
-    "voiceText": "Demain commence ici. Un futur imprimé sur une porte qui transporte les morts. La mairie appelle ça une perspective.",
+    "voiceText": "Un futur imprimé sur une porte qui transporte les morts. La mairie appelle ça une perspective.",
     "effects": [
       { "type": "flag", "flag": "orb_van_seen" }
     ],
     "variants": [
       {
         "requiresFlag": "papers_seen",
-        "text": "Maintenant que tu as vu les papiers, l'utilitaire paraît moins être un véhicule qu'une adresse mobile. On t'a livré quelque chose qui portait le nom de Morad Saïdi.",
+        "text": "Maintenant que tu as vu les papiers, l'utilitaire paraît moins être un véhicule qu'une adresse mobile. On t'a livré Ahmed avec le nom de Morad Saïdi planté dessus.",
         "voice": "procedure",
         "minScore": 2,
         "voiceText": "Un véhicule de service, un mort, une identité. Ce n'est pas une scène de crime, c'est une erreur de classement avec coffre et logo municipal."
@@ -33,17 +52,18 @@
     "location": "miroirs",
     "subject": "body",
     "mode": "visible",
-    "label": "Regarder le corps",
-    "title": "Le corps",
+    "label": "Regarder Ahmed",
+    "title": "Ahmed Berrichi",
     "x": 672,
     "y": 282,
     "radius": 52,
-    "text": "Le corps est trop loin pour livrer son visage, assez près pour imposer sa présence. Un homme peut devenir une preuve avant d'avoir fini d'être une personne.",
+    "text": "Ahmed est trop loin pour livrer tout son visage, assez près pour imposer sa présence. Vieux locataire, officiellement disparu du relogement. Un homme peut devenir une preuve avant d'avoir fini d'être une personne.",
     "voice": "faim",
     "minScore": 1,
     "voiceText": "Ton ventre fait l'inventaire des heures manquées, des verres, des cachets. C'est obscène. C'est aussi exact.",
     "effects": [
-      { "type": "clue", "clue": "Le corps est placé au fond du coffre, pas tombé près de l'ouverture." }
+      { "type": "clue", "clue": "Le corps est placé au fond du coffre, pas tombé près de l'ouverture." },
+      { "type": "clue", "clue": "Ahmed Berrichi était un vieux locataire historique des Miroirs." }
     ]
   },
   {

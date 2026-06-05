@@ -8,14 +8,32 @@
     "voice": "procedure",
     "minScore": 2,
     "once": true,
-    "priority": 80,
+    "priority": 90,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
-      "nodeId": "papers"
+      "nodeId": "trunk_open"
     },
-    "text": "Deux pièces d'identité, un seul Morad Saïdi respirant. Le règlement déteste les miracles: ils ne rentrent jamais dans les cases, sauf quand quelqu'un les y pousse."
+    "text": "Des papiers plantés sur un mort ne prouvent rien. Ils demandent quelque chose. La nuance tient rarement devant un comité de crise."
+  },
+  {
+    "id": "miroirs_van__ahmed_old_name",
+    "contextId": "miroirs/utility-van",
+    "location": "miroirs",
+    "subject": "ahmed-berrichi",
+    "channel": "dialogue",
+    "voice": "bouches",
+    "minScore": 1,
+    "once": true,
+    "priority": 75,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "trunk_open"
+    },
+    "text": "Ahmed ne disait pas Le Gobelet. Pas souvent. Il disait Morad avec la fatigue de quelqu'un qui refuse de laisser le quartier finir le surnom à sa place."
   },
   {
     "id": "miroirs_van__municipal_bad_sign",
@@ -50,5 +68,23 @@
       "clue": "La flaque sous l'utilitaire porte une auréole blanche de sel et de plâtre."
     },
     "text": "Le sel mord les vieux souvenirs, les trottoirs gelés et les sols qu'on lave trop vite avec la même petite bouche blanche."
+  },
+  {
+    "id": "miroirs_van__hami_protected_too_fast",
+    "contextId": "miroirs/utility-van",
+    "location": "miroirs",
+    "subject": "hami-page",
+    "channel": "dialogue",
+    "voice": "symbole",
+    "minScore": 2,
+    "once": true,
+    "priority": 85,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "hami_reaction"
+    },
+    "text": "La Dose défend Hami avant même que tu l'accuses. Les innocents n'ont pas toujours besoin d'avocat; les dettes, si."
   }
 ]

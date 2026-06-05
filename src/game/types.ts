@@ -30,6 +30,7 @@ export interface ParasiteDefinition {
 export interface CheckDefinition {
   id: string
   voice: VoiceId
+  supportVoice?: VoiceId
   difficulty: number
   successNode: string
   failureNode: string
@@ -158,8 +159,10 @@ export interface RenderedOrb {
 export interface CheckResult {
   checkId: string
   voice: VoiceId
+  supportVoice?: VoiceId
   roll: number
   stat: number
+  supportStat?: number
   total: number
   difficulty: number
   passed: boolean

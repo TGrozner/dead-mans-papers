@@ -144,6 +144,8 @@ export class MirrorsScene extends Phaser.Scene {
       }
     }
 
+    this.drawTowerBackdrop()
+
     graphics.fillStyle(0x22262c)
     graphics.fillRect(0, 0, 960, 42)
     graphics.fillStyle(0xcfd6d2)
@@ -161,6 +163,57 @@ export class MirrorsScene extends Phaser.Scene {
     this.drawTechnicalRoom()
     this.drawProps()
     this.createColliders()
+  }
+
+  private drawTowerBackdrop(): void {
+    const graphics = this.add.graphics()
+    const towers = [
+      [4, 48, 76, 408, 'C'],
+      [880, 42, 72, 420, 'D'],
+      [342, 46, 98, 118, 'Bât. C'],
+      [34, 392, 118, 116, 'Dalle haute'],
+    ] as Array<[number, number, number, number, string]>
+
+    towers.forEach(([x, y, width, height, label]) => {
+      graphics.fillStyle(0x171a1d, 0.72)
+      graphics.fillRect(x + 8, y + 10, width, height)
+      graphics.fillStyle(0x20262c)
+      graphics.fillRect(x, y, width, height)
+      graphics.lineStyle(2, 0x0d1117, 0.8)
+      graphics.strokeRect(x, y, width, height)
+
+      for (let windowY = y + 18; windowY < y + height - 14; windowY += 24) {
+        for (let windowX = x + 10; windowX < x + width - 12; windowX += 20) {
+          const lit = (windowX + windowY) % 3 === 0
+          graphics.fillStyle(lit ? 0xd7a84b : 0x334550, lit ? 0.72 : 0.42)
+          graphics.fillRect(windowX, windowY, 8, 6)
+        }
+      }
+
+      this.add.text(x + 8, y + 6, label, {
+        fontFamily: 'monospace',
+        fontSize: '10px',
+        color: '#f4ecd8',
+        backgroundColor: '#171c24',
+        padding: { x: 3, y: 1 },
+      }).setDepth(1)
+    })
+
+    graphics.fillStyle(0x111820, 0.82)
+    graphics.fillRect(268, 128, 320, 26)
+    graphics.fillStyle(0x334550)
+    graphics.fillRect(268, 154, 320, 5)
+    graphics.fillStyle(0xd7a84b, 0.8)
+    graphics.fillRect(284, 137, 72, 4)
+    graphics.fillRect(402, 137, 90, 4)
+
+    this.add.text(424, 50, 'Parking P2', {
+      fontFamily: 'monospace',
+      fontSize: '11px',
+      color: '#171c24',
+      backgroundColor: '#f4ecd8',
+      padding: { x: 5, y: 2 },
+    }).setDepth(2)
   }
 
   private drawUtilityVan(x: number, y: number): void {
@@ -268,6 +321,19 @@ export class MirrorsScene extends Phaser.Scene {
     graphics.fillRect(712, 104, 128, 12)
     graphics.fillStyle(0x171c24)
     graphics.fillRect(716, 108, 80, 3)
+
+    graphics.fillStyle(0xd7a84b)
+    graphics.fillRect(430, 316, 16, 34)
+    graphics.fillStyle(0x0d1117)
+    graphics.fillRect(432, 320, 12, 8)
+    graphics.fillStyle(0xf4ecd8)
+    graphics.fillRect(452, 340, 8, 10)
+    graphics.fillStyle(0x0d1117)
+    graphics.fillRect(454, 346, 5, 2)
+    graphics.fillStyle(0x22323a)
+    graphics.fillRect(462, 338, 14, 9)
+    graphics.fillStyle(0x65b7c6)
+    graphics.fillRect(464, 340, 9, 5)
   }
 
   private createColliders(): void {
@@ -353,6 +419,14 @@ export class MirrorsScene extends Phaser.Scene {
 
   private createOrbs(): void {
     this.orbSpots = [
+      {
+        id: 'miroirs_orb_phone',
+        label: 'Regarder le téléphone',
+        mode: 'visible',
+        x: 444,
+        y: 336,
+        radius: 44,
+      },
       {
         id: 'miroirs_orb_van',
         label: "Observer l'utilitaire",

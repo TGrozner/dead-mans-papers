@@ -14,6 +14,24 @@
       "type": "exploration",
       "contextId": "utility_van"
     },
-    "text": "Ton ventre remarque le corps avant ta morale. Froid, sel, vide, bouche sèche. Il appelle ça de l'efficacité. Il a tort. Probablement."
+    "text": "Ton ventre remarque le corps avant ta morale. Froid, vide, bouche sèche. Il appelle ça de l'efficacité. Il a tort. Probablement."
+  },
+  {
+    "id": "miroirs_body__failure_seen",
+    "contextId": "miroirs/body",
+    "location": "miroirs",
+    "subject": "body",
+    "channel": "dialogue",
+    "voice": "honte_publique",
+    "minScore": 2,
+    "once": true,
+    "priority": 80,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "search_failure"
+    },
+    "text": "Karine a vu le corps te reprendre possession. Dans sa tête, quelque chose vient de changer de colonne: médiateur utile, médiateur fragile, risque de communication."
   }
 ]

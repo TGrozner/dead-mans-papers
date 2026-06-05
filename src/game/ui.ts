@@ -313,22 +313,34 @@ function getChoiceLabel(choice: DialogueChoice, engine: NarrativeEngine): string
   }
 
   const voice = voiceById[choice.check.voice]
+  const supportVoice = choice.check.supportVoice ? voiceById[choice.check.supportVoice] : undefined
   const stat = engine.state.voiceStats[choice.check.voice]
-  return `${choice.label} [${voice.name}: d6 + ${stat} vs ${choice.check.difficulty}]`
+  const supportStat = choice.check.supportVoice ? engine.state.voiceStats[choice.check.supportVoice] : undefined
+  const statLabel = supportVoice && supportStat !== undefined
+    ? `${voice.name} + ${supportVoice.name}: d6 + ${stat} + ${supportStat}`
+    : `${voice.name}: d6 + ${stat}`
+
+  return `${choice.label} [${statLabel} vs ${choice.check.difficulty}]`
 }
 
 function formatStoredCheckResult(result: CheckResult): string {
   const voice = voiceById[result.voice]
+  const supportVoice = result.supportVoice ? voiceById[result.supportVoice] : undefined
+  const voiceLabel = supportVoice ? `${voice.name} + ${supportVoice.name}` : voice.name
   const outcome = result.passed ? 'déjà réussi' : 'déjà raté'
 
-  return `${voice.name}: ${outcome} ${result.total}/${result.difficulty}`
+  return `${voiceLabel}: ${outcome} ${result.total}/${result.difficulty}`
 }
 
 function formatDetailedCheckResult(result: CheckResult): string {
   const voice = voiceById[result.voice]
+  const supportVoice = result.supportVoice ? voiceById[result.supportVoice] : undefined
+  const supportPart = supportVoice && result.supportStat !== undefined
+    ? ` + ${supportVoice.name} ${result.supportStat}`
+    : ''
   const outcome = result.passed ? 'Réussi' : 'Raté'
 
-  return `${outcome}: d6 ${result.roll} + ${voice.name} ${result.stat} = ${result.total} vs ${result.difficulty}`
+  return `${outcome}: d6 ${result.roll} + ${voice.name} ${result.stat}${supportPart} = ${result.total} vs ${result.difficulty}`
 }
 
 function escapeHtml(value: string): string {

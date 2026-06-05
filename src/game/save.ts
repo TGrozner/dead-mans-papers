@@ -1,7 +1,7 @@
 import { voices } from './content'
 import type { GameState, VoiceId } from './types'
 
-const STORAGE_KEY = 'dead-mans-papers:v7'
+const STORAGE_KEY = 'dead-mans-papers:v8'
 
 export function createInitialState(): GameState {
   const voiceStats = voices.reduce(

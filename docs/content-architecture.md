@@ -58,6 +58,7 @@ Chaque passif contient:
 - flags de posture, par exemple `identity_accept`
 - `triggeredOrbs`
 - `triggeredPassives`
+- `completedChecks`, avec voix principale et voix de soutien optionnelle
 - scores des huit voix stat
 
 La Dose est séparée des scores. Elle peut apparaître via `parasite: "dose"` sur un nœud de dialogue et un flag comme `dose_heard`.
@@ -94,7 +95,7 @@ Créer une surface distincte des dialogues:
 - `revisit`: nouveau texte après flag ou indice
 - `contradiction`: une voix corrige ou contredit une lecture précédente
 
-Pour la v0 élargie: utilitaire, cadavre, caméra HS, local technique, néon/flaque, voix derrière palissade.
+Pour la v0 élargie: téléphone fissuré, utilitaire, Ahmed, caméra HS, local technique, néon/flaque, voix derrière palissade.
 
 ### Contextual Voice Packs
 
