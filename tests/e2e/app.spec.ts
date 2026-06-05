@@ -23,6 +23,7 @@ test('starts with a bounded tutorial and opens the first dialogue', async ({ pag
   await page.goto('/')
 
   await expect(page.getByRole('dialog', { name: 'Avance, observe, choisis' })).toBeVisible()
+  await expect(page.locator('#objective')).toContainText('Reprendre assez de corps')
   await expect(page.getByText('Le dossier garde les indices.')).toHaveCount(1)
 
   const tutorialPanel = page.locator('.tutorial-panel')
@@ -84,4 +85,47 @@ test('renders Phaser canvas and grouped case clues from a saved game', async ({ 
     'Hami / santé',
     'Témoins',
   ])
+})
+
+test('updates the case objective from saved progression', async ({ page }) => {
+  await page.addInitScript(
+    ({ key, tutorialKey, stats }) => {
+      localStorage.setItem(tutorialKey, 'true')
+      localStorage.setItem(
+        key,
+        JSON.stringify({
+          flags: {
+            woke_up: true,
+            trunk_opened: true,
+            papers_seen: true,
+            page_found: true,
+            page_read: true,
+          },
+          clues: [],
+          completedChecks: {
+            camera_dead_angle: {
+              checkId: 'camera_dead_angle',
+              voice: 'procedure',
+              supportVoice: 'memoire_saline',
+              roll: 4,
+              stat: 2,
+              supportStat: 2,
+              total: 8,
+              difficulty: 8,
+              passed: true,
+            },
+          },
+          triggeredOrbs: {},
+          triggeredPassives: {},
+          visitedChoices: {},
+          voiceStats: stats,
+        }),
+      )
+    },
+    { key: saveKey, tutorialKey: tutorialSeenKey, stats: voiceStats },
+  )
+
+  await page.goto('/')
+
+  await expect(page.locator('#objective')).toContainText('Traiter la piste badge')
 })

@@ -1917,6 +1917,10 @@
         "text": "\"T'as une sale gueule, Zinédine. Plus sale que d'habitude, et d'habitude c'est déjà pas un cadeau.\" Amar garde ses clés dans la main. Chez lui, les clés sont une arme polie.",
         "effects": [
           {
+            "type": "flag",
+            "flag": "amar_met"
+          },
+          {
             "type": "clue",
             "clue": "Amar appelle Zinédine par son prénom malgré le surnom du quartier."
           }

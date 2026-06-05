@@ -30,6 +30,7 @@ interface GameUiOptions {
   prompt: HTMLButtonElement
   promptLabel: HTMLSpanElement
   toastRoot: HTMLDivElement
+  objective: HTMLParagraphElement
   clueList: HTMLUListElement
   voiceList: HTMLDivElement
   onStateChanged: (state: GameState) => void
@@ -40,6 +41,7 @@ export function createGameUi(options: GameUiOptions) {
   let interactionTarget: InteractionTarget | undefined
 
   function syncState(): void {
+    renderObjective(options.engine.state, options.objective)
     renderClues(options.engine.state)
     renderVoices(options.engine.state)
     options.onStateChanged(options.engine.state)
@@ -380,6 +382,53 @@ function getPassiveChannel(passive: PassiveTrigger): { name: string; color: stri
     name: 'Pensée',
     color: '#d7a84b',
   }
+}
+
+function renderObjective(state: GameState, objective: HTMLParagraphElement): void {
+  objective.textContent = getObjective(state)
+}
+
+function getObjective(state: GameState): string {
+  const flags = state.flags
+  const completedChecks = state.completedChecks
+
+  if (!flags.woke_up) {
+    return 'Reprendre assez de corps pour comprendre pourquoi Karine appelle depuis le P2.'
+  }
+
+  if (!flags.trunk_opened) {
+    return "Faire ouvrir l'utilitaire municipal sans laisser Karine écrire seule la version officielle."
+  }
+
+  if (!flags.papers_seen) {
+    return "Regarder ce qui est posé sur le corps avant que quelqu'un transforme tes papiers en aveu."
+  }
+
+  if (!flags.page_found) {
+    return "Fouiller le coffre et le corps d'Ahmed pour trouver ce que la mise en scène n'a pas prévu."
+  }
+
+  if (!flags.page_read) {
+    return "Lire la page d'Ahmed: caméra morte, badge chantier, Hami, Amar, Sofiane."
+  }
+
+  if (!completedChecks.camera_dead_angle) {
+    return "Traiter la piste caméra: comprendre pourquoi une caméra morte a encore un support retouché."
+  }
+
+  if (!completedChecks.badge_access_chain) {
+    return "Traiter la piste badge: relier badge chantier, badge municipal et lecteur P2."
+  }
+
+  if (!completedChecks.hami_prescription_line) {
+    return "Traiter la piste Hami: relire l'ordonnance malgré ce que La Dose protège."
+  }
+
+  if (!flags.sofiane_met || !flags.amar_met) {
+    return "Confronter Amar et Sofiane avec caméra, badge et Hami avant que les pistes refroidissent."
+  }
+
+  return "Reconstruire qui a utilisé la ville, tes papiers et ton corps pour te déclarer mort à ta place."
 }
 
 function renderClues(state: GameState): void {

@@ -108,6 +108,7 @@ const ui = createGameUi({
   prompt: document.querySelector<HTMLButtonElement>('#interaction-prompt')!,
   promptLabel: document.querySelector<HTMLSpanElement>('#interaction-label')!,
   toastRoot: document.querySelector<HTMLDivElement>('#passive-toast-root')!,
+  objective: document.querySelector<HTMLParagraphElement>('#objective')!,
   clueList: document.querySelector<HTMLUListElement>('#clue-list')!,
   voiceList: document.querySelector<HTMLDivElement>('#voice-list')!,
   onStateChanged: (state) => saveGameState(state),
