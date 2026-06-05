@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import type { MirrorsGameBridge } from '../createMirrorsGame'
+import { debugLog } from '../debug'
 
 const MOBILE_VIEWPORT_QUERY = '(max-width: 560px)'
 const MOBILE_CAMERA_ZOOM = 1.38
@@ -11,6 +12,9 @@ interface Hotspot {
   x: number
   y: number
   radius: number
+  tapRadius?: number
+  approachX?: number
+  approachY?: number
   marker?: Phaser.GameObjects.Graphics
 }
 
@@ -21,11 +25,25 @@ interface OrbSpot {
   x: number
   y: number
   radius: number
+  tapRadius?: number
+  approachX?: number
+  approachY?: number
   marker?: Phaser.GameObjects.Graphics
 }
 
 type PointerTarget =
-  | { kind: 'orb'; id: string; label: string; x: number; y: number; radius: number; distance: number }
+  | {
+      kind: 'orb'
+      id: string
+      label: string
+      x: number
+      y: number
+      radius: number
+      tapRadius: number
+      approachX?: number
+      approachY?: number
+      distance: number
+    }
   | {
       kind: 'hotspot'
       id: string
@@ -34,6 +52,9 @@ type PointerTarget =
       x: number
       y: number
       radius: number
+      tapRadius: number
+      approachX?: number
+      approachY?: number
       distance: number
     }
 
@@ -51,6 +72,7 @@ export class MirrorsScene extends Phaser.Scene {
   private tapMarker?: Phaser.GameObjects.Graphics
   private selectedPointerTarget?: Pick<PointerTarget, 'kind' | 'id' | 'x' | 'y' | 'radius'>
   private selectionHalo?: Phaser.GameObjects.Graphics
+  private lastLoggedActiveTarget?: string
 
   constructor(bridge: MirrorsGameBridge) {
     super('miroirs')
@@ -121,6 +143,7 @@ export class MirrorsScene extends Phaser.Scene {
       camera.setZoom(MOBILE_CAMERA_ZOOM)
       camera.startFollow(this.player, true, 0.14, 0.14)
       this.updateInteractionMarkerVisibility()
+      debugLog('scene', 'camera-mobile', { zoom: MOBILE_CAMERA_ZOOM })
       return
     }
 
@@ -128,6 +151,7 @@ export class MirrorsScene extends Phaser.Scene {
     camera.setZoom(1)
     camera.centerOn(480, 288)
     this.updateInteractionMarkerVisibility()
+    debugLog('scene', 'camera-desktop', { zoom: 1 })
   }
 
   private isMobileViewport(): boolean {
@@ -588,14 +612,10 @@ export class MirrorsScene extends Phaser.Scene {
 
   private createColliders(): void {
     const obstacles = [
-      [0, 188, 230, 220],
-      [704, 196, 252, 196],
-      [636, 420, 320, 92],
-      [0, 410, 222, 100],
-      [244, 0, 102, 208],
-      [654, 0, 92, 208],
-      [0, 0, 960, 45],
-      [0, 520, 960, 76],
+      [0, 0, 960, 34],
+      [0, 538, 960, 38],
+      [0, 34, 18, 504],
+      [942, 34, 18, 504],
     ] as Array<[number, number, number, number]>
 
     obstacles.forEach(([x, y, width, height]) => {
@@ -643,7 +663,10 @@ export class MirrorsScene extends Phaser.Scene {
         scriptId: 'utility_van',
         x: 116,
         y: 326,
-        radius: 106,
+        radius: 92,
+        tapRadius: 46,
+        approachX: 246,
+        approachY: 336,
       },
       {
         id: 'leduc',
@@ -651,7 +674,10 @@ export class MirrorsScene extends Phaser.Scene {
         scriptId: 'leduc',
         x: 242,
         y: 348,
-        radius: 70,
+        radius: 82,
+        tapRadius: 44,
+        approachX: 284,
+        approachY: 354,
       },
       {
         id: 'amar',
@@ -659,7 +685,10 @@ export class MirrorsScene extends Phaser.Scene {
         scriptId: 'amar',
         x: 760,
         y: 186,
-        radius: 66,
+        radius: 82,
+        tapRadius: 44,
+        approachX: 728,
+        approachY: 232,
       },
       {
         id: 'sofiane',
@@ -667,7 +696,10 @@ export class MirrorsScene extends Phaser.Scene {
         scriptId: 'sofiane',
         x: 704,
         y: 454,
-        radius: 72,
+        radius: 86,
+        tapRadius: 44,
+        approachX: 666,
+        approachY: 420,
       },
     ]
 
@@ -684,7 +716,10 @@ export class MirrorsScene extends Phaser.Scene {
         mode: 'visible',
         x: 456,
         y: 350,
-        radius: 44,
+        radius: 58,
+        tapRadius: 34,
+        approachX: 454,
+        approachY: 384,
       },
       {
         id: 'miroirs_orb_van',
@@ -692,7 +727,10 @@ export class MirrorsScene extends Phaser.Scene {
         mode: 'visible',
         x: 120,
         y: 300,
-        radius: 66,
+        radius: 74,
+        tapRadius: 36,
+        approachX: 244,
+        approachY: 316,
       },
       {
         id: 'miroirs_orb_body',
@@ -700,7 +738,10 @@ export class MirrorsScene extends Phaser.Scene {
         mode: 'visible',
         x: 82,
         y: 334,
-        radius: 52,
+        radius: 72,
+        tapRadius: 36,
+        approachX: 232,
+        approachY: 346,
       },
       {
         id: 'miroirs_orb_camera',
@@ -708,7 +749,10 @@ export class MirrorsScene extends Phaser.Scene {
         mode: 'visible',
         x: 178,
         y: 90,
-        radius: 66,
+        radius: 68,
+        tapRadius: 34,
+        approachX: 204,
+        approachY: 132,
       },
       {
         id: 'miroirs_orb_technical_room',
@@ -716,7 +760,10 @@ export class MirrorsScene extends Phaser.Scene {
         mode: 'visible',
         x: 838,
         y: 128,
-        radius: 78,
+        radius: 76,
+        tapRadius: 36,
+        approachX: 790,
+        approachY: 172,
       },
       {
         id: 'miroirs_orb_neon',
@@ -732,7 +779,10 @@ export class MirrorsScene extends Phaser.Scene {
         mode: 'proximity',
         x: 704,
         y: 454,
-        radius: 84,
+        radius: 78,
+        tapRadius: 30,
+        approachX: 710,
+        approachY: 410,
       },
     ]
 
@@ -880,6 +930,14 @@ export class MirrorsScene extends Phaser.Scene {
     const y = Number.isFinite(pointer.worldY) ? pointer.worldY : pointer.y
     const target = this.findPointerTarget(x, y)
 
+    debugLog('input', 'pointer-down', {
+      x: Math.round(x),
+      y: Math.round(y),
+      mobile: this.isMobileViewport(),
+      target: target ? `${target.kind}:${target.id}` : undefined,
+      blocked: this.isPointBlocked(x, y),
+    })
+
     if (target && this.isMobileViewport()) {
       if (this.isSelectedPointerTarget(target) && this.isPlayerNearTarget(target)) {
         this.openPointerTarget(target)
@@ -887,7 +945,7 @@ export class MirrorsScene extends Phaser.Scene {
       }
 
       this.selectPointerTarget(target)
-      this.setTapDestinationNear(target.x, target.y)
+      this.setTapDestinationNearTarget(target)
       return
     }
 
@@ -906,9 +964,15 @@ export class MirrorsScene extends Phaser.Scene {
     }
 
     if (this.isPointBlocked(x, y)) {
-      this.clearTapDestination()
+      const destination = this.findNearestOpenPoint(x, y)
       this.clearSelectedPointerTarget()
-      this.player.setVelocity(0, 0)
+      this.setTapDestination(destination.x, destination.y)
+      debugLog('movement', 'blocked-tap-projected', {
+        fromX: Math.round(x),
+        fromY: Math.round(y),
+        toX: Math.round(destination.x),
+        toY: Math.round(destination.y),
+      })
       return
     }
 
@@ -922,10 +986,12 @@ export class MirrorsScene extends Phaser.Scene {
     this.player?.setVelocity(0, 0)
 
     if (target.kind === 'orb') {
+      debugLog('interaction', 'open-orb', { id: target.id })
       this.bridge.openOrb(target.id)
       return
     }
 
+    debugLog('interaction', 'open-dialogue', { id: target.id, scriptId: target.scriptId })
     this.bridge.triggerExplorationPassive(target.id)
     this.bridge.startDialogue(target.scriptId)
   }
@@ -936,7 +1002,13 @@ export class MirrorsScene extends Phaser.Scene {
 
   private isPlayerNearTarget(target: PointerTarget): boolean {
     return Boolean(
-      this.player && Phaser.Math.Distance.Between(this.player.x, this.player.y, target.x, target.y) <= target.radius,
+      this.player &&
+        Phaser.Math.Distance.Between(
+          this.player.x,
+          this.player.y,
+          this.getApproachX(target),
+          this.getApproachY(target),
+        ) <= target.radius,
     )
   }
 
@@ -971,6 +1043,13 @@ export class MirrorsScene extends Phaser.Scene {
       repeat: -1,
       ease: 'Sine.easeInOut',
     })
+
+    debugLog('interaction', 'select-target', {
+      id: target.id,
+      kind: target.kind,
+      approachX: Math.round(this.getApproachX(target)),
+      approachY: Math.round(this.getApproachY(target)),
+    })
   }
 
   private findPointerTarget(
@@ -986,8 +1065,10 @@ export class MirrorsScene extends Phaser.Scene {
         x: orb.x,
         y: orb.y,
         radius: orb.radius,
+        tapRadius: orb.tapRadius ?? (this.isMobileViewport() ? 34 : Math.max(orb.radius, 54)),
+        approachX: orb.approachX,
+        approachY: orb.approachY,
         distance: Phaser.Math.Distance.Between(x, y, orb.x, orb.y),
-        tapRadius: Math.max(orb.radius, this.isMobileViewport() ? 42 : 54),
       }))
 
     const hotspotTargets = this.hotspots.map((hotspot) => ({
@@ -998,13 +1079,19 @@ export class MirrorsScene extends Phaser.Scene {
       x: hotspot.x,
       y: hotspot.y,
       radius: hotspot.radius,
+      tapRadius: hotspot.tapRadius ?? (this.isMobileViewport() ? 44 : Math.max(hotspot.radius, 58)),
+      approachX: hotspot.approachX,
+      approachY: hotspot.approachY,
       distance: Phaser.Math.Distance.Between(x, y, hotspot.x, hotspot.y),
-      tapRadius: Math.max(hotspot.radius, this.isMobileViewport() ? 46 : 58),
     }))
 
-    return [...orbTargets, ...hotspotTargets]
+    return [...hotspotTargets, ...orbTargets]
       .filter((target) => target.distance <= target.tapRadius)
-      .sort((left, right) => left.distance - right.distance)[0]
+      .sort((left, right) => {
+        const leftPriority = left.kind === 'hotspot' ? 0 : 10
+        const rightPriority = right.kind === 'hotspot' ? 0 : 10
+        return left.distance + leftPriority - (right.distance + rightPriority)
+      })[0]
   }
 
   private isPointBlocked(x: number, y: number): boolean {
@@ -1017,10 +1104,14 @@ export class MirrorsScene extends Phaser.Scene {
       Phaser.Math.Clamp(y, 50, 510),
     )
     this.showTapMarker(this.tapDestination.x, this.tapDestination.y)
+    debugLog('movement', 'tap-destination', {
+      x: Math.round(this.tapDestination.x),
+      y: Math.round(this.tapDestination.y),
+    })
   }
 
-  private setTapDestinationNear(x: number, y: number): void {
-    const destination = this.findNearestOpenPoint(x, y)
+  private setTapDestinationNearTarget(target: PointerTarget): void {
+    const destination = this.findNearestOpenPoint(this.getApproachX(target), this.getApproachY(target))
     this.setTapDestination(destination.x, destination.y)
   }
 
@@ -1046,14 +1137,31 @@ export class MirrorsScene extends Phaser.Scene {
     }
 
     if (!candidates.length || !this.player) {
+      debugLog('movement', 'nearest-open-fallback', { x: Math.round(x), y: Math.round(y) })
       return new Phaser.Math.Vector2(Phaser.Math.Clamp(x, 18, 942), Phaser.Math.Clamp(y, 50, 510))
     }
 
-    return candidates.sort((left, right) => {
+    const destination = candidates.sort((left, right) => {
       const leftDistance = Phaser.Math.Distance.Between(this.player!.x, this.player!.y, left.x, left.y)
       const rightDistance = Phaser.Math.Distance.Between(this.player!.x, this.player!.y, right.x, right.y)
       return leftDistance - rightDistance
     })[0]
+
+    debugLog('movement', 'nearest-open-point', {
+      fromX: Math.round(x),
+      fromY: Math.round(y),
+      toX: Math.round(destination.x),
+      toY: Math.round(destination.y),
+    })
+    return destination
+  }
+
+  private getApproachX(target: Pick<PointerTarget, 'x' | 'approachX'>): number {
+    return target.approachX ?? target.x
+  }
+
+  private getApproachY(target: Pick<PointerTarget, 'y' | 'approachY'>): number {
+    return target.approachY ?? target.y
   }
 
   private clearTapDestination(): void {
@@ -1115,7 +1223,12 @@ export class MirrorsScene extends Phaser.Scene {
         kind: 'orb' as const,
         id: orb.id,
         label: orb.label,
-        distance: Phaser.Math.Distance.Between(this.player!.x, this.player!.y, orb.x, orb.y),
+        distance: Phaser.Math.Distance.Between(
+          this.player!.x,
+          this.player!.y,
+          orb.approachX ?? orb.x,
+          orb.approachY ?? orb.y,
+        ),
       }))
       .filter((target) => {
         const orb = this.orbSpots.find((candidate) => candidate.id === target.id)
@@ -1128,28 +1241,51 @@ export class MirrorsScene extends Phaser.Scene {
         id: hotspot.id,
         label: hotspot.label,
         scriptId: hotspot.scriptId,
-        distance: Phaser.Math.Distance.Between(this.player!.x, this.player!.y, hotspot.x, hotspot.y),
+        distance: Phaser.Math.Distance.Between(
+          this.player!.x,
+          this.player!.y,
+          hotspot.approachX ?? hotspot.x,
+          hotspot.approachY ?? hotspot.y,
+        ),
       }))
       .filter((target) => {
         const hotspot = this.hotspots.find((candidate) => candidate.id === target.id)
         return Boolean(hotspot && target.distance <= hotspot.radius)
       })
 
-    const availableTargets = [...orbTargets, ...hotspotTargets]
+    const availableTargets = [...hotspotTargets, ...orbTargets]
     const selectedTarget = this.selectedPointerTarget
       ? availableTargets.find(
           (target) =>
             target.kind === this.selectedPointerTarget?.kind && target.id === this.selectedPointerTarget.id,
         )
       : undefined
+    const nearestHotspot = hotspotTargets.sort((left, right) => left.distance - right.distance)[0]
+    const nearestOrb = orbTargets.sort((left, right) => left.distance - right.distance)[0]
     const nearestTarget =
-      selectedTarget ?? availableTargets.sort((left, right) => left.distance - right.distance)[0]
+      selectedTarget ??
+      (this.isMobileViewport() && nearestHotspot
+        ? nearestHotspot
+        : [nearestHotspot, nearestOrb]
+            .filter((target): target is NonNullable<typeof target> => Boolean(target))
+            .sort((left, right) => left.distance - right.distance)[0])
 
     if (!nearestTarget) {
       this.bridge.setInteraction(undefined)
       this.activeHotspotId = undefined
       this.activeOrbId = undefined
+      this.lastLoggedActiveTarget = undefined
       return
+    }
+
+    const activeTargetLogKey = `${nearestTarget.kind}:${nearestTarget.id}`
+    if (activeTargetLogKey !== this.lastLoggedActiveTarget) {
+      this.lastLoggedActiveTarget = activeTargetLogKey
+      debugLog('interaction', 'active-target', {
+        kind: nearestTarget.kind,
+        id: nearestTarget.id,
+        distance: Math.round(nearestTarget.distance),
+      })
     }
 
     if (nearestTarget.kind === 'orb') {

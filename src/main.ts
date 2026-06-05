@@ -11,6 +11,7 @@ import {
 } from './game/save'
 import { NarrativeEngine } from './game/narrative'
 import { createGameUi } from './game/ui'
+import { type DebugEntry, isDebugEnabled, setDebugEnabled } from './game/debug'
 
 const app = document.querySelector<HTMLDivElement>('#app')
 
@@ -36,6 +37,13 @@ app.innerHTML = `
           <span id="interaction-label"></span>
         </button>
         <div id="passive-toast-root" class="passive-toast-root" aria-live="polite"></div>
+        <div id="debug-log" class="debug-log" aria-label="Debug log" hidden>
+          <div class="debug-log-head">
+            <span>debug</span>
+            <button id="debug-log-disable" type="button">off</button>
+          </div>
+          <ol id="debug-log-list"></ol>
+        </div>
       </div>
 
       <aside class="case-panel" aria-label="Dossier">
@@ -92,6 +100,8 @@ const ui = createGameUi({
   onStateChanged: (state) => saveGameState(state),
 })
 
+setupDebugLog()
+
 createMirrorsGame({
   parent: 'game-stage',
   startDialogue: ui.openDialogue,
@@ -137,6 +147,36 @@ function showTutorialIfNeeded(): void {
 
     if (!engine.state.flags.woke_up && !ui.isDialogueOpen()) {
       ui.openDialogue('wake_up')
+    }
+  })
+}
+
+function setupDebugLog(): void {
+  const debugRoot = document.querySelector<HTMLDivElement>('#debug-log')
+  const debugList = document.querySelector<HTMLOListElement>('#debug-log-list')
+  const debugDisable = document.querySelector<HTMLButtonElement>('#debug-log-disable')
+
+  if (!debugRoot || !debugList || !debugDisable || !isDebugEnabled()) {
+    return
+  }
+
+  debugRoot.hidden = false
+  debugDisable.addEventListener('click', () => {
+    setDebugEnabled(false)
+    const url = new URL(window.location.href)
+    url.searchParams.delete('debug')
+    window.history.replaceState({}, '', url)
+    debugRoot.hidden = true
+  })
+
+  window.addEventListener('dmp:debug', (event) => {
+    const entry = (event as CustomEvent<DebugEntry>).detail
+    const item = document.createElement('li')
+    item.textContent = `${entry.scope}:${entry.event}${entry.data ? ` ${JSON.stringify(entry.data)}` : ''}`
+    debugList.prepend(item)
+
+    while (debugList.childElementCount > 18) {
+      debugList.lastElementChild?.remove()
     }
   })
 }

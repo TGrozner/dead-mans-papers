@@ -164,6 +164,7 @@ h1 {
 .interaction-prompt:focus-visible,
 .choice-button:focus-visible,
 .reset-button:focus-visible,
+.debug-log button:focus-visible,
 .tutorial-close:focus-visible,
 .tutorial-check input:focus-visible,
 .passive-toast button:focus-visible {
@@ -180,6 +181,54 @@ h1 {
   color: var(--paper);
   background: var(--rust);
   font-weight: 800;
+}
+
+.debug-log {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  z-index: 12;
+  width: min(430px, calc(100% - 20px));
+  max-height: 168px;
+  border: 1px solid rgba(244, 236, 216, 0.32);
+  color: var(--foam);
+  background: rgba(13, 17, 23, 0.86);
+  font-family: var(--mono);
+  font-size: 10px;
+  pointer-events: none;
+}
+
+.debug-log-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 5px 7px;
+  border-bottom: 1px solid rgba(244, 236, 216, 0.22);
+  color: var(--brass);
+  text-transform: uppercase;
+}
+
+.debug-log button {
+  border: 1px solid rgba(244, 236, 216, 0.38);
+  color: var(--paper);
+  background: rgba(183, 87, 56, 0.72);
+  font-size: 10px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.debug-log ol {
+  max-height: 128px;
+  margin: 0;
+  padding: 6px 8px 7px 24px;
+  overflow: auto;
+}
+
+.debug-log li {
+  margin: 0 0 4px;
+  overflow-wrap: anywhere;
+  line-height: 1.25;
 }
 
 .case-panel {
@@ -830,5 +879,15 @@ h1 {
   .passive-toast button {
     width: 22px;
     height: 22px;
+  }
+
+  .debug-log {
+    width: calc(100% - 16px);
+    max-height: 124px;
+    font-size: 9px;
+  }
+
+  .debug-log ol {
+    max-height: 88px;
   }
 }

@@ -43,6 +43,7 @@ npm run dev
 - Mobile: toucher un élément important rapproche Zinédine et sélectionne l'action, mais n'ouvre plus directement de scène.
 - Mobile: ouvrir une surface narrative demande ensuite le bouton contextuel `!`, ou un second tap volontaire sur la même cible une fois Zinédine à portée.
 - Mobile: la scène est pensée en approcher-puis-agir plutôt qu'en joystick virtuel; les zones longues scrollent à l'intérieur du dossier ou du dialogue, pas dans toute la page.
+- Debug mobile/dev: ajouter `?debug=1` à l'URL affiche les derniers taps, cibles actives, destinations et projections de mouvement.
 - Mobile: la caméra zoome légèrement et suit Zinédine pour rendre les zones cliquables plus lisibles.
 - Mobile: les pensées flottantes sont compactes, limitées à la plus récente et disparaissent automatiquement pour éviter de masquer la carte.
 
