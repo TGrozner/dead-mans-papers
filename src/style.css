@@ -5,7 +5,7 @@
   --panel-soft: #334550;
   --panel-deep: #121820;
   --line: #6e7a6d;
-  --sea: #2a7281;
+  --cold-light: #2a7281;
   --rust: #b75738;
   --tar: #1f262d;
   --brass: #d7a84b;
@@ -280,7 +280,7 @@ h1 {
   pointer-events: auto;
   padding: 10px 11px;
   border: 2px solid #0d1117;
-  border-left: 7px solid var(--voice-color, var(--sea));
+  border-left: 7px solid var(--voice-color, var(--cold-light));
   border-radius: 7px;
   color: var(--ink);
   background: #fff8e8;
@@ -348,7 +348,7 @@ h1 {
 }
 
 .check-result {
-  color: var(--sea);
+  color: var(--cold-light);
 }
 
 .dialogue-text {
@@ -361,12 +361,12 @@ h1 {
 
 .voice-aside {
   padding-left: 12px;
-  border-left: 5px solid var(--voice-color, var(--sea));
+  border-left: 5px solid var(--voice-color, var(--cold-light));
 }
 
 .passive-aside {
   padding: 10px 12px;
-  border-left: 6px solid var(--voice-color, var(--sea));
+  border-left: 6px solid var(--voice-color, var(--cold-light));
   background: rgba(42, 114, 129, 0.1);
 }
 

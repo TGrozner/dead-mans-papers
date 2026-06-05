@@ -1,0 +1,54 @@
+[
+  {
+    "id": "miroirs_van__papers_double_identity",
+    "contextId": "miroirs/utility-van",
+    "location": "miroirs",
+    "subject": "utility-van",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "minScore": 2,
+    "once": true,
+    "priority": 80,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "papers"
+    },
+    "text": "Deux pièces d'identité, un seul Morad Saïdi respirant. Le règlement déteste les miracles: ils ne rentrent jamais dans les cases, sauf quand quelqu'un les y pousse."
+  },
+  {
+    "id": "miroirs_van__municipal_bad_sign",
+    "contextId": "miroirs/utility-van",
+    "location": "miroirs",
+    "subject": "municipal-slogan",
+    "channel": "exploration",
+    "voice": "symbole",
+    "minScore": 2,
+    "once": true,
+    "priority": 70,
+    "display": "toast",
+    "trigger": {
+      "type": "exploration",
+      "contextId": "utility_van"
+    },
+    "text": "Demain commence ici. C'est une phrase trop propre pour un coffre ouvert. Les slogans savent survivre aux corps."
+  },
+  {
+    "id": "miroirs_van__salt_memory_bites",
+    "contextId": "miroirs/utility-van",
+    "location": "miroirs",
+    "subject": "bumper-puddle",
+    "channel": "clue",
+    "voice": "memoire_saline",
+    "minScore": 2,
+    "once": true,
+    "priority": 60,
+    "display": "toast",
+    "trigger": {
+      "type": "clue",
+      "clue": "La flaque sous l'utilitaire porte une auréole blanche de sel et de plâtre."
+    },
+    "text": "Le sel mord les vieux souvenirs, les trottoirs gelés et les sols qu'on lave trop vite avec la même petite bouche blanche."
+  }
+]

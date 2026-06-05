@@ -3,7 +3,7 @@ export type VoiceId =
   | 'procedure'
   | 'nerfs'
   | 'honte_publique'
-  | 'oreille_de_quai'
+  | 'bouches'
   | 'faim'
   | 'symbole'
   | 'main_gauche'

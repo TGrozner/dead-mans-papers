@@ -1,8 +1,8 @@
 [
   {
-    "id": "harbor_body__hunger_before_morals",
-    "contextId": "harbor/body",
-    "location": "harbor",
+    "id": "miroirs_body__hunger_before_morals",
+    "contextId": "miroirs/body",
+    "location": "miroirs",
     "subject": "body",
     "channel": "exploration",
     "voice": "faim",
@@ -12,7 +12,7 @@
     "display": "toast",
     "trigger": {
       "type": "exploration",
-      "contextId": "container"
+      "contextId": "utility_van"
     },
     "text": "Ton ventre remarque le corps avant ta morale. Froid, sel, vide, bouche sèche. Il appelle ça de l'efficacité. Il a tort. Probablement."
   }

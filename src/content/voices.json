@@ -2,7 +2,7 @@
   {
     "id": "memoire_saline",
     "name": "Le Sel",
-    "tagline": "Mémoire, noyade, trauma, déjà-vu et choses qui reviennent avec la marée.",
+    "tagline": "Mémoire chimique, sueur, larmes, sel de déneigement et déjà-vu qui remontent du béton.",
     "color": "#65b7c6",
     "startingValue": 2
   },
@@ -28,9 +28,9 @@
     "startingValue": 2
   },
   {
-    "id": "oreille_de_quai",
+    "id": "bouches",
     "name": "Les Bouches",
-    "tagline": "Rumeurs, surnoms, accents, mensonges du port et vérités mâchées trop longtemps.",
+    "tagline": "Rumeurs, surnoms, accents, mensonges du quartier et vérités mâchées trop longtemps.",
     "color": "#7bcf8e",
     "startingValue": 1
   },

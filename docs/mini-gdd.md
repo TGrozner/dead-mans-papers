@@ -2,23 +2,39 @@
 
 ## Pitch
 
-Noé Caradec, flic fonctionnel par fragments, se réveille dans un quartier portuaire pauvre. Un corps est retrouvé dans le container 17. Dans les poches du mort: ses papiers.
+Morad Saïdi, médiateur sécurité municipale fonctionnel par fragments, se réveille dans le parking P2 des Miroirs. Un corps est retrouvé dans le coffre d'un utilitaire de chantier floqué `Renouvellement Urbain`. Dans les poches du mort: ses papiers.
 
-Le problème immédiat n'est pas seulement de savoir qui est mort. C'est de prouver que Noé ne l'est pas, tout en cachant assez longtemps l'alcool, les calmants, les dettes et les tremblements pour qu'on le laisse enquêter.
+Le problème immédiat n'est pas seulement de savoir qui est mort. C'est de prouver que Morad ne l'est pas, tout en cachant assez longtemps l'alcool, les calmants, les dettes et les tremblements pour qu'on le laisse regarder discrètement avant que ça parte en procédure.
+
+## Cadre
+
+- Quartier fictif: Les Miroirs.
+- Lieu v0: Parking P2.
+- Ambiance: parking semi-enterré, néons froids, béton humide, flaques, palissades de chantier, rubalise, caméras HS, local technique, affiches de relogement, poussière de plâtre.
+- Slogan municipal: `Demain commence ici.`
+- Type de ville: cité de ville nouvelle en rénovation interminable, sans lieu réel nommé.
 
 ## Personnage
 
-- Nom: Noé Caradec.
-- Surnom humiliant dans le port: Deux Verres.
+- Nom: Morad Saïdi.
+- Surnom humiliant dans le quartier: Le Gobelet.
+- Fonction: médiateur sécurité municipale.
+- Statut: pas exactement flic, pas exactement social, pas exactement propre.
+- Outils sociaux: badge flou, portable connu de tous, accès aux cages, parkings, caméras, locaux et habitudes.
 - État: alcool fort bon marché, calmants, mémoire cassée mais gestes encore fonctionnels.
-- Passé social: petites dettes, absences couvertes, certificats, faveurs administratives, dépendance semi-officielle.
-- Objectif initial: rester debout, rester crédible, comprendre pourquoi la ville a déplacé un mort avec ses papiers.
+- Objectif initial: rester debout, rester crédible, comprendre pourquoi un service municipal a déplacé un mort avec ses papiers.
+
+## Personnages v0
+
+- Karine Leduc: responsable rénovation urbaine. Elle cherche un périmètre, une communication, une formulation qui transforme un cadavre en incident maîtrisé.
+- Amar Boudiaf: gardien d'immeuble. Mémoire vivante de la dalle; il connaît les caves, badges, familles, embrouilles, accès, locaux techniques, caméras mortes, relogements et rancunes.
+- Dr Nadia Hami: médecin du centre municipal de santé, future présence centrale. Douce, précise, clinique, intouchable; elle connaît les dosages, renouvellements, certificats et tremblements.
 
 ## Ton
 
-Tragicomédie sale: social et corporel dans la même phrase, politique et honteux dans la même scène, drôle parce que les gens cruels ont souvent une bonne mémoire.
+Tragicomédie sale: social et corporel dans la même phrase, administratif et honteux dans la même scène, drôle parce que les gens cruels connaissent les bons surnoms.
 
-L'addiction n'est pas romantique. Elle est utile, moche, transactionnelle, et tout le monde la connaît un peu trop.
+Pas de romantisme portuaire. La poésie vient du contraste entre langue municipale propre et corps abîmés sous néons.
 
 ## Boucle
 
@@ -26,7 +42,7 @@ Explorer, parler, inspecter, écouter les voix internes, subir La Dose, tenter d
 
 ## Identité
 
-Le choix d'identité arrive devant les papiers du mort. Le joueur lit `Noé Caradec`, puis choisit comment porter ce nom:
+Le choix d'identité arrive devant les papiers du mort. Le joueur lit `Morad Saïdi`, puis choisit comment porter ce nom:
 
 - Accepter: c'est mon nom jusqu'à preuve du contraire.
 - Refuser: ce nom est peut-être une cage.
@@ -46,8 +62,8 @@ Système actuel: `identityPosture` sauvegardé, flags de posture, bump léger d'
 
 ## Orbs v0
 
-- Orbs visibles: container, cadavre, grue, entrepôt municipal.
-- Orbs de proximité: mer, dockers hors champ.
+- Orbs visibles: utilitaire municipal, corps, caméra HS, local technique.
+- Orbs de proximité: néon/flaque, voix derrière la palissade.
 - Les orbs visibles s'ouvrent dans une boîte courte.
 - Les orbs de proximité apparaissent en toast durable.
 - Les orbs peuvent appliquer des effets légers et déclencher des passifs.
@@ -67,15 +83,15 @@ Système actuel: `identityPosture` sauvegardé, flags de posture, bump léger d'
 - Le Ventre: faim, corps, fatigue, manque matériel.
 - Le Nerf: danger, colère, menace, fuite.
 - La Main Basse: gestes sales, fouille, crochetage, coups, vols.
-- Les Bouches: rumeurs, surnoms, accents, mensonges du port.
+- Les Bouches: rumeurs, surnoms, accents, mensonges du quartier.
 - Le Présage: signes, religion, paranoïa, poésie sale.
-- Le Sel: mémoire, noyade, trauma, déjà-vu.
+- Le Sel: mémoire chimique, sueur, larmes, sel de déneigement, béton humide, déjà-vu.
 
 ## Parasite
 
 La Dose est une voix non-stat. Elle ne gagne pas de points; elle gagne de la place.
 
-Style: commerciale, intime, obscène. Elle parle de stabiliser, réguler, garder la main stable, faire tourner la machine. Elle protège le futur médecin municipal parce qu'il tient probablement la dette la plus dangereuse: prescriptions, certificats, suivi et dépendance.
+Style: commerciale, intime, obscène. Elle parle de stabiliser, réguler, garder la main stable, faire tourner la machine. Elle protège la future Dr Nadia Hami parce qu'elle tient probablement la dette la plus dangereuse: prescriptions, certificats, suivi et dépendance semi-officielle.
 
 ## Règle d'écriture
 
@@ -92,6 +108,6 @@ Chaque scène importante doit contenir:
 
 ## Mystère
 
-Le corps du container vient probablement de la chambre froide municipale. Ce n'est pas seulement une mort cachée: c'est une mort déplacée avec les moyens de la ville.
+Le corps dans l'utilitaire n'a pas seulement été caché: il a été mal déplacé par un circuit municipal. Dépôt, local sanitaire, centre municipal de santé, morgue provisoire ou autre nom propre pour une chose sale.
 
 Le joueur est-il la victime, l'usurpateur, le témoin, ou le mensonge encore debout ?

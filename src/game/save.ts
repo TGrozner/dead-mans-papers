@@ -1,7 +1,7 @@
 import { voices } from './content'
 import type { GameState, VoiceId } from './types'
 
-const STORAGE_KEY = 'dead-mans-papers:v6'
+const STORAGE_KEY = 'dead-mans-papers:v7'
 
 export function createInitialState(): GameState {
   const voiceStats = voices.reduce(
@@ -12,14 +12,14 @@ export function createInitialState(): GameState {
     {} as Record<VoiceId, number>,
   )
 
-    return {
-      flags: {},
-      clues: [],
-      completedChecks: {},
-      identityPosture: undefined,
-      triggeredOrbs: {},
-      triggeredPassives: {},
-      voiceStats,
+  return {
+    flags: {},
+    clues: [],
+    completedChecks: {},
+    identityPosture: undefined,
+    triggeredOrbs: {},
+    triggeredPassives: {},
+    voiceStats,
   }
 }
 

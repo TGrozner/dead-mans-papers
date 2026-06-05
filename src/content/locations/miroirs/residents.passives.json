@@ -1,0 +1,19 @@
+[
+  {
+    "id": "miroirs_residents__paid_silence",
+    "contextId": "miroirs/residents",
+    "location": "miroirs",
+    "subject": "residents",
+    "channel": "clue",
+    "voice": "bouches",
+    "minScore": 1,
+    "once": true,
+    "priority": 60,
+    "display": "toast",
+    "trigger": {
+      "type": "clue",
+      "clue": "Des habitants disent que la victime était attendue."
+    },
+    "text": "Quand les habitants disent 'attendu', ils veulent dire 'quelqu'un avait prévenu'. Quand ils disent Le Gobelet, ils veulent dire toi sans avoir à te regarder."
+  }
+]

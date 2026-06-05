@@ -1,5 +1,5 @@
 import './style.css'
-import { createHarborGame } from './game/createHarborGame'
+import { createMirrorsGame } from './game/createMirrorsGame'
 import { loadGameState, resetGameState, saveGameState } from './game/save'
 import { NarrativeEngine } from './game/narrative'
 import { createGameUi } from './game/ui'
@@ -15,14 +15,14 @@ app.innerHTML = `
     <header class="topbar">
       <div>
         <p class="kicker">Dead Man's Papers</p>
-        <h1>Container 17</h1>
+        <h1>Parking P2</h1>
       </div>
       <div class="case-stamp">Dossier ouvert</div>
     </header>
 
     <div class="play-area">
       <div class="stage-wrap">
-        <div id="game-stage" aria-label="Quartier portuaire"></div>
+        <div id="game-stage" aria-label="Les Miroirs, parking P2"></div>
         <button id="interaction-prompt" class="interaction-prompt" type="button" hidden>
           <span class="prompt-mark">!</span>
           <span id="interaction-label"></span>
@@ -33,7 +33,7 @@ app.innerHTML = `
       <aside class="case-panel" aria-label="Dossier">
         <section>
           <p class="panel-label">Objectif</p>
-          <p id="objective" class="objective">Comprendre pourquoi le mort porte tes papiers.</p>
+          <p id="objective" class="objective">Comprendre pourquoi le mort porte tes papiers dans un utilitaire municipal.</p>
         </section>
 
         <section>
@@ -67,7 +67,7 @@ const ui = createGameUi({
   onStateChanged: (state) => saveGameState(state),
 })
 
-createHarborGame({
+createMirrorsGame({
   parent: 'game-stage',
   startDialogue: ui.openDialogue,
   openOrb: ui.openOrb,

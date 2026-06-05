@@ -1,0 +1,20 @@
+[
+  {
+    "id": "miroirs_leduc__witness_face",
+    "contextId": "miroirs/leduc",
+    "location": "miroirs",
+    "subject": "leduc",
+    "channel": "dialogue",
+    "voice": "honte_publique",
+    "minScore": 2,
+    "once": true,
+    "priority": 70,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "leduc",
+      "nodeId": "start"
+    },
+    "text": "Elle te regarde comme un incident encore tiède. Tiens-toi droit. Un médiateur mou, un médiateur qui sent l'alcool froid, ça devient vite une note de service."
+  }
+]

@@ -24,11 +24,11 @@ src/content/
   voices.json
   parasites.json
   locations/
-    harbor/
-      container.passives.json
+    miroirs/
+      utility-van.passives.json
       body.passives.json
-      varga.passives.json
-      dockers.passives.json
+      leduc.passives.json
+      residents.passives.json
       orbs.json
 ```
 
@@ -67,9 +67,10 @@ La Dose est séparée des scores. Elle peut apparaître via `parasite: "dose"` s
 Les prochains contenus peuvent suivre le même modèle:
 
 ```text
-src/content/locations/harbor/container.dialogue.json
-src/content/locations/harbor/mado.dialogue.json
-src/content/locations/harbor/orbs.json
+src/content/locations/miroirs/utility-van.dialogue.json
+src/content/locations/miroirs/leduc.dialogue.json
+src/content/locations/miroirs/amar.dialogue.json
+src/content/locations/miroirs/orbs.json
 src/content/inventory/*.json
 src/content/thoughts/*.json
 src/content/dreams/*.json
@@ -82,7 +83,7 @@ Si un compagnon récurrent arrive plus tard, il doit être traité comme un cana
 
 ### Context Matrix
 
-Chaque contexte important déclare ses voix disponibles et ses surfaces, plutôt qu'un gros fichier global. Exemple: `harbor/container`, `harbor/varga`, `harbor/dockers`.
+Chaque contexte important déclare ses voix disponibles et ses surfaces, plutôt qu'un gros fichier global. Exemple: `miroirs/utility-van`, `miroirs/leduc`, `miroirs/residents`.
 
 ### Orbs / Observations
 
@@ -93,29 +94,29 @@ Créer une surface distincte des dialogues:
 - `revisit`: nouveau texte après flag ou indice
 - `contradiction`: une voix corrige ou contredit une lecture précédente
 
-Pour la v0 élargie: container, cadavre, grue, dockers hors champ, mer, entrepôt municipal.
+Pour la v0 élargie: utilitaire, cadavre, caméra HS, local technique, néon/flaque, voix derrière palissade.
 
 ### Contextual Voice Packs
 
-Une même voix doit changer de comportement selon le sujet. `Le Présage` sur le container peut être une paranoïa religieuse et administrative; sur Varga, une bureaucratie sacrée; sur la mer, une mémoire qui prend l'eau.
+Une même voix doit changer de comportement selon le sujet. `Le Présage` sur l'utilitaire peut être une paranoïa municipale; sur Karine Leduc, une liturgie de communication; sur le néon, une mémoire qui clignote dans du béton humide.
 
 ### Flow Variants
 
 Éviter un seul graphe saturé de flags. Quand l'état du monde change, créer des variantes contextuelles:
 
-- `harbor/day1_body-found`
-- `harbor/day1_after-papers`
-- `harbor/day1_after-mado-salt`
-- `harbor/day1_identity-defile`
+- `miroirs/day1_body-found`
+- `miroirs/day1_after-papers`
+- `miroirs/day1_after-amar-badge`
+- `miroirs/day1_identity-defile`
 
 ### Thoughts
 
 Prévoir une surface `thoughts` même vide en v0. Exemples possibles:
 
 - L'Homme Administrativement Mort
-- Sel de Preuve
-- Police du Ridicule
-- Le Port Mange Les Noms
+- Sel De Béton
+- Police Du Ridicule
+- Les Miroirs Mangent Les Noms
 
 Chaque pensée aurait des conditions de déblocage, une étape de rumination, un payoff narratif, un modificateur léger et de nouveaux passifs.
 
@@ -135,12 +136,13 @@ Pas de jauge visible façon mana. Utiliser des états narratifs discrets:
 
 ### Municipal Doctor
 
-Le médecin municipal doit devenir un futur nœud central:
+La Dr Nadia Hami doit devenir un futur nœud central:
 
+- médecin du centre municipal de santé
 - prédateur doux
 - prescriptions et certificats
 - dette médicale
-- lien avec la chambre froide municipale
+- lien possible avec un dépôt, un local sanitaire ou une morgue provisoire
 - vocabulaire de La Dose: stabiliser, réguler, suivi, juste assez, main stable
 
 ### Companion Channel

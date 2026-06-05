@@ -1,14 +1,14 @@
 {
   "wake_up": {
     "id": "wake_up",
-    "title": "Retour au quai",
+    "title": "Retour au P2",
     "start": "start",
     "nodes": {
       "start": {
         "id": "start",
         "speaker": "Narration",
         "voice": "memoire_saline",
-        "text": "Tu reviens à toi sur un quai mouillé. Quelqu'un a posé une veste de police sur tes épaules. Elle sent le gasoil, l'alcool fort et la menthe de calmant écrasé sous la langue. Au loin, une voix dit: Deux Verres. Peut-être à toi. Peut-être au cadavre qu'on n'a pas encore osé appeler par ton nom.",
+        "text": "Tu reviens à toi dans le parking P2 des Miroirs. Le béton transpire sous les néons. Quelqu'un a posé ton blouson de médiateur sur tes épaules; il sent la poussière de plâtre, l'alcool fort et la menthe de calmant écrasé sous la langue. Derrière une palissade, une voix dit: Le Gobelet. Peut-être à toi. Peut-être au cadavre qu'on n'a pas encore osé appeler par ton nom.",
         "effects": [
           { "type": "flag", "flag": "woke_up" }
         ],
@@ -29,25 +29,25 @@
         ],
         "choices": [
           {
-            "label": "Se relever avant que le port ne remplisse un formulaire sur toi.",
+            "label": "Se relever avant que la mairie ne trouve un mot plus petit que cadavre.",
             "close": true
           }
         ]
       }
     }
   },
-  "container": {
-    "id": "container",
-    "title": "Container bleu",
+  "utility_van": {
+    "id": "utility_van",
+    "title": "Utilitaire municipal",
     "start": "start",
     "nodes": {
       "start": {
         "id": "start",
-        "speaker": "Container 17",
-        "text": "Le container bleu est ouvert sur une obscurité de poissonnerie morte. À l'intérieur, un corps. Sur son manteau: ton portefeuille. Dans le portefeuille: tes papiers. Le monde tousse poliment.",
+        "speaker": "Renouvellement Urbain",
+        "text": "L'utilitaire blanc est garé de travers sous un néon malade. Sur la portière: RENOUVELLEMENT URBAIN. Sous le logo: Demain commence ici. Dans le coffre: un corps. Sur son manteau: ton portefeuille. Dans le portefeuille: tes papiers. Le slogan continue de sourire.",
         "effects": [
-          { "type": "flag", "flag": "container_seen" },
-          { "type": "clue", "clue": "Un corps a été trouvé dans le container 17." }
+          { "type": "flag", "flag": "van_seen" },
+          { "type": "clue", "clue": "Un corps a été trouvé dans le coffre d'un utilitaire municipal au parking P2." }
         ],
         "choices": [
           {
@@ -55,13 +55,13 @@
             "next": "papers"
           },
           {
-            "label": "Écouter la rouille.",
+            "label": "Regarder la flaque sous le pare-chocs.",
             "next": "salt_memory"
           },
           {
-            "label": "Tenter d'ouvrir le scellé en douce.",
+            "label": "Ouvrir le scellé de chantier en douce.",
             "check": {
-              "id": "container_seal",
+              "id": "van_seal",
               "voice": "main_gauche",
               "difficulty": 7,
               "successNode": "seal_success",
@@ -69,7 +69,7 @@
             }
           },
           {
-            "label": "Reculer du container.",
+            "label": "Reculer de l'utilitaire.",
             "close": true
           }
         ]
@@ -78,10 +78,10 @@
         "id": "papers",
         "speaker": "Le Dossier",
         "voice": "procedure",
-        "text": "Nom: Noé Caradec. Fonction: inspecteur judiciaire. Adresse: illisible. Signature: la tienne, ou celle d'un homme qui savait imiter ta fatigue. Le mort porte ton nom comme une ville porte un arrêté: sans émotion, mais avec autorité.",
+        "text": "Nom: Morad Saïdi. Fonction: médiateur sécurité municipale. Adresse: Les Miroirs, cage C, barrée au feutre noir. Signature: la tienne, ou celle d'un homme qui savait imiter ta fatigue. Le mort porte ton nom comme un badge porte une autorisation: sans comprendre, mais avec accès.",
         "effects": [
           { "type": "flag", "flag": "papers_seen" },
-          { "type": "clue", "clue": "La victime porte des papiers au nom de Noé Caradec." }
+          { "type": "clue", "clue": "La victime porte des papiers au nom de Morad Saïdi." }
         ],
         "choices": [
           {
@@ -139,10 +139,10 @@
         "id": "identity_accept",
         "speaker": "Le Dossier",
         "voice": "procedure",
-        "text": "Très bien. Noé Caradec reste debout tant que personne n'a signé sa chute. Un nom, même sale, donne accès aux portes, aux tampons, aux mensonges officiels. Il donne aussi une belle prise à ceux qui savent tirer.",
+        "text": "Très bien. Morad Saïdi reste debout tant que personne n'a signé sa chute. Un nom, même sale, donne accès aux cages, aux badges, aux formulaires. Il donne aussi une belle prise à ceux qui savent tirer.",
         "choices": [
           {
-            "label": "Porter le nom comme une veste humide.",
+            "label": "Porter le nom comme un badge humide.",
             "next": "start"
           }
         ]
@@ -151,7 +151,7 @@
         "id": "identity_refuse",
         "speaker": "Le Présage",
         "voice": "symbole",
-        "text": "Le nom s'ouvre comme une bouche de piège. Noé Caradec est peut-être une étiquette collée sur le mauvais vivant. Refuse-la, et tu perds les papiers. Garde-la, et les papiers te gardent.",
+        "text": "Le nom s'ouvre comme une porte de cave. Morad Saïdi est peut-être une étiquette collée sur le mauvais vivant. Refuse-la, et tu perds les accès. Garde-la, et les accès te gardent.",
         "choices": [
           {
             "label": "Laisser le nom sur le bord de la langue.",
@@ -163,7 +163,7 @@
         "id": "identity_perform",
         "speaker": "La Main Basse",
         "voice": "main_gauche",
-        "text": "Un nom, c'est un outil. Ça s'empoigne, ça se plie, ça ouvre parfois les tiroirs. Tu peux jouer Noé Caradec assez longtemps pour fouiller la poche de ceux qui l'ont déjà enterré.",
+        "text": "Un nom, c'est un outil. Ça s'empoigne, ça se plie, ça ouvre parfois les locaux techniques. Tu peux jouer Morad Saïdi assez longtemps pour fouiller les poches d'une ville qui l'a déjà rangé.",
         "choices": [
           {
             "label": "Mettre le masque et vérifier où il serre.",
@@ -175,7 +175,7 @@
         "id": "identity_defile",
         "speaker": "Le Regard",
         "voice": "honte_publique",
-        "text": "Deux Verres. Voilà. Le port avait déjà un nom pour toi, plus court et mieux ajusté. S'il faut salir Noé Caradec pour savoir qui vient renifler, autant commencer avec les chaussures dans la flaque.",
+        "text": "Le Gobelet. Voilà. Le quartier avait déjà un nom pour toi, plus court et mieux ajusté. S'il faut salir Morad Saïdi pour savoir qui vient renifler, autant commencer avec les chaussures dans la flaque.",
         "choices": [
           {
             "label": "Laisser la honte faire du bruit.",
@@ -187,10 +187,10 @@
         "id": "salt_memory",
         "speaker": "Le Sel",
         "voice": "memoire_saline",
-        "text": "La rouille du loquet dessine une ligne blanche, séchée par le sel. Tu connais cette marque. Tu ne sais pas d'où. C'est une idée, pas encore un souvenir, donc elle se permet d'être arrogante.",
+        "text": "La flaque sous le pare-chocs a un bord blanc. Sel de déneigement, sueur séchée, poussière de plâtre: la ville laisse toujours une auréole quand elle essaie de laver quelque chose. Tu connais cette trace. Tu ne sais pas encore d'où.",
         "effects": [
           { "type": "flag", "flag": "salt_memory" },
-          { "type": "clue", "clue": "Le loquet porte une marque de sel ancienne." }
+          { "type": "clue", "clue": "La flaque sous l'utilitaire porte une auréole blanche de sel et de plâtre." }
         ],
         "choices": [
           {
@@ -203,10 +203,10 @@
         "id": "seal_success",
         "speaker": "La Main Basse",
         "voice": "main_gauche",
-        "text": "Deux doigts, une pression, un soupir métallique. Le scellé cède assez pour révéler une étiquette collée sous le battant: RENVOI - CHAMBRE FROIDE MUNICIPALE.",
+        "text": "Deux doigts, une pression, un soupir de plastique. Le scellé de chantier cède assez pour révéler une étiquette sous le seuil du coffre: RETOUR DÉPÔT MUNICIPAL - LOCAL SANITAIRE.",
         "effects": [
           { "type": "flag", "flag": "seal_opened" },
-          { "type": "clue", "clue": "Une étiquette cachée mentionne la chambre froide municipale." }
+          { "type": "clue", "clue": "Une étiquette cachée mentionne un retour au dépôt municipal, local sanitaire." }
         ],
         "choices": [
           {
@@ -219,32 +219,32 @@
         "id": "seal_failure",
         "speaker": "La Main Basse",
         "voice": "main_gauche",
-        "text": "Tes doigts glissent. Le scellé ne s'ouvre pas. Ton coude, lui, choisit de frapper la tôle avec le son exact d'un homme qui n'a pas le droit d'être seul avec des preuves.",
+        "text": "Tes doigts glissent. Le scellé ne s'ouvre pas. Ton coude, lui, choisit de cogner la carrosserie avec le son exact d'un homme qui n'a pas le droit d'être seul avec une preuve municipale.",
         "effects": [
           { "type": "flag", "flag": "seal_failed" },
-          { "type": "clue", "clue": "Le scellé résiste, mais quelqu'un a déjà forcé le bord inférieur." },
+          { "type": "clue", "clue": "Le scellé résiste, mais quelqu'un a déjà forcé le bord inférieur du coffre." },
           { "type": "voice_bump", "voice": "honte_publique", "amount": 1 }
         ],
         "choices": [
           {
-            "label": "Transformer ce bruit en méthode d'enquête.",
+            "label": "Transformer ce bruit en méthode de médiation.",
             "next": "start"
           }
         ]
       }
     }
   },
-  "varga": {
-    "id": "varga",
-    "title": "Lieutenante Varga",
+  "leduc": {
+    "id": "leduc",
+    "title": "Karine Leduc",
     "start": "start",
     "nodes": {
       "start": {
         "id": "start",
-        "speaker": "Lieutenante Varga",
-        "text": "La lieutenante serre un carnet contre elle comme s'il contenait encore une version raisonnable de la matinée. Elle te regarde, puis le container, puis toi. Elle ne choisit aucun camp.",
+        "speaker": "Karine Leduc",
+        "text": "Karine Leduc serre une pochette de chantier contre elle comme si elle contenait encore une version communicable de la matinée. Responsable rénovation urbaine. Elle te regarde, puis l'utilitaire, puis les affiches de relogement. Elle cherche le mot qui fera moins de morts.",
         "effects": [
-          { "type": "flag", "flag": "met_varga" }
+          { "type": "flag", "flag": "met_leduc" }
         ],
         "choices": [
           {
@@ -257,9 +257,9 @@
             "requiresFlag": "papers_seen"
           },
           {
-            "label": "Rester digne sous observation officielle.",
+            "label": "Rester digne sous observation municipale.",
             "check": {
-              "id": "varga_dignity",
+              "id": "leduc_dignity",
               "voice": "honte_publique",
               "difficulty": 6,
               "successNode": "dignity_success",
@@ -267,21 +267,21 @@
             }
           },
           {
-            "label": "La laisser noter ce qu'elle veut.",
+            "label": "La laisser renommer la scène.",
             "close": true
           }
         ]
       },
       "victim": {
         "id": "victim",
-        "speaker": "Lieutenante Varga",
-        "text": "Officiellement ? Un homme sans nom, tant que les papiers ne sont pas authentifiés. Officieusement ? Les dockers disent qu'il était attendu. Par qui, personne ne veut le dire avant d'avoir été payé en café.",
+        "speaker": "Karine Leduc",
+        "text": "Officiellement ? Une personne non identifiée dans un véhicule de service. Officieusement ? Des habitants disent qu'il était attendu. Par qui, personne ne veut le dire avant d'être certain que son relogement n'en souffrira pas.",
         "effects": [
-          { "type": "clue", "clue": "Les dockers disent que la victime était attendue." }
+          { "type": "clue", "clue": "Des habitants disent que la victime était attendue." }
         ],
         "choices": [
           {
-            "label": "Demander qui distribue le café et les mensonges.",
+            "label": "Demander qui distribue les relogements et les silences.",
             "next": "rumor_hint"
           },
           {
@@ -293,29 +293,29 @@
       "rumor_hint": {
         "id": "rumor_hint",
         "speaker": "Les Bouches",
-        "voice": "oreille_de_quai",
-        "text": "Les gens d'ici mentent avec l'accent de ceux qui ont déjà perdu leur version de la vérité. La grutière près du hangar sait plus qu'elle ne vend.",
+        "voice": "bouches",
+        "text": "Les gens d'ici mentent avec l'accent de ceux qui ont déjà signé trop de papiers pour rien. Amar, le gardien, sait plus que les badges. Et les badges n'aiment pas ça.",
         "effects": [
-          { "type": "flag", "flag": "mado_hint" }
+          { "type": "flag", "flag": "amar_hint" }
         ],
         "choices": [
           {
-            "label": "Noter que les rumeurs ont parfois des horaires de bureau.",
+            "label": "Noter que les rumeurs ont parfois un trousseau de clés.",
             "next": "start"
           }
         ]
       },
       "your_papers": {
         "id": "your_papers",
-        "speaker": "Lieutenante Varga",
-        "text": "Elle ferme les yeux une seconde. Pas assez longtemps pour prier. Juste assez pour éviter de te gifler administrativement. 'Alors soit vous êtes mort, soit quelqu'un voulait que vous le pensiez.'",
+        "speaker": "Karine Leduc",
+        "text": "Elle ferme les yeux une seconde. Pas assez longtemps pour prier. Juste assez pour choisir un niveau de langage. 'Alors soit vous êtes mort, soit quelqu'un voulait que vous deveniez un problème de périmètre.'",
         "effects": [
-          { "type": "flag", "flag": "varga_knows_papers" },
-          { "type": "clue", "clue": "Varga pense que quelqu'un voulait te faire croire à ta mort." }
+          { "type": "flag", "flag": "leduc_knows_papers" },
+          { "type": "clue", "clue": "Karine Leduc pense que quelqu'un voulait transformer Morad en problème de périmètre." }
         ],
         "choices": [
           {
-            "label": "Demander quelle option demande le moins de paperasse.",
+            "label": "Demander quelle option demande le moins de réunion.",
             "next": "paperwork"
           },
           {
@@ -328,10 +328,10 @@
         "id": "paperwork",
         "speaker": "Le Dossier",
         "voice": "procedure",
-        "text": "Mourir est un dossier. Survivre à sa propre mort est un dossier contradictoire. La contradiction gagne toujours: elle a plus de tampons.",
+        "text": "Mourir est un dossier. Survivre à sa propre mort est un dossier contradictoire. La contradiction gagne toujours: elle a plus de signatures et une salle polyvalente disponible jeudi.",
         "choices": [
           {
-            "label": "Accepter la supériorité des tampons.",
+            "label": "Accepter la supériorité des salles polyvalentes.",
             "next": "start"
           }
         ]
@@ -340,7 +340,7 @@
         "id": "dignity_success",
         "speaker": "Le Regard",
         "voice": "honte_publique",
-        "text": "Tu redresses la nuque. Ton visage fabrique une expression sobre. Varga note quelque chose. Peut-être: 'suspect capable de tenir debout'. C'est un début institutionnel.",
+        "text": "Tu redresses la nuque. Ton visage fabrique une expression sobre. Leduc note quelque chose. Peut-être: 'médiateur encore présentable'. C'est un début institutionnel.",
         "effects": [
           { "type": "flag", "flag": "kept_dignity" }
         ],
@@ -355,7 +355,7 @@
         "id": "dignity_failure",
         "speaker": "Le Regard",
         "voice": "honte_publique",
-        "text": "Tu souris. Trop. Beaucoup trop. Le genre de sourire qu'on voit sur les badges d'accès refusés. Varga écrit trois lignes sans lever les yeux.",
+        "text": "Tu souris. Trop. Beaucoup trop. Le genre de sourire qu'on voit sur les badges désactivés. Leduc écrit trois lignes sans lever les yeux, et tu sens déjà le mot 'accompagnement' venir te remplacer.",
         "effects": [
           { "type": "flag", "flag": "dignity_failed" },
           { "type": "voice_bump", "voice": "honte_publique", "amount": 1 }
@@ -369,17 +369,17 @@
       }
     }
   },
-  "mado": {
-    "id": "mado",
-    "title": "Mado La Grue",
+  "amar": {
+    "id": "amar",
+    "title": "Amar Boudiaf",
     "start": "start",
     "nodes": {
       "start": {
         "id": "start",
-        "speaker": "Mado La Grue",
-        "text": "Mado fume à côté d'une grue immobile. Elle a l'air d'avoir été construite avant le port, puis tolérée par lui. 'Deux Verres, si c'est pour demander qui a vu quoi, personne a vu. Si c'est pour demander pourquoi, tout le monde sait.'",
+        "speaker": "Amar Boudiaf",
+        "text": "Amar Boudiaf se tient près du local technique, trousseau à la ceinture, gilet sans âge, regard de quelqu'un qui a vu trois rénovations promettre la même cage repeinte. 'Le Gobelet, si c'est pour demander qui a vu quoi, personne a vu. Si c'est pour demander pourquoi, tout le monde sait.'",
         "effects": [
-          { "type": "flag", "flag": "met_mado" }
+          { "type": "flag", "flag": "met_amar" }
         ],
         "choices": [
           {
@@ -387,37 +387,37 @@
             "next": "why"
           },
           {
-            "label": "Le loquet portait une marque de sel ancienne.",
+            "label": "La flaque avait une auréole de sel et de plâtre.",
             "next": "salt",
             "requiresFlag": "salt_memory"
           },
           {
-            "label": "Faire semblant de connaitre le port.",
+            "label": "Faire semblant de connaitre encore les habitudes du quartier.",
             "check": {
-              "id": "mado_quay_talk",
-              "voice": "oreille_de_quai",
+              "id": "amar_neighborhood_talk",
+              "voice": "bouches",
               "difficulty": 6,
-              "successNode": "quay_success",
-              "failureNode": "quay_failure"
+              "successNode": "talk_success",
+              "failureNode": "talk_failure"
             }
           },
           {
-            "label": "La laisser à sa cigarette.",
+            "label": "Le laisser à ses clés.",
             "close": true
           }
         ]
       },
       "why": {
         "id": "why",
-        "speaker": "Mado La Grue",
-        "text": "'Parce qu'ici, un homme n'est jamais retrouvé mort dans une boîte. Il est livré. La différence, c'est que la livraison implique un client.'",
+        "speaker": "Amar Boudiaf",
+        "text": "'Parce qu'ici, un homme n'est jamais retrouvé mort dans une voiture de mairie. Il est déplacé. La différence, c'est que déplacer implique quelqu'un qui a les clés et quelqu'un qui signe après.'",
         "effects": [
-          { "type": "clue", "clue": "Mado pense que le corps a été livré à quelqu'un." }
+          { "type": "clue", "clue": "Amar pense que le corps a été déplacé par quelqu'un avec accès municipal." }
         ],
         "choices": [
           {
-            "label": "Demander le nom du client.",
-            "next": "client"
+            "label": "Demander qui avait les clés.",
+            "next": "keys"
           },
           {
             "label": "Retourner à la conversation.",
@@ -425,43 +425,43 @@
           }
         ]
       },
-      "client": {
-        "id": "client",
+      "keys": {
+        "id": "keys",
         "speaker": "Le Nerf",
         "voice": "nerfs",
-        "text": "Elle ne regarde pas le container. Elle regarde tes chaussures. C'est rarement bon quand les chaussures deviennent une réponse.",
+        "text": "Il ne regarde pas l'utilitaire. Il regarde ton badge. C'est rarement bon quand les badges deviennent une réponse.",
         "effects": [
-          { "type": "flag", "flag": "mado_suspects_player" }
+          { "type": "flag", "flag": "amar_suspects_player" }
         ],
         "choices": [
           {
-            "label": "Changer de sujet avant que tes lacets témoignent.",
+            "label": "Changer de sujet avant que le badge témoigne.",
             "next": "start"
           }
         ]
       },
       "salt": {
         "id": "salt",
-        "speaker": "Mado La Grue",
-        "text": "'Ancienne ? Non. Fausse ancienne. On rince au sel pour faire croire que ça vient de loin. Le container sort du hangar municipal, pas d'un cargo.'",
+        "speaker": "Amar Boudiaf",
+        "text": "'Sel ? Plâtre ? Ça vient du local sanitaire derrière les bungalows. On nettoie les outils là, les sols, parfois les mauvaises idées. Le camion sort pas d'un chantier, Morad. Il sort d'une excuse.'",
         "effects": [
           { "type": "flag", "flag": "salt_fake" },
-          { "type": "clue", "clue": "La marque de sel pourrait avoir été fabriquée au hangar municipal." }
+          { "type": "clue", "clue": "La trace blanche pourrait venir du local sanitaire derrière les bungalows." }
         ],
         "choices": [
           {
-            "label": "Remercier Mado comme quelqu'un qui vient de gagner une dette.",
+            "label": "Remercier Amar comme quelqu'un qui vient de gagner une dette.",
             "next": "start"
           }
         ]
       },
-      "quay_success": {
-        "id": "quay_success",
+      "talk_success": {
+        "id": "talk_success",
         "speaker": "Les Bouches",
-        "voice": "oreille_de_quai",
-        "text": "Tu attrapes le rythme: phrases courtes, regard vers l'eau, mépris économique des mots. Mado sourit presque. 'On vous a pas tout vidé, inspecteur.'",
+        "voice": "bouches",
+        "text": "Tu attrapes le rythme: phrases courtes, regard vers les ascenseurs condamnés, mépris économique des promesses. Amar sourit presque. 'On vous a pas tout vidé, Morad.'",
         "effects": [
-          { "type": "clue", "clue": "Mado pense que ta mémoire a été volontairement altérée." }
+          { "type": "clue", "clue": "Amar pense que ta mémoire a été volontairement altérée." }
         ],
         "choices": [
           {
@@ -470,18 +470,18 @@
           }
         ]
       },
-      "quay_failure": {
-        "id": "quay_failure",
+      "talk_failure": {
+        "id": "talk_failure",
         "speaker": "Les Bouches",
-        "voice": "oreille_de_quai",
-        "text": "Tu utilises un mot de capitaine de plaisance. Mado te fixe avec la compassion froide réservée aux touristes et aux chefs de service. 'Vous êtes pas d'ici. Ou alors vous êtes revenu pire.'",
+        "voice": "bouches",
+        "text": "Tu utilises le mot 'concertation' comme quelqu'un qui espère encore une chaise en plastique propre. Amar te fixe avec la compassion froide réservée aux prestataires et aux élus pressés. 'Vous êtes pas d'ici aujourd'hui. Ou alors vous êtes revenu pire.'",
         "effects": [
-          { "type": "flag", "flag": "failed_quay_talk" },
-          { "type": "clue", "clue": "Mado laisse entendre que tu es peut-être déjà venu ici." }
+          { "type": "flag", "flag": "failed_neighborhood_talk" },
+          { "type": "clue", "clue": "Amar laisse entendre que tu connais déjà les Miroirs." }
         ],
         "choices": [
           {
-            "label": "Ranger le vocabulaire nautique avec les autres erreurs.",
+            "label": "Ranger le vocabulaire municipal avec les autres erreurs.",
             "next": "start"
           }
         ]

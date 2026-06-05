@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import type { HarborGameBridge } from '../createHarborGame'
+import type { MirrorsGameBridge } from '../createMirrorsGame'
 
 interface Hotspot {
   id: string
@@ -21,8 +21,8 @@ interface OrbSpot {
   marker?: Phaser.GameObjects.Text
 }
 
-export class HarborScene extends Phaser.Scene {
-  private bridge: HarborGameBridge
+export class MirrorsScene extends Phaser.Scene {
+  private bridge: MirrorsGameBridge
   private player?: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody
   private cursors?: Phaser.Types.Input.Keyboard.CursorKeys
   private keys?: Record<string, Phaser.Input.Keyboard.Key>
@@ -32,8 +32,8 @@ export class HarborScene extends Phaser.Scene {
   private activeHotspotId?: string
   private activeOrbId?: string
 
-  constructor(bridge: HarborGameBridge) {
-    super('harbor')
+  constructor(bridge: MirrorsGameBridge) {
+    super('miroirs')
     this.bridge = bridge
   }
 
@@ -71,30 +71,33 @@ export class HarborScene extends Phaser.Scene {
 
   private createTextures(): void {
     this.makePixelTexture('player', 24, 30, [
-      ['#1f2630', 6, 0, 12, 4],
-      ['#f0c58b', 7, 4, 10, 7],
-      ['#293b52', 5, 11, 14, 12],
+      ['#1f2026', 6, 0, 12, 4],
+      ['#d7a06f', 7, 4, 10, 7],
+      ['#263247', 5, 11, 14, 12],
+      ['#d7a84b', 9, 13, 5, 3],
+      ['#8f3f36', 3, 13, 4, 10],
+      ['#8f3f36', 17, 13, 4, 10],
+      ['#181d25', 6, 23, 5, 7],
+      ['#181d25', 13, 23, 5, 7],
+    ])
+
+    this.makePixelTexture('leduc', 24, 30, [
+      ['#44333f', 6, 0, 12, 5],
+      ['#e0b783', 7, 5, 10, 6],
+      ['#7f825f', 5, 11, 14, 12],
+      ['#f4ecd8', 8, 13, 8, 3],
       ['#d7a84b', 3, 13, 4, 10],
       ['#d7a84b', 17, 13, 4, 10],
       ['#1d2430', 6, 23, 5, 7],
       ['#1d2430', 13, 23, 5, 7],
     ])
 
-    this.makePixelTexture('officer', 24, 30, [
-      ['#262b35', 6, 0, 12, 4],
-      ['#e0b783', 7, 4, 10, 7],
-      ['#4d674f', 5, 11, 14, 12],
-      ['#f4ecd8', 9, 13, 6, 3],
-      ['#1d2430', 6, 23, 5, 7],
-      ['#1d2430', 13, 23, 5, 7],
-    ])
-
-    this.makePixelTexture('worker', 24, 30, [
-      ['#68412e', 6, 0, 12, 4],
-      ['#d9a16f', 7, 4, 10, 7],
-      ['#b75738', 5, 11, 14, 12],
-      ['#24313a', 4, 13, 3, 10],
-      ['#24313a', 17, 13, 3, 10],
+    this.makePixelTexture('amar', 24, 30, [
+      ['#2a241f', 6, 0, 12, 4],
+      ['#c28b63', 7, 4, 10, 7],
+      ['#425342', 5, 11, 14, 12],
+      ['#b75738', 4, 13, 3, 10],
+      ['#b75738', 17, 13, 3, 10],
       ['#1d2430', 6, 23, 5, 7],
       ['#1d2430', 13, 23, 5, 7],
     ])
@@ -131,74 +134,108 @@ export class HarborScene extends Phaser.Scene {
       for (let col = 0; col < 30; col += 1) {
         const x = col * tile
         const y = row * tile
-        const isWater = row >= 14
-        const isDock = row >= 11 && row < 14
-        const color = isWater ? 0x2a7281 : isDock ? 0x6f5d45 : 0x3b4651
+        const isRamp = row >= 14
+        const color = isRamp ? 0x24282d : 0x3a3d42
 
         graphics.fillStyle(color)
         graphics.fillRect(x, y, tile, tile)
-        graphics.fillStyle(isWater ? 0x65b7c6 : 0x232b33, 0.28)
-        graphics.fillRect(x + 3, y + 28, 22, 2)
+        graphics.fillStyle(0x171a1d, 0.3)
+        graphics.fillRect(x + 2, y + 30, 24, 2)
       }
     }
 
-    graphics.fillStyle(0x29313a)
+    graphics.fillStyle(0x22262c)
     graphics.fillRect(0, 0, 960, 42)
+    graphics.fillStyle(0xcfd6d2)
+    graphics.fillRect(0, 42, 960, 2)
     graphics.fillStyle(0xd7a84b)
-    graphics.fillRect(0, 42, 960, 3)
 
-    this.drawContainer(590, 166, 154, 78, 0x236f9e, true)
-    this.drawContainer(692, 70, 162, 64, 0x7f3b30, false)
-    this.drawContainer(122, 88, 176, 64, 0x2e6b4f, false)
-    this.drawWarehouse()
+    for (let x = 342; x < 860; x += 86) {
+      graphics.fillRect(x, 332, 52, 3)
+      graphics.fillRect(x, 406, 52, 3)
+    }
+
+    this.drawUtilityVan(590, 166)
+    this.drawPrefab(692, 70)
+    this.drawPalisade(118, 88)
+    this.drawTechnicalRoom()
     this.drawProps()
     this.createColliders()
   }
 
-  private drawContainer(
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    color: number,
-    open: boolean,
-  ): void {
+  private drawUtilityVan(x: number, y: number): void {
     const graphics = this.add.graphics()
-    graphics.fillStyle(0x101820)
-    graphics.fillRect(x + 6, y + 8, width, height)
-    graphics.fillStyle(color)
-    graphics.fillRect(x, y, width, height)
+    graphics.fillStyle(0x0d1117, 0.45)
+    graphics.fillRect(x + 8, y + 14, 176, 90)
+    graphics.fillStyle(0xe7e2d2)
+    graphics.fillRect(x, y + 18, 174, 70)
+    graphics.fillStyle(0xc6c0af)
+    graphics.fillRect(x + 120, y + 8, 54, 34)
+    graphics.fillStyle(0x1c252b)
+    graphics.fillRect(x + 128, y + 14, 34, 16)
     graphics.lineStyle(3, 0x0d1117)
-    graphics.strokeRect(x, y, width, height)
-
-    for (let stripe = x + 12; stripe < x + width - 8; stripe += 24) {
-      graphics.lineStyle(2, 0x0d1117, 0.32)
-      graphics.lineBetween(stripe, y + 6, stripe, y + height - 6)
-    }
-
-    if (open) {
-      graphics.fillStyle(0x0b0e12)
-      graphics.fillRect(x + 14, y + 14, width - 28, height - 26)
-      graphics.fillStyle(0xf4ecd8)
-      graphics.fillRect(x + 60, y + 36, 38, 10)
-      graphics.fillRect(x + 68, y + 28, 18, 8)
-      graphics.fillStyle(0xb75738)
-      graphics.fillRect(x + 100, y + 22, 30, 8)
-    }
+    graphics.strokeRect(x, y + 18, 174, 70)
+    graphics.fillStyle(0xb75738)
+    graphics.fillRect(x + 14, y + 34, 88, 8)
+    graphics.fillStyle(0xd7a84b)
+    graphics.fillRect(x + 14, y + 48, 118, 7)
+    graphics.fillStyle(0x0b0e12)
+    graphics.fillRect(x + 16, y + 61, 82, 25)
+    graphics.fillStyle(0xf4ecd8)
+    graphics.fillRect(x + 42, y + 72, 38, 8)
+    graphics.fillStyle(0xb75738)
+    graphics.fillRect(x + 96, y + 68, 32, 7)
+    graphics.fillStyle(0x0d1117)
+    graphics.fillRect(x + 26, y + 84, 22, 10)
+    graphics.fillRect(x + 130, y + 84, 22, 10)
   }
 
-  private drawWarehouse(): void {
+  private drawPrefab(x: number, y: number): void {
     const graphics = this.add.graphics()
-    graphics.fillStyle(0x25333b)
+    graphics.fillStyle(0xcfd6d2)
+    graphics.fillRect(x, y, 176, 78)
+    graphics.lineStyle(3, 0x0d1117)
+    graphics.strokeRect(x, y, 176, 78)
+    graphics.fillStyle(0xd7a84b)
+    graphics.fillRect(x + 12, y + 12, 126, 10)
+    graphics.fillStyle(0x22323a)
+    graphics.fillRect(x + 134, y + 34, 38, 42)
+    graphics.fillStyle(0xb75738)
+    graphics.fillRect(x + 14, y + 40, 72, 9)
+    graphics.fillStyle(0x8f3f36)
+    graphics.fillRect(x + 14, y + 54, 96, 8)
+  }
+
+  private drawPalisade(x: number, y: number): void {
+    const graphics = this.add.graphics()
+    graphics.fillStyle(0x755337)
+    graphics.fillRect(x, y, 214, 64)
+    graphics.lineStyle(2, 0x0d1117, 0.35)
+
+    for (let strip = x + 12; strip < x + 210; strip += 24) {
+      graphics.lineBetween(strip, y + 2, strip, y + 62)
+    }
+
+    graphics.fillStyle(0xd7a84b)
+    graphics.fillRect(x + 18, y + 22, 176, 6)
+    graphics.fillStyle(0xb75738)
+    graphics.fillRect(x + 18, y + 34, 176, 6)
+  }
+
+  private drawTechnicalRoom(): void {
+    const graphics = this.add.graphics()
+    graphics.fillStyle(0x253039)
     graphics.fillRect(54, 230, 230, 132)
     graphics.lineStyle(3, 0x0d1117)
     graphics.strokeRect(54, 230, 230, 132)
-    graphics.fillStyle(0xb75738)
-    graphics.fillRect(76, 252, 62, 70)
-    graphics.fillStyle(0xd7a84b)
-    graphics.fillRect(174, 252, 58, 18)
     graphics.fillStyle(0x111820)
     graphics.fillRect(182, 276, 46, 44)
+    graphics.fillStyle(0xb75738)
+    graphics.fillRect(76, 252, 62, 70)
+    graphics.fillStyle(0xf4ecd8)
+    graphics.fillRect(74, 236, 136, 12)
+    graphics.fillStyle(0xd7a84b)
+    graphics.fillRect(174, 252, 58, 18)
   }
 
   private drawProps(): void {
@@ -212,28 +249,35 @@ export class HarborScene extends Phaser.Scene {
       [870, 358],
     ]) {
       graphics.fillRect(x, y, 20, 28)
-      graphics.fillStyle(0x0d1117, 0.45)
+      graphics.fillStyle(0xf4ecd8, 0.8)
       graphics.fillRect(x, y + 8, 20, 3)
       graphics.fillStyle(0xb75738)
     }
 
-    graphics.fillStyle(0xd7a84b)
-    graphics.fillRect(486, 68, 18, 266)
-    graphics.fillRect(446, 68, 120, 16)
+    graphics.fillStyle(0xcfd6d2)
+    graphics.fillRect(506, 60, 12, 170)
     graphics.fillStyle(0x0d1117)
-    graphics.fillRect(550, 84, 8, 54)
+    graphics.fillRect(486, 70, 52, 12)
     graphics.fillStyle(0xd45d59)
-    graphics.fillRect(542, 138, 24, 18)
+    graphics.fillRect(494, 82, 36, 10)
+    graphics.fillStyle(0xdcebd7, 0.85)
+    graphics.fillRect(438, 454, 124, 8)
+    graphics.fillStyle(0x65b7c6, 0.4)
+    graphics.fillRect(446, 462, 108, 12)
+    graphics.fillStyle(0xf4ecd8)
+    graphics.fillRect(712, 104, 128, 12)
+    graphics.fillStyle(0x171c24)
+    graphics.fillRect(716, 108, 80, 3)
   }
 
   private createColliders(): void {
     const obstacles = [
       [54, 230, 230, 132],
-      [590, 166, 154, 78],
-      [692, 70, 162, 64],
-      [122, 88, 176, 64],
+      [590, 166, 174, 94],
+      [692, 70, 176, 78],
+      [118, 88, 214, 64],
       [0, 0, 960, 45],
-      [0, 448, 960, 128],
+      [0, 520, 960, 76],
     ] as Array<[number, number, number, number]>
 
     obstacles.forEach(([x, y, width, height]) => {
@@ -255,8 +299,8 @@ export class HarborScene extends Phaser.Scene {
       }
     })
 
-    this.add.sprite(514, 286, 'officer').setDepth(2)
-    this.add.sprite(326, 330, 'worker').setDepth(2)
+    this.add.sprite(514, 286, 'leduc').setDepth(2)
+    this.add.sprite(326, 330, 'amar').setDepth(2)
 
     this.add.text(502, 252, '!', {
       fontFamily: 'monospace',
@@ -270,25 +314,25 @@ export class HarborScene extends Phaser.Scene {
   private createHotspots(): void {
     this.hotspots = [
       {
-        id: 'container',
-        label: 'Examiner le container bleu',
-        scriptId: 'container',
+        id: 'utility_van',
+        label: "Examiner l'utilitaire municipal",
+        scriptId: 'utility_van',
         x: 560,
         y: 282,
         radius: 86,
       },
       {
-        id: 'varga',
-        label: 'Parler à Varga',
-        scriptId: 'varga',
+        id: 'leduc',
+        label: 'Parler à Karine Leduc',
+        scriptId: 'leduc',
         x: 514,
         y: 286,
         radius: 58,
       },
       {
-        id: 'mado',
-        label: 'Parler à Mado',
-        scriptId: 'mado',
+        id: 'amar',
+        label: 'Parler à Amar Boudiaf',
+        scriptId: 'amar',
         x: 326,
         y: 330,
         radius: 58,
@@ -310,52 +354,52 @@ export class HarborScene extends Phaser.Scene {
   private createOrbs(): void {
     this.orbSpots = [
       {
-        id: 'harbor_orb_container',
-        label: 'Observer le container',
+        id: 'miroirs_orb_van',
+        label: "Observer l'utilitaire",
         mode: 'visible',
-        x: 612,
-        y: 286,
-        radius: 48,
+        x: 610,
+        y: 282,
+        radius: 58,
       },
       {
-        id: 'harbor_orb_body',
+        id: 'miroirs_orb_body',
         label: 'Regarder le corps',
         mode: 'visible',
-        x: 675,
-        y: 286,
+        x: 672,
+        y: 282,
         radius: 52,
       },
       {
-        id: 'harbor_orb_crane',
-        label: 'Inspecter la grue',
+        id: 'miroirs_orb_camera',
+        label: 'Inspecter la caméra HS',
         mode: 'visible',
-        x: 486,
-        y: 186,
-        radius: 62,
+        x: 510,
+        y: 174,
+        radius: 66,
       },
       {
-        id: 'harbor_orb_warehouse',
-        label: "Lire l'entrepôt",
+        id: 'miroirs_orb_technical_room',
+        label: 'Lire le local technique',
         mode: 'visible',
-        x: 174,
-        y: 278,
+        x: 178,
+        y: 282,
         radius: 78,
       },
       {
-        id: 'harbor_orb_sea',
-        label: 'Écouter la mer',
+        id: 'miroirs_orb_neon',
+        label: 'Écouter le néon',
         mode: 'proximity',
         x: 470,
-        y: 468,
+        y: 464,
         radius: 96,
       },
       {
-        id: 'harbor_orb_dockers',
-        label: 'Écouter les dockers',
+        id: 'miroirs_orb_residents',
+        label: 'Écouter derrière la palissade',
         mode: 'proximity',
         x: 314,
         y: 388,
-        radius: 82,
+        radius: 84,
       },
     ]
 
