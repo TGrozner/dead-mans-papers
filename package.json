@@ -9,11 +9,13 @@
   "scripts": {
     "check:node": "node scripts/check-node.mjs",
     "dev": "npm run check:node && vite",
+    "e2e": "npm run check:node && playwright test",
     "validate:content": "npm run check:node && node scripts/validate-content.mjs",
     "build": "npm run check:node && tsc && vite build",
     "preview": "npm run check:node && vite preview"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "typescript": "~6.0.2",
     "vite": "^8.0.12"
   },
