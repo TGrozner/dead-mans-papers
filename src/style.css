@@ -872,6 +872,8 @@ h1 {
   }
 
   .play-area {
+    --mobile-case-compact-height: clamp(180px, 34svh, 280px);
+
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
@@ -882,21 +884,26 @@ h1 {
 
   .stage-wrap {
     display: block;
-    flex: 0 0 auto;
-    height: auto;
+    flex: 1 1 auto;
+    height: 100%;
     min-height: 0;
   }
 
   #game-stage {
+    --mobile-stage-width: max(
+      100%,
+      calc((100svh - var(--mobile-case-compact-height) - 52px) * 5 / 3)
+    );
+
     position: relative;
-    left: 0;
-    width: 100%;
-    max-width: 100%;
+    left: calc((100% - var(--mobile-stage-width)) * 0.45);
+    width: var(--mobile-stage-width);
+    max-width: none;
     transform: none;
   }
 
   .case-panel {
-    flex: 1 1 0;
+    flex: 0 0 auto;
     height: auto;
     min-height: 0;
     gap: 7px;
@@ -906,6 +913,7 @@ h1 {
   }
 
   .case-panel--expanded {
+    flex: 1 1 0;
     height: auto;
     min-height: 250px;
   }
@@ -916,6 +924,10 @@ h1 {
 
   body.dialogue-open .play-area {
     display: block;
+  }
+
+  body.dialogue-open .stage-wrap {
+    height: min(52svh, 460px);
   }
 
   body.dialogue-open #game-stage {
@@ -932,6 +944,8 @@ h1 {
   }
 
   .case-panel:not(.case-panel--expanded) {
+    flex: 0 0 var(--mobile-case-compact-height);
+    max-height: var(--mobile-case-compact-height);
     gap: 6px;
     padding: 8px 10px;
   }
