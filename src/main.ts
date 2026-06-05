@@ -2,10 +2,12 @@ import './style.css'
 import { createMirrorsGame } from './game/createMirrorsGame'
 import {
   isTutorialHidden,
+  isTutorialSeen,
   loadGameState,
   resetGameState,
   saveGameState,
   setTutorialHidden,
+  setTutorialSeen,
 } from './game/save'
 import { NarrativeEngine } from './game/narrative'
 import { createGameUi } from './game/ui'
@@ -63,7 +65,7 @@ app.innerHTML = `
         <p class="panel-label">Avant de reprendre</p>
         <h2 id="tutorial-title">Parking P2 se joue lentement</h2>
         <div class="tutorial-copy">
-          <p>Touche la scène pour rapprocher Morad. Quand il est assez près, utilise le bouton <strong>!</strong> pour parler, inspecter ou écouter.</p>
+          <p>Touche la scène pour rapprocher Morad. Quand il est assez près, utilise le bouton <strong>!</strong> ou retouche la même cible pour parler, inspecter ou écouter.</p>
           <p>Sur mobile, rien ne s'ouvre juste parce que ton doigt passe au mauvais endroit. Les pensées importantes arrivent dans les scènes ou dans de courts signaux.</p>
           <p>Le dossier garde les indices et les voix internes. Les choix bizarres ou indignes sont souvent aussi utiles que les choix raisonnables.</p>
         </div>
@@ -101,11 +103,12 @@ createMirrorsGame({
   getState: () => engine.state,
 })
 
-showTutorialIfNeeded(engine.state.flags.woke_up === true)
+showTutorialIfNeeded()
 
 document.querySelector<HTMLButtonElement>('#reset-save')!.addEventListener('click', () => {
   persistOnUnload = false
   resetGameState()
+  setTutorialSeen(false)
   window.location.reload()
 })
 
@@ -115,12 +118,12 @@ window.addEventListener('beforeunload', () => {
   }
 })
 
-function showTutorialIfNeeded(hasAlreadyStarted: boolean): void {
+function showTutorialIfNeeded(): void {
   const tutorialRoot = document.querySelector<HTMLDivElement>('#tutorial-root')
   const tutorialClose = document.querySelector<HTMLButtonElement>('#tutorial-close')
   const tutorialHide = document.querySelector<HTMLInputElement>('#tutorial-hide')
 
-  if (!tutorialRoot || !tutorialClose || !tutorialHide || hasAlreadyStarted || isTutorialHidden()) {
+  if (!tutorialRoot || !tutorialClose || !tutorialHide || isTutorialHidden() || isTutorialSeen()) {
     return
   }
 
@@ -129,6 +132,7 @@ function showTutorialIfNeeded(hasAlreadyStarted: boolean): void {
 
   tutorialClose.addEventListener('click', () => {
     setTutorialHidden(tutorialHide.checked)
+    setTutorialSeen(true)
     tutorialRoot.hidden = true
   })
 }
