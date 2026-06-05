@@ -41,6 +41,7 @@ body {
 body {
   min-width: 320px;
   margin: 0;
+  overscroll-behavior: none;
 }
 
 button {
@@ -98,10 +99,21 @@ h1 {
   padding: 6px 9px;
   border: 2px solid var(--rust);
   color: var(--paper);
+  background: transparent;
   font-family: var(--mono);
   font-size: 12px;
   text-transform: uppercase;
   transform: rotate(1.5deg);
+}
+
+.case-toggle {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.case-toggle:disabled {
+  cursor: default;
+  opacity: 1;
 }
 
 .play-area {
@@ -245,22 +257,22 @@ h1 {
   overflow: hidden;
 }
 
-.case-panel section {
+.case-section {
   min-height: 0;
 }
 
-.case-panel section:nth-of-type(2),
-.case-panel section:nth-of-type(3) {
+.case-section--clues,
+.case-section--voices {
   display: flex;
   min-height: 0;
   flex-direction: column;
 }
 
-.case-panel section:nth-of-type(2) {
+.case-section--clues {
   flex: 1 1 34%;
 }
 
-.case-panel section:nth-of-type(3) {
+.case-section--voices {
   flex: 1 1 42%;
 }
 
@@ -659,7 +671,7 @@ h1 {
 
 @media (max-width: 560px) {
   .game-shell {
-    gap: 7px;
+    gap: 8px;
     padding: 8px;
   }
 
@@ -686,14 +698,51 @@ h1 {
   }
 
   .play-area {
+    flex: 1 1 auto;
+    grid-template-rows: minmax(0, 1fr) auto;
     gap: 8px;
+    min-height: 0;
+  }
+
+  .stage-wrap {
+    height: 100%;
+    min-height: 0;
+    place-items: start center;
+  }
+
+  #game-stage {
+    width: min(154vw, calc((100svh - 220px) * 5 / 3));
+    max-width: none;
   }
 
   .case-panel {
+    height: 172px;
+    min-height: 0;
     gap: 8px;
     padding: 10px;
     border-width: 1px;
     box-shadow: none;
+  }
+
+  .case-panel--expanded {
+    height: min(48svh, 430px);
+  }
+
+  .case-panel:not(.case-panel--expanded) .case-section--voices,
+  .case-panel:not(.case-panel--expanded) .reset-button {
+    display: none;
+  }
+
+  .case-panel:not(.case-panel--expanded) .case-section--clues {
+    flex: 1 1 auto;
+  }
+
+  .case-panel:not(.case-panel--expanded) .clue-list {
+    max-height: 72px;
+  }
+
+  .case-panel:not(.case-panel--expanded) .clue-list li:nth-child(n + 4) {
+    display: none;
   }
 
   .panel-label {
@@ -757,15 +806,15 @@ h1 {
   }
 
   .interaction-prompt {
-    right: calc(8px + env(safe-area-inset-right));
-    bottom: calc(8px + env(safe-area-inset-bottom));
-    left: auto;
+    right: calc(10px + env(safe-area-inset-right));
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    left: calc(10px + env(safe-area-inset-left));
     width: auto;
     min-height: 38px;
-    max-width: min(220px, calc(100% - 16px));
-    justify-content: center;
+    max-width: none;
+    justify-content: flex-start;
     gap: 6px;
-    padding: 7px 9px;
+    padding: 7px 10px;
     font-size: 12px;
     box-shadow: 0 4px 0 #0d1117;
     transform: none;

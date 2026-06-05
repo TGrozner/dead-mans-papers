@@ -328,11 +328,14 @@ function renderClues(state: GameState): void {
     return
   }
 
-  state.clues.forEach((clue) => {
-    const item = document.createElement('li')
-    item.textContent = clue
-    clueList.append(item)
-  })
+  state.clues
+    .slice()
+    .reverse()
+    .forEach((clue) => {
+      const item = document.createElement('li')
+      item.textContent = clue
+      clueList.append(item)
+    })
 }
 
 function renderVoices(state: GameState): void {

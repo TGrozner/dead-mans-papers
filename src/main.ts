@@ -26,7 +26,9 @@ app.innerHTML = `
         <p class="kicker">Dead Man's Papers</p>
         <h1>Parking P2</h1>
       </div>
-      <div class="case-stamp">Dossier ouvert</div>
+      <button id="case-toggle" class="case-stamp case-toggle" type="button" aria-controls="case-panel" aria-expanded="true">
+        Dossier ouvert
+      </button>
     </header>
 
     <div class="play-area">
@@ -46,18 +48,18 @@ app.innerHTML = `
         </div>
       </div>
 
-      <aside class="case-panel" aria-label="Dossier">
-        <section>
+      <aside id="case-panel" class="case-panel case-panel--expanded" aria-label="Dossier">
+        <section class="case-section case-section--objective">
           <p class="panel-label">Objectif</p>
           <p id="objective" class="objective">Rester debout assez longtemps pour comprendre ce que Karine cache dans l'utilitaire.</p>
         </section>
 
-        <section>
+        <section class="case-section case-section--clues">
           <p class="panel-label">Indices</p>
           <ul id="clue-list" class="clue-list"></ul>
         </section>
 
-        <section>
+        <section class="case-section case-section--voices">
           <p class="panel-label">Voix internes</p>
           <div id="voice-list" class="voice-list"></div>
         </section>
@@ -101,6 +103,7 @@ const ui = createGameUi({
 })
 
 setupDebugLog()
+setupCasePanel()
 
 createMirrorsGame({
   parent: 'game-stage',
@@ -149,6 +152,44 @@ function showTutorialIfNeeded(): void {
       ui.openDialogue('wake_up')
     }
   })
+}
+
+function setupCasePanel(): void {
+  const casePanel = document.querySelector<HTMLElement>('#case-panel')
+  const caseToggle = document.querySelector<HTMLButtonElement>('#case-toggle')
+
+  if (!casePanel || !caseToggle) {
+    return
+  }
+
+  const panel = casePanel
+  const toggle = caseToggle
+  const mobileQuery = window.matchMedia('(max-width: 560px)')
+  let mobileExpanded = false
+
+  function applyCaseState(): void {
+    const expanded = mobileQuery.matches ? mobileExpanded : true
+    panel.classList.toggle('case-panel--expanded', expanded)
+    toggle.textContent = expanded ? 'Dossier ouvert' : 'Dossier'
+    toggle.setAttribute('aria-expanded', String(expanded))
+    toggle.disabled = !mobileQuery.matches
+  }
+
+  toggle.addEventListener('click', () => {
+    if (!mobileQuery.matches) {
+      return
+    }
+
+    mobileExpanded = !mobileExpanded
+    applyCaseState()
+  })
+
+  mobileQuery.addEventListener('change', () => {
+    mobileExpanded = false
+    applyCaseState()
+  })
+
+  applyCaseState()
 }
 
 function setupDebugLog(): void {
