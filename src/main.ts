@@ -102,6 +102,7 @@ app.innerHTML = `
 
 const engine = new NarrativeEngine(loadGameState())
 let persistOnUnload = true
+let tutorialOpen = false
 const ui = createGameUi({
   engine,
   root: document.querySelector<HTMLDivElement>('#dialogue-root')!,
@@ -124,7 +125,7 @@ createMirrorsGame({
   setInteraction: ui.setInteraction,
   triggerProximityOrb: ui.triggerProximityOrb,
   triggerExplorationPassive: ui.triggerExplorationPassive,
-  isDialogueOpen: ui.isDialogueOpen,
+  isDialogueOpen: () => tutorialOpen || ui.isDialogueOpen(),
   closeDialogueSurface: ui.closeSurface,
   getState: () => engine.state,
 })
@@ -150,12 +151,14 @@ function showTutorialIfNeeded(): void {
     return
   }
 
+  tutorialOpen = true
   tutorialRoot.hidden = false
   tutorialClose.focus()
 
   tutorialClose.addEventListener('click', () => {
     setTutorialHidden(tutorialHide.checked)
     setTutorialSeen(true)
+    tutorialOpen = false
     tutorialRoot.hidden = true
 
     if (!engine.state.flags.woke_up && !ui.isDialogueOpen()) {

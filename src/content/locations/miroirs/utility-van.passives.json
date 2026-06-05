@@ -176,7 +176,7 @@
     "display": "toast",
     "trigger": {
       "type": "clue",
-      "clue": "Le corps a probablement été gardé au froid avant d'être mis dans l'utilitaire."
+      "clue": "Karine évite la question de l'endroit où le corps aurait été gardé au froid."
     },
     "text": "Ce froid n'est pas celui du parking. Il vient d'une pièce fermée, lavée, utile à des gens qui préfèrent les surfaces propres."
   },

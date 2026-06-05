@@ -7,9 +7,11 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "check:node": "node scripts/check-node.mjs",
+    "dev": "npm run check:node && vite",
+    "validate:content": "npm run check:node && node scripts/validate-content.mjs",
+    "build": "npm run check:node && tsc && vite build",
+    "preview": "npm run check:node && vite preview"
   },
   "devDependencies": {
     "typescript": "~6.0.2",

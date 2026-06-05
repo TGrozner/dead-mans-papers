@@ -5,8 +5,16 @@ Prototype web narratif inspiré par les principes de l'enquête existentielle, a
 ## Lancer
 
 ```bash
+nvm use
 npm install
 npm run dev
+```
+
+Le projet cible Node `23.8.0` via `.nvmrc`. Le Node global `21.x` casse Vite 8.
+
+```bash
+npm run validate:content
+npm run build
 ```
 
 ## Vertical Slice
