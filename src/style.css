@@ -12,6 +12,7 @@
   --foam: #dcebd7;
   --danger: #d45d59;
   --shadow: rgba(0, 0, 0, 0.35);
+  --blackline: #0d1117;
   --sans: Inter, ui-sans-serif, system-ui, "Segoe UI", Arial, sans-serif;
   --mono: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
 
@@ -58,14 +59,14 @@ button {
 }
 
 .game-shell {
-  width: min(1280px, 100%);
+  width: min(1420px, 100%);
   height: 100svh;
   min-height: 0;
   margin: 0 auto;
-  padding: 14px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .topbar {
@@ -89,7 +90,7 @@ button {
 h1 {
   margin: 0;
   color: var(--paper);
-  font-size: 36px;
+  font-size: 34px;
   font-weight: 800;
   line-height: 1;
 }
@@ -117,33 +118,34 @@ h1 {
 }
 
 .play-area {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   min-width: 0;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 318px;
+  grid-template-columns: minmax(0, 1fr) 338px;
   gap: 12px;
-  align-items: start;
+  align-items: stretch;
   overflow: hidden;
 }
 
 .stage-wrap {
   position: relative;
   width: 100%;
+  height: 100%;
   min-width: 0;
   min-height: 0;
   display: grid;
   place-items: start center;
   overflow: hidden;
-  border: 2px solid #0d1117;
-  background: #0d1117;
-  box-shadow: 0 18px 48px var(--shadow);
+  border: 2px solid var(--blackline);
+  background: var(--blackline);
+  box-shadow: 0 20px 52px rgba(0, 0, 0, 0.44);
   touch-action: none;
   user-select: none;
 }
 
 #game-stage {
-  width: min(100%, calc((100svh - 116px) * 5 / 3));
+  width: min(100%, calc((100svh - 86px) * 5 / 3));
   aspect-ratio: 5 / 3;
   max-height: 100%;
   touch-action: none;
@@ -166,11 +168,11 @@ h1 {
   gap: 9px;
   max-width: calc(100% - 32px);
   padding: 9px 13px;
-  border: 2px solid #0d1117;
+  border: 2px solid var(--blackline);
   border-radius: 7px;
   color: var(--ink);
   background: var(--paper);
-  box-shadow: 0 8px 0 #0d1117;
+  box-shadow: 0 8px 0 var(--blackline);
   transform: translateX(-50%);
   cursor: pointer;
   touch-action: manipulation;
@@ -249,15 +251,17 @@ h1 {
 
 .case-panel {
   min-height: 0;
-  height: min(calc(100svh - 98px), 620px);
+  height: 100%;
   max-height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding: 16px;
-  border: 2px solid #0d1117;
-  background: var(--panel);
-  box-shadow: 0 18px 48px var(--shadow);
+  gap: 10px;
+  padding: 12px;
+  border: 2px solid var(--blackline);
+  background:
+    linear-gradient(180deg, rgba(51, 69, 80, 0.42), transparent 128px),
+    var(--panel);
+  box-shadow: 0 20px 52px rgba(0, 0, 0, 0.38);
   overflow: hidden;
 }
 
@@ -273,23 +277,24 @@ h1 {
 }
 
 .case-section--clues {
-  flex: 1 1 34%;
+  flex: 1.45 1 0;
 }
 
 .case-section--voices {
-  flex: 1 1 42%;
+  flex: 1 1 0;
 }
 
 .objective {
-  margin: 7px 0 0;
+  margin: 6px 0 0;
   color: var(--paper);
-  line-height: 1.35;
+  font-size: 14px;
+  line-height: 1.26;
 }
 
 .clue-list {
   flex: 1 1 auto;
   min-height: 0;
-  margin: 8px 0 0;
+  margin: 6px 0 0;
   padding: 0;
   list-style: none;
   overflow: auto;
@@ -324,16 +329,16 @@ h1 {
 }
 
 .clue-list > li {
-  padding: 8px 0;
+  padding: 5px 0;
   border-bottom: 1px solid rgba(220, 235, 215, 0.16);
   color: var(--foam);
-  font-size: 14px;
-  line-height: 1.3;
+  font-size: 13px;
+  line-height: 1.24;
 }
 
 .clue-group {
   display: grid;
-  gap: 6px;
+  gap: 4px;
 }
 
 .clue-group-heading {
@@ -353,7 +358,7 @@ h1 {
 
 .clue-group-list {
   display: grid;
-  gap: 5px;
+  gap: 3px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -361,8 +366,8 @@ h1 {
 
 .clue-group-list li {
   color: var(--foam);
-  font-size: 13px;
-  line-height: 1.3;
+  font-size: 12px;
+  line-height: 1.18;
 }
 
 .empty-line {
@@ -374,9 +379,10 @@ h1 {
   flex: 1 1 auto;
   min-height: 0;
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   align-content: start;
-  gap: 8px;
-  margin-top: 9px;
+  gap: 6px;
+  margin-top: 7px;
   overflow: auto;
   padding-right: 4px;
   scrollbar-color: rgba(215, 168, 75, 0.58) rgba(18, 24, 32, 0.42);
@@ -385,23 +391,23 @@ h1 {
 
 .voice-row {
   display: grid;
-  grid-template-columns: 10px minmax(0, 1fr) auto;
-  gap: 8px;
+  grid-template-columns: 8px minmax(0, 1fr) auto;
+  gap: 6px;
   align-items: center;
-  padding: 7px 8px;
+  padding: 5px 7px;
   border: 1px solid rgba(220, 235, 215, 0.12);
   background: rgba(18, 24, 32, 0.34);
 }
 
 .voice-chip {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 .voice-name {
   overflow: hidden;
   color: var(--foam);
-  font-size: 13px;
+  font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -409,7 +415,7 @@ h1 {
 .voice-score {
   color: var(--brass);
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .voice-row--parasite {
@@ -419,7 +425,7 @@ h1 {
 
 .voice-row--parasite .voice-score {
   color: #d8b27b;
-  font-size: 11px;
+  font-size: 9px;
   text-transform: uppercase;
 }
 
@@ -481,15 +487,17 @@ h1 {
 
 .dialogue-root {
   position: fixed;
-  inset: auto 14px 14px;
+  inset: auto 16px 16px;
   z-index: 10;
-  max-width: 1120px;
-  max-height: min(42svh, 380px);
+  max-width: 1040px;
+  max-height: min(44svh, 390px);
   margin: 0 auto;
-  border: 2px solid #0d1117;
-  background: var(--paper);
+  border: 2px solid var(--blackline);
+  background:
+    linear-gradient(90deg, rgba(183, 87, 56, 0.14), transparent 86px),
+    linear-gradient(180deg, #fff8e8, var(--paper));
   color: var(--ink);
-  box-shadow: 0 18px 0 #0d1117, 0 24px 60px rgba(0, 0, 0, 0.48);
+  box-shadow: 0 14px 0 var(--blackline), 0 26px 70px rgba(0, 0, 0, 0.56);
   overflow: hidden;
 }
 
@@ -509,10 +517,12 @@ h1 {
   min-width: 0;
   max-height: calc(100svh - 32px);
   padding: 18px;
-  border: 2px solid #0d1117;
+  border: 2px solid var(--blackline);
   color: var(--ink);
-  background: var(--paper);
-  box-shadow: 0 14px 0 #0d1117, 0 24px 60px rgba(0, 0, 0, 0.54);
+  background:
+    linear-gradient(90deg, rgba(183, 87, 56, 0.13), transparent 92px),
+    linear-gradient(180deg, #fff8e8, var(--paper));
+  box-shadow: 0 14px 0 var(--blackline), 0 24px 60px rgba(0, 0, 0, 0.54);
   overflow: auto;
 }
 
@@ -577,12 +587,12 @@ h1 {
 .passive-toast {
   pointer-events: none;
   padding: 10px 11px;
-  border: 2px solid #0d1117;
+  border: 2px solid var(--blackline);
   border-left: 7px solid var(--voice-color, var(--cold-light));
   border-radius: 7px;
   color: var(--ink);
   background: #fff8e8;
-  box-shadow: 0 7px 0 #0d1117;
+  box-shadow: 0 7px 0 var(--blackline);
   transition: opacity 180ms ease, transform 180ms ease;
 }
 
@@ -628,9 +638,9 @@ h1 {
 
 .dialogue-panel {
   display: grid;
-  gap: 13px;
-  max-height: min(42svh, 380px);
-  padding: 16px;
+  gap: 12px;
+  max-height: min(44svh, 390px);
+  padding: 18px 18px 16px;
   overflow: auto;
 }
 
@@ -641,7 +651,8 @@ h1 {
   gap: 10px;
   color: var(--rust);
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 11px;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
@@ -654,8 +665,8 @@ h1 {
 
 .dialogue-close,
 .orb-close {
-  min-height: 28px;
-  padding: 4px 8px;
+  min-height: 34px;
+  padding: 5px 10px;
   border: 2px solid var(--ink);
   border-radius: 6px;
   color: var(--ink);
@@ -670,10 +681,10 @@ h1 {
 
 .dialogue-text {
   margin: 0;
-  max-width: 72ch;
+  max-width: 66ch;
   color: var(--ink);
   font-size: 18px;
-  line-height: 1.45;
+  line-height: 1.42;
 }
 
 .voice-aside {
@@ -705,15 +716,15 @@ h1 {
 
 .choice-list {
   display: grid;
-  gap: 8px;
+  gap: 7px;
 }
 
 .choice-button {
   width: 100%;
-  min-height: 42px;
-  padding: 9px 11px;
+  min-height: 44px;
+  padding: 9px 12px;
   border: 2px solid var(--ink);
-  border-radius: 7px;
+  border-radius: 6px;
   color: var(--ink);
   background: #fff8e8;
   text-align: left;
@@ -745,6 +756,7 @@ h1 {
 
 .choice-button:hover {
   background: #f1d99f;
+  transform: translateY(-1px);
 }
 
 .choice-button--important {
@@ -804,12 +816,12 @@ h1 {
   .play-area {
     flex: 1 1 auto;
     grid-template-columns: 1fr;
-    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-rows: minmax(0, auto) minmax(0, 1fr);
     align-items: stretch;
   }
 
   #game-stage {
-    width: min(100%, calc((100svh - 118px) * 5 / 3));
+    width: min(100%, calc((100svh - 96px) * 5 / 3));
   }
 
   .case-panel {
@@ -823,17 +835,17 @@ h1 {
 
   .dialogue-root {
     inset: auto 10px 10px;
-    max-height: min(52svh, 360px);
+    max-height: min(54svh, 380px);
   }
 
   .dialogue-panel {
-    max-height: min(52svh, 360px);
+    max-height: min(54svh, 380px);
   }
 }
 
 @media (max-width: 560px) {
   .game-shell {
-    gap: 8px;
+    gap: 7px;
     padding: 8px;
   }
 
@@ -856,45 +868,58 @@ h1 {
   }
 
   h1 {
-    font-size: 22px;
+    font-size: 21px;
   }
 
   .play-area {
     flex: 1 1 auto;
-    grid-template-rows: auto auto;
+    grid-template-rows: minmax(0, min(50svh, 430px)) minmax(0, 1fr);
     align-content: start;
     align-items: stretch;
-    gap: 8px;
+    gap: 7px;
     min-height: 0;
   }
 
   .stage-wrap {
-    height: auto;
+    display: block;
+    height: 100%;
     min-height: 0;
-    place-items: start center;
   }
 
   #game-stage {
-    width: 100%;
+    --mobile-stage-width: max(100%, calc(min(50svh, 430px) * 5 / 3));
+
+    position: relative;
+    left: calc((100% - var(--mobile-stage-width)) / 2);
+    width: var(--mobile-stage-width);
     max-width: none;
+    transform: none;
   }
 
   .case-panel {
-    height: 144px;
+    height: 100%;
     min-height: 0;
-    gap: 8px;
+    gap: 7px;
     padding: 10px;
     border-width: 1px;
     box-shadow: none;
   }
 
   .case-panel--expanded {
-    height: calc(100svh - 284px);
-    min-height: 260px;
+    height: 100%;
+    min-height: 250px;
   }
 
   body.dialogue-open .case-panel {
     display: none;
+  }
+
+  body.dialogue-open .play-area {
+    grid-template-rows: minmax(0, min(52svh, 460px));
+  }
+
+  body.dialogue-open #game-stage {
+    --mobile-stage-width: max(100%, calc(min(52svh, 460px) * 5 / 3));
   }
 
   body.dialogue-open .case-toggle {
@@ -1004,33 +1029,35 @@ h1 {
 
   .dialogue-text {
     font-size: 15px;
-    line-height: 1.35;
+    line-height: 1.38;
   }
 
   .interaction-prompt {
-    position: static;
-    align-self: stretch;
-    width: calc(100% - 16px);
-    min-height: 38px;
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+    width: auto;
+    min-height: 44px;
     max-width: none;
-    margin: 8px;
+    margin: 0;
     justify-content: flex-start;
     gap: 6px;
-    padding: 7px 10px;
+    padding: 8px 10px;
     font-size: 12px;
-    box-shadow: 0 4px 0 #0d1117;
+    box-shadow: 0 4px 0 var(--blackline);
     transform: none;
   }
 
   .prompt-mark {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
   }
 
   .dialogue-root {
     inset: auto 8px calc(8px + env(safe-area-inset-bottom));
-    max-height: min(62svh, 520px);
-    box-shadow: 0 10px 0 #0d1117, 0 18px 48px rgba(0, 0, 0, 0.48);
+    max-height: min(58svh, 520px);
+    box-shadow: 0 8px 0 var(--blackline), 0 18px 48px rgba(0, 0, 0, 0.52);
   }
 
   .tutorial-root {
@@ -1043,7 +1070,7 @@ h1 {
     width: min(100%, calc(100vw - 20px));
     max-height: min(72svh, 560px);
     padding: 14px;
-    box-shadow: 0 8px 0 #0d1117, 0 18px 48px rgba(0, 0, 0, 0.54);
+    box-shadow: 0 8px 0 var(--blackline), 0 18px 48px rgba(0, 0, 0, 0.54);
   }
 
   .tutorial-panel h2 {
@@ -1062,7 +1089,7 @@ h1 {
 
   .dialogue-panel {
     gap: 10px;
-    max-height: min(62svh, 520px);
+    max-height: min(58svh, 520px);
     padding: 12px;
   }
 
@@ -1086,7 +1113,7 @@ h1 {
   }
 
   .choice-button {
-    min-height: 44px;
+    min-height: 46px;
     padding: 8px 10px;
     font-size: 13px;
     line-height: 1.25;
@@ -1111,7 +1138,7 @@ h1 {
     padding: 7px 8px;
     border-left-width: 5px;
     border-radius: 6px;
-    box-shadow: 0 4px 0 #0d1117;
+    box-shadow: 0 4px 0 var(--blackline);
     overflow: hidden;
   }
 

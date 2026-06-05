@@ -101,6 +101,7 @@ export class MirrorsScene extends Phaser.Scene {
     this.createTextures()
     this.drawMap()
     this.createActors()
+    this.createForegroundOccluders()
     this.createHotspots()
     this.createOrbs()
     this.auditInteractionTargets()
@@ -661,8 +662,28 @@ export class MirrorsScene extends Phaser.Scene {
     })
 
     this.add.sprite(242, 348, leducKey).setDepth(5)
-    this.add.sprite(760, 186, amarKey).setDepth(5)
-    this.add.sprite(704, 454, sofianeKey).setDepth(5)
+    this.add.sprite(668, 222, amarKey).setDepth(5)
+    this.add.sprite(646, 386, sofianeKey).setDepth(5)
+  }
+
+  private createForegroundOccluders(): void {
+    if (!this.textures.exists('p2-background')) {
+      return
+    }
+
+    const occluders = [
+      [672, 258, 240, 108],
+      [692, 350, 224, 86],
+      [594, 396, 342, 126],
+    ] as Array<[number, number, number, number]>
+
+    occluders.forEach(([x, y, width, height]) => {
+      this.add
+        .image(x, y, 'p2-background')
+        .setOrigin(0)
+        .setCrop(x, y, width, height)
+        .setDepth(6)
+    })
   }
 
   private createHotspots(): void {
@@ -695,24 +716,24 @@ export class MirrorsScene extends Phaser.Scene {
         id: 'amar',
         label: 'Parler à Amar Boudiaf',
         scriptId: 'amar',
-        x: 760,
-        y: 186,
+        x: 668,
+        y: 222,
         radius: 82,
         tapRadius: 44,
-        approachX: 728,
-        approachY: 232,
+        approachX: 626,
+        approachY: 258,
         lockRadius: 92,
       },
       {
         id: 'sofiane',
         label: 'Parler à Sofiane',
         scriptId: 'sofiane',
-        x: 704,
-        y: 454,
+        x: 646,
+        y: 386,
         radius: 86,
         tapRadius: 44,
-        approachX: 666,
-        approachY: 420,
+        approachX: 596,
+        approachY: 374,
         lockRadius: 96,
       },
     ]
@@ -796,12 +817,12 @@ export class MirrorsScene extends Phaser.Scene {
         id: 'miroirs_orb_residents',
         label: 'Écouter la palissade',
         mode: 'proximity',
-        x: 704,
-        y: 454,
+        x: 646,
+        y: 386,
         radius: 78,
         tapRadius: 30,
-        approachX: 710,
-        approachY: 410,
+        approachX: 596,
+        approachY: 374,
         lockRadius: 88,
       },
     ]
@@ -829,7 +850,7 @@ export class MirrorsScene extends Phaser.Scene {
     const color = tone === 'primary' ? 0x65d8e6 : 0xd7a84b
     const alpha = tone === 'primary' ? 0.78 : 0.62
 
-    marker.setDepth(tone === 'primary' ? 5 : 4)
+    marker.setDepth(tone === 'primary' ? 7 : 6)
     marker.fillStyle(color, tone === 'primary' ? 0.82 : 0.68)
     marker.fillRect(-3, -3, 6, 6)
     marker.lineStyle(tone === 'primary' ? 2 : 1, color, alpha)
