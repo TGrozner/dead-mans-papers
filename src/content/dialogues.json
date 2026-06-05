@@ -228,7 +228,7 @@
       "start": {
         "id": "start",
         "speaker": "Karine Leduc",
-        "text": "\"On va appeler ?a un incident de chantier.\" Karine bloque le passage vers l'utilitaire, main lev?e, t?l?phone serr?. \"Tu ne touches ? rien tant qu'on n'a pas cadr?. Tu t'es r?veill? ? dix m?tres, Zin?dine. Et moi j'ai un v?hicule municipal que personne ne doit filmer.\"",
+        "text": "\"On va appeler ça un incident de chantier.\" Karine bloque le passage vers l'utilitaire, main levée, téléphone serré. \"Tu ne touches à rien tant qu'on n'a pas cadré. Tu t'es réveillé à dix mètres, Zinédine. Et moi j'ai un véhicule municipal que personne ne doit filmer.\"",
         "effects": [
           {
             "type": "flag",
@@ -236,7 +236,7 @@
           },
           {
             "type": "clue",
-            "clue": "Karine veut contenir un incident autour de l'utilitaire municipal avant que la sc?ne soit film?e ou officialis?e."
+            "clue": "Karine veut contenir un incident autour de l'utilitaire municipal avant que la scène soit filmée ou officialisée."
           }
         ],
         "choices": [
@@ -549,7 +549,7 @@
       "trunk_block": {
         "id": "trunk_block",
         "speaker": "Karine Leduc",
-        "text": "Elle garde la main sur le hayon. \"Tu regardes, tu respires, tu ne me fais pas une sc?ne de manque devant mon v?hicule. Si tu tombes, quelqu'un ?crira que tu ?tais instable avant m?me d'?crire ce qu'il y avait dedans.\"",
+        "text": "Elle garde la main sur le hayon. \"Tu regardes, tu respires, tu ne me fais pas une scène de manque devant mon véhicule. Si tu tombes, quelqu'un écrira que tu étais instable avant même d'écrire ce qu'il y avait dedans.\"",
         "effects": [
           {
             "type": "flag",
@@ -563,7 +563,7 @@
             "important": true
           },
           {
-            "label": "\"Si tu me parles comme ? un dossier m?dical, je vais le devenir.\"",
+            "label": "\"Si tu me parles comme à un dossier médical, je vais le devenir.\"",
             "next": "medical_shame"
           },
           {
@@ -622,7 +622,7 @@
       "trunk_open": {
         "id": "trunk_open",
         "speaker": "Parking P2",
-        "text": "Le hayon monte. Tout arrive d'un coup. L'odeur de vieux froid. La Javel. Le corps d'un vieil homme tass? dans la t?le. Et sur sa poitrine, pas cach?s, pas subtils: ta carte, ton badge municipal, une ordonnance pli?e. Ton nom pos? sur un mort comme une ?tiquette de consigne.",
+        "text": "Le hayon monte. Tout arrive d'un coup. L'odeur de vieux froid. La Javel. Le corps d'un vieil homme tassé dans la tôle. Et sur sa poitrine, pas cachés, pas subtils: ta carte, ton badge municipal, une ordonnance pliée. Ton nom posé sur un mort comme une étiquette de consigne.",
         "effects": [
           {
             "type": "flag",
@@ -630,7 +630,7 @@
           },
           {
             "type": "clue",
-            "clue": "Le corps d'un vieil homme est dans l'utilitaire avec la carte, le badge municipal et l'ordonnance de Zin?dine pos?s sur lui."
+            "clue": "Le corps d'un vieil homme est dans l'utilitaire avec la carte, le badge municipal et l'ordonnance de Zinédine posés sur lui."
           }
         ],
         "choices": [
@@ -649,7 +649,7 @@
             "next": "leduc_after_open"
           },
           {
-            "label": "Reculer avant que ton corps d?cide pour toi.",
+            "label": "Reculer avant que ton corps décide pour toi.",
             "next": "open_sickness"
           }
         ]
@@ -719,7 +719,7 @@
             "important": true
           },
           {
-            "label": "Fouiller la doublure du coffre malgr? la naus?e.",
+            "label": "Fouiller la doublure du coffre malgré la nausée.",
             "check": {
               "id": "trunk_search",
               "voice": "faim",
@@ -1060,7 +1060,7 @@
         "id": "search_success",
         "speaker": "La Main Basse",
         "voice": "main_gauche",
-        "text": "Tu bloques la bile, tu bloques le tremblement, et tu laisses la main faire. Sous la doublure du coffre, elle trouve une page arrach?e que personne n'a pens?e ? retirer. Pas un miracle: une erreur de gens press?s.",
+        "text": "Tu bloques la bile, tu bloques le tremblement, et tu laisses la main faire. Sous la doublure du coffre, elle trouve une page arrachée que personne n'a pensée à retirer. Pas un miracle: une erreur de gens pressés.",
         "effects": [
           {
             "type": "flag",
@@ -1076,7 +1076,7 @@
           },
           {
             "type": "clue",
-            "clue": "Une page arrach?e est coinc?e dans la doublure du coffre: P2 cam?ra morte / badge chantier / Hami ?"
+            "clue": "Une page arrachée est coincée dans la doublure du coffre: P2 caméra morte / badge chantier / Hami ?"
           }
         ],
         "choices": [
@@ -1090,7 +1090,7 @@
       "search_failure": {
         "id": "search_failure",
         "speaker": "Toi",
-        "text": "Tu vomis contre le pare-chocs. Public, acide, indiscutable. Karine voit le manque et la honte. Mais ta main revient quand m?me de la doublure avec une page humide. D?faite sociale, preuve utile.",
+        "text": "Tu vomis contre le pare-chocs. Public, acide, indiscutable. Karine voit le manque et la honte. Mais ta main revient quand même de la doublure avec une page humide. Défaite sociale, preuve utile.",
         "effects": [
           {
             "type": "flag",
@@ -1106,7 +1106,7 @@
           },
           {
             "type": "clue",
-            "clue": "M?me en ratant le contr?le de son corps, Zin?dine r?cup?re une page arrach?e: P2 cam?ra morte / badge chantier / Hami ?"
+            "clue": "Même en ratant le contrôle de son corps, Zinédine récupère une page arrachée: P2 caméra morte / badge chantier / Hami ?"
           }
         ],
         "choices": [
@@ -1241,7 +1241,7 @@
       "body_precheck": {
         "id": "body_precheck",
         "speaker": "Corps dans le coffre",
-        "text": "Un vieux. Plus vraiment une silhouette: un visage creus?, des v?tements d'habitant, pas de sang ?vident. Il a ?t? d?plac?, rang?, trait? comme un probl?me logistique. Les papiers sur lui te regardent plus fort que ses yeux ferm?s.",
+        "text": "Un vieux. Plus vraiment une silhouette: un visage creusé, des vêtements d'habitant, pas de sang évident. Il a été déplacé, rangé, traité comme un problème logistique. Les papiers sur lui te regardent plus fort que ses yeux fermés.",
         "effects": [
           {
             "type": "flag",
@@ -1254,7 +1254,7 @@
         ],
         "choices": [
           {
-            "label": "Chercher une blessure ?vidente sans toucher.",
+            "label": "Chercher une blessure évidente sans toucher.",
             "next": "body_no_wounds",
             "important": true
           },
@@ -1390,7 +1390,7 @@
         "id": "open_sickness",
         "speaker": "Le Ventre",
         "voice": "faim",
-        "text": "Ton estomac monte. Pas po?tique. Pas noble. Juste du liquide acide et la certitude que ton corps veut t?moigner avant toi. Tu l'avales mal. Karine voit tout. Elle ne sourit pas: elle classe.",
+        "text": "Ton estomac monte. Pas poétique. Pas noble. Juste du liquide acide et la certitude que ton corps veut témoigner avant toi. Tu l'avales mal. Karine voit tout. Elle ne sourit pas: elle classe.",
         "effects": [
           {
             "type": "flag",
@@ -1402,7 +1402,7 @@
           },
           {
             "type": "clue",
-            "clue": "Karine a vu que l'odeur du corps et le manque mettent Zin?dine au bord de la naus?e."
+            "clue": "Karine a vu que l'odeur du corps et le manque mettent Zinédine au bord de la nausée."
           }
         ],
         "choices": [
@@ -1415,21 +1415,21 @@
       "leduc_after_open": {
         "id": "leduc_after_open",
         "speaker": "Karine Leduc",
-        "text": "\"Je savais qu'il y avait quelque chose. Pas ?a.\" Elle ment peut-?tre. Ou elle r?duit. Chez elle, c'est presque la m?me comp?tence. \"Et je savais surtout que si la nationale arrive avant nous, ils prennent ton ?tat, mon utilitaire, ses papiers, et ils fabriquent une histoire simple.\"",
+        "text": "\"Je savais qu'il y avait quelque chose. Pas ça.\" Elle ment peut-être. Ou elle réduit. Chez elle, c'est presque la même compétence. \"Et je savais surtout que si la nationale arrive avant nous, ils prennent ton état, mon utilitaire, ses papiers, et ils fabriquent une histoire simple.\"",
         "effects": [
           {
             "type": "clue",
-            "clue": "Karine veut ?viter qu'une version simple accuse Zin?dine ? partir de son ?tat et de ses papiers."
+            "clue": "Karine veut éviter qu'une version simple accuse Zinédine à partir de son état et de ses papiers."
           }
         ],
         "choices": [
           {
-            "label": "\"Alors on regarde la version compliqu?e.\"",
+            "label": "\"Alors on regarde la version compliquée.\"",
             "next": "papers_reveal",
             "important": true
           },
           {
-            "label": "\"Tu appelles ?a nous, maintenant ?\"",
+            "label": "\"Tu appelles ça nous, maintenant ?\"",
             "next": "leduc_interests"
           }
         ]

@@ -20,6 +20,33 @@ const emittedClues = new Set()
 const checkIds = new Map()
 const orbIds = new Set()
 const passiveIds = new Set()
+const suspiciousMojibakePattern = /[A-Za-zÀ-ÿ]\?[A-Za-zÀ-ÿ]|\?[a-zàâçéèêëîïôùûüœ]/u
+
+function scanText(value, owner) {
+  if (typeof value === 'string') {
+    if (value.includes('�') || suspiciousMojibakePattern.test(value)) {
+      errors.push(`${owner} contains suspicious mojibake: ${value}`)
+    }
+    return
+  }
+
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => scanText(item, `${owner}[${index}]`))
+    return
+  }
+
+  if (!value || typeof value !== 'object') {
+    return
+  }
+
+  for (const [key, nestedValue] of Object.entries(value)) {
+    scanText(nestedValue, `${owner}.${key}`)
+  }
+}
+
+scanText(dialogues, 'dialogues')
+scanText(orbs, 'orbs')
+scanText(passives, 'passives')
 
 function trackEffects(effects = [], owner) {
   for (const effect of effects) {
