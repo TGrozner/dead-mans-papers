@@ -105,7 +105,7 @@
       "scriptId": "sofiane",
       "nodeId": "start"
     },
-    "text": "Le quartier parle souvent par ceux qu'on ne met pas dans les comptes rendus: un témoin qui se protège, un hall qui tousse, une insulte qui traîne."
+    "text": "Il ne veut pas être un témoin. Ici, être témoin, c'est souvent devenir le nom qu'on répète quand ça chauffe."
   },
   {
     "id": "miroirs_sofiane__nerf_gants_bleus",
@@ -123,7 +123,7 @@
       "scriptId": "sofiane",
       "nodeId": "vest"
     },
-    "text": "Gants bleus, badge propre, pas de visage. Ce n'est pas un témoin flou: c'est un geste qui a appris à ne pas salir ses doigts."
+    "text": "Les gants bleus comptent plus que son visage. Sofiane n'a pas inventé ce détail: c'est le genre de chose qu'on retient quand on évite de regarder le reste."
   },
   {
     "id": "miroirs_sofiane__dossier_camera_support",
@@ -141,7 +141,7 @@
       "scriptId": "sofiane",
       "nodeId": "camera"
     },
-    "text": "Retoucher le support d'une caméra morte, c'est administratif et obscène: on ajuste le regard d'un témoin qu'on sait muet."
+    "text": "Une caméra morte depuis mars, puis quelqu'un qui vient quand même tourner le support: ce n'est pas une preuve, mais c'est un horaire à vérifier."
   },
   {
     "id": "miroirs_sofiane__dose_gobelet_mirror",
@@ -159,7 +159,7 @@
       "scriptId": "sofiane",
       "nodeId": "gobelet"
     },
-    "text": "Même quelqu'un qui cherche à se brouiller les nerfs voit la facture. Haleine, yeux, main: le corps vend la mèche avant la bouche."
+    "text": "Il sait ce que les autres voient quand ils disent Le Gobelet: la main, l'odeur, les matins ratés. Pas toute la personne."
   },
   {
     "id": "miroirs_sofiane__antipassive_smoke_easy_culprit",
@@ -178,6 +178,6 @@
       "scriptId": "sofiane",
       "nodeId": "joint"
     },
-    "text": "Il fume, donc il se protège. Pas forcément qu'il ment. Mauvaise lecture de flic fatigué: les gens propres mentent aussi; ils ont juste une meilleure lumière."
+    "text": "Il fume, donc il serait moins fiable. Mauvaise lecture: il fume aussi parce qu'il a peur d'être celui qui parle trop."
   }
 ]
