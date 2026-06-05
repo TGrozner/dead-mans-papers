@@ -5,6 +5,7 @@ const readJson = (path) => JSON.parse(fs.readFileSync(path, 'utf8'))
 const dialogues = readJson('src/content/dialogues.json')
 const voices = new Set(readJson('src/content/voices.json').map((voice) => voice.id))
 const parasites = new Set(readJson('src/content/parasites.json').map((parasite) => parasite.id))
+const clueGroups = readJson('src/game/clue-groups.json')
 const orbs = readJson('src/content/locations/miroirs/orbs.json')
 const passives = [
   'body',
@@ -47,6 +48,9 @@ function scanText(value, owner) {
 scanText(dialogues, 'dialogues')
 scanText(orbs, 'orbs')
 scanText(passives, 'passives')
+scanText(clueGroups, 'clueGroups')
+
+validateClueGroups()
 
 function trackEffects(effects = [], owner) {
   for (const effect of effects) {
@@ -184,6 +188,14 @@ for (const passive of passives) {
   trackEffects(passive.optionalEffects, passive.id)
 }
 
+for (const clue of emittedClues) {
+  const group = getClueGroup(clue)
+
+  if (!group || group.id === 'other') {
+    errors.push(`Clue is not covered by a specific clue group: ${clue}`)
+  }
+}
+
 const summary = [
   `${Object.keys(dialogues).length} scripts`,
   `${Object.values(dialogues).reduce((count, script) => count + Object.keys(script.nodes).length, 0)} nodes`,
@@ -202,3 +214,55 @@ if (errors.length) {
 }
 
 console.log(`Content validation OK: ${summary.join(', ')}`)
+
+function validateClueGroups() {
+  const groupIds = new Set()
+  let hasOtherGroup = false
+
+  for (const group of clueGroups) {
+    if (!group.id) {
+      errors.push('Clue group is missing an id')
+      continue
+    }
+
+    if (groupIds.has(group.id)) {
+      errors.push(`Duplicate clue group id: ${group.id}`)
+    }
+
+    groupIds.add(group.id)
+
+    if (group.id === 'other') {
+      hasOtherGroup = true
+      continue
+    }
+
+    if (!Array.isArray(group.keywords) || group.keywords.length === 0) {
+      errors.push(`Clue group has no keywords: ${group.id}`)
+    }
+  }
+
+  if (!hasOtherGroup) {
+    errors.push('Missing required clue group: other')
+  }
+}
+
+function getClueGroup(clue) {
+  const normalizedClue = clue.toLocaleLowerCase('fr-FR')
+
+  return clueGroups.reduce((bestGroup, candidate) => {
+    if (candidate.id === 'other') {
+      return bestGroup
+    }
+
+    const candidateScore = getClueGroupScore(normalizedClue, candidate.keywords)
+    const bestScore = bestGroup ? getClueGroupScore(normalizedClue, bestGroup.keywords) : 0
+
+    return candidateScore > bestScore ? candidate : bestGroup
+  }, undefined)
+}
+
+function getClueGroupScore(clue, keywords = []) {
+  return keywords.reduce((score, keyword) => {
+    return clue.includes(keyword) ? score + 1 : score
+  }, 0)
+}

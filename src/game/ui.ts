@@ -1,4 +1,5 @@
 import { parasiteById, voiceById, voices } from './content'
+import clueGroupsJson from './clue-groups.json'
 import type {
   CheckResult,
   DialogueChoice,
@@ -14,53 +15,14 @@ const MOBILE_TOAST_QUERY = '(max-width: 560px)'
 const MAX_DESKTOP_TOASTS = 5
 const MAX_MOBILE_TOASTS = 1
 const MOBILE_TOAST_LIFETIME_MS = 8000
-const CLUE_GROUPS = [
-  {
-    id: 'body',
-    label: 'Corps / Ahmed',
-    keywords: ['ahmed', 'corps', 'vieux', 'vieil', 'cadavre', 'blessure', 'coffre', 'carnet', 'page arrachée'],
-  },
-  {
-    id: 'camera',
-    label: 'Caméra P2',
-    keywords: ['caméra', 'support'],
-  },
-  {
-    id: 'access',
-    label: 'Badge / accès',
-    keywords: ['badge', 'accès', 'lecteur', 'chantier', 'prestataire', 'local', 'bungalow', 'clés'],
-  },
-  {
-    id: 'hami',
-    label: 'Hami / santé',
-    keywords: ['hami', 'ordonnance', 'prescription', 'médical', 'santé'],
-  },
-  {
-    id: 'karine',
-    label: 'Karine / mairie',
-    keywords: ['karine', 'mairie', 'municipal', 'nationale', 'procédure', 'utilitaire', 'version simple', 'accuse'],
-  },
-  {
-    id: 'witnesses',
-    label: 'Témoins',
-    keywords: ['amar', 'sofiane', 'habitants', 'palissade', 'quartier'],
-  },
-  {
-    id: 'body-state',
-    label: 'Corps de Zinédine',
-    keywords: ['alcool', 'manque', 'dose', 'tremblements', 'nausée', 'vomis', 'addiction', 'dette'],
-  },
-  {
-    id: 'zinedine',
-    label: 'Zinédine',
-    keywords: ['zinédine', 'papiers', 'nom', 'gobelet', 'téléphone', 'trou noir', 'prénom', 'surnom'],
-  },
-  {
-    id: 'other',
-    label: 'À classer',
-    keywords: [],
-  },
-] as const
+
+interface ClueGroup {
+  id: string
+  label: string
+  keywords: string[]
+}
+
+const CLUE_GROUPS = clueGroupsJson as ClueGroup[]
 
 interface GameUiOptions {
   engine: NarrativeEngine
@@ -474,14 +436,12 @@ function renderClues(state: GameState): void {
   })
 }
 
-function groupClues(clues: string[]): Map<(typeof CLUE_GROUPS)[number]['id'], string[]> {
-  const groupedClues = new Map<(typeof CLUE_GROUPS)[number]['id'], string[]>(
-    CLUE_GROUPS.map((group) => [group.id, []]),
-  )
+function groupClues(clues: string[]): Map<string, string[]> {
+  const groupedClues = new Map<string, string[]>(CLUE_GROUPS.map((group) => [group.id, []]))
 
   clues.forEach((clue) => {
     const normalizedClue = clue.toLocaleLowerCase('fr-FR')
-    const group = CLUE_GROUPS.reduce<(typeof CLUE_GROUPS)[number] | undefined>((bestGroup, candidate) => {
+    const group = CLUE_GROUPS.reduce<ClueGroup | undefined>((bestGroup, candidate) => {
       if (candidate.id === 'other') {
         return bestGroup
       }

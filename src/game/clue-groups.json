@@ -1,0 +1,47 @@
+[
+  {
+    "id": "body",
+    "label": "Corps / Ahmed",
+    "keywords": ["ahmed", "corps", "vieux", "vieil", "cadavre", "blessure", "coffre", "carnet", "page arrachée"]
+  },
+  {
+    "id": "camera",
+    "label": "Caméra P2",
+    "keywords": ["caméra", "support"]
+  },
+  {
+    "id": "access",
+    "label": "Badge / accès",
+    "keywords": ["badge", "accès", "lecteur", "chantier", "prestataire", "local", "bungalow", "clés"]
+  },
+  {
+    "id": "hami",
+    "label": "Hami / santé",
+    "keywords": ["hami", "ordonnance", "prescription", "médical", "santé"]
+  },
+  {
+    "id": "karine",
+    "label": "Karine / mairie",
+    "keywords": ["karine", "mairie", "municipal", "nationale", "procédure", "utilitaire", "version simple", "accuse"]
+  },
+  {
+    "id": "witnesses",
+    "label": "Témoins",
+    "keywords": ["amar", "sofiane", "habitants", "palissade", "quartier"]
+  },
+  {
+    "id": "body-state",
+    "label": "Corps de Zinédine",
+    "keywords": ["alcool", "manque", "dose", "tremblements", "nausée", "vomis", "addiction", "dette"]
+  },
+  {
+    "id": "zinedine",
+    "label": "Zinédine",
+    "keywords": ["zinédine", "papiers", "nom", "gobelet", "téléphone", "trou noir", "prénom", "surnom"]
+  },
+  {
+    "id": "other",
+    "label": "À classer",
+    "keywords": []
+  }
+]
