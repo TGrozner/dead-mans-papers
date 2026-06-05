@@ -187,11 +187,11 @@ function renderOrb(orb: RenderedOrb): void {
 }
 
 function renderPassiveAside(passive: PassiveTrigger): string {
-  const voice = voiceById[passive.voice]
+  const channel = getPassiveChannel(passive)
 
   return `
-    <aside class="passive-aside" style="--voice-color: ${voice.color}">
-      <div class="passive-speaker">${escapeHtml(voice.name)}</div>
+    <aside class="passive-aside" style="--voice-color: ${channel.color}">
+      <div class="passive-speaker">${escapeHtml(channel.name)}</div>
       <p>${escapeHtml(passive.text)}</p>
     </aside>
   `
@@ -199,13 +199,13 @@ function renderPassiveAside(passive: PassiveTrigger): string {
 
 function showPassiveToasts(passives: PassiveTrigger[], toastRoot: HTMLDivElement): void {
   passives.forEach((passive) => {
-    const voice = voiceById[passive.voice]
+    const channel = getPassiveChannel(passive)
     const toast = document.createElement('article')
     toast.className = 'passive-toast'
-    toast.style.setProperty('--voice-color', voice.color)
+    toast.style.setProperty('--voice-color', channel.color)
     toast.innerHTML = `
       <div class="passive-toast-head">
-        <span>${escapeHtml(voice.name)}</span>
+        <span>${escapeHtml(channel.name)}</span>
         <button type="button" aria-label="Fermer la pensée">×</button>
       </div>
       <p>${escapeHtml(passive.text)}</p>
@@ -240,6 +240,21 @@ function showOrbToast(orb: RenderedOrb, toastRoot: HTMLDivElement): void {
 
   toast.querySelector('button')?.addEventListener('click', () => toast.remove())
   toastRoot.append(toast)
+}
+
+function getPassiveChannel(passive: PassiveTrigger): { name: string; color: string } {
+  if (passive.voice) {
+    return voiceById[passive.voice]
+  }
+
+  if (passive.parasite) {
+    return parasiteById[passive.parasite]
+  }
+
+  return {
+    name: 'Pensée',
+    color: '#d7a84b',
+  }
 }
 
 function renderClues(state: GameState): void {

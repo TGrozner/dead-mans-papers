@@ -21,18 +21,22 @@ npm run dev
 - La Dose, parasite non-stat lié à l'alcool, aux calmants et à la dette médicale.
 - Choix de posture identitaire devant les papiers du mort.
 - Passifs de voix: dialogue, exploration et indice.
+- Antipassifs: mauvaises lectures quand une voix est trop basse.
+- Surfaces objet dialoguées: papiers de Morad, badge, ordonnance, page arrachée.
 - Sept orbs d'observation: visibles ou déclenchés par proximité, dont le téléphone fissuré et ses 12 appels manqués.
 - Dialogues stockés dans `src/content/dialogues.json`.
 - Passifs stockés par contexte dans `src/content/locations/miroirs/*.passives.json`.
 - Orbs stockés dans `src/content/locations/miroirs/orbs.json`.
+- Passifs d'objets stockés dans `src/content/locations/miroirs/objects.passives.json`.
 - Checks actifs en d6 + une ou deux voix contre difficulté.
 - Échecs écrits comme des scènes, avec indices ou conséquences.
 - Sauvegarde locale via `localStorage`.
 
 ## Contrôles
 
-- Déplacement: flèches, ZQSD ou WASD.
-- Interaction proche: bouton contextuel, Espace, Entrée ou E.
+- Déplacement: flèches, ZQSD, WASD ou toucher le sol pour marcher vers un point.
+- Interaction: toucher directement un marqueur `?` / `...` ou un élément important de la scène; près d'un élément, utiliser aussi le bouton contextuel, Espace, Entrée ou E.
+- Mobile: la scène est pensée en tap-to-inspect plutôt qu'en joystick virtuel; les zones longues scrollent à l'intérieur du dossier ou du dialogue, pas dans toute la page.
 
 ## Notes Dev
 

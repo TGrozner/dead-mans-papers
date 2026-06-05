@@ -246,8 +246,24 @@ export class NarrativeEngine {
       return undefined
     }
 
-    if (this.state.voiceStats[passive.voice] < passive.minScore) {
+    if (passive.requiresFlag && !this.state.flags[passive.requiresFlag]) {
       return undefined
+    }
+
+    if (passive.hiddenWhenFlag && this.state.flags[passive.hiddenWhenFlag]) {
+      return undefined
+    }
+
+    if (passive.voice) {
+      const score = this.state.voiceStats[passive.voice]
+
+      if (score < (passive.minScore ?? 0)) {
+        return undefined
+      }
+
+      if (passive.maxScore !== undefined && score > passive.maxScore) {
+        return undefined
+      }
     }
 
     if (isOneShot) {
@@ -259,6 +275,7 @@ export class NarrativeEngine {
     return {
       id: passive.id,
       voice: passive.voice,
+      parasite: passive.parasite,
       display: passive.display,
       text: passive.text,
     }

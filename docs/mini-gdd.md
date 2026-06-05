@@ -40,7 +40,9 @@ Le problème immédiat n'est pas seulement de savoir qui est mort. C'est de prou
 4. La Dose sent le vieux froid dans une voiture chaude avant que Morad comprenne.
 5. Le coffre s'ouvre sur Ahmed Berrichi et les papiers de Morad.
 6. Le joueur choisit comment porter ou salir ce nom.
-7. Morad fouille le coffre: succès ou échec, la page arrachée arrive quand même.
+7. Karine réagit différemment selon la posture identitaire choisie.
+8. Le joueur inspecte au moins une surface utile: papiers, badge, Ahmed, carnet absent, formulation de Karine.
+9. Morad fouille le coffre: succès ou échec, la page arrachée arrive quand même.
 
 ## Ton
 
@@ -51,6 +53,13 @@ Pas de romantisme portuaire. La poésie vient du contraste entre langue municipa
 ## Boucle
 
 Explorer, parler, inspecter, écouter les voix internes, subir La Dose, tenter des checks, accumuler des indices et des contradictions.
+
+## Jouabilité mobile
+
+- Toucher un marqueur `?`, `...` ou un élément important de la scène ouvre directement la surface narrative correspondante.
+- Toucher le sol fait marcher Morad vers ce point, avec un marqueur discret de destination.
+- Le prototype évite le joystick virtuel: la lecture des objets et la sélection des choix sont plus importantes que la précision du déplacement.
+- La page principale ne doit pas scroller globalement; seuls le dossier, les listes internes et le dialogue peuvent scroller si leur contenu dépasse.
 
 ## Identité
 
@@ -66,6 +75,8 @@ Système actuel: `identityPosture` sauvegardé, flags de posture, bump léger d'
 ## Passifs v1
 
 - Déclenchement si la voix atteint le score minimum.
+- Antipassif si la voix reste sous ou égale à un `maxScore`: mauvaise lecture intéressante, pas simple absence d'information.
+- La Dose peut apparaître comme passif parasite sans score.
 - Chaque passif ne se déclenche qu'une fois.
 - Les passifs de dialogue apparaissent dans la boîte de dialogue.
 - Les passifs d'exploration et d'indice apparaissent en toast durable.
@@ -88,6 +99,7 @@ Système actuel: `identityPosture` sauvegardé, flags de posture, bump léger d'
 - Le bandeau de résultat affiche le détail du jet.
 - Cliquer un check déjà tenté rejoue la scène du résultat mémorisé.
 - Check principal v0: fouiller le coffre et Ahmed sans vomir ni trembler devant Karine, avec `Le Ventre + La Main Basse`.
+- Le check principal n'apparaît qu'après préparation narrative: posture identitaire + inspection d'une surface utile.
 - Échec premium: Morad vomit et Karine voit sa faiblesse, mais sa main revient quand même avec la page arrachée.
 
 ## Voix internes v0
@@ -125,5 +137,12 @@ Chaque scène importante doit contenir:
 Le corps dans l'utilitaire n'a pas seulement été caché: il a été mal déplacé par un circuit municipal. Dépôt, local sanitaire, centre municipal de santé, morgue provisoire ou autre nom propre pour une chose sale.
 
 Objet central v0: une page arrachée du carnet d'Ahmed indique `P2 caméra morte / badge chantier / Hami ?`. Au verso: `Si Le Gobelet oublie, Amar sait.`
+
+Surfaces objet v0:
+
+- Papiers de Morad: identité, badge, ordonnance, accès.
+- Badge: rayures de lecteur récent, piste chantier/prestataire.
+- Page arrachée: caméra morte, badge chantier, Hami, verso Amar.
+- Corps d'Ahmed: déplacement, absence de carnet, mémoire sociale du prénom Morad.
 
 Le joueur est-il la victime, l'usurpateur, le témoin, ou le mensonge encore debout ?

@@ -2,6 +2,7 @@ import dialoguesJson from '../content/dialogues.json'
 import mirrorsOrbsJson from '../content/locations/miroirs/orbs.json'
 import mirrorsBodyPassivesJson from '../content/locations/miroirs/body.passives.json'
 import mirrorsLeducPassivesJson from '../content/locations/miroirs/leduc.passives.json'
+import mirrorsObjectPassivesJson from '../content/locations/miroirs/objects.passives.json'
 import mirrorsResidentsPassivesJson from '../content/locations/miroirs/residents.passives.json'
 import mirrorsVanPassivesJson from '../content/locations/miroirs/utility-van.passives.json'
 import parasitesJson from '../content/parasites.json'
@@ -24,6 +25,7 @@ const contextualPassives = [
   ...(mirrorsVanPassivesJson as PassiveDefinition[]),
   ...(mirrorsBodyPassivesJson as PassiveDefinition[]),
   ...(mirrorsLeducPassivesJson as PassiveDefinition[]),
+  ...(mirrorsObjectPassivesJson as PassiveDefinition[]),
   ...(mirrorsResidentsPassivesJson as PassiveDefinition[]),
 ]
 

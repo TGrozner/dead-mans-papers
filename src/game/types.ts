@@ -95,8 +95,12 @@ export interface PassiveDefinition {
   location: string
   subject: string
   channel: PassiveTriggerDefinition['type']
-  voice: VoiceId
-  minScore: number
+  voice?: VoiceId
+  parasite?: ParasiteId
+  minScore?: number
+  maxScore?: number
+  requiresFlag?: string
+  hiddenWhenFlag?: string
   once?: boolean
   priority?: number
   display: PassiveDisplay
@@ -107,7 +111,8 @@ export interface PassiveDefinition {
 
 export interface PassiveTrigger {
   id: string
-  voice: VoiceId
+  voice?: VoiceId
+  parasite?: ParasiteId
   display: PassiveDisplay
   text: string
 }

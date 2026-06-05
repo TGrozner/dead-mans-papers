@@ -28,6 +28,7 @@ src/content/
       utility-van.passives.json
       body.passives.json
       leduc.passives.json
+      objects.passives.json
       residents.passives.json
       orbs.json
 ```
@@ -43,6 +44,9 @@ Chaque passif contient:
 - `channel`: `exploration`, `dialogue` ou `clue`
 - `voice`
 - `minScore`
+- `maxScore` optionnel pour les antipassifs
+- `parasite` optionnel pour La Dose
+- `requiresFlag` / `hiddenWhenFlag` optionnels
 - `once`
 - `priority`
 - `display`
@@ -123,7 +127,18 @@ Chaque pensée aurait des conditions de déblocage, une étape de rumination, un
 
 ### Inventory As Dialogue
 
-Les objets importants doivent déclencher des voix. Les papiers du mort doivent devenir inspectables comme pseudo-objet, avec lectures par `Le Dossier`, `Le Regard`, `Le Présage`, `La Main Basse` et `La Dose`.
+Les objets importants doivent déclencher des voix. Les papiers du mort sont inspectables comme pseudo-objet, avec lectures par `Le Dossier`, `Le Regard`, `Le Présage`, `La Main Basse` et `La Dose`.
+
+Surfaces actuelles:
+
+- `papers_surface`: papiers, badge, ordonnance.
+- `page_surface`: caméra morte, badge chantier, Hami, pli humide.
+- `body_read`: Ahmed sans contact immédiat.
+- `notebook_absent`: carnet manquant avant la fouille.
+
+### Antipassives
+
+Un antipassif est un passif déclenché par `maxScore`: la voix parle quand elle est trop faible et propose une mauvaise lecture intéressante. Exemple: croire que Karine n'est pas dangereuse parce qu'elle parle bas, ou croire que `Le Gobelet` n'est qu'une blague.
 
 ### Addiction States
 

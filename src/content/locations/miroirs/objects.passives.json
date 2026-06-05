@@ -1,0 +1,200 @@
+[
+  {
+    "id": "miroirs_papers__dossier_access_not_identity",
+    "contextId": "miroirs/papers",
+    "location": "miroirs",
+    "subject": "morad-papers",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "minScore": 2,
+    "once": true,
+    "priority": 88,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "papers_surface"
+    },
+    "text": "Carte, badge, ordonnance: trois papiers, trois administrations, une seule mise en scène. Ce n'est pas ton identité qu'on a plantée sur Ahmed; ce sont tes accès."
+  },
+  {
+    "id": "miroirs_papers__regard_public_photo",
+    "contextId": "miroirs/papers",
+    "location": "miroirs",
+    "subject": "morad-papers",
+    "channel": "dialogue",
+    "voice": "honte_publique",
+    "minScore": 2,
+    "once": true,
+    "priority": 82,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "papers_regard"
+    },
+    "text": "Tu sens déjà la photo qui n'existe pas encore: ton badge sur un mort, ta bouche trop sèche, Karine qui trouve un angle plus petit que la honte."
+  },
+  {
+    "id": "miroirs_papers__main_badge_scratches",
+    "contextId": "miroirs/papers",
+    "location": "miroirs",
+    "subject": "morad-badge",
+    "channel": "dialogue",
+    "voice": "main_gauche",
+    "minScore": 2,
+    "once": true,
+    "priority": 86,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "papers_main"
+    },
+    "text": "Les rayures ne mentent pas par idéologie. Elles disent seulement: lecteur, lecteur, lecteur. Quelqu'un a utilisé ton passage comme un outil."
+  },
+  {
+    "id": "miroirs_papers__dose_medical_promise",
+    "contextId": "miroirs/papers",
+    "location": "miroirs",
+    "subject": "folded-prescription",
+    "channel": "dialogue",
+    "parasite": "dose",
+    "requiresFlag": "dose_heard",
+    "once": true,
+    "priority": 90,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "papers_dose"
+    },
+    "text": "Ne froisse pas l'ordonnance. Le papier qui t'empêche de tomber mérite un peu de respect, même quand il dort dans la poche d'un mort."
+  },
+  {
+    "id": "miroirs_body__ventre_counts_hours",
+    "contextId": "miroirs/body",
+    "location": "miroirs",
+    "subject": "ahmed-berrichi",
+    "channel": "dialogue",
+    "voice": "faim",
+    "minScore": 1,
+    "once": true,
+    "priority": 78,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "body_read"
+    },
+    "text": "Le corps d'Ahmed te renvoie au tien: heures sans manger, liquide mauvais, cachet trop loin. Ton ventre fait de la médecine avec des insultes."
+  },
+  {
+    "id": "miroirs_body__bouches_old_firstname",
+    "contextId": "miroirs/body",
+    "location": "miroirs",
+    "subject": "ahmed-berrichi",
+    "channel": "dialogue",
+    "voice": "bouches",
+    "minScore": 1,
+    "once": true,
+    "priority": 80,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "body_ahmed_history"
+    },
+    "text": "Les vieux du quartier gardent les vrais prénoms comme des clés de caves. Ils ne les prêtent pas aux gens qui veulent seulement rire."
+  },
+  {
+    "id": "miroirs_page__sel_cold_not_parking",
+    "contextId": "miroirs/page",
+    "location": "miroirs",
+    "subject": "torn-page",
+    "channel": "dialogue",
+    "voice": "memoire_saline",
+    "minScore": 2,
+    "once": true,
+    "priority": 84,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "page_fold"
+    },
+    "text": "Ce froid-là n'est pas une température. C'est un lieu qui a touché le papier, une pièce propre où les corps attendent qu'on leur donne un meilleur nom."
+  },
+  {
+    "id": "miroirs_page__dossier_camera_as_decision",
+    "contextId": "miroirs/page",
+    "location": "miroirs",
+    "subject": "dead-camera",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "minScore": 2,
+    "once": true,
+    "priority": 79,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "page_camera"
+    },
+    "text": "Une panne depuis mars n'est plus une panne en juin. C'est une politique de maintenance, donc une politique de mémoire."
+  },
+  {
+    "id": "miroirs_page__main_badge_opens_dirty",
+    "contextId": "miroirs/page",
+    "location": "miroirs",
+    "subject": "worksite-badge",
+    "channel": "dialogue",
+    "voice": "main_gauche",
+    "minScore": 2,
+    "once": true,
+    "priority": 81,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "page_badge"
+    },
+    "text": "Un badge chantier qui ouvre trop large n'est pas un bug. C'est une poignée sans témoin."
+  },
+  {
+    "id": "miroirs_page__presage_hami_debt_saint",
+    "contextId": "miroirs/page",
+    "location": "miroirs",
+    "subject": "hami-line",
+    "channel": "dialogue",
+    "voice": "symbole",
+    "minScore": 2,
+    "once": true,
+    "priority": 83,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "hami_reaction"
+    },
+    "text": "La Dose prie devant Hami comme devant une sainte des mains stables. Les saints municipaux signent souvent au stylo bleu."
+  },
+  {
+    "id": "miroirs_page__dose_hami_fast_defense",
+    "contextId": "miroirs/page",
+    "location": "miroirs",
+    "subject": "hami-line",
+    "channel": "dialogue",
+    "parasite": "dose",
+    "requiresFlag": "dose_heard",
+    "once": true,
+    "priority": 91,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "hami_reaction"
+    },
+    "text": "Elle stabilise. Elle régule. Elle ne pose pas de questions devant les gens. Tu ne mordras pas la main qui sait combien il faut."
+  }
+]

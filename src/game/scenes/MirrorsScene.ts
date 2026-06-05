@@ -31,6 +31,8 @@ export class MirrorsScene extends Phaser.Scene {
   private obstacles: Phaser.GameObjects.Rectangle[] = []
   private activeHotspotId?: string
   private activeOrbId?: string
+  private tapDestination?: Phaser.Math.Vector2
+  private tapMarker?: Phaser.GameObjects.Graphics
 
   constructor(bridge: MirrorsGameBridge) {
     super('miroirs')
@@ -58,15 +60,15 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private createInput(): void {
-    if (!this.input.keyboard) {
-      return
+    if (this.input.keyboard) {
+      this.cursors = this.input.keyboard.createCursorKeys()
+      this.keys = this.input.keyboard.addKeys('W,A,S,D,Z,Q,E,SPACE,ENTER') as Record<
+        string,
+        Phaser.Input.Keyboard.Key
+      >
     }
 
-    this.cursors = this.input.keyboard.createCursorKeys()
-    this.keys = this.input.keyboard.addKeys('W,A,S,D,Z,Q,E,SPACE,ENTER') as Record<
-      string,
-      Phaser.Input.Keyboard.Key
-    >
+    this.input.on('pointerdown', this.handlePointerDown, this)
   }
 
   private createTextures(): void {
@@ -492,40 +494,175 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private updatePlayerMovement(): void {
-    if (!this.player || !this.cursors || !this.keys) {
+    if (!this.player) {
       return
     }
 
     if (this.bridge.isDialogueOpen()) {
       this.player.setVelocity(0, 0)
+      this.clearTapDestination()
       return
     }
 
     const speed = 132
+    const velocity = this.getKeyboardVelocity()
+
+    if (velocity.length() > 0) {
+      this.clearTapDestination()
+      velocity.normalize().scale(speed)
+      this.player.setVelocity(velocity.x, velocity.y)
+      this.tryKeyboardInteraction()
+      return
+    }
+
+    if (this.tapDestination) {
+      const tapVelocity = new Phaser.Math.Vector2(
+        this.tapDestination.x - this.player.x,
+        this.tapDestination.y - this.player.y,
+      )
+
+      if (tapVelocity.length() <= 7) {
+        this.player.setVelocity(0, 0)
+        this.clearTapDestination()
+      } else {
+        tapVelocity.normalize().scale(speed)
+        this.player.setVelocity(tapVelocity.x, tapVelocity.y)
+      }
+
+      this.tryKeyboardInteraction()
+      return
+    }
+
+    this.player.setVelocity(0, 0)
+    this.tryKeyboardInteraction()
+  }
+
+  private getKeyboardVelocity(): Phaser.Math.Vector2 {
+    if (!this.cursors || !this.keys) {
+      return new Phaser.Math.Vector2(0, 0)
+    }
+
     const left = this.cursors.left.isDown || this.keys.A.isDown || this.keys.Q.isDown
     const right = this.cursors.right.isDown || this.keys.D.isDown
     const up = this.cursors.up.isDown || this.keys.W.isDown || this.keys.Z.isDown
     const down = this.cursors.down.isDown || this.keys.S.isDown
-    const velocity = new Phaser.Math.Vector2(
-      Number(right) - Number(left),
-      Number(down) - Number(up),
+
+    return new Phaser.Math.Vector2(Number(right) - Number(left), Number(down) - Number(up))
+  }
+
+  private tryKeyboardInteraction(): void {
+    if (
+      !this.keys ||
+      (!this.activeHotspotId && !this.activeOrbId) ||
+      (!this.keys.E.isDown && !this.keys.SPACE.isDown && !this.keys.ENTER.isDown)
+    ) {
+      return
+    }
+
+    this.clearTapDestination()
+
+    if (this.activeOrbId) {
+      this.bridge.openOrb(this.activeOrbId)
+      return
+    }
+
+    const hotspot = this.hotspots.find((target) => target.id === this.activeHotspotId)
+    hotspot && this.bridge.startDialogue(hotspot.scriptId)
+  }
+
+  private handlePointerDown(pointer: Phaser.Input.Pointer): void {
+    if (!this.player || this.bridge.isDialogueOpen()) {
+      return
+    }
+
+    const x = Number.isFinite(pointer.worldX) ? pointer.worldX : pointer.x
+    const y = Number.isFinite(pointer.worldY) ? pointer.worldY : pointer.y
+    const target = this.findPointerTarget(x, y)
+
+    if (target?.kind === 'orb') {
+      this.clearTapDestination()
+      this.player.setVelocity(0, 0)
+      this.bridge.openOrb(target.id)
+      return
+    }
+
+    if (target?.kind === 'hotspot') {
+      this.clearTapDestination()
+      this.player.setVelocity(0, 0)
+      this.bridge.triggerExplorationPassive(target.id)
+      this.bridge.startDialogue(target.scriptId)
+      return
+    }
+
+    if (this.isPointBlocked(x, y)) {
+      this.clearTapDestination()
+      this.player.setVelocity(0, 0)
+      return
+    }
+
+    this.setTapDestination(x, y)
+  }
+
+  private findPointerTarget(
+    x: number,
+    y: number,
+  ):
+    | { kind: 'orb'; id: string; distance: number }
+    | { kind: 'hotspot'; id: string; scriptId: string; distance: number }
+    | undefined {
+    const orbTargets = this.orbSpots
+      .filter((orb) => orb.mode === 'visible')
+      .map((orb) => ({
+        kind: 'orb' as const,
+        id: orb.id,
+        distance: Phaser.Math.Distance.Between(x, y, orb.x, orb.y),
+        tapRadius: Math.max(orb.radius, 54),
+      }))
+
+    const hotspotTargets = this.hotspots.map((hotspot) => ({
+      kind: 'hotspot' as const,
+      id: hotspot.id,
+      scriptId: hotspot.scriptId,
+      distance: Phaser.Math.Distance.Between(x, y, hotspot.x, hotspot.y),
+      tapRadius: Math.max(hotspot.radius, 58),
+    }))
+
+    return [...orbTargets, ...hotspotTargets]
+      .filter((target) => target.distance <= target.tapRadius)
+      .sort((left, right) => left.distance - right.distance)[0]
+  }
+
+  private isPointBlocked(x: number, y: number): boolean {
+    return this.obstacles.some((obstacle) => obstacle.getBounds().contains(x, y))
+  }
+
+  private setTapDestination(x: number, y: number): void {
+    this.tapDestination = new Phaser.Math.Vector2(
+      Phaser.Math.Clamp(x, 18, 942),
+      Phaser.Math.Clamp(y, 50, 510),
     )
+    this.showTapMarker(this.tapDestination.x, this.tapDestination.y)
+  }
 
-    if (velocity.length() > 0) {
-      velocity.normalize().scale(speed)
+  private clearTapDestination(): void {
+    this.tapDestination = undefined
+    this.tapMarker?.destroy()
+    this.tapMarker = undefined
+  }
+
+  private showTapMarker(x: number, y: number): void {
+    if (!this.tapMarker) {
+      this.tapMarker = this.add.graphics().setDepth(6)
     }
 
-    this.player.setVelocity(velocity.x, velocity.y)
-
-    if ((this.activeHotspotId || this.activeOrbId) && (this.keys.E.isDown || this.keys.SPACE.isDown || this.keys.ENTER.isDown)) {
-      if (this.activeOrbId) {
-        this.bridge.openOrb(this.activeOrbId)
-        return
-      }
-
-      const hotspot = this.hotspots.find((target) => target.id === this.activeHotspotId)
-      hotspot && this.bridge.startDialogue(hotspot.scriptId)
-    }
+    this.tapMarker.clear()
+    this.tapMarker.lineStyle(2, 0xf4ecd8, 0.9)
+    this.tapMarker.strokeCircle(x, y, 8)
+    this.tapMarker.lineStyle(2, 0xd7a84b, 0.9)
+    this.tapMarker.lineBetween(x - 12, y, x - 4, y)
+    this.tapMarker.lineBetween(x + 4, y, x + 12, y)
+    this.tapMarker.lineBetween(x, y - 12, x, y - 4)
+    this.tapMarker.lineBetween(x, y + 4, x, y + 12)
   }
 
   private updateInteractionTarget(): void {
