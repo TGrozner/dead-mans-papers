@@ -24,6 +24,18 @@ interface OrbSpot {
   marker?: Phaser.GameObjects.Text
 }
 
+type PointerTarget =
+  | { kind: 'orb'; id: string; label: string; x: number; y: number; distance: number }
+  | {
+      kind: 'hotspot'
+      id: string
+      label: string
+      scriptId: string
+      x: number
+      y: number
+      distance: number
+    }
+
 export class MirrorsScene extends Phaser.Scene {
   private bridge: MirrorsGameBridge
   private player?: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody
@@ -615,6 +627,11 @@ export class MirrorsScene extends Phaser.Scene {
     const y = Number.isFinite(pointer.worldY) ? pointer.worldY : pointer.y
     const target = this.findPointerTarget(x, y)
 
+    if (target && this.isMobileViewport()) {
+      this.setTapDestinationNear(target.x, target.y)
+      return
+    }
+
     if (target?.kind === 'orb') {
       this.clearTapDestination()
       this.player.setVelocity(0, 0)
@@ -642,25 +659,28 @@ export class MirrorsScene extends Phaser.Scene {
   private findPointerTarget(
     x: number,
     y: number,
-  ):
-    | { kind: 'orb'; id: string; distance: number }
-    | { kind: 'hotspot'; id: string; scriptId: string; distance: number }
-    | undefined {
+  ): PointerTarget | undefined {
     const orbTargets = this.orbSpots
-      .filter((orb) => orb.mode === 'visible')
+      .filter((orb) => orb.mode === 'visible' || this.isMobileViewport())
       .map((orb) => ({
         kind: 'orb' as const,
         id: orb.id,
+        label: orb.label,
+        x: orb.x,
+        y: orb.y,
         distance: Phaser.Math.Distance.Between(x, y, orb.x, orb.y),
-        tapRadius: Math.max(orb.radius, 54),
+        tapRadius: Math.max(orb.radius, this.isMobileViewport() ? 42 : 54),
       }))
 
     const hotspotTargets = this.hotspots.map((hotspot) => ({
       kind: 'hotspot' as const,
       id: hotspot.id,
+      label: hotspot.label,
       scriptId: hotspot.scriptId,
+      x: hotspot.x,
+      y: hotspot.y,
       distance: Phaser.Math.Distance.Between(x, y, hotspot.x, hotspot.y),
-      tapRadius: Math.max(hotspot.radius, 58),
+      tapRadius: Math.max(hotspot.radius, this.isMobileViewport() ? 46 : 58),
     }))
 
     return [...orbTargets, ...hotspotTargets]
@@ -678,6 +698,43 @@ export class MirrorsScene extends Phaser.Scene {
       Phaser.Math.Clamp(y, 50, 510),
     )
     this.showTapMarker(this.tapDestination.x, this.tapDestination.y)
+  }
+
+  private setTapDestinationNear(x: number, y: number): void {
+    const destination = this.findNearestOpenPoint(x, y)
+    this.setTapDestination(destination.x, destination.y)
+  }
+
+  private findNearestOpenPoint(x: number, y: number): Phaser.Math.Vector2 {
+    if (!this.isPointBlocked(x, y)) {
+      return new Phaser.Math.Vector2(x, y)
+    }
+
+    const candidates: Phaser.Math.Vector2[] = []
+
+    for (const radius of [34, 52, 70, 88]) {
+      for (let angle = 0; angle < 360; angle += 30) {
+        const radians = Phaser.Math.DegToRad(angle)
+        const candidate = new Phaser.Math.Vector2(
+          Phaser.Math.Clamp(x + Math.cos(radians) * radius, 18, 942),
+          Phaser.Math.Clamp(y + Math.sin(radians) * radius, 50, 510),
+        )
+
+        if (!this.isPointBlocked(candidate.x, candidate.y)) {
+          candidates.push(candidate)
+        }
+      }
+    }
+
+    if (!candidates.length || !this.player) {
+      return new Phaser.Math.Vector2(Phaser.Math.Clamp(x, 18, 942), Phaser.Math.Clamp(y, 50, 510))
+    }
+
+    return candidates.sort((left, right) => {
+      const leftDistance = Phaser.Math.Distance.Between(this.player!.x, this.player!.y, left.x, left.y)
+      const rightDistance = Phaser.Math.Distance.Between(this.player!.x, this.player!.y, right.x, right.y)
+      return leftDistance - rightDistance
+    })[0]
   }
 
   private clearTapDestination(): void {
@@ -709,18 +766,20 @@ export class MirrorsScene extends Phaser.Scene {
       return
     }
 
-    this.orbSpots
-      .filter((orb) => orb.mode === 'proximity')
-      .forEach((orb) => {
-        const distance = Phaser.Math.Distance.Between(this.player!.x, this.player!.y, orb.x, orb.y)
+    if (!this.isMobileViewport()) {
+      this.orbSpots
+        .filter((orb) => orb.mode === 'proximity')
+        .forEach((orb) => {
+          const distance = Phaser.Math.Distance.Between(this.player!.x, this.player!.y, orb.x, orb.y)
 
-        if (distance <= orb.radius) {
-          this.bridge.triggerProximityOrb(orb.id)
-        }
-      })
+          if (distance <= orb.radius) {
+            this.bridge.triggerProximityOrb(orb.id)
+          }
+        })
+    }
 
     const orbTargets = this.orbSpots
-      .filter((orb) => orb.mode === 'visible')
+      .filter((orb) => orb.mode === 'visible' || this.isMobileViewport())
       .map((orb) => ({
         kind: 'orb' as const,
         id: orb.id,
@@ -771,7 +830,9 @@ export class MirrorsScene extends Phaser.Scene {
     if (nearestTarget.id !== this.activeHotspotId) {
       this.activeHotspotId = nearestTarget.id
       this.activeOrbId = undefined
-      this.bridge.triggerExplorationPassive(nearestTarget.id)
+      if (!this.isMobileViewport()) {
+        this.bridge.triggerExplorationPassive(nearestTarget.id)
+      }
       this.bridge.setInteraction({
         label: nearestTarget.label,
         run: () => this.bridge.startDialogue(nearestTarget.scriptId),

@@ -34,9 +34,10 @@ npm run dev
 
 ## Contrôles
 
-- Déplacement: flèches, ZQSD, WASD ou toucher le sol pour marcher vers un point.
-- Interaction: toucher directement un marqueur `?` / `...` ou un élément important de la scène; près d'un élément, utiliser aussi le bouton contextuel, Espace, Entrée ou E.
-- Mobile: la scène est pensée en tap-to-inspect plutôt qu'en joystick virtuel; les zones longues scrollent à l'intérieur du dossier ou du dialogue, pas dans toute la page.
+- Déplacement: flèches, ZQSD, WASD ou toucher la scène pour marcher vers un point.
+- Interaction: près d'un élément, utiliser le bouton contextuel, Espace, Entrée ou E.
+- Mobile: toucher un marqueur `?`, `...` ou un élément important rapproche Morad et sélectionne l'action, mais n'ouvre plus directement de scène.
+- Mobile: la scène est pensée en approcher-puis-agir plutôt qu'en joystick virtuel; les zones longues scrollent à l'intérieur du dossier ou du dialogue, pas dans toute la page.
 - Mobile: la caméra zoome légèrement et suit Morad pour rendre les zones cliquables plus lisibles.
 - Mobile: les pensées flottantes sont compactes, limitées à la plus récente et disparaissent automatiquement pour éviter de masquer la carte.
 

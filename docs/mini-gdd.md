@@ -56,12 +56,14 @@ Explorer, parler, inspecter, écouter les voix internes, subir La Dose, tenter d
 
 ## Jouabilité mobile
 
-- Toucher un marqueur `?`, `...` ou un élément important de la scène ouvre directement la surface narrative correspondante.
+- Toucher un marqueur `?`, `...` ou un élément important de la scène rapproche Morad et sélectionne l'action, mais n'ouvre pas directement la surface narrative.
+- L'ouverture mobile passe par le bouton contextuel `!`, afin de distinguer clairement déplacement et inspection.
 - Toucher le sol fait marcher Morad vers ce point, avec un marqueur discret de destination.
 - En portrait mobile, la caméra zoome légèrement et suit Morad pour éviter que toute la carte devienne minuscule.
 - Le prototype évite le joystick virtuel: la lecture des objets et la sélection des choix sont plus importantes que la précision du déplacement.
 - La page principale ne doit pas scroller globalement; seuls le dossier, les listes internes et le dialogue peuvent scroller si leur contenu dépasse.
 - Les pensées flottantes mobiles restent courtes: une seule visible, texte clampé, expiration automatique et nettoyage quand une scène de dialogue s'ouvre.
+- Les orbs de proximité ne surgissent pas automatiquement sur mobile: ils deviennent des actions proches.
 
 ## Identité
 
