@@ -1000,7 +1000,7 @@ export class MirrorsScene extends Phaser.Scene {
     })
 
     if (target) {
-      if (this.isPointerTargetInInteractionRange(target)) {
+      if (!this.isMobileViewport() && this.isPointerTargetInInteractionRange(target)) {
         this.clearTapDestination()
         this.player.setVelocity(0, 0)
         this.openPointerTarget(target)

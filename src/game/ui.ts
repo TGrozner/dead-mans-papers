@@ -105,7 +105,17 @@ export function createGameUi(options: GameUiOptions) {
       button.dataset.choiceKey = renderedChoice.key
       button.dataset.visited = String(renderedChoice.visited)
       button.dataset.important = String(renderedChoice.important)
-      button.textContent = getChoiceLabel(choice, options.engine)
+      const label = document.createElement('span')
+      label.className = 'choice-copy'
+      label.textContent = getChoiceLabel(choice, options.engine)
+      button.append(label)
+
+      if (renderedChoice.important || renderedChoice.visited) {
+        const meta = document.createElement('span')
+        meta.className = 'choice-meta'
+        meta.textContent = renderedChoice.visited ? 'déjà lu' : 'important'
+        button.append(meta)
+      }
       button.addEventListener('click', () => {
         activeDialogue = options.engine.choose(renderedChoice)
         renderDialogue()

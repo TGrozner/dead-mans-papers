@@ -680,8 +680,30 @@ h1 {
   color: var(--ink);
   background: #fff8e8;
   text-align: left;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
   cursor: pointer;
   touch-action: manipulation;
+}
+
+.choice-copy {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.choice-meta {
+  align-self: center;
+  padding: 2px 5px;
+  border: 1px solid rgba(23, 28, 36, 0.34);
+  color: rgba(23, 28, 36, 0.72);
+  background: rgba(255, 255, 255, 0.34);
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .choice-button:hover {
@@ -702,6 +724,24 @@ h1 {
   border-color: rgba(23, 28, 36, 0.48);
   color: rgba(23, 28, 36, 0.58);
   background: #e5dccb;
+}
+
+.choice-button--visited .choice-copy {
+  text-decoration: line-through;
+  text-decoration-color: rgba(23, 28, 36, 0.36);
+  text-decoration-thickness: 1px;
+}
+
+.choice-button--important .choice-meta {
+  border-color: rgba(183, 87, 56, 0.48);
+  color: #5a2418;
+  background: rgba(183, 87, 56, 0.16);
+}
+
+.choice-button--visited .choice-meta {
+  border-color: rgba(23, 28, 36, 0.24);
+  color: rgba(23, 28, 36, 0.56);
+  background: rgba(23, 28, 36, 0.06);
 }
 
 .choice-button--visited:hover {
@@ -996,6 +1036,11 @@ h1 {
     padding: 8px 10px;
     font-size: 13px;
     line-height: 1.25;
+  }
+
+  .choice-meta {
+    padding: 2px 4px;
+    font-size: 8px;
   }
 
   .passive-toast-root {
