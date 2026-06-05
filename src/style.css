@@ -118,6 +118,7 @@ h1 {
 
 .play-area {
   flex: 0 1 auto;
+  min-width: 0;
   min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 318px;
@@ -128,6 +129,8 @@ h1 {
 
 .stage-wrap {
   position: relative;
+  width: 100%;
+  min-width: 0;
   min-height: 0;
   display: grid;
   place-items: start center;
@@ -176,6 +179,7 @@ h1 {
 .interaction-prompt:focus-visible,
 .choice-button:focus-visible,
 .reset-button:focus-visible,
+.case-danger-zone summary:focus-visible,
 .debug-log button:focus-visible,
 .tutorial-close:focus-visible,
 .tutorial-check input:focus-visible,
@@ -290,6 +294,33 @@ h1 {
   list-style: none;
   overflow: auto;
   padding-right: 4px;
+  scrollbar-color: rgba(215, 168, 75, 0.58) rgba(18, 24, 32, 0.42);
+  scrollbar-width: thin;
+}
+
+.clue-list::-webkit-scrollbar,
+.voice-list::-webkit-scrollbar,
+.dialogue-panel::-webkit-scrollbar,
+.tutorial-panel::-webkit-scrollbar,
+.debug-log ol::-webkit-scrollbar {
+  width: 7px;
+}
+
+.clue-list::-webkit-scrollbar-track,
+.voice-list::-webkit-scrollbar-track,
+.dialogue-panel::-webkit-scrollbar-track,
+.tutorial-panel::-webkit-scrollbar-track,
+.debug-log ol::-webkit-scrollbar-track {
+  background: rgba(18, 24, 32, 0.42);
+}
+
+.clue-list::-webkit-scrollbar-thumb,
+.voice-list::-webkit-scrollbar-thumb,
+.dialogue-panel::-webkit-scrollbar-thumb,
+.tutorial-panel::-webkit-scrollbar-thumb,
+.debug-log ol::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  background: rgba(215, 168, 75, 0.58);
 }
 
 .clue-list li {
@@ -314,6 +345,8 @@ h1 {
   margin-top: 9px;
   overflow: auto;
   padding-right: 4px;
+  scrollbar-color: rgba(215, 168, 75, 0.58) rgba(18, 24, 32, 0.42);
+  scrollbar-width: thin;
 }
 
 .voice-row {
@@ -356,16 +389,60 @@ h1 {
   text-transform: uppercase;
 }
 
-.reset-button {
-  width: 100%;
-  min-height: 40px;
+.case-danger-zone {
   flex: 0 0 auto;
-  border: 1px solid rgba(220, 235, 215, 0.28);
-  border-radius: 6px;
-  color: var(--foam);
-  background: var(--panel-deep);
+  border-top: 1px solid rgba(220, 235, 215, 0.12);
+  padding-top: 5px;
+}
+
+.case-danger-zone summary {
+  width: max-content;
+  margin-left: auto;
+  padding: 4px 0;
+  color: rgba(220, 235, 215, 0.52);
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
   cursor: pointer;
   touch-action: manipulation;
+}
+
+.case-danger-zone summary::-webkit-details-marker {
+  display: none;
+}
+
+.case-danger-zone summary::before {
+  content: "...";
+  margin-right: 6px;
+  color: rgba(215, 168, 75, 0.72);
+}
+
+.case-danger-zone[open] {
+  padding-top: 7px;
+}
+
+.case-danger-zone:not([open]) .reset-button {
+  display: none;
+}
+
+.reset-button {
+  width: 100%;
+  min-height: 34px;
+  flex: 0 0 auto;
+  margin-top: 6px;
+  border: 1px solid rgba(212, 93, 89, 0.42);
+  border-radius: 6px;
+  color: rgba(220, 235, 215, 0.78);
+  background: rgba(18, 24, 32, 0.72);
+  font-size: 12px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.reset-button--confirm {
+  border-color: rgba(212, 93, 89, 0.92);
+  color: var(--paper);
+  background: rgba(212, 93, 89, 0.24);
 }
 
 .dialogue-root {
@@ -707,8 +784,8 @@ h1 {
 
   .play-area {
     flex: 1 1 auto;
-    grid-template-rows: auto minmax(0, 1fr);
-    align-content: stretch;
+    grid-template-rows: auto auto;
+    align-content: start;
     align-items: stretch;
     gap: 8px;
     min-height: 0;
@@ -726,7 +803,7 @@ h1 {
   }
 
   .case-panel {
-    height: 100%;
+    height: 144px;
     min-height: 0;
     gap: 8px;
     padding: 10px;
@@ -735,7 +812,8 @@ h1 {
   }
 
   .case-panel--expanded {
-    height: 100%;
+    height: calc(100svh - 284px);
+    min-height: 260px;
   }
 
   body.dialogue-open .case-panel {
@@ -747,12 +825,22 @@ h1 {
   }
 
   .case-panel:not(.case-panel--expanded) .case-section--voices,
-  .case-panel:not(.case-panel--expanded) .reset-button {
+  .case-panel:not(.case-panel--expanded) .case-danger-zone {
     display: none;
+  }
+
+  .case-panel:not(.case-panel--expanded) {
+    gap: 6px;
+    padding: 8px 10px;
+  }
+
+  .case-panel:not(.case-panel--expanded) .case-section--objective {
+    flex: 0 0 auto;
   }
 
   .case-panel:not(.case-panel--expanded) .case-section--clues {
     flex: 1 1 auto;
+    min-height: 0;
   }
 
   .case-panel:not(.case-panel--expanded) .clue-list {
@@ -772,6 +860,10 @@ h1 {
     -webkit-line-clamp: 2;
     font-size: 12px;
     line-height: 1.25;
+  }
+
+  .case-panel:not(.case-panel--expanded) .objective {
+    -webkit-line-clamp: 1;
   }
 
   .clue-list {
@@ -810,8 +902,11 @@ h1 {
     font-size: 9px;
   }
 
+  .case-danger-zone summary {
+    font-size: 9px;
+  }
+
   .reset-button {
-    min-height: 34px;
     font-size: 12px;
   }
 

@@ -37,7 +37,7 @@
       "ground": {
         "id": "ground",
         "speaker": "Toi",
-        "text": "Un gobelet plastique vide. Pas du café, pas une petite faiblesse poétique: de l'alcool fort, bas de rayon, avalé pour éteindre le chantier dans ton crâne. Ton téléphone fissuré clignote à côté comme une dette qui sait patienter.",
+        "text": "Un gobelet plastique vide. L'odeur ne laisse pas beaucoup de place au mystère: alcool fort, acheté vite, bu vite, juste pour passer la nuit. Ton téléphone fissuré clignote à côté. Douze appels manqués.",
         "effects": [
           {
             "type": "clue",
@@ -46,7 +46,7 @@
         ],
         "choices": [
           {
-            "label": "Retourner le gobelet comme une preuve minable.",
+            "label": "Retourner le gobelet pour voir s'il reste quelque chose.",
             "next": "cup"
           },
           {
@@ -64,7 +64,7 @@
         "id": "cup",
         "speaker": "Le Ventre",
         "voice": "faim",
-        "text": "Le plastique colle aux doigts. Ton corps reconnaît la routine avant la mémoire: boire pour faire taire les nerfs, avaler des calmants pour lisser la honte, appeler ça tenir debout et espérer que personne ne regarde de trop près.",
+        "text": "Le plastique colle aux doigts. Ton corps reconnaît l'ordre des choses avant toi: boire, avaler de quoi calmer la main, dire que ça ira mieux après. Tant que personne ne te demande de signer quoi que ce soit.",
         "effects": [
           {
             "type": "flag",
@@ -81,7 +81,7 @@
             "next": "stand"
           },
           {
-            "label": "Le garder. Une honte peut servir.",
+            "label": "Le garder. On ne sait jamais.",
             "next": "stand"
           }
         ]
@@ -129,7 +129,7 @@
             "next": "dose_first"
           },
           {
-            "label": "\"Quel corps ?\"",
+            "label": "\"Quel problème ?\"",
             "next": "karine_cut"
           }
         ]
@@ -137,7 +137,7 @@
       "karine_cut": {
         "id": "karine_cut",
         "speaker": "Karine Leduc",
-        "text": "\"Pas au téléphone. Et si tu as bu, si tu as gobé un truc, tu le gardes dans ta bouche fermée. J'ai besoin que tu sois utile cinq minutes, pas que tu me fasses un numéro de tox devant le chantier.\"",
+        "text": "\"Pas au téléphone. Et si tu as bu, si tu as pris un truc, tu te tais là-dessus. J'ai besoin que tu tiennes cinq minutes, pas qu'on puisse dire que tu délires devant le chantier.\"",
         "effects": [
           {
             "type": "flag",
@@ -158,7 +158,7 @@
       "stand": {
         "id": "stand",
         "speaker": "Zinédine",
-        "text": "Debout. Presque. Le parking penche, ta gorge remonte, ton cœur tape comme un voisin contre un mur trop fin. Ce n'est pas le monde qui bouge: c'est ton corps qui réclame sa facture.",
+        "text": "Debout. Presque. Le parking bouge un peu, ou c'est toi. Gorge acide, main droite pas nette, cœur trop vite. Tu connais le protocole: respirer, répondre, éviter qu'on voie le détail.",
         "effects": [
           {
             "type": "flag",
@@ -181,7 +181,7 @@
         "id": "dose_first",
         "speaker": "La Dose",
         "parasite": "dose",
-        "text": "Tu tiens debout. Après, on régule. Une gorgée, un cachet, juste assez pour que la main arrête de balancer ton CV de désastre devant les gens propres.",
+        "text": "Tu tiens debout. Après, on ajuste. Une gorgée, un cachet, juste de quoi arrêter la main. Tu fais ton travail, puis on voit.",
         "effects": [
           {
             "type": "flag",
@@ -228,7 +228,7 @@
       "start": {
         "id": "start",
         "speaker": "Karine Leduc",
-        "text": "\"On va appeler ça un incident de chantier.\" Karine pointe l'utilitaire sans le toucher. \"Il y a quelque chose dans le coffre. Probablement un corps. Si les flics nationaux arrivent avant qu'on comprenne, la mairie, le chantier et toi partez dans la même benne.\"",
+          "text": "\"On va appeler ça un incident de chantier.\" Karine pointe l'utilitaire sans le toucher. \"Il y a quelque chose dans le coffre. Quelque chose qui ne doit pas sortir d'ici avant qu'on comprenne qui a touché quoi, avec quel badge, et pourquoi toi tu te réveilles à dix mètres.\"",
         "effects": [
           {
             "type": "flag",
@@ -241,7 +241,7 @@
         ],
         "choices": [
           {
-            "label": "\"Un corps n'est pas un incident.\"",
+            "label": "\"Un coffre fermé n'est pas un incident.\"",
             "next": "leduc_frame"
           },
           {
@@ -263,14 +263,14 @@
       "leduc_frame": {
         "id": "leduc_frame",
         "speaker": "Karine Leduc",
-        "text": "\"Un incident, c'est ce qu'on dit tant qu'on ne sait pas qui signe. Un corps, c'est ce que les gens filment. Je préfère encore un mot dégueulasse à une vidéo qui tourne dans les halls.\"",
+          "text": "\"Un incident, c'est ce qu'on dit tant qu'on ne sait pas qui signe. Un coffre, c'est ce que les gens filment quand quelqu'un ouvre trop vite. Je préfère un mot dégueulasse à une vidéo qui tourne dans les halls.\"",
         "choices": [
           {
             "label": "\"Tu préfères surtout contrôler la phrase.\"",
             "next": "leduc_body_language"
           },
           {
-            "label": "\"Tu sais qui c'est ?\"",
+            "label": "\"Tu sais ce qu'il y a dedans ?\"",
             "next": "dead_name",
             "important": true
           },
@@ -364,20 +364,16 @@
       "dead_name": {
         "id": "dead_name",
         "speaker": "Karine Leduc",
-        "text": "\"Je ne signe pas un nom à distance.\" Elle avale le reste trop vite. \"Ça pourrait être Ahmed Berrichi. Un vieux locataire. Disparu du relogement sur papier, encore présent dans toutes les emmerdes.\"",
+          "text": "\"Je ne signe pas un nom à distance.\" Elle avale le reste trop vite. \"Je ne signe même pas une chose à distance. Tu regardes d'abord. Après, on parlera des noms que tu as envie de prononcer.\"",
         "effects": [
           {
-            "type": "flag",
-            "flag": "ahmed_named"
-          },
-          {
             "type": "clue",
-            "clue": "Karine pense que la victime pourrait être Ahmed Berrichi, vieux locataire officiellement sorti du relogement."
+            "clue": "Karine refuse de nommer ce qui est dans le coffre avant son ouverture."
           }
         ],
         "choices": [
           {
-            "label": "\"Quelles questions ?\"",
+            "label": "\"Pourquoi tu bloques sur le nom ?\"",
             "next": "ahmed_questions",
             "important": true
           },
@@ -390,16 +386,16 @@
       "ahmed_questions": {
         "id": "ahmed_questions",
         "speaker": "Karine Leduc",
-        "text": "\"Si c'est Ahmed: ascenseur C, caméras, badges, caves, relogements non faits. Le genre de notes qui mélange les vraies pannes et les rancunes. Le genre qu'on perd avant les réunions.\"",
+          "text": "\"Parce que les noms ramènent des listes. Ascenseur C, caméras, badges, caves, relogements non faits. Des vieilles notes, des vieilles colères, des trucs que les réunions préfèrent perdre avant d'avoir à les lire.\"",
         "effects": [
           {
             "type": "clue",
-            "clue": "Ahmed tenait peut-être des notes sur pannes, accès, caméras et relogements."
+              "clue": "Karine craint que le coffre renvoie aux pannes, accès, caméras et relogements des Miroirs."
           }
         ],
         "choices": [
           {
-            "label": "\"S'il avait un carnet, tu l'as vu ?\"",
+            "label": "\"Tu parles comme s'il y avait un carnet.\"",
             "next": "karine_notebook_before",
             "important": true
           },
@@ -907,6 +903,10 @@
         "speaker": "Ahmed Berrichi",
         "text": "Ahmed n'a pas l'air endormi. Il a l'air traité. Déplacé. Géré par des gens qui disent prise en charge quand ils veulent dire débarrassez-moi de ça.",
         "effects": [
+          {
+            "type": "flag",
+            "flag": "ahmed_named"
+          },
           {
             "type": "flag",
             "flag": "body_seen"

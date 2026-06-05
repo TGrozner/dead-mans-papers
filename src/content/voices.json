@@ -2,7 +2,7 @@
   {
     "id": "memoire_saline",
     "name": "Le Sel",
-    "tagline": "Mémoire chimique, sueur, larmes, sel de déneigement et déjà-vu qui remontent du béton.",
+    "tagline": "Mémoire chimique: sueur, larmes, sel de déneigement, béton humide et déjà-vu qui reviennent par le corps.",
     "color": "#65b7c6",
     "startingValue": 2
   },
@@ -44,7 +44,7 @@
   {
     "id": "symbole",
     "name": "Le Présage",
-    "tagline": "Signes, religion, paranoïa, poésie sale et certitudes qui sentent la vase.",
+    "tagline": "Signes, religion, paranoïa, poésie sale et certitudes qui brillent sous néon malade.",
     "color": "#8ea0ff",
     "startingValue": 2
   },

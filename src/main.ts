@@ -64,7 +64,18 @@ app.innerHTML = `
           <div id="voice-list" class="voice-list"></div>
         </section>
 
-        <button id="reset-save" class="reset-button" type="button">Recommencer</button>
+        <details class="case-danger-zone">
+          <summary>Options</summary>
+          <button
+            id="reset-save"
+            class="reset-button"
+            type="button"
+            data-default-label="Recommencer la partie"
+            data-confirm-label="Confirmer recommencer"
+          >
+            Recommencer la partie
+          </button>
+        </details>
       </aside>
     </div>
 
@@ -122,12 +133,7 @@ if (!restoredSurface) {
   showTutorialIfNeeded()
 }
 
-document.querySelector<HTMLButtonElement>('#reset-save')!.addEventListener('click', () => {
-  persistOnUnload = false
-  resetGameState()
-  setTutorialSeen(false)
-  window.location.reload()
-})
+setupResetButton()
 
 window.addEventListener('beforeunload', () => {
   if (persistOnUnload) {
@@ -158,6 +164,41 @@ function showTutorialIfNeeded(): void {
   })
 }
 
+function setupResetButton(): void {
+  const resetButton = document.querySelector<HTMLButtonElement>('#reset-save')
+
+  if (!resetButton) {
+    return
+  }
+
+  const button = resetButton
+  let resetConfirmTimer: number | undefined
+
+  function clearResetConfirmation(): void {
+    window.clearTimeout(resetConfirmTimer)
+    resetConfirmTimer = undefined
+    button.dataset.confirming = 'false'
+    button.classList.remove('reset-button--confirm')
+    button.textContent = button.dataset.defaultLabel ?? 'Recommencer la partie'
+  }
+
+  button.addEventListener('click', () => {
+    if (button.dataset.confirming === 'true') {
+      persistOnUnload = false
+      resetGameState()
+      setTutorialHidden(false)
+      setTutorialSeen(false)
+      window.location.reload()
+      return
+    }
+
+    button.dataset.confirming = 'true'
+    button.classList.add('reset-button--confirm')
+    button.textContent = button.dataset.confirmLabel ?? 'Confirmer recommencer'
+    resetConfirmTimer = window.setTimeout(clearResetConfirmation, 3500)
+  })
+}
+
 function setupCasePanel(): void {
   const casePanel = document.querySelector<HTMLElement>('#case-panel')
   const caseToggle = document.querySelector<HTMLButtonElement>('#case-toggle')
@@ -169,7 +210,7 @@ function setupCasePanel(): void {
   const panel = casePanel
   const toggle = caseToggle
   const mobileQuery = window.matchMedia('(max-width: 560px)')
-  let mobileExpanded = true
+  let mobileExpanded = false
 
   function applyCaseState(): void {
     const expanded = mobileQuery.matches ? mobileExpanded : true
@@ -189,7 +230,7 @@ function setupCasePanel(): void {
   })
 
   mobileQuery.addEventListener('change', () => {
-    mobileExpanded = true
+    mobileExpanded = !mobileQuery.matches
     applyCaseState()
   })
 
