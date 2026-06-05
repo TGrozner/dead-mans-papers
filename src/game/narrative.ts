@@ -55,9 +55,7 @@ export class NarrativeEngine {
     }
 
     if (choice.close) {
-      this.activeScript = undefined
-      this.lastCheckResult = undefined
-      this.pendingPassives = []
+      this.close()
       return undefined
     }
 
@@ -67,6 +65,12 @@ export class NarrativeEngine {
 
     this.lastCheckResult = undefined
     return this.moveToNode(choice.next)
+  }
+
+  close(): void {
+    this.activeScript = undefined
+    this.lastCheckResult = undefined
+    this.pendingPassives = []
   }
 
   triggerExploration(contextId: string): PassiveTrigger[] {

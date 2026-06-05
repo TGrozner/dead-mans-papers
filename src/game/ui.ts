@@ -69,7 +69,10 @@ export function createGameUi(options: GameUiOptions) {
       <article class="dialogue-panel">
         <div class="speaker-line">
           <span>${escapeHtml(node.speaker)}</span>
-          <span class="check-result">${escapeHtml(checkLabel)}</span>
+          <div class="speaker-actions">
+            <span class="check-result">${escapeHtml(checkLabel)}</span>
+            <button class="dialogue-close" type="button">Quitter</button>
+          </div>
         </div>
         ${dialoguePassives.map(renderPassiveAside).join('')}
         <p class="dialogue-text ${channelColor ? 'voice-aside' : ''}" style="${channelColor ? `--voice-color: ${channelColor}` : ''}">
@@ -80,10 +83,15 @@ export function createGameUi(options: GameUiOptions) {
     `
 
     const choiceList = options.root.querySelector<HTMLDivElement>('.choice-list')
+    const closeButton = options.root.querySelector<HTMLButtonElement>('.dialogue-close')
 
-    if (!choiceList) {
+    if (!choiceList || !closeButton) {
       throw new Error('Dialogue choice list did not render')
     }
+
+    closeButton.addEventListener('click', () => {
+      closeDialogue()
+    })
 
     activeDialogue.choices.forEach((renderedChoice) => {
       const choice = renderedChoice.choice
@@ -113,6 +121,13 @@ export function createGameUi(options: GameUiOptions) {
       })
       choiceList.append(button)
     })
+  }
+
+  function closeDialogue(): void {
+    options.engine.close()
+    activeDialogue = undefined
+    renderDialogue()
+    syncState()
   }
 
   function setInteraction(target?: InteractionTarget): void {
