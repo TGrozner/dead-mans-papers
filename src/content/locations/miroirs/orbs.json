@@ -10,10 +10,10 @@
     "x": 444,
     "y": 336,
     "radius": 44,
-    "text": "Douze appels manqués de Karine Leduc. Ils ont commencé avant que tu reprennes conscience. Elle savait déjà qu'un problème portait ton nom.",
+    "text": "Douze appels manqués de Karine Leduc. Ils ont commencé avant que tu reprennes conscience. Elle ne cherchait pas un ami. Elle cherchait quelqu'un à mettre devant un problème.",
     "voice": "procedure",
     "minScore": 2,
-    "voiceText": "Douze appels, c'est une chronologie. Pas une panique. Elle a essayé de te joindre avant de te montrer le corps.",
+    "voiceText": "Douze appels, c'est une chronologie. Pas une panique. Elle savait où te trouver avant que toi tu saches où tu étais.",
     "effects": [
       {
         "type": "clue",
@@ -32,10 +32,10 @@
     "x": 610,
     "y": 282,
     "radius": 58,
-    "text": "Utilitaire blanc du chantier. Coffre noir ouvert sur du froid ancien. Quelqu'un a utilisé un véhicule municipal pour déplacer Ahmed, puis a laissé tes papiers sur lui.",
+    "text": "Utilitaire blanc du chantier. Hayon mal fermé, noir dedans. Assez pour comprendre que Karine ment avec le mot incident, pas assez pour comprendre ce que le coffre garde.",
     "voice": "symbole",
     "minScore": 2,
-    "voiceText": "Un cercueil avec une plaque de service. Pas sacré. Pire: couvert par un planning.",
+    "voiceText": "Un véhicule de service n'est jamais neutre. Même garé, il transporte une autorisation.",
     "effects": [
       {
         "type": "flag",
@@ -43,16 +43,23 @@
       },
       {
         "type": "clue",
-        "clue": "L'utilitaire municipal a servi à déplacer Ahmed."
+        "clue": "Karine bloque l'accès à un utilitaire municipal au P2."
       }
     ],
     "variants": [
       {
         "requiresFlag": "papers_seen",
-        "text": "Après les papiers, le message est clair: un mort, ton identité, un véhicule municipal. On ne t'accuse pas encore. On te prépare.",
+        "text": "Après les papiers, le message est clair: un corps, ton identité, un véhicule municipal. On ne t'accuse pas encore. On te prépare.",
         "voice": "procedure",
         "minScore": 2,
         "voiceText": "Corps, identité, accès. Trois pièces dans un même coffre. Trop organisé pour être une découverte simple."
+      },
+      {
+        "requiresFlag": "trunk_opened",
+        "text": "Le coffre ouvert ne donne pas toute la scène. Il donne une odeur, une forme, et la nécessité dégueulasse de se pencher plus près.",
+        "voice": "faim",
+        "minScore": 1,
+        "voiceText": "Le ventre comprend avant les yeux: si tu veux savoir, il va falloir payer avec la gorge."
       }
     ]
   },
@@ -62,23 +69,53 @@
     "location": "miroirs",
     "subject": "body",
     "mode": "visible",
-    "label": "Regarder Ahmed",
-    "title": "Ahmed Berrichi",
+    "label": "Regarder le coffre",
+    "title": "Coffre entrouvert",
     "x": 672,
     "y": 282,
     "radius": 52,
-    "text": "Ahmed Berrichi, vieux locataire des Miroirs. Pas de carnet. Pas de clés. Pas de téléphone. On a laissé le corps et retiré les outils qui expliquaient sa vie.",
+    "text": "De loin, le coffre ne montre qu'une masse sombre et du froid. Tu peux inventer des mots propres. Ton estomac, lui, a déjà choisi cadavre.",
     "voice": "faim",
     "minScore": 1,
-    "voiceText": "Ton estomac se contracte. Ce n'est pas seulement la mort: c'est le manque qui veut décider à ta place.",
+    "voiceText": "Ton corps se contracte. Ce n'est pas seulement la mort possible: c'est le manque qui veut décider à ta place.",
     "effects": [
       {
         "type": "clue",
-        "clue": "Le corps est placé au fond du coffre, pas tombé près de l'ouverture."
+        "clue": "Une masse sombre est visible dans le coffre de l'utilitaire."
+      }
+    ],
+    "variants": [
+      {
+        "requiresFlag": "papers_seen",
+        "title": "Ahmed Berrichi",
+        "text": "Ahmed Berrichi, vieux locataire des Miroirs. Pas de carnet. Pas de clés. Pas de téléphone. On a laissé le corps et retiré les outils qui expliquaient sa vie.",
+        "voice": "faim",
+        "minScore": 1,
+        "voiceText": "Ton estomac se contracte. Ce n'est pas seulement la mort: c'est le manque qui veut décider à ta place.",
+        "effects": [
+          {
+            "type": "clue",
+            "clue": "Le corps est placé au fond du coffre, pas tombé près de l'ouverture."
+          },
+          {
+            "type": "clue",
+            "clue": "Ahmed Berrichi était un vieux locataire historique des Miroirs."
+          }
+        ]
       },
       {
-        "type": "clue",
-        "clue": "Ahmed Berrichi était un vieux locataire historique des Miroirs."
+        "requiresFlag": "trunk_opened",
+        "title": "Corps dans le coffre",
+        "text": "Un vieux corps au fond. Visage dans l'ombre, mains vides à distance. Pas assez d'image pour conclure. Assez pour salir la matinée.",
+        "voice": "faim",
+        "minScore": 1,
+        "voiceText": "La bile arrive comme une collègue trop ponctuelle.",
+        "effects": [
+          {
+            "type": "clue",
+            "clue": "Le corps est placé au fond du coffre, pas tombé près de l'ouverture."
+          }
+        ]
       }
     ]
   },

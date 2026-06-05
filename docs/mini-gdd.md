@@ -2,9 +2,9 @@
 
 ## Pitch
 
-Zinédine Saïdi, médiateur sécurité municipale fonctionnel par fragments, se réveille contre une borne du parking P2 des Miroirs. Un gobelet plastique vide traîne près de lui, son téléphone fissuré affiche 12 appels manqués de Karine Leduc, et un corps attend dans le coffre d'un utilitaire de chantier floqué `Renouvellement Urbain`. Dans les poches du mort: ses papiers.
+Zinédine Saïdi, médiateur sécurité municipale fonctionnel par fragments, se réveille contre une borne du parking P2 des Miroirs. Un gobelet plastique vide traîne près de lui, son téléphone fissuré affiche 12 appels manqués de Karine Leduc, et un utilitaire de chantier garde un problème que Karine veut appeler `incident` avant que le mot cadavre sorte.
 
-Le problème immédiat n'est pas seulement de savoir qui est mort. C'est de prouver que Zinédine ne l'est pas, tout en cachant assez longtemps l'alcool, les calmants, les dettes et les tremblements pour qu'on le laisse regarder discrètement avant que ça parte en procédure.
+Le problème immédiat n'est pas seulement de savoir ce qu'il y a dans le coffre. C'est de rester debout, de ne pas laisser la gueule de bois parler à sa place, puis de découvrir que les papiers de Zinédine ont été plantés dans la scène.
 
 ## Cadre
 
@@ -41,11 +41,11 @@ Le problème immédiat n'est pas seulement de savoir qui est mort. C'est de prou
 2. La Dose pousse: `Tu réponds à Karine. Tu tiens debout. Après, on discute de ce que tu dois au corps.`
 3. Karine encadre la scène: `On va appeler ça un incident de chantier.`
 4. La Dose sent le vieux froid dans une voiture chaude avant que Zinédine comprenne.
-5. Le coffre s'ouvre sur Ahmed Berrichi et les papiers de Zinédine.
-6. Le joueur choisit comment porter ou salir ce nom.
-7. Karine réagit différemment selon la posture identitaire choisie.
-8. Le joueur inspecte au moins une surface utile: papiers, badge, Ahmed, carnet absent, formulation de Karine.
-9. Zinédine fouille le coffre: succès ou échec, la page arrachée arrive quand même.
+5. Le coffre s'ouvre d'abord sur une forme, une odeur et une vieille mort mal visible, pas sur tout le twist.
+6. Zinédine doit se pencher et fouiller malgré la nausée; succès ou échec, la main revient avec les papiers et une page arrachée.
+7. Le joueur voit `Zinédine Saïdi` sur les papiers et choisit comment porter ou salir ce nom.
+8. Karine réagit différemment selon la posture identitaire choisie.
+9. Le joueur inspecte les surfaces utiles: papiers, badge, ordonnance, Ahmed, carnet absent, page arrachée.
 10. Sofiane devient une piste de terrain: odeur du coffre, badge chantier, caméra morte, témoin en gilet.
 
 ## Ton
@@ -56,7 +56,7 @@ Pas de romantisme portuaire. La poésie vient du contraste entre langue municipa
 
 Direction validée pour la réécriture v0: raw, social, énervé, parfois vulgaire. Voix internes très présentes mais courtes, La Dose commerçante intime, Karine administratrice dangereuse qui renomme au lieu de mentir frontalement, Ahmed témoin gênant et rugueux, Sofiane témoin de shit et de parking, Zinédine lucide mais fonctionnel dans le déni. Style: sec, frontal, choix incarnés, passifs contradictoires.
 
-Nouvelle contrainte de lisibilité: ne pas écrire l'enquête comme une énigme cryptique. Le joueur doit comprendre vite les faits durs: Ahmed est mort dans un utilitaire municipal, les papiers de Zinédine ont été plantés sur lui, le carnet manque, la page ouvre caméra/badge/Hami, et Zinédine est en manque sous les yeux de Karine.
+Nouvelle contrainte de lisibilité: ne pas écrire l'enquête comme une énigme cryptique, mais ne pas spoiler le twist avant le geste physique. Le joueur doit comprendre dans l'ordre: Karine cache un incident, le coffre contient un corps, la gueule de bois rend la fouille risquée, les papiers de Zinédine ont été plantés, le carnet manque, la page ouvre caméra/badge/Hami.
 
 L'alcool et les calmants sont centraux. Ils touchent le corps, les choix, les checks, la réputation et les rapports de force. La Dose ne doit jamais romantiser l'addiction: elle vend de la stabilité, protège Hami, et transforme le besoin en dette.
 
@@ -117,8 +117,8 @@ Système actuel: `identityPosture` sauvegardé, flags de posture, bump léger d'
 - Les options importantes sont soulignées visuellement de façon légère: piste concrète, posture, check ou information structurante.
 - Le bandeau de résultat affiche le détail du jet.
 - Cliquer un check déjà tenté rejoue la scène du résultat mémorisé.
-- Check principal v0: fouiller le coffre et Ahmed sans vomir ni trembler devant Karine, avec `Le Ventre + La Main Basse`.
-- Le check principal n'apparaît qu'après préparation narrative: posture identitaire + inspection d'une surface utile.
+- Check principal v0: se pencher dans le coffre avant de tout comprendre, sans vomir ni trembler devant Karine, avec `Le Ventre + La Main Basse`.
+- Le check principal révèle les papiers et la page arrachée. Il arrive avant le choix de posture identitaire, pas après.
 - Échec premium: Zinédine vomit et Karine voit sa faiblesse, mais sa main revient quand même avec la page arrachée.
 
 ## Voix internes v0

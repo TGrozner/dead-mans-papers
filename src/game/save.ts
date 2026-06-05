@@ -1,7 +1,7 @@
 import { voices } from './content'
 import type { GameState, VoiceId } from './types'
 
-const STORAGE_KEY = 'dead-mans-papers:v11'
+const STORAGE_KEY = 'dead-mans-papers:v12'
 const TUTORIAL_HIDDEN_KEY = 'dead-mans-papers:tutorial-hidden-v2'
 const TUTORIAL_SEEN_KEY = 'dead-mans-papers:tutorial-seen-v2'
 

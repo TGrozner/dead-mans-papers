@@ -696,7 +696,7 @@ export class MirrorsScene extends Phaser.Scene {
       },
       {
         id: 'miroirs_orb_body',
-        label: 'Regarder le corps',
+        label: 'Regarder le coffre',
         mode: 'visible',
         x: 82,
         y: 334,

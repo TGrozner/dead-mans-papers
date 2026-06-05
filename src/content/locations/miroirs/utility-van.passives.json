@@ -13,9 +13,9 @@
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
-      "nodeId": "trunk_open"
+      "nodeId": "papers_reveal"
     },
-    "text": "Tes papiers sur Ahmed ne disent pas seulement \"Zinédine\". Ils disent accès municipal, prescription médicale, personne contrôlable. C'est une mise en scène, pas une erreur."
+    "text": "Carte, badge, ordonnance: ce ne sont pas des papiers, c'est une version officielle de toi qu'on a déposée dans le coffre."
   },
   {
     "id": "miroirs_van__bouches_ahmed_used_firstname",
@@ -31,9 +31,9 @@
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
-      "nodeId": "trunk_open"
+      "nodeId": "papers_reveal"
     },
-    "text": "Ahmed disait Zinédine quand les autres disaient Le Gobelet. Pas pour t'épargner. Pour ne pas laisser le quartier remplacer ton nom par ton addiction."
+    "text": "Ce nom te cogne avant de te revenir. Zinédine Saïdi. Le quartier disait Le Gobelet. Les papiers, eux, savent être cruels sans hausser la voix."
   },
   {
     "id": "miroirs_van__regard_hand_seen",
@@ -105,9 +105,9 @@
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
-      "nodeId": "trunk_open"
+      "nodeId": "papers_reveal"
     },
-    "text": "Le Gobelet, simple blague de quartier. Rien qui puisse rendre ton alcool plus officiel que ton prénom. Évidemment. Très mauvaise idée de croire ça."
+    "text": "Le Gobelet, simple blague de quartier. Rien qui puisse rendre ton alcool plus officiel que ton prénom. Évidemment. Très mauvaise idée de croire ça maintenant."
   },
   {
     "id": "miroirs_van__dossier_list_protects_someone",

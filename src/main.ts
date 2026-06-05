@@ -41,7 +41,7 @@ app.innerHTML = `
       <aside class="case-panel" aria-label="Dossier">
         <section>
           <p class="panel-label">Objectif</p>
-          <p id="objective" class="objective">Comprendre pourquoi le mort porte tes papiers dans un utilitaire municipal.</p>
+          <p id="objective" class="objective">Rester debout assez longtemps pour comprendre ce que Karine cache dans l'utilitaire.</p>
         </section>
 
         <section>

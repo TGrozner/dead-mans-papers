@@ -15,6 +15,7 @@ npm run dev
 - Lieu jouable: Parking P2, parking semi-enterré d'une cité en rénovation interminable.
 - Personnage joueur: Zinédine Saïdi, médiateur sécurité municipale fonctionnel par fragments, surnommé Le Gobelet.
 - Incident central: Ahmed Berrichi, vieux locataire officiellement disparu du relogement, est retrouvé dans le coffre d'un utilitaire municipal avec les papiers du joueur plantés sur lui.
+- Progression v0: le coffre révèle d'abord une odeur et une forme; les papiers n'arrivent qu'après une fouille physique risquée.
 - Mystère municipal: une page arrachée ouvre des pistes sales: caméra P2 morte, badge chantier, Dr Nadia Hami, et Sofiane qui a senti l'odeur du coffre malgré son joint.
 - Quatre PNJ clés: Karine Leduc, responsable rénovation urbaine; Amar Boudiaf, gardien d'immeuble; Sofiane Zekraoui, témoin de palissade qui fume du shit; Dr Nadia Hami, médecin municipal encore hors champ.
 - Huit voix internes définies comme personnages systémiques.
