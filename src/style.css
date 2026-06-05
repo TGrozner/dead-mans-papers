@@ -809,38 +809,3 @@ h1 {
 .choice-button--important.choice-button--visited:hover {
   background: #e2cfaa;
 }
-
-@media (max-width: 900px) {
-  .game-shell {
-    padding: 10px;
-  }
-
-  .play-area {
-    flex: 1 1 auto;
-    grid-template-columns: 1fr;
-    grid-template-rows: minmax(0, auto) minmax(0, 1fr);
-    align-items: stretch;
-  }
-
-  #game-stage {
-    width: min(100%, calc((100svh - 96px) * 5 / 3));
-  }
-
-  .case-panel {
-    height: 100%;
-    min-height: 0;
-  }
-
-  .voice-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .dialogue-root {
-    inset: auto 10px 10px;
-    max-height: min(54svh, 380px);
-  }
-
-  .dialogue-panel {
-    max-height: min(54svh, 380px);
-  }
-}
