@@ -110,12 +110,14 @@ export class MirrorsScene extends Phaser.Scene {
     if (this.isMobileViewport()) {
       camera.setZoom(MOBILE_CAMERA_ZOOM)
       camera.startFollow(this.player, true, 0.14, 0.14)
+      this.updateInteractionMarkerVisibility()
       return
     }
 
     camera.stopFollow()
     camera.setZoom(1)
     camera.centerOn(480, 288)
+    this.updateInteractionMarkerVisibility()
   }
 
   private isMobileViewport(): boolean {
@@ -310,8 +312,12 @@ export class MirrorsScene extends Phaser.Scene {
     this.drawPillar(graphics, 790, 382)
 
     graphics.lineStyle(5, 0xcfd6d2, 0.24)
-    graphics.strokeCircle(366, 236, 28)
-    graphics.lineBetween(366, 264, 366, 300)
+    graphics.lineBetween(340, 224, 392, 224)
+    graphics.lineBetween(340, 224, 340, 300)
+    graphics.lineBetween(340, 300, 390, 300)
+    graphics.lineStyle(3, 0xcfd6d2, 0.18)
+    graphics.lineBetween(352, 242, 380, 270)
+    graphics.lineBetween(380, 242, 352, 270)
     graphics.lineStyle(3, 0x65b7c6, 0.28)
     graphics.strokeRect(334, 214, 72, 96)
     graphics.lineStyle(3, 0xd7a84b, 0.72)
@@ -699,7 +705,20 @@ export class MirrorsScene extends Phaser.Scene {
       ease: 'Sine.easeInOut',
     })
 
+    marker.setVisible(this.isMobileViewport())
     return marker
+  }
+
+  private updateInteractionMarkerVisibility(): void {
+    const showMarkers = this.isMobileViewport()
+
+    this.hotspots.forEach((hotspot) => {
+      hotspot.marker?.setVisible(showMarkers)
+    })
+
+    this.orbSpots.forEach((orb) => {
+      orb.marker?.setVisible(showMarkers && orb.mode === 'visible')
+    })
   }
 
   private updatePlayerMovement(): void {

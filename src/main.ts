@@ -63,11 +63,11 @@ app.innerHTML = `
     <div id="tutorial-root" class="tutorial-root" role="dialog" aria-modal="true" aria-labelledby="tutorial-title" hidden>
       <article class="tutorial-panel">
         <p class="panel-label">Avant de reprendre</p>
-        <h2 id="tutorial-title">Parking P2 se joue lentement</h2>
+        <h2 id="tutorial-title">Avance, observe, choisis</h2>
         <div class="tutorial-copy">
-          <p>Touche la scène pour rapprocher Morad. Quand il est assez près, utilise le bouton <strong>!</strong> ou retouche la même cible pour parler, inspecter ou écouter.</p>
-          <p>Sur mobile, rien ne s'ouvre juste parce que ton doigt passe au mauvais endroit. Les pensées importantes arrivent dans les scènes ou dans de courts signaux.</p>
-          <p>Le dossier garde les indices et les voix internes. Les choix bizarres ou indignes sont souvent aussi utiles que les choix raisonnables.</p>
+          <p>Touche ou clique la scène pour te déplacer. Approche une cible, puis utilise le bouton <strong>!</strong> ou retouche-la pour inspecter, parler ou écouter.</p>
+          <p>Rien ne s'ouvre par accident: prends une seconde, choisis ton angle, puis assume la scène que tu déclenches.</p>
+          <p>Le dossier garde les indices. Les voix internes ne sont pas des conseils sages: elles peuvent aider, mentir, paniquer ou pousser trop loin.</p>
         </div>
         <label class="tutorial-check">
           <input id="tutorial-hide" type="checkbox" />
