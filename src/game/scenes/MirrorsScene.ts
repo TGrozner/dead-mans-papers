@@ -195,19 +195,14 @@ export class MirrorsScene extends Phaser.Scene {
     }
 
     this.drawTowerBackdrop()
+    this.drawParkingSurface(graphics)
 
     graphics.fillStyle(0x22262c)
     graphics.fillRect(0, 0, 960, 42)
     graphics.fillStyle(0xcfd6d2)
     graphics.fillRect(0, 42, 960, 2)
-    graphics.fillStyle(0xd7a84b)
-
-    for (let x = 342; x < 860; x += 86) {
-      graphics.fillRect(x, 332, 52, 3)
-      graphics.fillRect(x, 406, 52, 3)
-    }
-
     this.drawUtilityVan(590, 166)
+    this.drawParkedVehicles()
     this.drawPrefab(692, 70)
     this.drawPalisade(118, 88)
     this.drawTechnicalRoom()
@@ -217,37 +212,10 @@ export class MirrorsScene extends Phaser.Scene {
 
   private drawTowerBackdrop(): void {
     const graphics = this.add.graphics()
-    const towers = [
-      [4, 48, 76, 408, 'C'],
-      [880, 42, 72, 420, 'D'],
-      [342, 46, 98, 118, 'Bât. C'],
-      [34, 392, 118, 116, 'Dalle haute'],
-    ] as Array<[number, number, number, number, string]>
-
-    towers.forEach(([x, y, width, height, label]) => {
-      graphics.fillStyle(0x171a1d, 0.72)
-      graphics.fillRect(x + 8, y + 10, width, height)
-      graphics.fillStyle(0x20262c)
-      graphics.fillRect(x, y, width, height)
-      graphics.lineStyle(2, 0x0d1117, 0.8)
-      graphics.strokeRect(x, y, width, height)
-
-      for (let windowY = y + 18; windowY < y + height - 14; windowY += 24) {
-        for (let windowX = x + 10; windowX < x + width - 12; windowX += 20) {
-          const lit = (windowX + windowY) % 3 === 0
-          graphics.fillStyle(lit ? 0xd7a84b : 0x334550, lit ? 0.72 : 0.42)
-          graphics.fillRect(windowX, windowY, 8, 6)
-        }
-      }
-
-      this.add.text(x + 8, y + 6, label, {
-        fontFamily: 'monospace',
-        fontSize: '10px',
-        color: '#f4ecd8',
-        backgroundColor: '#171c24',
-        padding: { x: 3, y: 1 },
-      }).setDepth(1)
-    })
+    this.drawCloudTower(graphics, 2, 48, 88, 414, 'Tour C')
+    this.drawCloudTower(graphics, 862, 42, 94, 430, 'Tour D')
+    this.drawCloudTower(graphics, 334, 46, 116, 126, 'Bât. C')
+    this.drawCloudTower(graphics, 36, 390, 122, 120, 'Dalle haute')
 
     graphics.fillStyle(0x111820, 0.82)
     graphics.fillRect(268, 128, 320, 26)
@@ -266,31 +234,223 @@ export class MirrorsScene extends Phaser.Scene {
     }).setDepth(2)
   }
 
+  private drawCloudTower(
+    graphics: Phaser.GameObjects.Graphics,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    label: string,
+  ): void {
+    const centerX = x + width / 2
+    const colors = [0x2d4751, 0x6e7a6d, 0xcfd6d2, 0x9aa66f, 0x5b7782]
+
+    graphics.fillStyle(0x0d1117, 0.58)
+    graphics.fillEllipse(centerX + 8, y + height / 2 + 9, width * 0.78, height + 8)
+    graphics.fillStyle(0x20262c)
+    graphics.fillEllipse(centerX, y + height / 2, width * 0.86, height)
+    graphics.fillRect(x + width * 0.2, y + 10, width * 0.6, height - 20)
+    graphics.lineStyle(2, 0x0d1117, 0.8)
+    graphics.strokeEllipse(centerX, y + height / 2, width * 0.86, height)
+
+    for (let patchY = y + 18; patchY < y + height - 16; patchY += 26) {
+      const wave = Math.sin((patchY - y) / 22)
+
+      for (let patchX = x + 12; patchX < x + width - 14; patchX += 18) {
+        const index = Math.abs(Math.floor((patchX + patchY) / 18)) % colors.length
+        const visible = Math.abs(patchX - centerX + wave * 11) < width * 0.34
+
+        if (!visible) {
+          continue
+        }
+
+        graphics.fillStyle(colors[index], 0.34)
+        graphics.fillRect(patchX + wave * 4, patchY, 12, 9)
+        graphics.fillStyle((patchX + patchY) % 4 === 0 ? 0xd7a84b : 0x111820, 0.62)
+        graphics.fillRect(patchX + 3 + wave * 4, patchY + 2, 5, 4)
+      }
+    }
+
+    this.add.text(x + 7, y + 7, label, {
+      fontFamily: 'monospace',
+      fontSize: '10px',
+      color: '#f4ecd8',
+      backgroundColor: '#171c24',
+      padding: { x: 3, y: 1 },
+    }).setDepth(1)
+  }
+
+  private drawParkingSurface(graphics: Phaser.GameObjects.Graphics): void {
+    graphics.fillStyle(0x1a2026, 0.72)
+    graphics.fillRect(286, 190, 520, 236)
+    graphics.lineStyle(3, 0x59615e, 0.9)
+    graphics.strokeRect(286, 190, 520, 236)
+
+    graphics.fillStyle(0xcfd6d2, 0.18)
+    graphics.fillRect(300, 206, 492, 32)
+    graphics.fillRect(300, 382, 492, 28)
+    graphics.fillStyle(0x0d1117, 0.22)
+    graphics.fillRect(304, 246, 488, 104)
+
+    graphics.lineStyle(2, 0xf4ecd8, 0.62)
+    for (let x = 322; x < 786; x += 76) {
+      graphics.lineBetween(x, 238, x, 292)
+      graphics.lineBetween(x, 350, x, 410)
+    }
+
+    for (let x = 342; x < 790; x += 86) {
+      graphics.lineStyle(3, 0xd7a84b, 0.85)
+      graphics.lineBetween(x, 332, x + 52, 332)
+      graphics.lineBetween(x, 406, x + 52, 406)
+    }
+
+    graphics.lineStyle(3, 0xf4ecd8, 0.74)
+    graphics.lineBetween(320, 312, 790, 312)
+    graphics.lineStyle(3, 0xd7a84b, 0.88)
+    graphics.lineBetween(318, 320, 785, 320)
+
+    this.drawParkingArrow(graphics, 370, 314, 'right')
+    this.drawParkingArrow(graphics, 746, 320, 'right')
+    this.drawPillar(graphics, 306, 250)
+    this.drawPillar(graphics, 790, 250)
+    this.drawPillar(graphics, 306, 382)
+    this.drawPillar(graphics, 790, 382)
+
+    this.add.text(338, 220, 'P2', {
+      fontFamily: 'monospace',
+      fontSize: '34px',
+      color: '#f4ecd8',
+      backgroundColor: 'rgba(13,17,23,0.45)',
+      padding: { x: 5, y: 1 },
+    }).setDepth(1)
+
+    this.add.text(630, 392, 'SORTIE', {
+      fontFamily: 'monospace',
+      fontSize: '13px',
+      color: '#171c24',
+      backgroundColor: '#d7a84b',
+      padding: { x: 5, y: 2 },
+    }).setDepth(1)
+
+    this.add.text(288, 176, 'PARKING P2 - SOUS DALLE', {
+      fontFamily: 'monospace',
+      fontSize: '11px',
+      color: '#f4ecd8',
+      backgroundColor: '#171c24',
+      padding: { x: 5, y: 2 },
+    }).setDepth(2)
+  }
+
+  private drawParkingArrow(
+    graphics: Phaser.GameObjects.Graphics,
+    x: number,
+    y: number,
+    direction: 'left' | 'right',
+  ): void {
+    const sign = direction === 'right' ? 1 : -1
+    graphics.fillStyle(0xf4ecd8, 0.72)
+    graphics.fillRect(x - 24 * sign, y - 4, 38 * sign, 8)
+    graphics.fillTriangle(x + 20 * sign, y - 14, x + 20 * sign, y + 14, x + 42 * sign, y)
+  }
+
+  private drawPillar(graphics: Phaser.GameObjects.Graphics, x: number, y: number): void {
+    graphics.fillStyle(0x0d1117, 0.44)
+    graphics.fillRect(x + 4, y + 5, 30, 46)
+    graphics.fillStyle(0x9ea6a1)
+    graphics.fillRect(x, y, 30, 46)
+    graphics.lineStyle(2, 0x0d1117, 0.82)
+    graphics.strokeRect(x, y, 30, 46)
+
+    for (let stripeY = y + 4; stripeY < y + 42; stripeY += 12) {
+      graphics.fillStyle(0xd7a84b)
+      graphics.fillRect(x + 2, stripeY, 26, 5)
+      graphics.fillStyle(0x171c24)
+      graphics.fillRect(x + 2, stripeY + 5, 26, 4)
+    }
+  }
+
   private drawUtilityVan(x: number, y: number): void {
     const graphics = this.add.graphics()
-    graphics.fillStyle(0x0d1117, 0.45)
-    graphics.fillRect(x + 8, y + 14, 176, 90)
-    graphics.fillStyle(0xe7e2d2)
-    graphics.fillRect(x, y + 18, 174, 70)
-    graphics.fillStyle(0xc6c0af)
-    graphics.fillRect(x + 120, y + 8, 54, 34)
-    graphics.fillStyle(0x1c252b)
-    graphics.fillRect(x + 128, y + 14, 34, 16)
+    graphics.fillStyle(0x0d1117, 0.48)
+    graphics.fillRect(x + 10, y + 18, 182, 98)
+    graphics.fillStyle(0xe8e2d2)
+    graphics.fillRect(x, y + 22, 178, 76)
+    graphics.fillStyle(0xd2cabb)
+    graphics.fillRect(x + 118, y + 12, 60, 46)
     graphics.lineStyle(3, 0x0d1117)
-    graphics.strokeRect(x, y + 18, 174, 70)
-    graphics.fillStyle(0xb75738)
-    graphics.fillRect(x + 14, y + 34, 88, 8)
-    graphics.fillStyle(0xd7a84b)
-    graphics.fillRect(x + 14, y + 48, 118, 7)
-    graphics.fillStyle(0x0b0e12)
-    graphics.fillRect(x + 16, y + 61, 82, 25)
-    graphics.fillStyle(0xf4ecd8)
-    graphics.fillRect(x + 42, y + 72, 38, 8)
-    graphics.fillStyle(0xb75738)
-    graphics.fillRect(x + 96, y + 68, 32, 7)
+    graphics.strokeRect(x, y + 22, 178, 76)
+    graphics.strokeRect(x + 118, y + 12, 60, 46)
+
+    graphics.fillStyle(0x1c252b)
+    graphics.fillRect(x + 126, y + 18, 42, 20)
+    graphics.fillStyle(0x65b7c6, 0.65)
+    graphics.fillRect(x + 130, y + 21, 34, 8)
     graphics.fillStyle(0x0d1117)
-    graphics.fillRect(x + 26, y + 84, 22, 10)
-    graphics.fillRect(x + 130, y + 84, 22, 10)
+    graphics.fillRect(x + 18, y + 96, 26, 12)
+    graphics.fillRect(x + 132, y + 96, 26, 12)
+    graphics.fillRect(x + 18, y + 14, 26, 9)
+    graphics.fillRect(x + 132, y + 14, 26, 9)
+
+    graphics.fillStyle(0xb75738)
+    graphics.fillRect(x + 12, y + 38, 94, 9)
+    graphics.fillStyle(0xd7a84b)
+    graphics.fillRect(x + 12, y + 52, 122, 8)
+    graphics.fillStyle(0xf4ecd8)
+    graphics.fillRect(x + 28, y + 68, 58, 12)
+    graphics.fillStyle(0x171c24)
+    graphics.fillRect(x + 34, y + 72, 44, 3)
+
+    graphics.fillStyle(0x0b0e12)
+    graphics.fillRect(x - 16, y + 45, 28, 54)
+    graphics.lineStyle(2, 0xd7a84b)
+    graphics.lineBetween(x - 13, y + 50, x + 8, y + 68)
+    graphics.lineBetween(x - 13, y + 90, x + 8, y + 72)
+
+    this.add.text(x + 15, y + 35, 'MAIRIE', {
+      fontFamily: 'monospace',
+      fontSize: '9px',
+      color: '#f4ecd8',
+      backgroundColor: '#b75738',
+      padding: { x: 3, y: 1 },
+    }).setDepth(3)
+
+    this.add.text(x + 18, y + 53, 'RENOUV. URBAIN', {
+      fontFamily: 'monospace',
+      fontSize: '8px',
+      color: '#171c24',
+      backgroundColor: '#d7a84b',
+      padding: { x: 3, y: 1 },
+    }).setDepth(3)
+  }
+
+  private drawParkedVehicles(): void {
+    this.drawParkedCar(350, 372, 0x4c6570)
+    this.drawParkedCar(426, 372, 0x7f825f)
+    this.drawParkedCar(816, 344, 0x8f3f36)
+    this.drawParkedCar(848, 344, 0x2f3f4d)
+  }
+
+  private drawParkedCar(x: number, y: number, color: number): void {
+    const graphics = this.add.graphics()
+    graphics.fillStyle(0x0d1117, 0.4)
+    graphics.fillRect(x + 5, y + 8, 48, 40)
+    graphics.fillStyle(color)
+    graphics.fillRect(x, y, 48, 38)
+    graphics.fillStyle(0x1c252b)
+    graphics.fillRect(x + 9, y + 6, 30, 10)
+    graphics.fillRect(x + 9, y + 23, 30, 8)
+    graphics.fillStyle(0xcfd6d2, 0.7)
+    graphics.fillRect(x + 13, y + 8, 22, 4)
+    graphics.fillStyle(0xf4ecd8)
+    graphics.fillRect(x + 6, y + 34, 12, 3)
+    graphics.fillRect(x + 30, y + 34, 12, 3)
+    graphics.fillStyle(0x0d1117)
+    graphics.fillRect(x - 4, y + 8, 5, 11)
+    graphics.fillRect(x + 47, y + 8, 5, 11)
+    graphics.fillRect(x - 4, y + 24, 5, 11)
+    graphics.fillRect(x + 47, y + 24, 5, 11)
+    graphics.lineStyle(2, 0x0d1117, 0.82)
+    graphics.strokeRect(x, y, 48, 38)
   }
 
   private drawPrefab(x: number, y: number): void {
