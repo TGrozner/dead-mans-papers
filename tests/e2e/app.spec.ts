@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 
 const saveKey = 'dead-mans-papers:v12'
 const tutorialSeenKey = 'dead-mans-papers:tutorial-seen-v2'
@@ -14,10 +14,68 @@ const voiceStats = {
   main_gauche: 2,
 }
 
+const progressedSave = {
+  flags: {
+    woke_up: true,
+    trunk_opened: true,
+    papers_seen: true,
+    page_found: true,
+    page_read: true,
+  },
+  clues: [
+    "Le corps d'un vieil homme est dans l'utilitaire avec la carte, le badge municipal et l'ordonnance de Zinédine posés sur lui.",
+    'La caméra du P2 est hors service mais son support est récent.',
+    'Le badge municipal de Zinédine porte des rayures fraîches de lecteur.',
+    'Une ordonnance de calmants signée Dr Nadia Hami est dans les papiers de Zinédine.',
+    'Sofiane fume derrière la palissade pendant la découverte du corps.',
+  ],
+  completedChecks: {},
+  triggeredOrbs: {},
+  triggeredPassives: {},
+  visitedChoices: {},
+  voiceStats,
+}
+
 test.beforeEach(async ({ page }) => {
   await page.goto('/')
   await page.evaluate(() => localStorage.clear())
 })
+
+async function seedGame(page: Page, state: unknown) {
+  await page.addInitScript(
+    ({ key, tutorialKey, saveState }) => {
+      localStorage.setItem(tutorialKey, 'true')
+      localStorage.setItem(key, JSON.stringify(saveState))
+    },
+    { key: saveKey, tutorialKey: tutorialSeenKey, saveState: state },
+  )
+}
+
+async function expectPageHasNoForcedScroll(page: Page) {
+  const overflow = await page.evaluate(() => {
+    return {
+      bodyScrollHeight: document.body.scrollHeight,
+      viewportHeight: document.documentElement.clientHeight,
+      appScrollHeight: document.querySelector('#app')?.scrollHeight ?? 0,
+      appClientHeight: document.querySelector('#app')?.clientHeight ?? 0,
+    }
+  })
+
+  expect(overflow.bodyScrollHeight).toBeLessThanOrEqual(overflow.viewportHeight)
+  expect(overflow.appScrollHeight).toBeLessThanOrEqual(overflow.appClientHeight)
+}
+
+async function expectInViewport(page: Page, selector: string) {
+  const box = await page.locator(selector).boundingBox()
+  const viewport = page.viewportSize()
+
+  expect(box).not.toBeNull()
+  expect(viewport).not.toBeNull()
+  expect(box!.x).toBeGreaterThanOrEqual(0)
+  expect(box!.y).toBeGreaterThanOrEqual(0)
+  expect(box!.x + box!.width).toBeLessThanOrEqual(viewport!.width)
+  expect(box!.y + box!.height).toBeLessThanOrEqual(viewport!.height)
+}
 
 test('starts with a bounded tutorial and opens the first dialogue', async ({ page }) => {
   await page.goto('/')
@@ -43,30 +101,7 @@ test('starts with a bounded tutorial and opens the first dialogue', async ({ pag
 })
 
 test('renders Phaser canvas and grouped case clues from a saved game', async ({ page }) => {
-  await page.addInitScript(
-    ({ key, tutorialKey, stats }) => {
-      localStorage.setItem(tutorialKey, 'true')
-      localStorage.setItem(
-        key,
-        JSON.stringify({
-          flags: {},
-          clues: [
-            "Le corps d'un vieil homme est dans l'utilitaire avec la carte, le badge municipal et l'ordonnance de Zinédine posés sur lui.",
-            'La caméra du P2 est hors service mais son support est récent.',
-            'Le badge municipal de Zinédine porte des rayures fraîches de lecteur.',
-            'Une ordonnance de calmants signée Dr Nadia Hami est dans les papiers de Zinédine.',
-            'Sofiane fume derrière la palissade pendant la découverte du corps.',
-          ],
-          completedChecks: {},
-          triggeredOrbs: {},
-          triggeredPassives: {},
-          visitedChoices: {},
-          voiceStats: stats,
-        }),
-      )
-    },
-    { key: saveKey, tutorialKey: tutorialSeenKey, stats: voiceStats },
-  )
+  await seedGame(page, progressedSave)
 
   await page.goto('/')
 
@@ -85,6 +120,67 @@ test('renders Phaser canvas and grouped case clues from a saved game', async ({ 
     'Hami / santé',
     'Témoins',
   ])
+})
+
+test('keeps desktop and mobile play surfaces bounded without page scroll', async ({ page }) => {
+  await seedGame(page, progressedSave)
+
+  await page.goto('/')
+
+  await expect(page.locator('#game-stage canvas')).toBeVisible()
+  await expect(page.locator('.case-panel')).toBeVisible()
+  await expectPageHasNoForcedScroll(page)
+  await expectInViewport(page, '.stage-wrap')
+  await expectInViewport(page, '.case-panel')
+
+  const layout = await page.evaluate(() => {
+    const measure = (selector: string) => {
+      const element = document.querySelector(selector)
+      const box = element?.getBoundingClientRect()
+
+      return {
+        width: box?.width ?? 0,
+        height: box?.height ?? 0,
+        scrollHeight: element?.scrollHeight ?? 0,
+        clientHeight: element?.clientHeight ?? 0,
+      }
+    }
+
+    return {
+      stage: measure('#game-stage'),
+      panel: measure('.case-panel'),
+      clues: measure('.clue-list'),
+      voices: measure('.voice-list'),
+    }
+  })
+
+  expect(layout.stage.width).toBeGreaterThan(300)
+  expect(layout.stage.height).toBeGreaterThan(180)
+  expect(layout.panel.height).toBeGreaterThan(250)
+  expect(layout.clues.scrollHeight).toBeLessThanOrEqual(layout.clues.clientHeight)
+
+  if (layout.voices.width > 0) {
+    expect(layout.voices.scrollHeight).toBeLessThanOrEqual(layout.voices.clientHeight)
+  }
+})
+
+test('keeps restored dialogue inside the viewport', async ({ page }) => {
+  await seedGame(page, {
+    ...progressedSave,
+    activeSurface: {
+      type: 'dialogue',
+      scriptId: 'utility_van',
+      nodeId: 'trunk_hub',
+    },
+  })
+
+  await page.goto('/')
+
+  await expect(page.locator('#game-stage canvas')).toBeVisible()
+  await expect(page.locator('.dialogue-root')).toContainText('Coffre ouvert')
+  await expectPageHasNoForcedScroll(page)
+  await expectInViewport(page, '.stage-wrap')
+  await expectInViewport(page, '.dialogue-root')
 })
 
 test('updates the case objective from saved progression', async ({ page }) => {
@@ -128,4 +224,49 @@ test('updates the case objective from saved progression', async ({ page }) => {
   await page.goto('/')
 
   await expect(page.locator('#objective')).toContainText('Traiter la piste badge')
+})
+
+test('moves the objective from evidence checks to witness confrontation', async ({ page }) => {
+  await seedGame(page, {
+    ...progressedSave,
+    completedChecks: {
+      camera_dead_angle: {
+        checkId: 'camera_dead_angle',
+        voice: 'procedure',
+        supportVoice: 'memoire_saline',
+        roll: 4,
+        stat: 2,
+        supportStat: 2,
+        total: 8,
+        difficulty: 8,
+        passed: true,
+      },
+      badge_access_chain: {
+        checkId: 'badge_access_chain',
+        voice: 'main_gauche',
+        supportVoice: 'procedure',
+        roll: 4,
+        stat: 2,
+        supportStat: 2,
+        total: 8,
+        difficulty: 8,
+        passed: true,
+      },
+      hami_prescription_line: {
+        checkId: 'hami_prescription_line',
+        voice: 'memoire_saline',
+        supportVoice: 'procedure',
+        roll: 4,
+        stat: 2,
+        supportStat: 2,
+        total: 8,
+        difficulty: 8,
+        passed: true,
+      },
+    },
+  })
+
+  await page.goto('/')
+
+  await expect(page.locator('#objective')).toContainText('Confronter Amar et Sofiane')
 })

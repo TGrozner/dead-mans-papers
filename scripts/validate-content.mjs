@@ -21,7 +21,8 @@ const emittedClues = new Set()
 const checkIds = new Map()
 const orbIds = new Set()
 const passiveIds = new Set()
-const suspiciousMojibakePattern = /[A-Za-zÀ-ÿ]\?[A-Za-zÀ-ÿ]|\?[a-zàâçéèêëîïôùûüœ]/u
+const suspiciousMojibakePattern =
+  /[A-Za-zÀ-ÿ]\?[A-Za-zÀ-ÿ]|[a-zàâçéèêëîïôùûüœ]\?(?=\s+[a-zàâçéèêëîïôùûüœ])|\?[a-zàâçéèêëîïôùûüœ]/u
 
 function scanText(value, owner) {
   if (typeof value === 'string') {
@@ -91,9 +92,18 @@ for (const [scriptId, script] of Object.entries(dialogues)) {
     trackEffects(node.effects, owner)
 
     const choices = node.choices ?? []
+    const choiceIds = new Set()
 
     choices.forEach((choice, index) => {
       const choiceOwner = `${owner}.choices[${index}]`
+
+      if (choice.id) {
+        if (choiceIds.has(choice.id)) {
+          errors.push(`${owner} has duplicate choice id: ${choice.id}`)
+        }
+
+        choiceIds.add(choice.id)
+      }
 
       if (choice.next && !script.nodes[choice.next]) {
         errors.push(`${choiceOwner} points to missing node: ${choice.next}`)
@@ -129,6 +139,25 @@ for (const [scriptId, script] of Object.entries(dialogues)) {
 
       if (!script.nodes[check.failureNode]) {
         errors.push(`${choiceOwner} check failure node is missing: ${check.failureNode}`)
+      }
+
+      if (choice.hiddenWhenFlag && script.nodes[check.successNode] && script.nodes[check.failureNode]) {
+        const successFlags = new Set(
+          (script.nodes[check.successNode].effects ?? [])
+            .filter((effect) => effect.type === 'flag')
+            .map((effect) => effect.flag),
+        )
+        const failureFlags = new Set(
+          (script.nodes[check.failureNode].effects ?? [])
+            .filter((effect) => effect.type === 'flag')
+            .map((effect) => effect.flag),
+        )
+
+        if (!successFlags.has(choice.hiddenWhenFlag) || !failureFlags.has(choice.hiddenWhenFlag)) {
+          errors.push(
+            `${choiceOwner} hides checked choice with ${choice.hiddenWhenFlag}, but both result nodes must set that flag`,
+          )
+        }
       }
     })
   }
@@ -167,6 +196,14 @@ for (const passive of passives) {
 
   if (passive.parasite && !parasites.has(passive.parasite)) {
     errors.push(`${passive.id} references unknown parasite: ${passive.parasite}`)
+  }
+
+  if (passive.voice && passive.parasite) {
+    errors.push(`${passive.id} cannot reference both a voice and a parasite`)
+  }
+
+  if (passive.channel !== passive.trigger?.type) {
+    errors.push(`${passive.id} channel does not match trigger type: ${passive.channel} vs ${passive.trigger?.type}`)
   }
 
   if (passive.trigger?.type === 'dialogue') {

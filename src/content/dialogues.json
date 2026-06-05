@@ -635,7 +635,7 @@
         ],
         "choices": [
           {
-            "label": "Regarder ton nom pos? sur le mort.",
+            "label": "Regarder ton nom posé sur le mort.",
             "next": "papers_reveal",
             "important": true
           },
@@ -645,7 +645,7 @@
             "important": true
           },
           {
-            "label": "Demander ? Karine depuis combien de temps elle savait.",
+            "label": "Demander à Karine depuis combien de temps elle savait.",
             "next": "leduc_after_open"
           },
           {
@@ -918,6 +918,10 @@
             "clue": "L'ordonnance de Hami peut servir à couvrir une absence de Zinédine sous une continuité médicale propre."
           },
           {
+            "type": "clue",
+            "clue": "Synthèse Hami: l'ordonnance peut transformer un trou noir en absence médicalement présentable."
+          },
+          {
             "type": "voice_bump",
             "voice": "memoire_saline",
             "amount": 1
@@ -948,6 +952,10 @@
           {
             "type": "clue",
             "clue": "La Dose transforme l'ordonnance de Hami en dette de stabilité avant que Zinédine puisse la lire clairement."
+          },
+          {
+            "type": "clue",
+            "clue": "Synthèse Hami: même confuse, la lecture confirme que la prescription tient Zinédine par la stabilité."
           },
           {
             "type": "voice_bump",
@@ -1289,6 +1297,10 @@
             "clue": "Le support retouché de la caméra P2 crée un angle mort utile sur l'utilitaire."
           },
           {
+            "type": "clue",
+            "clue": "Synthèse caméra: la panne du P2 semble organisée pour laisser l'utilitaire hors image."
+          },
+          {
             "type": "voice_bump",
             "voice": "procedure",
             "amount": 1
@@ -1319,6 +1331,10 @@
           {
             "type": "clue",
             "clue": "Même sans reconstituer l'angle, le support récent de la caméra P2 prouve une intervention après la panne."
+          },
+          {
+            "type": "clue",
+            "clue": "Synthèse caméra: le support retouché reste une preuve de manipulation même si l'angle exact manque."
           },
           {
             "type": "voice_bump",
@@ -1384,6 +1400,10 @@
             "clue": "Le badge chantier et le badge municipal de Zinédine peuvent former une chaîne d'accès autour du lecteur P2."
           },
           {
+            "type": "clue",
+            "clue": "Synthèse badge: deux accès propres peuvent fabriquer une scène sale sans effraction visible."
+          },
+          {
             "type": "voice_bump",
             "voice": "main_gauche",
             "amount": 1
@@ -1414,6 +1434,10 @@
           {
             "type": "clue",
             "clue": "Le lecteur P2 devient le point à vérifier entre badge chantier et badge municipal rayé."
+          },
+          {
+            "type": "clue",
+            "clue": "Synthèse badge: le lecteur P2 est le maillon faible à auditer avant d'accuser un porteur."
           },
           {
             "type": "voice_bump",
