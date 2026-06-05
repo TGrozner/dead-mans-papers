@@ -1175,8 +1175,85 @@
         ],
         "choices": [
           {
+            "label": "Reconstituer l'angle mort de la caméra.",
+            "check": {
+              "id": "camera_dead_angle",
+              "voice": "procedure",
+              "supportVoice": "memoire_saline",
+              "difficulty": 8,
+              "successNode": "page_camera_success",
+              "failureNode": "page_camera_failure"
+            },
+            "hiddenWhenFlag": "camera_angle_checked",
+            "important": true
+          },
+          {
             "label": "Revenir à la page.",
             "next": "page_surface"
+          }
+        ]
+      },
+      "page_camera_success": {
+        "id": "page_camera_success",
+        "speaker": "Le Dossier",
+        "voice": "procedure",
+        "text": "Tu replaces le coffre dans l'axe. Une caméra morte ne voit rien, mais son support raconte où elle devait regarder. Si quelqu'un l'a retouché sans la réparer, il ne cachait pas la panne: il préparait précisément ce qu'elle ne filmerait pas.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "camera_angle_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "camera_dead_angle_understood"
+          },
+          {
+            "type": "clue",
+            "clue": "Le support retouché de la caméra P2 crée un angle mort utile sur l'utilitaire."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "procedure",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Noter l'angle mort et revenir à la page.",
+            "next": "page_surface",
+            "important": true
+          }
+        ]
+      },
+      "page_camera_failure": {
+        "id": "page_camera_failure",
+        "speaker": "Le Sel",
+        "voice": "memoire_saline",
+        "text": "Tu vois la panne, le support récent, le coffre. Les morceaux refusent encore de s'aligner. Une chose reste propre: quelqu'un a touché au regard du P2 après sa mort officielle, et ce geste vaut mieux qu'une rumeur.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "camera_angle_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "camera_support_suspect"
+          },
+          {
+            "type": "clue",
+            "clue": "Même sans reconstituer l'angle, le support récent de la caméra P2 prouve une intervention après la panne."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "memoire_saline",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder le support caméra comme piste et revenir à la page.",
+            "next": "page_surface",
+            "important": true
           }
         ]
       },
