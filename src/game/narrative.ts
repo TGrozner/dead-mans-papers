@@ -12,6 +12,7 @@ import type {
   PassiveTrigger,
   RenderedOrb,
   RenderedDialogue,
+  RenderedDialogueChoice,
 } from './types'
 
 export class NarrativeEngine {
@@ -38,11 +39,13 @@ export class NarrativeEngine {
     return this.moveToNode(script.start)
   }
 
-  choose(choice: DialogueChoice): RenderedDialogue | undefined {
+  choose(renderedChoice: RenderedDialogueChoice): RenderedDialogue | undefined {
     if (!this.activeScript) {
       throw new Error('No active dialogue script')
     }
 
+    const choice = renderedChoice.choice
+    this.state.visitedChoices[renderedChoice.key] = true
     this.pendingPassives.push(...this.applyEffects(choice.effects))
 
     if (choice.check) {
@@ -127,14 +130,39 @@ export class NarrativeEngine {
       }),
     ]
     this.pendingPassives = []
+    const choices = node.choices
+      .map((choice, index) => ({ choice, index }))
+      .filter(({ choice }) => this.isChoiceVisible(choice))
+      .map(({ choice, index }) => {
+        const key = this.getChoiceKey(this.activeScript?.id ?? '', nodeId, choice, index)
+
+        return {
+          choice,
+          key,
+          visited: Boolean(this.state.visitedChoices[key]),
+          important: this.isChoiceImportant(choice),
+        }
+      })
 
     return {
       script: this.activeScript,
       node,
-      choices: node.choices.filter((choice) => this.isChoiceVisible(choice)),
+      choices,
       passives: triggeredPassives,
       checkResult: this.lastCheckResult,
     }
+  }
+
+  private getChoiceKey(scriptId: string, nodeId: string, choice: DialogueChoice, index: number): string {
+    return `${scriptId}.${nodeId}.${choice.id ?? index}`
+  }
+
+  private isChoiceImportant(choice: DialogueChoice): boolean {
+    return Boolean(
+      choice.important ||
+        choice.check ||
+        choice.effects?.some((effect) => effect.type === 'identity_posture'),
+    )
   }
 
   private isChoiceVisible(choice: DialogueChoice): boolean {

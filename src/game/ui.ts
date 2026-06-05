@@ -83,13 +83,23 @@ export function createGameUi(options: GameUiOptions) {
       throw new Error('Dialogue choice list did not render')
     }
 
-    activeDialogue.choices.forEach((choice) => {
+    activeDialogue.choices.forEach((renderedChoice) => {
+      const choice = renderedChoice.choice
       const button = document.createElement('button')
       button.type = 'button'
-      button.className = 'choice-button'
+      button.className = [
+        'choice-button',
+        renderedChoice.important ? 'choice-button--important' : '',
+        renderedChoice.visited ? 'choice-button--visited' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')
+      button.dataset.choiceKey = renderedChoice.key
+      button.dataset.visited = String(renderedChoice.visited)
+      button.dataset.important = String(renderedChoice.important)
       button.textContent = getChoiceLabel(choice, options.engine)
       button.addEventListener('click', () => {
-        activeDialogue = options.engine.choose(choice)
+        activeDialogue = options.engine.choose(renderedChoice)
         renderDialogue()
         if (activeDialogue) {
           showPassiveToasts(

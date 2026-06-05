@@ -542,6 +542,37 @@ h1 {
   background: #f1d99f;
 }
 
+.choice-button--important {
+  border-color: #241817;
+  background: #fff1c3;
+  box-shadow: inset 6px 0 0 var(--rust);
+}
+
+.choice-button--important:hover {
+  background: #f5d991;
+}
+
+.choice-button--visited {
+  border-color: rgba(23, 28, 36, 0.48);
+  color: rgba(23, 28, 36, 0.58);
+  background: #e5dccb;
+}
+
+.choice-button--visited:hover {
+  color: rgba(23, 28, 36, 0.72);
+  background: #ded1bb;
+}
+
+.choice-button--important.choice-button--visited {
+  border-color: rgba(23, 28, 36, 0.52);
+  background: #e9ddbf;
+  box-shadow: inset 6px 0 0 rgba(183, 87, 56, 0.48);
+}
+
+.choice-button--important.choice-button--visited:hover {
+  background: #e2cfaa;
+}
+
 @media (max-width: 900px) {
   .game-shell {
     padding: 10px;

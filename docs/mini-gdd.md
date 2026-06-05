@@ -112,6 +112,8 @@ Système actuel: `identityPosture` sauvegardé, flags de posture, bump léger d'
 - Les checks ne sont pas relançables.
 - Avant tentative, le choix affiche `voix: d6 + score vs difficulté`, ou `voix + voix: d6 + score + score vs difficulté`.
 - Après tentative, le choix affiche le résultat mémorisé.
+- Les options déjà ouvertes restent accessibles mais passent en gris, pour signaler ce qui a été épuisé sans bloquer le retour.
+- Les options importantes sont soulignées visuellement de façon légère: piste concrète, posture, check ou information structurante.
 - Le bandeau de résultat affiche le détail du jet.
 - Cliquer un check déjà tenté rejoue la scène du résultat mémorisé.
 - Check principal v0: fouiller le coffre et Ahmed sans vomir ni trembler devant Karine, avec `Le Ventre + La Main Basse`.

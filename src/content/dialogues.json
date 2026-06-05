@@ -29,7 +29,8 @@
           },
           {
             "label": "Chercher le téléphone.",
-            "next": "phone"
+            "next": "phone",
+            "important": true
           }
         ]
       },
@@ -50,7 +51,8 @@
           },
           {
             "label": "Prendre le téléphone.",
-            "next": "phone"
+            "next": "phone",
+            "important": true
           },
           {
             "label": "Te lever. Maintenant.",
@@ -97,7 +99,8 @@
         "choices": [
           {
             "label": "Rappeler Karine.",
-            "next": "karine_call"
+            "next": "karine_call",
+            "important": true
           },
           {
             "label": "Éteindre l'écran. Trop de lumière.",
@@ -105,7 +108,8 @@
           },
           {
             "label": "Compter les appels comme des dettes.",
-            "next": "dose_first"
+            "next": "dose_first",
+            "important": true
           }
         ]
       },
@@ -164,7 +168,8 @@
         "choices": [
           {
             "label": "Laisser la voix intérieure finir sa négociation.",
-            "next": "dose_first"
+            "next": "dose_first",
+            "important": true
           },
           {
             "label": "Avancer vers l'utilitaire.",
@@ -241,11 +246,13 @@
           },
           {
             "label": "\"Pourquoi moi ?\"",
-            "next": "why_zinedine"
+            "next": "why_zinedine",
+            "important": true
           },
           {
             "label": "\"Montre-moi le coffre.\"",
-            "next": "trunk_block"
+            "next": "trunk_block",
+            "important": true
           },
           {
             "label": "\"Je vais vomir si tu continues à parler propre.\"",
@@ -264,7 +271,8 @@
           },
           {
             "label": "\"Qui est le mort ?\"",
-            "next": "dead_name"
+            "next": "dead_name",
+            "important": true
           },
           {
             "label": "\"Ouvre le coffre.\"",
@@ -365,7 +373,8 @@
         "choices": [
           {
             "label": "\"Quelles questions ?\"",
-            "next": "ahmed_questions"
+            "next": "ahmed_questions",
+            "important": true
           },
           {
             "label": "\"Ouvre le coffre.\"",
@@ -386,7 +395,8 @@
         "choices": [
           {
             "label": "\"Son carnet est où ?\"",
-            "next": "notebook_absent"
+            "next": "notebook_absent",
+            "important": true
           },
           {
             "label": "\"Je veux voir le corps.\"",
@@ -411,12 +421,14 @@
         "choices": [
           {
             "label": "\"Quel prestataire a accès au P2 ?\"",
-            "next": "leduc_badge_hint"
+            "next": "leduc_badge_hint",
+            "important": true
           },
           {
             "label": "\"Tu protèges aussi Hami ?\"",
             "next": "leduc_hami_deflect",
-            "requiresFlag": "hami_named"
+            "requiresFlag": "hami_named",
+            "important": true
           },
           {
             "label": "\"Ouvre le coffre.\"",
@@ -507,7 +519,8 @@
         "choices": [
           {
             "label": "\"Le froid vient d'où ?\"",
-            "next": "cold_question"
+            "next": "cold_question",
+            "important": true
           },
           {
             "label": "\"Ouvre avant que je tombe.\"",
@@ -545,7 +558,8 @@
         "choices": [
           {
             "label": "\"Je tiens. Ouvre.\"",
-            "next": "trunk_open"
+            "next": "trunk_open",
+            "important": true
           },
           {
             "label": "\"Si tu me parles comme à un dossier médical, je vais le devenir.\"",
@@ -553,7 +567,8 @@
           },
           {
             "label": "\"Qui d'autre a vu le coffre ?\"",
-            "next": "seen_by_who"
+            "next": "seen_by_who",
+            "important": true
           }
         ]
       },
@@ -771,15 +786,18 @@
         "choices": [
           {
             "label": "Inspecter les papiers posés sur Ahmed.",
-            "next": "papers_surface"
+            "next": "papers_surface",
+            "important": true
           },
           {
             "label": "Regarder Ahmed sans encore toucher.",
-            "next": "body_read"
+            "next": "body_read",
+            "important": true
           },
           {
             "label": "Chercher le carnet dont Karine a parlé.",
-            "next": "notebook_absent"
+            "next": "notebook_absent",
+            "important": true
           },
           {
             "label": "Coincer Karine sur les badges et les prestataires.",
@@ -828,11 +846,13 @@
           },
           {
             "label": "Inspecter le badge municipal.",
-            "next": "papers_main"
+            "next": "papers_main",
+            "important": true
           },
           {
             "label": "Lire l'ordonnance pliée.",
-            "next": "papers_dose"
+            "next": "papers_dose",
+            "important": true
           },
           {
             "label": "Revenir au coffre.",
@@ -978,11 +998,13 @@
         "choices": [
           {
             "label": "Chercher une blessure évidente sans toucher.",
-            "next": "body_no_wounds"
+            "next": "body_no_wounds",
+            "important": true
           },
           {
             "label": "Te souvenir de ce qu'Ahmed disait de toi.",
-            "next": "body_ahmed_history"
+            "next": "body_ahmed_history",
+            "important": true
           },
           {
             "label": "Admettre ce que ton corps fait devant le mort.",
@@ -1073,7 +1095,8 @@
         "choices": [
           {
             "label": "\"Karine, le carnet manque.\"",
-            "next": "karine_notebook"
+            "next": "karine_notebook",
+            "important": true
           },
           {
             "label": "Regarder mieux la doublure du coffre.",
@@ -1178,19 +1201,23 @@
         "choices": [
           {
             "label": "Suivre la piste caméra morte.",
-            "next": "page_camera"
+            "next": "page_camera",
+            "important": true
           },
           {
             "label": "Suivre la piste badge chantier.",
-            "next": "page_badge"
+            "next": "page_badge",
+            "important": true
           },
           {
             "label": "Suivre la piste Hami.",
-            "next": "hami_reaction"
+            "next": "hami_reaction",
+            "important": true
           },
           {
             "label": "Regarder le pli humide.",
-            "next": "page_fold"
+            "next": "page_fold",
+            "important": true
           },
           {
             "label": "Fermer la scène. Aller faire parler Amar ou Sofiane.",
@@ -1286,16 +1313,19 @@
           },
           {
             "label": "\"Pourquoi tu m'as choisi ?\"",
-            "next": "why_zinedine"
+            "next": "why_zinedine",
+            "important": true
           },
           {
             "label": "\"Qu'est-ce qu'Ahmed dérangeait ?\"",
-            "next": "problem"
+            "next": "problem",
+            "important": true
           },
           {
             "label": "\"Tu sais pour Hami ?\"",
             "next": "hami_gloves",
-            "requiresFlag": "hami_named"
+            "requiresFlag": "hami_named",
+            "important": true
           },
           {
             "label": "Quitter Karine.",
@@ -1508,11 +1538,13 @@
           {
             "label": "\"Ahmed a écrit ton nom sur une page.\"",
             "next": "ahmed_page",
-            "requiresFlag": "page_read"
+            "requiresFlag": "page_read",
+            "important": true
           },
           {
             "label": "\"Parle-moi des badges et des caméras.\"",
-            "next": "access"
+            "next": "access",
+            "important": true
           },
           {
             "label": "\"Pourquoi tout le monde m'appelle Le Gobelet ?\"",
@@ -1520,7 +1552,8 @@
           },
           {
             "label": "\"Je crois que j'ai oublié quelque chose d'important.\"",
-            "next": "forget"
+            "next": "forget",
+            "important": true
           },
           {
             "label": "Parler comme Karine: \"On cherche un périmètre.\"",
@@ -1570,7 +1603,8 @@
         "choices": [
           {
             "label": "\"Qui profite d'une habitude comme ça ?\"",
-            "next": "invoice"
+            "next": "invoice",
+            "important": true
           },
           {
             "label": "Revenir.",
@@ -1650,11 +1684,13 @@
         "choices": [
           {
             "label": "\"Hami ?\"",
-            "next": "hami"
+            "next": "hami",
+            "important": true
           },
           {
             "label": "\"Le carnet ?\"",
-            "next": "notebook"
+            "next": "notebook",
+            "important": true
           },
           {
             "label": "Revenir.",
@@ -1749,7 +1785,8 @@
         "choices": [
           {
             "label": "\"T'as vu l'utilitaire arriver ?\"",
-            "next": "saw_van"
+            "next": "saw_van",
+            "important": true
           },
           {
             "label": "\"Tu fumes ça au-dessus d'un cadavre ?\"",
@@ -1757,16 +1794,19 @@
           },
           {
             "label": "\"La caméra P2, elle est morte depuis quand ?\"",
-            "next": "camera"
+            "next": "camera",
+            "important": true
           },
           {
             "label": "\"Badge chantier. Tu connais ?\"",
-            "next": "badge"
+            "next": "badge",
+            "important": true
           },
           {
             "label": "\"Hami. Ce nom te parle ?\"",
             "next": "hami",
-            "requiresFlag": "hami_named"
+            "requiresFlag": "hami_named",
+            "important": true
           },
           {
             "label": "\"Pourquoi tu m'appelles Le Gobelet ?\"",
@@ -1795,11 +1835,13 @@
         "choices": [
           {
             "label": "\"Tu peux décrire le gars ?\"",
-            "next": "vest"
+            "next": "vest",
+            "important": true
           },
           {
             "label": "\"Et l'odeur ?\"",
-            "next": "smell"
+            "next": "smell",
+            "important": true
           },
           {
             "label": "Revenir.",

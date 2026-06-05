@@ -30,6 +30,8 @@ npm run dev
 - Passifs d'objets stockés dans `src/content/locations/miroirs/objects.passives.json`.
 - Checks actifs en d6 + une ou deux voix contre difficulté.
 - Échecs écrits comme des scènes, avec indices ou conséquences.
+- Options de dialogue déjà ouvertes grisées mais toujours cliquables.
+- Options à enjeu mises en avant discrètement quand elles ouvrent une piste, une posture ou un check.
 - Sauvegarde locale via `localStorage`.
 
 ## Contrôles

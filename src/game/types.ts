@@ -46,9 +46,11 @@ export interface Effect {
 }
 
 export interface DialogueChoice {
+  id?: string
   label: string
   next?: string
   close?: boolean
+  important?: boolean
   requiresFlag?: string
   hiddenWhenFlag?: string
   check?: CheckDefinition
@@ -180,13 +182,21 @@ export interface GameState {
   identityPosture?: IdentityPosture
   triggeredOrbs: Record<string, boolean>
   triggeredPassives: Record<string, boolean>
+  visitedChoices: Record<string, boolean>
   voiceStats: Record<VoiceId, number>
+}
+
+export interface RenderedDialogueChoice {
+  choice: DialogueChoice
+  key: string
+  visited: boolean
+  important: boolean
 }
 
 export interface RenderedDialogue {
   script: DialogueScript
   node: DialogueNode
-  choices: DialogueChoice[]
+  choices: RenderedDialogueChoice[]
   passives: PassiveTrigger[]
   checkResult?: CheckResult
 }

@@ -1,7 +1,7 @@
 import { voices } from './content'
 import type { GameState, VoiceId } from './types'
 
-const STORAGE_KEY = 'dead-mans-papers:v10'
+const STORAGE_KEY = 'dead-mans-papers:v11'
 const TUTORIAL_HIDDEN_KEY = 'dead-mans-papers:tutorial-hidden-v2'
 const TUTORIAL_SEEN_KEY = 'dead-mans-papers:tutorial-seen-v2'
 
@@ -21,6 +21,7 @@ export function createInitialState(): GameState {
     identityPosture: undefined,
     triggeredOrbs: {},
     triggeredPassives: {},
+    visitedChoices: {},
     voiceStats,
   }
 }
@@ -43,6 +44,7 @@ export function loadGameState(): GameState {
       identityPosture: parsedState.identityPosture,
       triggeredOrbs: parsedState.triggeredOrbs ?? initialState.triggeredOrbs,
       triggeredPassives: parsedState.triggeredPassives ?? initialState.triggeredPassives,
+      visitedChoices: parsedState.visitedChoices ?? initialState.visitedChoices,
       voiceStats: {
         ...initialState.voiceStats,
         ...parsedState.voiceStats,

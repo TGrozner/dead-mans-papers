@@ -67,6 +67,14 @@ Chaque passif contient:
 
 La Dose est séparée des scores. Elle peut apparaître via `parasite: "dose"` sur un nœud de dialogue et un flag comme `dose_heard`.
 
+## État des choix
+
+Les choix de dialogue exposés par le moteur sont enrichis avec une clé stable de scène, un état `visited` et un état `important`.
+
+- `visitedChoices` garde les options déjà ouvertes et les grise sans les désactiver.
+- `important: true` peut être posé dans `dialogues.json` pour souligner une piste ou une porte narrative.
+- Les checks et les choix de posture identitaire sont considérés comme importants même sans tag manuel.
+
 ## Direction future
 
 Les prochains contenus peuvent suivre le même modèle:
