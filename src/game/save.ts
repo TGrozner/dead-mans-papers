@@ -1,5 +1,5 @@
 import { voices } from './content'
-import type { GameState, VoiceId } from './types'
+import type { ActiveSurface, GameState, VoiceId } from './types'
 
 const STORAGE_KEY = 'dead-mans-papers:v12'
 const TUTORIAL_HIDDEN_KEY = 'dead-mans-papers:tutorial-hidden-v2'
@@ -15,6 +15,7 @@ export function createInitialState(): GameState {
   )
 
   return {
+    activeSurface: undefined,
     flags: {},
     clues: [],
     completedChecks: {},
@@ -38,6 +39,7 @@ export function loadGameState(): GameState {
     const parsedState = JSON.parse(rawState) as Partial<GameState>
 
     return {
+      activeSurface: parseActiveSurface(parsedState.activeSurface),
       flags: parsedState.flags ?? initialState.flags,
       clues: parsedState.clues ?? initialState.clues,
       completedChecks: parsedState.completedChecks ?? initialState.completedChecks,
@@ -53,6 +55,30 @@ export function loadGameState(): GameState {
   } catch {
     return initialState
   }
+}
+
+function parseActiveSurface(surface: Partial<ActiveSurface> | undefined): ActiveSurface | undefined {
+  if (!surface || typeof surface !== 'object') {
+    return undefined
+  }
+
+  if (surface.type === 'dialogue' && typeof surface.scriptId === 'string' && typeof surface.nodeId === 'string') {
+    return {
+      type: 'dialogue',
+      scriptId: surface.scriptId,
+      nodeId: surface.nodeId,
+      checkId: typeof surface.checkId === 'string' ? surface.checkId : undefined,
+    }
+  }
+
+  if (surface.type === 'orb' && typeof surface.orbId === 'string') {
+    return {
+      type: 'orb',
+      orbId: surface.orbId,
+    }
+  }
+
+  return undefined
 }
 
 export function saveGameState(state: GameState): void {

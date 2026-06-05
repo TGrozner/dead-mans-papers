@@ -39,6 +39,19 @@ export class NarrativeEngine {
     return this.moveToNode(script.start)
   }
 
+  restoreDialogue(scriptId: string, nodeId: string, checkId?: string): RenderedDialogue {
+    const script = dialogues[scriptId]
+
+    if (!script) {
+      throw new Error(`Unknown dialogue script: ${scriptId}`)
+    }
+
+    this.activeScript = script
+    this.lastCheckResult = checkId ? this.state.completedChecks[checkId] : undefined
+    this.pendingPassives = []
+    return this.moveToNode(nodeId, { replay: false })
+  }
+
   choose(renderedChoice: RenderedDialogueChoice): RenderedDialogue | undefined {
     if (!this.activeScript) {
       throw new Error('No active dialogue script')
@@ -71,6 +84,7 @@ export class NarrativeEngine {
     this.activeScript = undefined
     this.lastCheckResult = undefined
     this.pendingPassives = []
+    this.state.activeSurface = undefined
   }
 
   triggerExploration(contextId: string): PassiveTrigger[] {
@@ -91,9 +105,13 @@ export class NarrativeEngine {
     return orbs.filter((orb) => orb.mode === 'proximity')
   }
 
-  inspectOrb(orbId: string): RenderedOrb {
+  inspectOrb(orbId: string, options: { restore?: boolean } = {}): RenderedOrb {
     const orb = this.getOrb(orbId)
-    return this.renderOrb(orb)
+    this.state.activeSurface = {
+      type: 'orb',
+      orbId,
+    }
+    return this.renderOrb(orb, { replay: !options.restore })
   }
 
   triggerProximityOrb(orbId: string): RenderedOrb | undefined {
@@ -111,7 +129,7 @@ export class NarrativeEngine {
     return this.renderOrb(orb)
   }
 
-  private moveToNode(nodeId: string): RenderedDialogue {
+  private moveToNode(nodeId: string, options: { replay?: boolean } = {}): RenderedDialogue {
     if (!this.activeScript) {
       throw new Error('No active dialogue script')
     }
@@ -122,18 +140,27 @@ export class NarrativeEngine {
       throw new Error(`Unknown dialogue node: ${this.activeScript.id}.${nodeId}`)
     }
 
-    const triggeredPassives = [
-      ...this.pendingPassives,
-      ...this.applyEffects(node.effects),
-      ...this.resolvePassives((passive) => {
-        return (
-          passive.trigger.type === 'dialogue' &&
-          passive.trigger.scriptId === this.activeScript?.id &&
-          passive.trigger.nodeId === nodeId
-        )
-      }),
-    ]
+    const shouldReplay = options.replay !== false
+    const triggeredPassives = shouldReplay
+      ? [
+          ...this.pendingPassives,
+          ...this.applyEffects(node.effects),
+          ...this.resolvePassives((passive) => {
+            return (
+              passive.trigger.type === 'dialogue' &&
+              passive.trigger.scriptId === this.activeScript?.id &&
+              passive.trigger.nodeId === nodeId
+            )
+          }),
+        ]
+      : []
     this.pendingPassives = []
+    this.state.activeSurface = {
+      type: 'dialogue',
+      scriptId: this.activeScript.id,
+      nodeId,
+      checkId: this.lastCheckResult?.checkId,
+    }
     const choices = node.choices
       .map((choice, index) => ({ choice, index }))
       .filter(({ choice }) => this.isChoiceVisible(choice))
@@ -191,12 +218,12 @@ export class NarrativeEngine {
     return orb
   }
 
-  private renderOrb(orb: OrbDefinition): RenderedOrb {
+  private renderOrb(orb: OrbDefinition, options: { replay?: boolean } = {}): RenderedOrb {
     const variant = this.selectOrbVariant(orb)
     const voice = variant?.voice ?? orb.voice
     const minScore = variant?.minScore ?? orb.minScore ?? 0
     const effects = variant?.effects ?? orb.effects
-    const passives = this.applyEffects(effects)
+    const passives = options.replay === false ? [] : this.applyEffects(effects)
     const shouldShowVoice = voice ? this.state.voiceStats[voice] >= minScore : false
 
     return {

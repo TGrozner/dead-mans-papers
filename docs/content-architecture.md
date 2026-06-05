@@ -63,6 +63,7 @@ Chaque passif contient:
 - `triggeredOrbs`
 - `triggeredPassives`
 - `completedChecks`, avec voix principale et voix de soutien optionnelle
+- `activeSurface`: fenêtre narrative courante à restaurer au refresh, soit `dialogue` avec `scriptId` + `nodeId`, soit `orb` avec `orbId`
 - scores des huit voix stat
 
 La Dose est séparée des scores. Elle peut apparaître via `parasite: "dose"` sur un nœud de dialogue et un flag comme `dose_heard`.
@@ -74,6 +75,15 @@ Les choix de dialogue exposés par le moteur sont enrichis avec une clé stable 
 - `visitedChoices` garde les options déjà ouvertes et les grise sans les désactiver.
 - `important: true` peut être posé dans `dialogues.json` pour souligner une piste ou une porte narrative.
 - Les checks et les choix de posture identitaire sont considérés comme importants même sans tag manuel.
+
+## État des surfaces
+
+Le refresh ne doit pas renvoyer le joueur n'importe où. Si une fenêtre de dialogue ou d'observation est ouverte, le moteur sauvegarde `activeSurface` et restaure cette surface au chargement suivant.
+
+- Un dialogue restauré revient sur le nœud courant, pas au début du script.
+- Une observation restaurée revient sur l'orb courant.
+- Les effets, passifs et toasts ne sont pas rejoués au refresh: on restaure l'affichage et l'état, pas une nouvelle occurrence de la scène.
+- Fermer la surface par le bouton ou en touchant la scène efface `activeSurface`.
 
 ## Direction future
 

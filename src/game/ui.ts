@@ -128,13 +128,41 @@ export function createGameUi(options: GameUiOptions) {
   }
 
   function closeActiveSurface(): void {
-    if (activeDialogue) {
-      options.engine.close()
-    }
-
+    options.engine.close()
     activeDialogue = undefined
     hideDialogueSurface()
     syncState()
+  }
+
+  function restoreActiveSurface(): boolean {
+    const surface = options.engine.state.activeSurface
+
+    if (!surface) {
+      return false
+    }
+
+    clearMobileToasts(options.toastRoot)
+
+    try {
+      if (surface.type === 'dialogue') {
+        activeDialogue = options.engine.restoreDialogue(surface.scriptId, surface.nodeId, surface.checkId)
+        renderDialogue()
+        syncState()
+        return true
+      }
+
+      activeDialogue = undefined
+      const orb = options.engine.inspectOrb(surface.orbId, { restore: true })
+      renderOrb(orb, options.root, closeActiveSurface)
+      syncState()
+      return true
+    } catch {
+      options.engine.close()
+      activeDialogue = undefined
+      hideDialogueSurface()
+      syncState()
+      return false
+    }
   }
 
   function setInteraction(target?: InteractionTarget): void {
@@ -188,6 +216,7 @@ export function createGameUi(options: GameUiOptions) {
     triggerProximityOrb,
     triggerExplorationPassive,
     closeSurface: closeActiveSurface,
+    restoreActiveSurface,
     isDialogueOpen: () => Boolean(activeDialogue) || !options.root.hidden,
   }
 }

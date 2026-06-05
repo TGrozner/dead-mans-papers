@@ -175,7 +175,20 @@ export interface CheckResult {
   passed: boolean
 }
 
+export type ActiveSurface =
+  | {
+      type: 'dialogue'
+      scriptId: string
+      nodeId: string
+      checkId?: string
+    }
+  | {
+      type: 'orb'
+      orbId: string
+    }
+
 export interface GameState {
+  activeSurface?: ActiveSurface
   flags: Record<string, boolean>
   clues: string[]
   completedChecks: Record<string, CheckResult>

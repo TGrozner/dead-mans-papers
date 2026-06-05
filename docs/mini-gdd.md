@@ -68,8 +68,8 @@ Explorer, parler, inspecter, écouter les voix internes, subir La Dose, tenter d
 
 ## Jouabilité mobile
 
-- Toucher un élément important de la scène sélectionne l'action, mais n'ouvre pas directement la surface narrative.
-- L'ouverture mobile passe par le bouton contextuel `!` ou un second tap volontaire sur la même cible, afin de distinguer clairement sélection et inspection.
+- Toucher un élément important de la scène sélectionne l'action et fait marcher Zinédine jusqu'à son point d'approche, mais n'ouvre pas directement la surface narrative.
+- L'ouverture mobile passe par le bouton contextuel `!` ou un second tap volontaire sur la même cible uniquement quand Zinédine est à portée, afin de distinguer clairement sélection, approche et inspection.
 - Toucher le sol reste possible pour déplacer Zinédine, mais le prototype vise surtout une lecture point-and-click.
 - Les interactifs utilisent un liseré cyan et un pulse lent plutôt que des mots ou des marqueurs texte dans le décor.
 - En portrait mobile, la carte reste entièrement visible pour préserver le contexte et les cibles surbrillantes.

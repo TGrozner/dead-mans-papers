@@ -40,8 +40,8 @@ npm run dev
 
 - Déplacement: flèches, ZQSD, WASD ou toucher la scène pour marcher vers un point.
 - Interaction: près d'un élément, utiliser le bouton contextuel, Espace, Entrée ou E.
-- Mobile: toucher un élément important sélectionne l'action, mais n'ouvre plus directement de scène.
-- Mobile: ouvrir une surface narrative demande ensuite le bouton contextuel `!`, ou un second tap volontaire sur la même cible.
+- Mobile: toucher un élément important sélectionne l'action et fait marcher Zinédine vers son point d'approche, mais n'ouvre plus directement de scène.
+- Mobile: ouvrir une surface narrative demande ensuite d'être à portée, puis d'utiliser le bouton contextuel `!`, E/Espace/Entrée, ou un second tap volontaire sur la même cible.
 - Mobile: la scène est pensée en approcher-puis-agir plutôt qu'en joystick virtuel; les zones longues scrollent à l'intérieur du dossier ou du dialogue, pas dans toute la page.
 - Debug mobile/dev: ajouter `?debug=1` à l'URL affiche les derniers taps, cibles actives, destinations et projections de mouvement.
 - Mobile: la scène reste entièrement visible; on tape une cible surbrillante, puis on confirme avec le bouton d'action.

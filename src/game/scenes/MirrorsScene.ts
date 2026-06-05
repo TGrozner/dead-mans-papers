@@ -109,7 +109,7 @@ export class MirrorsScene extends Phaser.Scene {
     this.bindSceneLifecycle()
 
     this.time.delayedCall(300, () => {
-      if (!this.bridge.getState().flags.woke_up) {
+      if (!this.bridge.getState().flags.woke_up && !this.bridge.isDialogueOpen()) {
         this.bridge.startDialogue('wake_up')
       }
     })
@@ -924,6 +924,10 @@ export class MirrorsScene extends Phaser.Scene {
       )
 
       if (tapVelocity.length() <= 7) {
+        debugLog('movement', 'arrived', {
+          x: Math.round(this.player.x),
+          y: Math.round(this.player.y),
+        })
         this.player.setVelocity(0, 0)
         this.clearTapDestination()
       } else {
@@ -995,27 +999,15 @@ export class MirrorsScene extends Phaser.Scene {
       blocked: this.isPointBlocked(x, y),
     })
 
-    if (target && this.isMobileViewport()) {
-      if (this.isSelectedPointerTarget(target)) {
+    if (target) {
+      if (this.isPointerTargetInInteractionRange(target)) {
+        this.clearTapDestination()
+        this.player.setVelocity(0, 0)
         this.openPointerTarget(target)
         return
       }
 
       this.selectPointerTarget(target)
-      return
-    }
-
-    if (target?.kind === 'orb') {
-      this.clearTapDestination()
-      this.player.setVelocity(0, 0)
-      this.openPointerTarget(target)
-      return
-    }
-
-    if (target?.kind === 'hotspot') {
-      this.clearTapDestination()
-      this.player.setVelocity(0, 0)
-      this.openPointerTarget(target)
       return
     }
 
@@ -1050,10 +1042,6 @@ export class MirrorsScene extends Phaser.Scene {
     debugLog('interaction', 'open-dialogue', { id: target.id, scriptId: target.scriptId })
     this.bridge.triggerExplorationPassive(target.id)
     this.bridge.startDialogue(target.scriptId)
-  }
-
-  private isSelectedPointerTarget(target: PointerTarget): boolean {
-    return this.selectedPointerTarget?.kind === target.kind && this.selectedPointerTarget.id === target.id
   }
 
   private selectPointerTarget(target: PointerTarget): void {
@@ -1107,6 +1095,39 @@ export class MirrorsScene extends Phaser.Scene {
       kind: target.kind,
       approachX: Math.round(this.getApproachX(target)),
       approachY: Math.round(this.getApproachY(target)),
+    })
+
+    this.moveTowardPointerTarget(target)
+  }
+
+  private isPointerTargetInInteractionRange(target: PointerTarget): boolean {
+    if (!this.player) {
+      return false
+    }
+
+    return (
+      Phaser.Math.Distance.Between(
+        this.player.x,
+        this.player.y,
+        this.getApproachX(target),
+        this.getApproachY(target),
+      ) <= target.radius
+    )
+  }
+
+  private moveTowardPointerTarget(target: PointerTarget): void {
+    const approachX = this.getApproachX(target)
+    const approachY = this.getApproachY(target)
+    const destination = this.isPointBlocked(approachX, approachY)
+      ? this.findNearestOpenPoint(approachX, approachY)
+      : new Phaser.Math.Vector2(approachX, approachY)
+
+    this.setTapDestination(destination.x, destination.y)
+    debugLog('movement', 'target-approach', {
+      id: target.id,
+      kind: target.kind,
+      x: Math.round(destination.x),
+      y: Math.round(destination.y),
     })
   }
 
@@ -1314,14 +1335,12 @@ export class MirrorsScene extends Phaser.Scene {
 
     const availableTargets = [...hotspotTargets, ...orbTargets]
     const selectedTarget = this.selectedPointerTarget
-      ? this.isMobileViewport()
-        ? this.getStoredSelectedTarget()
-        : this.isStoredSelectedTargetNear()
-          ? availableTargets.find(
-              (target) =>
-                target.kind === this.selectedPointerTarget?.kind && target.id === this.selectedPointerTarget.id,
-            ) ?? this.getStoredSelectedTarget()
-          : undefined
+      ? this.isStoredSelectedTargetNear()
+        ? availableTargets.find(
+            (target) =>
+              target.kind === this.selectedPointerTarget?.kind && target.id === this.selectedPointerTarget.id,
+          ) ?? this.getStoredSelectedTarget()
+        : undefined
       : undefined
     const nearestHotspot = hotspotTargets.sort((left, right) => left.distance - right.distance)[0]
     const nearestOrb = orbTargets.sort((left, right) => left.distance - right.distance)[0]
@@ -1406,7 +1425,7 @@ export class MirrorsScene extends Phaser.Scene {
         this.player.y,
         this.getApproachX(this.selectedPointerTarget),
         this.getApproachY(this.selectedPointerTarget),
-      ) <= (this.selectedPointerTarget.lockRadius ?? this.selectedPointerTarget.radius)
+      ) <= this.selectedPointerTarget.radius
     )
   }
 

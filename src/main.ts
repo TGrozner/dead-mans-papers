@@ -104,6 +104,7 @@ const ui = createGameUi({
 
 setupDebugLog()
 setupCasePanel()
+const restoredSurface = ui.restoreActiveSurface()
 
 createMirrorsGame({
   parent: 'game-stage',
@@ -117,7 +118,9 @@ createMirrorsGame({
   getState: () => engine.state,
 })
 
-showTutorialIfNeeded()
+if (!restoredSurface) {
+  showTutorialIfNeeded()
+}
 
 document.querySelector<HTMLButtonElement>('#reset-save')!.addEventListener('click', () => {
   persistOnUnload = false
