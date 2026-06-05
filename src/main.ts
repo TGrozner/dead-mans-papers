@@ -165,7 +165,7 @@ function setupCasePanel(): void {
   const panel = casePanel
   const toggle = caseToggle
   const mobileQuery = window.matchMedia('(max-width: 560px)')
-  let mobileExpanded = false
+  let mobileExpanded = true
 
   function applyCaseState(): void {
     const expanded = mobileQuery.matches ? mobileExpanded : true
@@ -185,7 +185,7 @@ function setupCasePanel(): void {
   })
 
   mobileQuery.addEventListener('change', () => {
-    mobileExpanded = false
+    mobileExpanded = true
     applyCaseState()
   })
 
