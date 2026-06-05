@@ -150,6 +150,10 @@ Pas de jauge visible façon mana. Utiliser des états narratifs discrets:
 - `in_debt`: certaines personnes peuvent réclamer.
 - `falling`: choix humiliants, passifs intrusifs, échecs plus violents.
 
+Dans la v0, ces états doivent être écrits explicitement dans les scènes plutôt que cachés dans l'ambiance. Un tremblement doit pouvoir devenir un risque social, une odeur d'alcool doit pouvoir devenir une arme pour Karine, et une ordonnance doit pouvoir devenir une piste vers Hami.
+
+Règle d'écriture associée: chaque mention de La Dose doit rappeler au moins une chose concrète: alcool, calmants, main stable, sueur, dette médicale, Hami, ou peur d'être vu comme instable.
+
 ### Municipal Doctor
 
 La Dr Nadia Hami doit devenir un futur nœud central:

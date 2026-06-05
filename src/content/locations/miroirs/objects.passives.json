@@ -1,6 +1,6 @@
 [
   {
-    "id": "miroirs_papers__dossier_access_not_truth",
+    "id": "miroirs_papers__dossier_access_dependency",
     "contextId": "miroirs/papers",
     "location": "miroirs",
     "subject": "morad-papers",
@@ -8,17 +8,17 @@
     "voice": "procedure",
     "minScore": 2,
     "once": true,
-    "priority": 88,
+    "priority": 90,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "papers_surface"
     },
-    "text": "Carte, badge, ordonnance: identité, accès, dépendance. Trois administrations dans une poche. Une personne tient parfois avec moins."
+    "text": "Carte, badge, ordonnance: identité, accès, dépendance. Quelqu'un n'a pas planté un portefeuille. Quelqu'un a planté un système."
   },
   {
-    "id": "miroirs_papers__regard_photo_future",
+    "id": "miroirs_papers__regard_photo_sober",
     "contextId": "miroirs/papers",
     "location": "miroirs",
     "subject": "morad-papers",
@@ -33,7 +33,7 @@
       "scriptId": "utility_van",
       "nodeId": "papers_regard"
     },
-    "text": "Tu connais déjà la photo avant qu'elle existe. C'est ça, une réputation: une image en avance sur les preuves."
+    "text": "La carte montre un Morad sec, rasé, conforme. Les gens croiront cette photo plus vite que ton haleine."
   },
   {
     "id": "miroirs_papers__main_badge_scratches",
@@ -44,17 +44,17 @@
     "voice": "main_gauche",
     "minScore": 2,
     "once": true,
-    "priority": 90,
+    "priority": 92,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "papers_main"
     },
-    "text": "Les rayures ne pensent pas. Elles ne votent pas. Elles témoignent mieux que les gens polis."
+    "text": "Une rayure fraîche, c'est une phrase sans style: ce badge a touché un lecteur récemment."
   },
   {
-    "id": "miroirs_papers__dose_prescription_value",
+    "id": "miroirs_papers__dose_prescription_blackmail",
     "contextId": "miroirs/papers",
     "location": "miroirs",
     "subject": "folded-prescription",
@@ -62,14 +62,14 @@
     "parasite": "dose",
     "requiresFlag": "dose_heard",
     "once": true,
-    "priority": 91,
+    "priority": 94,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "papers_dose"
     },
-    "text": "Un papier qui évite la chute mérite du respect. Même froissé. Même dans la poche d'un mort. Surtout là."
+    "text": "Ce papier est un robinet. Hami sait l'ouvrir, le fermer, le réduire. Appelle ça suivi si tu veux dormir."
   },
   {
     "id": "miroirs_papers__antipassive_dossier_too_clean",
@@ -81,14 +81,14 @@
     "minScore": 0,
     "maxScore": 1,
     "once": true,
-    "priority": 92,
+    "priority": 93,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "papers_surface"
     },
-    "text": "Les papiers sont propres, donc la scène est claire. Mauvaise phrase. Les mises en scène propres coûtent plus cher."
+    "text": "Les papiers sont propres, donc la scène est claire. Mauvaise lecture: les coups montés propres coûtent justement plus cher."
   },
   {
     "id": "miroirs_body__ventre_counts_hours",
@@ -106,7 +106,7 @@
       "scriptId": "utility_van",
       "nodeId": "body_read"
     },
-    "text": "Ton corps répond au sien avant ta morale. Deux machines mal entretenues dans le même parking."
+    "text": "Ton corps compte les heures depuis la dernière vraie régulation. Ahmed compte les heures depuis sa mort. Deux horloges sales dans le même coffre."
   },
   {
     "id": "miroirs_body__bouches_old_firstname",
@@ -124,7 +124,7 @@
       "scriptId": "utility_van",
       "nodeId": "body_ahmed_history"
     },
-    "text": "Les vieux gardent les vrais prénoms comme des clés de caves. Ils ne les donnent pas pour être gentils."
+    "text": "Ahmed gardait ton vrai prénom. Dans un quartier, ça peut devenir une preuve."
   },
   {
     "id": "miroirs_body__nerf_no_blood_bad",
@@ -142,10 +142,10 @@
       "scriptId": "utility_van",
       "nodeId": "body_no_wounds"
     },
-    "text": "Pas de sang visible. C'est mauvais. Les scènes propres demandent des complices plus propres encore."
+    "text": "Pas de sang visible ne veut pas dire pas de violence. Ça veut dire violence déplacée, lavée, ou faite ailleurs."
   },
   {
-    "id": "miroirs_notebook__main_missing_organ",
+    "id": "miroirs_notebook__main_missing",
     "contextId": "miroirs/notebook",
     "location": "miroirs",
     "subject": "missing-notebook",
@@ -160,7 +160,7 @@
       "scriptId": "utility_van",
       "nodeId": "notebook_absent"
     },
-    "text": "Un homme qui notait tout ne meurt pas sans quelque chose qui manque. Ce n'est pas une absence, c'est une poche retournée à l'échelle d'un quartier."
+    "text": "Un homme qui note tout sans carnet, c'est comme une serrure sans porte: quelqu'un a pris la partie utile."
   },
   {
     "id": "miroirs_page__dossier_camera_as_decision",
@@ -178,7 +178,7 @@
       "scriptId": "utility_van",
       "nodeId": "page_camera"
     },
-    "text": "Une panne depuis mars devient une décision en juin. La maintenance est une politique de mémoire."
+    "text": "Une caméra morte depuis mars devient une décision en juin si le corps arrive pile dans son angle."
   },
   {
     "id": "miroirs_page__main_badge_opens_dirty",
@@ -196,10 +196,10 @@
       "scriptId": "utility_van",
       "nodeId": "page_badge"
     },
-    "text": "Un badge qui appartient à tout le monde est surtout pratique pour la personne qui l'a emprunté."
+    "text": "Le badge chantier est parfait pour un sale boulot: assez officiel pour passer, assez provisoire pour devenir flou."
   },
   {
-    "id": "miroirs_page__sel_cold_room",
+    "id": "miroirs_page__sel_local_washed",
     "contextId": "miroirs/page",
     "location": "miroirs",
     "subject": "torn-page",
@@ -214,6 +214,6 @@
       "scriptId": "utility_van",
       "nodeId": "page_fold"
     },
-    "text": "Ce froid n'est pas une température. C'est une pièce qui s'accroche au papier."
+    "text": "Humide, froid, lavé. La page ne vient pas seulement du coffre. Elle a connu un local où on nettoie pour oublier."
   }
 ]

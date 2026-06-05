@@ -8,14 +8,14 @@
     "voice": "honte_publique",
     "minScore": 2,
     "once": true,
-    "priority": 76,
+    "priority": 78,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "leduc",
       "nodeId": "start"
     },
-    "text": "Elle ne regarde pas si tu vas bien. Elle regarde si tu peux encore servir. C'est plus précis, donc plus blessant."
+    "text": "Elle ne vérifie pas si tu vas bien. Elle vérifie si ton état peut encore passer pour fonctionnel devant témoins."
   },
   {
     "id": "miroirs_leduc__incident_word",
@@ -26,14 +26,14 @@
     "voice": "procedure",
     "minScore": 2,
     "once": true,
-    "priority": 72,
+    "priority": 74,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "start"
     },
-    "text": "Incident de chantier: quatre syllabes pour éloigner le mot mort, deux services et une caméra qui dort au bon angle."
+    "text": "\"Incident de chantier\" éloigne trois choses: le mort, la police, et la responsabilité municipale."
   },
   {
     "id": "miroirs_leduc__problem_questions",
@@ -44,14 +44,14 @@
     "voice": "bouches",
     "minScore": 1,
     "once": true,
-    "priority": 70,
+    "priority": 72,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "leduc",
       "nodeId": "problem"
     },
-    "text": "Questions anciennes. Le quartier appelle ça mémoire. La mairie appelle ça retard de pilotage."
+    "text": "Ahmed ne posait pas une question. Il recollait des pannes entre elles jusqu'à ce que ça ressemble à une accusation."
   },
   {
     "id": "miroirs_leduc__vulnerability_skill",
@@ -62,14 +62,14 @@
     "voice": "honte_publique",
     "minScore": 2,
     "once": true,
-    "priority": 74,
+    "priority": 76,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "leduc",
       "nodeId": "gobelet_skill"
     },
-    "text": "Elle vient de transformer ta honte en compétence opérationnelle. C'est élégant. C'est ignoble. Les deux peuvent être vrais."
+    "text": "Elle appelle ta honte une compétence. C'est précis. C'est ignoble. Et ça explique pourquoi elle t'a choisi."
   },
   {
     "id": "miroirs_leduc__hami_waits",
@@ -80,17 +80,35 @@
     "voice": "procedure",
     "minScore": 2,
     "once": true,
-    "priority": 78,
+    "priority": 80,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "leduc",
       "nodeId": "hami_gloves"
     },
-    "text": "Un dossier médical ne crie pas, non. Il attend qu'on lui demande officiellement de se taire."
+    "text": "Santé, rénovation, sécurité: trois cases séparées. Un corps déplacé peut traverser les trois sans qu'aucune case ne dise meurtre."
   },
   {
-    "id": "miroirs_leduc__antipassive_regard_she_respects_you",
+    "id": "miroirs_leduc__dose_stability_word",
+    "contextId": "miroirs/leduc",
+    "location": "miroirs",
+    "subject": "morad-stability",
+    "channel": "dialogue",
+    "parasite": "dose",
+    "requiresFlag": "dose_heard",
+    "once": true,
+    "priority": 79,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "leduc",
+      "nodeId": "hami_boundary"
+    },
+    "text": "Stable. Elle a dit stable. Bon mot. Mot médical. Mot de dette. Mot qui donne envie d'une main qui arrête de trembler."
+  },
+  {
+    "id": "miroirs_leduc__antipassive_regard_respect",
     "contextId": "miroirs/leduc",
     "location": "miroirs",
     "subject": "morad-reputation",
@@ -99,13 +117,13 @@
     "minScore": 0,
     "maxScore": 1,
     "once": true,
-    "priority": 80,
+    "priority": 82,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "leduc",
       "nodeId": "why_morad"
     },
-    "text": "Elle te choisit parce qu'elle te respecte. Bien sûr. Les institutions choisissent toujours les gens fragiles par estime pure."
+    "text": "Elle t'a choisi par respect. Mauvaise lecture. Elle t'a choisi parce qu'un homme déjà abîmé coûte moins cher à contredire."
   }
 ]

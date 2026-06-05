@@ -1,6 +1,6 @@
 [
   {
-    "id": "miroirs_residents__surname_as_infrastructure",
+    "id": "miroirs_residents__surname_as_file",
     "contextId": "miroirs/residents",
     "location": "miroirs",
     "subject": "residents",
@@ -8,13 +8,13 @@
     "voice": "bouches",
     "minScore": 1,
     "once": true,
-    "priority": 66,
+    "priority": 68,
     "display": "toast",
     "trigger": {
       "type": "clue",
       "clue": "Les habitants connaissent ton surnom: Le Gobelet."
     },
-    "text": "Un surnom est une infrastructure légère: pas de budget, pas de plan, mais tout le monde sait par où passer."
+    "text": "Un surnom répété devient un dossier sans papier. Ici, Le Gobelet dit alcool, cachets, honte publique, disponibilité."
   },
   {
     "id": "miroirs_residents__amar_real_firstname",
@@ -25,14 +25,14 @@
     "voice": "bouches",
     "minScore": 1,
     "once": true,
-    "priority": 75,
+    "priority": 76,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "amar",
       "nodeId": "ahmed_page"
     },
-    "text": "Garder quelqu'un lisible, dans ce quartier, c'est presque une violence tendre. Presque seulement."
+    "text": "Amar dit Morad, pas Le Gobelet. Il choisit le prénom au moment exact où le quartier voudrait te réduire à ton vice."
   },
   {
     "id": "miroirs_residents__antipassive_bouches_concertation",
@@ -51,7 +51,7 @@
       "scriptId": "amar",
       "nodeId": "talk_failure"
     },
-    "text": "Concertation. Excellent mot si tu voulais prouver que quelqu'un t'a rendu étranger à une cage que tu connaissais."
+    "text": "Parler comme Karine devait rassurer Amar. Mauvaise lecture: ici, les mots municipaux sentent l'effacement."
   },
   {
     "id": "miroirs_residents__invoice_network",
@@ -62,14 +62,14 @@
     "voice": "procedure",
     "minScore": 2,
     "once": true,
-    "priority": 70,
+    "priority": 72,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "amar",
       "nodeId": "invoice"
     },
-    "text": "Rénovation, nettoyage, sécurité, santé. Quatre cases séparées. Un seul couloir quand quelqu'un doit disparaître proprement."
+    "text": "Quatre services, quatre petites responsabilités, un mort entier. Le système n'a pas besoin d'un grand méchant quand chacun fait sa petite partie."
   },
   {
     "id": "miroirs_residents__forget_timing",
@@ -80,13 +80,13 @@
     "parasite": "dose",
     "requiresFlag": "dose_heard",
     "once": true,
-    "priority": 76,
+    "priority": 77,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "amar",
       "nodeId": "forget"
     },
-    "text": "On n'oublie pas. On allège. On coupe les angles. On rend la matinée praticable. C'est un service, presque."
+    "text": "Trou noir, c'est un vilain mot. Dis allégement. Dis régulation. Dis matinée rendue praticable. Les mots doux font moins peur que les trous."
   }
 ]

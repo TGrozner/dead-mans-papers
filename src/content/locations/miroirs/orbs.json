@@ -10,10 +10,10 @@
     "x": 444,
     "y": 336,
     "radius": 44,
-    "text": "L'écran est fendu en étoile. Douze appels manqués. Même nom qui revient, Karine Leduc, comme une dette qui sait utiliser un répertoire.",
+    "text": "Douze appels manqués de Karine Leduc. Ils ont commencé avant que tu reprennes conscience. Elle savait déjà qu'un problème portait ton nom.",
     "voice": "procedure",
     "minScore": 2,
-    "voiceText": "Douze appels avant la découverte officielle. L'urgence a commencé avec une version de toi qui ne répondait déjà plus.",
+    "voiceText": "Douze appels, c'est une chronologie. Pas une panique. Elle a essayé de te joindre avant de te montrer le corps.",
     "effects": [
       { "type": "clue", "clue": "Ton téléphone fissuré affiche 12 appels manqués de Karine Leduc." }
     ]
@@ -29,20 +29,21 @@
     "x": 610,
     "y": 282,
     "radius": 58,
-    "text": "L'utilitaire a été lavé trop vite. Les joints du coffre gardent une ligne sombre. Le blanc de la carrosserie essaie d'être administratif. Le noir du coffre refuse.",
+    "text": "Utilitaire blanc du chantier. Coffre noir ouvert sur du froid ancien. Quelqu'un a utilisé un véhicule municipal pour déplacer Ahmed, puis a laissé tes papiers sur lui.",
     "voice": "symbole",
     "minScore": 2,
-    "voiceText": "Un véhicule de service avec une bouche ouverte. La ville a parfois des organes plus honnêtes que ses panneaux.",
+    "voiceText": "Un cercueil avec une plaque de service. Pas sacré. Pire: couvert par un planning.",
     "effects": [
-      { "type": "flag", "flag": "orb_van_seen" }
+      { "type": "flag", "flag": "orb_van_seen" },
+      { "type": "clue", "clue": "L'utilitaire municipal a servi à déplacer Ahmed." }
     ],
     "variants": [
       {
         "requiresFlag": "papers_seen",
-        "text": "Maintenant que tu as vu tes papiers sur Ahmed, l'utilitaire paraît moins être un véhicule qu'une adresse mobile. On t'a livré un mort avec ton nom comme bon de réception.",
+        "text": "Après les papiers, le message est clair: un mort, ton identité, un véhicule municipal. On ne t'accuse pas encore. On te prépare.",
         "voice": "procedure",
         "minScore": 2,
-        "voiceText": "Véhicule, corps, identité, accès. Ce n'est pas un hasard. C'est un classement temporaire en attente de coupable."
+        "voiceText": "Corps, identité, accès. Trois pièces dans un même coffre. Trop organisé pour être une découverte simple."
       }
     ]
   },
@@ -57,10 +58,10 @@
     "x": 672,
     "y": 282,
     "radius": 52,
-    "text": "Ahmed est assez loin pour ne pas tout donner, assez près pour te prendre la matinée. Un vieux locataire ne devient pas preuve: on le force à porter le rôle.",
+    "text": "Ahmed Berrichi, vieux locataire des Miroirs. Pas de carnet. Pas de clés. Pas de téléphone. On a laissé le corps et retiré les outils qui expliquaient sa vie.",
     "voice": "faim",
     "minScore": 1,
-    "voiceText": "Ton corps pense d'abord à lui-même. Bile, manque, bouche sèche. C'est laid. C'est aussi ce qui te garde debout.",
+    "voiceText": "Ton estomac se contracte. Ce n'est pas seulement la mort: c'est le manque qui veut décider à ta place.",
     "effects": [
       { "type": "clue", "clue": "Le corps est placé au fond du coffre, pas tombé près de l'ouverture." },
       { "type": "clue", "clue": "Ahmed Berrichi était un vieux locataire historique des Miroirs." }
@@ -77,10 +78,10 @@
     "x": 510,
     "y": 174,
     "radius": 66,
-    "text": "La caméra pointe vers le P2 avec la politesse d'un témoin payé pour dormir. Voyant mort. Support récent. L'aveuglement a eu droit à une installation propre.",
+    "text": "La caméra pointe vers le P2. Voyant éteint. Support récent. Une panne qui regarde exactement le bon endroit devient une décision.",
     "voice": "nerfs",
     "minScore": 1,
-    "voiceText": "Angle parfait. Oeil absent. Quelqu'un n'a pas cassé la surveillance. Quelqu'un l'a orientée vers son propre sommeil.",
+    "voiceText": "Angle parfait, oeil absent. Quelqu'un n'a pas seulement profité d'une caméra morte: quelqu'un l'a laissée mourir utile.",
     "effects": [
       { "type": "flag", "flag": "orb_camera_seen" },
       { "type": "clue", "clue": "La caméra du P2 est hors service mais son support est récent." }
@@ -92,25 +93,25 @@
     "location": "miroirs",
     "subject": "technical-room",
     "mode": "visible",
-    "label": "Lire le local technique",
+    "label": "Examiner le local technique",
     "title": "Local technique",
     "x": 178,
     "y": 282,
     "radius": 78,
-    "text": "Une porte, trois usages, aucune responsabilité nette. Électricité, nettoyage, chantier: les mots changent selon qui tient la clé.",
+    "text": "Une porte pour l'électricité, le nettoyage, les prestataires, parfois les badges. Quand trop de gens ont une clé, plus personne n'a l'air responsable.",
     "voice": "procedure",
     "minScore": 2,
-    "voiceText": "Un local partagé produit toujours un registre ou une absence de registre. Les deux sont des documents.",
+    "voiceText": "Cherche un registre. Ou mieux: cherche l'absence de registre. Les deux peuvent accuser.",
     "effects": [
       { "type": "clue", "clue": "Le local technique pourrait contenir un registre de badges et de clés." }
     ],
     "variants": [
       {
-        "requiresFlag": "salt_fake",
-        "text": "Après ce qu'Amar a dit sur le local sanitaire, cette porte paraît moins neutre. Un local ment lentement quand assez de services peuvent dire qu'ils n'en sont pas responsables.",
-        "voice": "bouches",
-        "minScore": 1,
-        "voiceText": "Les portes fermées ont un accent. Celle-ci dit: revenez avec un nom, ou avec un badge qui n'assume pas."
+        "requiresFlag": "page_read",
+        "text": "Avec la page d'Ahmed en tête, ce local devient une piste directe: badge chantier, caméra morte, accès partagés. Pas une ambiance. Une méthode.",
+        "voice": "main_gauche",
+        "minScore": 2,
+        "voiceText": "Une porte partagée se fouille comme une poche commune. Tout le monde y laisse un peu de faute."
       }
     ]
   },
@@ -121,15 +122,15 @@
     "subject": "neon-puddle",
     "mode": "proximity",
     "once": true,
-    "label": "Écouter le néon",
-    "title": "Néon froid",
+    "label": "Regarder la flaque",
+    "title": "Flaque sous néon",
     "x": 470,
     "y": 464,
     "radius": 96,
-    "text": "Le néon grésille au-dessus d'une flaque avec la patience d'un créancier. Ton reflet se découpe en plusieurs Morad. Aucun ne tient assez longtemps pour signer.",
+    "text": "Ton reflet se coupe dans la flaque. Peau grise, bouche sèche, yeux pas encore alignés. Ça ne cache rien: tu es en manque et la scène le sait.",
     "voice": "memoire_saline",
     "minScore": 2,
-    "voiceText": "Tu connais ce blanc: sel de trottoir, sueur sèche, couloir médical. Les souvenirs chimiques reviennent par capillarité."
+    "voiceText": "Sel de sueur, sel de béton, sel de déneigement. Les Miroirs gardent les traces chimiques mieux que les souvenirs."
   },
   {
     "id": "miroirs_orb_residents",
@@ -138,15 +139,15 @@
     "subject": "residents-offscreen",
     "mode": "proximity",
     "once": true,
-    "label": "Écouter derrière la palissade",
+    "label": "Écouter les habitants",
     "title": "Voix derrière la palissade",
     "x": 314,
     "y": 388,
     "radius": 84,
-    "text": "Des voix roulent derrière la palissade. Elles baissent quand ton nom pourrait entrer dans la phrase. Puis quelqu'un lâche: Le Gobelet. Pas fort. Assez.",
+    "text": "Derrière la palissade, une voix dit Le Gobelet. Pas assez fort pour t'affronter. Assez fort pour rappeler que ton addiction circule avant toi.",
     "voice": "bouches",
     "minScore": 1,
-    "voiceText": "Un surnom ne naît pas en urgence. Il circule, il chauffe, il attend la bonne honte pour servir.",
+    "voiceText": "Ce surnom n'est pas une blague neuve. C'est une fiche orale que tout le monde sait ressortir quand il faut te diminuer.",
     "effects": [
       { "type": "clue", "clue": "Des habitants baissent la voix quand tu approches de la palissade." },
       { "type": "clue", "clue": "Les habitants connaissent ton surnom: Le Gobelet." }

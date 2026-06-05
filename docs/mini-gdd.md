@@ -53,6 +53,10 @@ Pas de romantisme portuaire. La poésie vient du contraste entre langue municipa
 
 Direction validée pour la réécriture v0: cru social maîtrisé, voix internes très présentes mais courtes, La Dose commerçante intime, Karine administratrice dangereuse qui renomme au lieu de mentir frontalement, Ahmed témoin gênant et rugueux, Morad lucide mais fonctionnel dans le déni. Style: sec avec éclats, choix incarnés, passifs contradictoires.
 
+Nouvelle contrainte de lisibilité: ne pas écrire l'enquête comme une énigme cryptique. Le joueur doit comprendre vite les faits durs: Ahmed est mort dans un utilitaire municipal, les papiers de Morad ont été plantés sur lui, le carnet manque, la page ouvre caméra/badge/Hami, et Morad est en manque sous les yeux de Karine.
+
+L'alcool et les calmants sont centraux. Ils touchent le corps, les choix, les checks, la réputation et les rapports de force. La Dose ne doit jamais romantiser l'addiction: elle vend de la stabilité, protège Hami, et transforme le besoin en dette.
+
 Inspiration structurelle maximale: hubs ramifiés, surfaces objet, voix contextuelles, antipassifs, échecs premium et densité de retours. Le texte, les scènes, les personnages et les blagues restent originaux.
 
 ## Boucle

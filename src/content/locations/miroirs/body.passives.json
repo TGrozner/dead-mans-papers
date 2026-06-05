@@ -1,6 +1,6 @@
 [
   {
-    "id": "miroirs_body__hunger_before_morals",
+    "id": "miroirs_body__ventre_before_morals",
     "contextId": "miroirs/body",
     "location": "miroirs",
     "subject": "body",
@@ -8,13 +8,13 @@
     "voice": "faim",
     "minScore": 1,
     "once": true,
-    "priority": 70,
+    "priority": 74,
     "display": "toast",
     "trigger": {
       "type": "exploration",
       "contextId": "utility_van"
     },
-    "text": "Ton ventre remarque le corps avant ta morale. Froid, manque, salive courte. Il appelle ça lucidité. Il aime se flatter."
+    "text": "À portée du coffre, ton ventre passe avant ta morale: bile, faim, manque, sueur. Le corps ne respecte pas les scènes de crime."
   },
   {
     "id": "miroirs_body__regard_failure_seen",
@@ -25,24 +25,6 @@
     "voice": "honte_publique",
     "minScore": 2,
     "once": true,
-    "priority": 84,
-    "display": "dialogue",
-    "trigger": {
-      "type": "dialogue",
-      "scriptId": "utility_van",
-      "nodeId": "search_failure"
-    },
-    "text": "Karine a vu le corps te reprendre possession. Médiateur utile vient de glisser vers médiateur fragile. Ce sont des colonnes différentes."
-  },
-  {
-    "id": "miroirs_body__dose_failure_pricing",
-    "contextId": "miroirs/body",
-    "location": "miroirs",
-    "subject": "withdrawal",
-    "channel": "dialogue",
-    "parasite": "dose",
-    "requiresFlag": "dose_heard",
-    "once": true,
     "priority": 86,
     "display": "dialogue",
     "trigger": {
@@ -50,7 +32,43 @@
       "scriptId": "utility_van",
       "nodeId": "search_failure"
     },
-    "text": "Tu vois ? Pas assez régulé. On ne négocie pas une machine avec des grands principes. On met ce qu'il faut dans le moteur."
+    "text": "Karine a vu le manque. Maintenant elle peut dire fragile, instable, confus. Trois mots propres pour salir ton témoignage."
+  },
+  {
+    "id": "miroirs_body__dose_failure_invoice",
+    "contextId": "miroirs/body",
+    "location": "miroirs",
+    "subject": "withdrawal",
+    "channel": "dialogue",
+    "parasite": "dose",
+    "requiresFlag": "dose_heard",
+    "once": true,
+    "priority": 88,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "search_failure"
+    },
+    "text": "Voilà le prix d'une machine mal régulée. Tu voulais fouiller un mort avec une main de dette et un estomac vide. On reparlera dosage."
+  },
+  {
+    "id": "miroirs_body__main_success_dirty_work",
+    "contextId": "miroirs/body",
+    "location": "miroirs",
+    "subject": "trunk-search",
+    "channel": "dialogue",
+    "voice": "main_gauche",
+    "minScore": 2,
+    "once": true,
+    "priority": 84,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "search_success"
+    },
+    "text": "La dignité n'a rien trouvé. Deux doigts sales, eux, reviennent avec la page."
   },
   {
     "id": "miroirs_body__antipassive_ventre_just_nausea",
@@ -69,6 +87,6 @@
       "scriptId": "utility_van",
       "nodeId": "body_ventre"
     },
-    "text": "Simple nausée. Rien à voir avec les cachets, les verres, les heures manquantes. Le corps ment parfois pour éviter d'avouer qu'il dit vrai."
+    "text": "Simple nausée, bien sûr. Rien à voir avec l'alcool, les calmants, les heures manquantes et la main qui réclame sa dose. Mauvaise lecture, mais confortable."
   }
 ]

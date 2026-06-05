@@ -1,465 +1,427 @@
 {
   "wake_up": {
     "id": "wake_up",
-    "title": "Retour au P2",
+    "title": "Réveil au P2",
     "start": "start",
     "nodes": {
       "start": {
         "id": "start",
-        "speaker": "Narration",
-        "voice": "memoire_saline",
-        "text": "Tu reviens par morceaux. D'abord le froid du béton contre l'omoplate. Ensuite le goût métallique au fond de la bouche. Enfin ton nom, quelque part dans le parking, prononcé par quelqu'un qui ne veut pas le dire trop fort.",
+        "speaker": "Parking P2",
+        "text": "Tu reviens à toi assis contre une borne en béton. La bouche a le goût d'alcool fort resté trop longtemps sur la langue. Ta main droite tremble avant même que tu lui demandes quelque chose.",
         "effects": [
-          { "type": "flag", "flag": "woke_up" }
+          { "type": "flag", "flag": "woke_up" },
+          { "type": "clue", "clue": "Morad se réveille au Parking P2 avec des tremblements et un trou noir." }
         ],
         "choices": [
-          {
-            "label": "Ouvrir les yeux avant que quelqu'un décide qu'ils sont déjà ouverts.",
-            "next": "inventory_body"
-          }
+          { "label": "Regarder ce qui traîne à côté de toi.", "next": "ground" },
+          { "label": "Essayer de te lever sans vomir.", "next": "stand" },
+          { "label": "Chercher le téléphone.", "next": "phone" }
         ]
       },
-      "inventory_body": {
-        "id": "inventory_body",
-        "speaker": "Le Ventre",
-        "voice": "faim",
-        "text": "Chaussure gauche humide. Gobelet plastique vide près du genou. Téléphone fissuré face contre sol. La main droite tremble avec une politesse de dossier médical: pas assez pour tomber, assez pour être remarquée.",
+      "ground": {
+        "id": "ground",
+        "speaker": "Morad",
+        "text": "Un gobelet plastique vide. Pas un café. L'odeur est trop âpre. À côté, ton téléphone fissuré clignote comme s'il avait honte d'être encore utile.",
         "effects": [
-          { "type": "clue", "clue": "Morad se réveille près d'un gobelet vide et d'un téléphone fissuré." }
+          { "type": "clue", "clue": "Un gobelet vide près de Morad sent l'alcool fort bon marché." }
         ],
         "choices": [
-          {
-            "label": "Ramasser le téléphone. S'il se souvient mieux que toi, autant l'écouter.",
-            "next": "phone"
-          },
-          {
-            "label": "Laisser le gobelet où il est. Les preuves aussi ont droit à la honte.",
-            "next": "dose"
-          }
+          { "label": "Retourner le gobelet comme une preuve minable.", "next": "cup" },
+          { "label": "Prendre le téléphone.", "next": "phone" },
+          { "label": "Te lever. Maintenant.", "next": "stand" }
+        ]
+      },
+      "cup": {
+        "id": "cup",
+        "speaker": "Le Ventre",
+        "voice": "faim",
+        "text": "Le plastique colle un peu aux doigts. Le corps reconnaît l'habitude avant la mémoire: boire pour couper le bruit, avaler des calmants pour lisser le reste, puis appeler ça tenir.",
+        "effects": [
+          { "type": "flag", "flag": "withdrawal_seen" },
+          { "type": "clue", "clue": "L'alcool et les calmants font partie du trou noir de Morad." }
+        ],
+        "choices": [
+          { "label": "Jeter le gobelet loin de toi.", "next": "stand" },
+          { "label": "Le garder. Une honte peut servir.", "next": "stand" }
         ]
       },
       "phone": {
         "id": "phone",
-        "speaker": "Le Dossier",
-        "voice": "procedure",
-        "text": "Douze appels manqués. Même nom, même urgence, même petit rectangle rouge: Karine Leduc. Le téléphone ne connaît pas la panique. Il l'empile proprement.",
+        "speaker": "Téléphone fissuré",
+        "text": "Douze appels manqués de Karine Leduc. Pas un message gentil. Pas un message paniqué non plus. Juste douze tentatives de faire tenir ton nom dans son urgence.",
         "effects": [
           { "type": "clue", "clue": "Ton téléphone fissuré affiche 12 appels manqués de Karine Leduc." }
         ],
         "choices": [
-          {
-            "label": "Garder le chiffre douze. C'est presque une chronologie.",
-            "next": "dose"
-          },
-          {
-            "label": "Décider que douze appels, c'est une relation professionnelle normale.",
-            "next": "dose_denial"
-          }
+          { "label": "Rappeler Karine.", "next": "karine_call" },
+          { "label": "Éteindre l'écran. Trop de lumière.", "next": "stand" },
+          { "label": "Compter les appels comme des dettes.", "next": "dose_first" }
         ]
       },
-      "dose_denial": {
-        "id": "dose_denial",
+      "karine_call": {
+        "id": "karine_call",
+        "speaker": "Karine Leduc",
+        "text": "Elle ne dit pas bonjour. \"Morad. Tu es au P2. Il y a un corps dans mon utilitaire. Tes papiers sont sur lui. Tu viens avant que ça parte en procédure.\"",
+        "effects": [
+          { "type": "clue", "clue": "Karine dit qu'un corps porte les papiers de Morad dans un utilitaire municipal." }
+        ],
+        "choices": [
+          { "label": "\"Je suis déjà là.\"", "next": "dose_first" },
+          { "label": "\"Quel corps ?\"", "next": "karine_cut" }
+        ]
+      },
+      "karine_cut": {
+        "id": "karine_cut",
+        "speaker": "Karine Leduc",
+        "text": "\"Pas au téléphone. Et Morad ? Si tu as bu, si tu as pris quelque chose, garde-le pour toi. J'ai besoin que tu sois utile cinq minutes.\"",
+        "effects": [
+          { "type": "flag", "flag": "leduc_knows_addiction" },
+          { "type": "clue", "clue": "Karine sait assez de choses sur l'état de Morad pour s'en servir." }
+        ],
+        "choices": [
+          { "label": "Raccrocher et respirer par le nez.", "next": "dose_first" }
+        ]
+      },
+      "stand": {
+        "id": "stand",
+        "speaker": "Morad",
+        "text": "Debout. Presque. Le parking penche d'abord, puis revient droit. Ce n'est pas le monde qui bouge: c'est ton corps qui réclame sa facture.",
+        "effects": [
+          { "type": "flag", "flag": "withdrawal_seen" }
+        ],
+        "choices": [
+          { "label": "Laisser la voix intérieure finir sa négociation.", "next": "dose_first" },
+          { "label": "Avancer vers l'utilitaire.", "next": "end" }
+        ]
+      },
+      "dose_first": {
+        "id": "dose_first",
         "speaker": "La Dose",
         "parasite": "dose",
-        "text": "Voilà. Normal. Fonctionnel. Tu as déjà survécu à pire avec moins de salive et une chemise plus sale. Le corps exagère pour obtenir de l'attention.",
+        "text": "Tu réponds à Karine. Tu tiens debout. Après, on régule. Juste assez pour la main stable, juste assez pour ne pas puer la chute devant une responsable municipale.",
         "effects": [
           { "type": "flag", "flag": "dose_heard" },
-          { "type": "voice_bump", "voice": "honte_publique", "amount": 1 }
+          { "type": "flag", "flag": "withdrawal_seen" },
+          { "type": "clue", "clue": "La Dose veut stabiliser Morad avec alcool et calmants." }
         ],
         "choices": [
-          {
-            "label": "Accepter ce mensonge utile. Il a de bonnes chaussures.",
-            "next": "karine_calls"
-          }
+          { "label": "\"Pas maintenant.\"", "next": "end" },
+          { "label": "\"Après. Si je reste debout.\"", "next": "end" }
         ]
       },
-      "dose": {
-        "id": "dose",
-        "speaker": "La Dose",
-        "parasite": "dose",
-        "text": "Tu réponds à Karine. Tu tiens debout. Après, on discute de ce que tu dois au corps. Pas maintenant. Maintenant il faut stabiliser l'apparence.",
-        "effects": [
-          { "type": "flag", "flag": "dose_heard" }
-        ],
+      "end": {
+        "id": "end",
+        "speaker": "Parking P2",
+        "text": "Karine Leduc t'attend devant l'utilitaire blanc du chantier. Le coffre est fermé. Elle se tient entre toi et le mort comme si le bon mot pouvait remplacer une porte.",
         "choices": [
-          {
-            "label": "Se lever comme un homme qu'on peut encore utiliser.",
-            "next": "karine_calls"
-          }
-        ]
-      },
-      "karine_calls": {
-        "id": "karine_calls",
-        "speaker": "Karine Leduc",
-        "text": "Sa voix traverse le parking avant elle. 'Morad. Enfin.' Pas de soulagement. De la logistique. Tu vois sa silhouette près de l'utilitaire blanc, droite devant le coffre ouvert comme devant une porte de réunion.",
-        "effects": [
-          { "type": "flag", "flag": "karine_visible" },
-          { "type": "clue", "clue": "Karine Leduc attend Morad près de l'utilitaire municipal." }
-        ],
-        "choices": [
-          {
-            "label": "Aller vers elle avant que ton corps trouve une meilleure idée.",
-            "close": true
-          }
+          { "label": "Aller vers elle.", "close": true }
         ]
       }
     }
   },
   "utility_van": {
     "id": "utility_van",
-    "title": "Utilitaire municipal",
+    "title": "L'utilitaire municipal",
     "start": "start",
     "nodes": {
       "start": {
         "id": "start",
         "speaker": "Karine Leduc",
-        "text": "Karine Leduc te barre le coffre sans lever les bras. Talent municipal: occuper un passage avec une phrase. 'On va appeler ça un incident de chantier.' Derrière elle, l'utilitaire blanc respire une odeur trop froide pour ce parking.",
+        "text": "\"On va appeler ça un incident de chantier.\" Elle désigne l'utilitaire municipal sans le toucher. \"Un vieux locataire dans le coffre. Tes papiers sur lui. La police nationale arrive si je ne cadre pas très vite.\"",
         "effects": [
-          { "type": "flag", "flag": "van_seen" },
-          { "type": "clue", "clue": "Un corps a été trouvé dans le coffre d'un utilitaire municipal au parking P2." }
+          { "type": "flag", "flag": "leduc_met" },
+          { "type": "clue", "clue": "Karine veut contenir la découverte avant l'arrivée de la police nationale." }
         ],
         "choices": [
-          {
-            "label": "Tu peux appeler ça comme tu veux. Écarte-toi.",
-            "next": "leduc_blocks"
-          },
-          {
-            "label": "Lui demander quelle phrase elle essaie de sauver.",
-            "next": "leduc_frame"
-          },
-          {
-            "label": "Sentir l'odeur avant de regarder le corps.",
-            "next": "dose_smell"
-          },
-          {
-            "label": "Regarder la flaque et les traces autour du coffre.",
-            "next": "salt_memory"
-          },
-          {
-            "label": "Reculer. Le parking peut attendre une seconde.",
-            "close": true
-          }
+          { "label": "\"Un corps n'est pas un incident.\"", "next": "leduc_frame" },
+          { "label": "\"Pourquoi moi ?\"", "next": "why_morad" },
+          { "label": "\"Montre-moi le coffre.\"", "next": "trunk_block" },
+          { "label": "\"Je vais vomir si tu continues à parler propre.\"", "next": "dose_smell" }
         ]
       },
       "leduc_frame": {
         "id": "leduc_frame",
         "speaker": "Karine Leduc",
-        "text": "'Je sauve un périmètre.' Elle corrige aussitôt: 'Je protège une procédure avant qu'elle devienne un spectacle.' Les mots propres arrivent en rang. Aucun ne veut regarder dans le coffre.",
-        "effects": [
-          { "type": "flag", "flag": "leduc_requests_discretion" },
-          { "type": "clue", "clue": "Karine veut éviter que la police nationale prenne immédiatement la scène." }
-        ],
+        "text": "\"Un incident, c'est ce qu'on dit tant qu'on ne sait pas qui signe. Un corps, c'est ce que les gens filment. Je préfère encore les mots moches aux vidéos.\"",
         "choices": [
-          {
-            "label": "Lui demander qui a intérêt à un périmètre sans police.",
-            "next": "leduc_interests"
-          },
-          {
-            "label": "Dire procédure assez fort pour faire craquer sa bouche.",
-            "next": "leduc_procedure_warning"
-          },
-          {
-            "label": "Observer son corps pendant qu'elle parle de procédure.",
-            "next": "leduc_body_language"
-          },
-          {
-            "label": "Retourner à l'utilitaire.",
-            "next": "start"
-          }
-        ]
-      },
-      "leduc_interests": {
-        "id": "leduc_interests",
-        "speaker": "Karine Leduc",
-        "text": "'Les habitants, les agents, les entreprises, la mairie, vous.' Elle te place dans la liste sans hausser le ton. Être ajouté calmement à une liste est parfois plus violent qu'une accusation.",
-        "effects": [
-          { "type": "flag", "flag": "leduc_lists_you" },
-          { "type": "clue", "clue": "Karine inclut Morad parmi ceux que l'affaire peut menacer." }
-        ],
-        "choices": [
-          {
-            "label": "Demander pourquoi toi, exactement.",
-            "next": "leduc_you"
-          },
-          {
-            "label": "Garder la liste. Les listes mentent mal quand elles sont longues.",
-            "next": "leduc_frame"
-          }
-        ]
-      },
-      "leduc_you": {
-        "id": "leduc_you",
-        "speaker": "Karine Leduc",
-        "text": "'Parce que vous connaissez les badges, les caméras, les gardiens, les numéros qui répondent encore. Et parce qu'on peut vous demander de regarder sans écrire que vous avez regardé.'",
-        "effects": [
-          { "type": "flag", "flag": "leduc_uses_morad" },
-          { "type": "clue", "clue": "La mairie veut que Morad regarde discrètement parce qu'il connaît accès, caméras et habitants." }
-        ],
-        "choices": [
-          {
-            "label": "Admettre qu'une fonction sale reste une fonction.",
-            "next": "dose_smell"
-          },
-          {
-            "label": "Lui faire remarquer que ça s'appelle déjà une enquête.",
-            "next": "leduc_minimize"
-          }
+          { "label": "\"Tu préfères surtout contrôler la phrase.\"", "next": "leduc_body_language" },
+          { "label": "\"Qui est le mort ?\"", "next": "dead_name" },
+          { "label": "\"Ouvre le coffre.\"", "next": "trunk_block" },
+          { "label": "Revenir au périmètre.", "next": "start" }
         ]
       },
       "leduc_body_language": {
         "id": "leduc_body_language",
         "speaker": "Le Regard",
         "voice": "honte_publique",
-        "text": "Chaussures hors flaque. Pochette contre ventre. Badge visible. Elle n'est pas calme: elle a juste externalisé sa panique dans des objets qui se tiennent mieux qu'elle.",
+        "text": "Karine tient son téléphone comme un parapluie fermé: pas encore utilisé, déjà menaçant. Elle a vu ta main. Elle ne l'a pas commentée. C'est pire.",
         "effects": [
-          { "type": "flag", "flag": "leduc_blocks_trunk" },
-          { "type": "clue", "clue": "Karine bloque le coffre sans le toucher." }
+          { "type": "flag", "flag": "leduc_saw_hand" },
+          { "type": "clue", "clue": "Karine a probablement remarqué les tremblements de Morad." }
         ],
         "choices": [
-          {
-            "label": "La laisser croire que tu n'as rien vu.",
-            "next": "leduc_frame"
-          },
-          {
-            "label": "Passer près d'elle avec une politesse de couloir.",
-            "next": "dose_smell"
-          }
+          { "label": "\"Tu as appelé qui avant moi ?\"", "next": "leduc_interests" },
+          { "label": "\"Ouvre.\"", "next": "trunk_block" }
         ]
       },
-      "leduc_blocks": {
-        "id": "leduc_blocks",
+      "why_morad": {
+        "id": "why_morad",
         "speaker": "Karine Leduc",
-        "text": "'Pas maintenant.' Deux mots, toute la mairie dedans. Elle ne te pousse pas. Elle rend simplement le passage plus compliqué que ton courage actuel.",
+        "text": "\"Parce que tu connais les badges, les caméras, les cages, les gardiens. Parce que les habitants te parlent quand ils veulent insulter la mairie sans écrire un mail. Et parce que tes papiers sont sur lui.\"",
         "effects": [
-          { "type": "flag", "flag": "leduc_blocks_trunk" }
+          { "type": "clue", "clue": "Morad est appelé parce qu'il connaît les accès, les caméras et les habitants." }
         ],
         "choices": [
-          {
-            "label": "Lui demander ce qu'elle gagne en te retardant.",
-            "next": "leduc_interests"
-          },
-          {
-            "label": "La contourner par l'odeur. L'odeur ne demande pas d'autorisation.",
-            "next": "dose_smell"
-          },
-          {
-            "label": "Revenir à sa formulation d'incident.",
-            "next": "leduc_minimize"
-          }
+          { "label": "\"Donc je suis utile ou suspect ?\"", "next": "leduc_useful_suspect" },
+          { "label": "\"Tu veux éviter la vraie procédure.\"", "next": "leduc_interests" },
+          { "label": "\"Montre-moi Ahmed.\"", "next": "trunk_block" }
         ]
       },
-      "leduc_minimize": {
-        "id": "leduc_minimize",
+      "leduc_useful_suspect": {
+        "id": "leduc_useful_suspect",
         "speaker": "Karine Leduc",
-        "text": "'Découverte sur emprise de chantier.' Elle goûte la phrase. Elle est meilleure que cadavre, meilleure que coffre, meilleure que vieux locataire mort dans un véhicule de service.",
+        "text": "\"Les deux peuvent tenir dans la même personne.\" Elle regarde ta bouche, pas tes yeux. \"Surtout ce matin.\"",
         "effects": [
-          { "type": "flag", "flag": "leduc_minimized_body" },
-          { "type": "clue", "clue": "Karine préfère appeler le corps une découverte sur emprise de chantier." }
+          { "type": "flag", "flag": "leduc_can_use_addiction" },
+          { "type": "clue", "clue": "Karine peut transformer l'addiction de Morad en faiblesse officielle." }
         ],
         "choices": [
-          {
-            "label": "Noter que les mots propres savent transporter les morts.",
-            "next": "leduc_frame"
-          },
-          {
-            "label": "Dire cadavre. Doucement. Comme une faute professionnelle.",
-            "next": "leduc_corpse_word"
-          },
-          {
-            "label": "Avancer vers le coffre pendant qu'elle polit la phrase.",
-            "next": "dose_smell"
-          }
+          { "label": "\"Alors ouvre avant que je devienne inutile.\"", "next": "trunk_block" },
+          { "label": "\"Tu as déjà préparé ta version.\"", "next": "leduc_interests" }
         ]
       },
-      "leduc_corpse_word": {
-        "id": "leduc_corpse_word",
+      "dead_name": {
+        "id": "dead_name",
         "speaker": "Karine Leduc",
-        "text": "Elle cligne des yeux. Rien de spectaculaire. Juste un petit arrêt dans la machine. 'Ne faites pas ça.' Elle veut dire: ne rendez pas la chose plus vraie qu'elle ne l'est administrativement.",
+        "text": "\"Ahmed Berrichi. Locataire historique. Officiellement sorti du dispositif de relogement. Officieusement, il posait trop de questions à trop de guichets.\"",
         "effects": [
-          { "type": "flag", "flag": "leduc_fears_corpse_word" },
-          { "type": "voice_bump", "voice": "procedure", "amount": 1 }
+          { "type": "clue", "clue": "Ahmed Berrichi était officiellement disparu du dispositif de relogement." }
         ],
         "choices": [
-          {
-            "label": "Garder le mot cadavre dans la bouche. Il pèse bien.",
-            "next": "trunk_open"
-          },
-          {
-            "label": "Le rendre à Karine. Elle en fera un document plus petit.",
-            "next": "leduc_frame"
-          }
+          { "label": "\"Quelles questions ?\"", "next": "ahmed_questions" },
+          { "label": "\"Ouvre le coffre.\"", "next": "trunk_block" }
         ]
       },
-      "leduc_procedure_warning": {
-        "id": "leduc_procedure_warning",
+      "ahmed_questions": {
+        "id": "ahmed_questions",
         "speaker": "Karine Leduc",
-        "text": "'Une procédure maintenant, c'est des scellés, des badges bloqués, des familles qui attendent, des entreprises qui se couvrent, des élus qui découvrent leur agenda.' Elle oublie les morts dans la liste. Ou elle les met ailleurs.",
+        "text": "\"Ascenseur C, caméras, badges, caves, relogements non faits. Le genre de carnet qui mélange les vraies pannes et les rancunes. Le genre qu'on perd avant les réunions.\"",
         "effects": [
-          { "type": "flag", "flag": "leduc_fears_procedure" },
-          { "type": "flag", "flag": "ready_to_search" },
-          { "type": "clue", "clue": "Karine craint qu'une procédure officielle fige les badges, les marchés et les relogements." }
+          { "type": "clue", "clue": "Ahmed tenait un carnet sur pannes, accès, caméras et relogements." }
         ],
         "choices": [
-          {
-            "label": "Laisser les badges bloqués devenir une piste.",
-            "next": "trunk_open"
-          },
-          {
-            "label": "Demander si un prestataire peut disparaître dans cette liste.",
-            "next": "leduc_badge_hint"
-          },
-          {
-            "label": "Revenir au début de son périmètre.",
-            "next": "leduc_frame"
-          }
+          { "label": "\"Son carnet est où ?\"", "next": "notebook_absent" },
+          { "label": "\"Je veux voir le corps.\"", "next": "trunk_block" }
+        ]
+      },
+      "leduc_interests": {
+        "id": "leduc_interests",
+        "speaker": "Karine Leduc",
+        "text": "\"Je protège un chantier, une mairie, des agents, des habitants, des prestataires, et peut-être toi. Dans cet ordre si tu continues à trembler comme ça.\"",
+        "effects": [
+          { "type": "flag", "flag": "leduc_priorities_seen" },
+          { "type": "clue", "clue": "Karine protège la mairie, le chantier et les prestataires avant Morad." }
+        ],
+        "choices": [
+          { "label": "\"Quel prestataire a accès au P2 ?\"", "next": "leduc_badge_hint" },
+          { "label": "\"Tu protèges aussi Hami ?\"", "next": "leduc_hami_deflect", "requiresFlag": "hami_named" },
+          { "label": "\"Ouvre le coffre.\"", "next": "trunk_block" },
+          { "label": "Revenir.", "next": "start" }
+        ]
+      },
+      "leduc_badge_hint": {
+        "id": "leduc_badge_hint",
+        "speaker": "Karine Leduc",
+        "text": "\"Badges chantier, badges sécurité, badges nettoyage. Les accès provisoires deviennent vite permanents quand personne n'a le budget pour refaire une liste.\"",
+        "effects": [
+          { "type": "clue", "clue": "Des badges provisoires de chantier peuvent ouvrir le P2." }
+        ],
+        "choices": [
+          { "label": "\"Donc quelqu'un a pu utiliser mon accès.\"", "next": "leduc_body_boundary" },
+          { "label": "\"Ouvre le coffre.\"", "next": "trunk_block" }
+        ]
+      },
+      "leduc_hami_deflect": {
+        "id": "leduc_hami_deflect",
+        "speaker": "Karine Leduc",
+        "text": "\"La docteure Hami n'est pas dans mon périmètre.\" Trop vite. Trop net. Comme une porte qu'on claque sans bruit.",
+        "effects": [
+          { "type": "clue", "clue": "Karine se ferme dès que le nom de la Dr Hami apparaît." }
+        ],
+        "choices": [
+          { "label": "\"Alors elle est dans lequel ?\"", "next": "hami_reaction" },
+          { "label": "\"On revient au coffre.\"", "next": "trunk_block" }
+        ]
+      },
+      "leduc_body_boundary": {
+        "id": "leduc_body_boundary",
+        "speaker": "Karine Leduc",
+        "text": "\"Je ne dis pas que quelqu'un a utilisé ton accès. Je dis que si quelqu'un l'a fait, on a besoin de savoir avant que ça devienne une phrase officielle.\"",
+        "choices": [
+          { "label": "\"Tu veux une vérité qui reste utile.\"", "next": "trunk_block" },
+          { "label": "\"Je veux le coffre ouvert.\"", "next": "trunk_block" }
         ]
       },
       "dose_smell": {
         "id": "dose_smell",
         "speaker": "La Dose",
         "parasite": "dose",
-        "text": "Ça sent pas le chantier. Ça sent le vieux froid dans une voiture chaude. Chambre propre, lumière blanche, drap qui ne promet rien. Avance doucement. La main doit rester stable.",
+        "text": "Ça ne sent pas le chantier. Ça sent le vieux froid dans une voiture chaude. Et ta sueur par-dessus. Attention: ta sueur raconte plus vite que toi.",
         "effects": [
-          { "type": "flag", "flag": "dose_smells_cold" },
-          { "type": "clue", "clue": "La Dose reconnaît une odeur de vieux froid dans l'utilitaire." }
+          { "type": "flag", "flag": "dose_heard" },
+          { "type": "flag", "flag": "withdrawal_seen" },
+          { "type": "clue", "clue": "Le corps a probablement été gardé au froid avant d'être mis dans l'utilitaire." }
         ],
         "choices": [
-          {
-            "label": "Demander à La Dose le prix exact de la main stable.",
-            "next": "dose_bargain"
-          },
-          {
-            "label": "Regarder dans le coffre avant qu'elle augmente le tarif.",
-            "next": "trunk_open"
-          }
+          { "label": "\"Le froid vient d'où ?\"", "next": "cold_question" },
+          { "label": "\"Ouvre avant que je tombe.\"", "next": "trunk_block" }
         ]
       },
-      "dose_bargain": {
-        "id": "dose_bargain",
-        "speaker": "La Dose",
-        "parasite": "dose",
-        "text": "Prix doux. Une promesse de passer chez Hami. Un verre invisible. Un cachet qui fait baisser la musique du sang. Pas guérir. Réguler. Juste assez pour que les autres continuent à te confondre avec ton poste.",
+      "cold_question": {
+        "id": "cold_question",
+        "speaker": "Karine Leduc",
+        "text": "\"Je ne veux pas savoir d'où vient l'odeur avant de savoir qui va devoir l'expliquer.\" Elle recule d'un demi-pas. Pas assez pour être humaine. Assez pour éviter le vomi.",
         "effects": [
-          { "type": "flag", "flag": "dose_bargained" },
-          { "type": "clue", "clue": "La Dose associe la main stable à un futur passage chez Hami." }
+          { "type": "clue", "clue": "Karine évite la question de l'endroit où le corps a été gardé au froid." }
         ],
         "choices": [
-          {
-            "label": "Accepter la régulation comme on accepte une chaise sale.",
-            "next": "trunk_open"
-          },
-          {
-            "label": "Refuser de marchander avec ton propre système nerveux.",
-            "next": "trunk_open",
-            "effects": [
-              { "type": "voice_bump", "voice": "nerfs", "amount": 1 }
-            ]
-          }
+          { "label": "\"Maintenant tu ouvres.\"", "next": "trunk_block" }
+        ]
+      },
+      "trunk_block": {
+        "id": "trunk_block",
+        "speaker": "Karine Leduc",
+        "text": "Elle pose la main sur la poignée du coffre sans l'actionner. \"Tu regardes. Tu touches seulement si tu dois. Tu ne fais pas une scène. Et si tu ne tiens pas debout, tu me le dis avant de tomber dedans.\"",
+        "effects": [
+          { "type": "flag", "flag": "trunk_access_negotiated" }
+        ],
+        "choices": [
+          { "label": "\"Je tiens. Ouvre.\"", "next": "trunk_open" },
+          { "label": "\"Si tu me parles comme à un dossier médical, je vais le devenir.\"", "next": "medical_shame" },
+          { "label": "\"Qui d'autre a vu le coffre ?\"", "next": "seen_by_who" }
+        ]
+      },
+      "medical_shame": {
+        "id": "medical_shame",
+        "speaker": "Karine Leduc",
+        "text": "\"Morad, tout le monde sait que tu as des matins compliqués. Je ne te juge pas. Je calcule le risque.\"",
+        "effects": [
+          { "type": "flag", "flag": "leduc_can_use_addiction" },
+          { "type": "clue", "clue": "Le manque de Morad est une information sociale déjà connue." }
+        ],
+        "choices": [
+          { "label": "\"Calcule vite.\"", "next": "trunk_open" },
+          { "label": "\"Tu ne me juges pas, tu m'inventories.\"", "next": "trunk_open" }
+        ]
+      },
+      "seen_by_who": {
+        "id": "seen_by_who",
+        "speaker": "Karine Leduc",
+        "text": "\"Un agent de nettoyage a prévenu. Il n'est plus là. Deux habitants ont entendu. Ils ne sont jamais loin. Amar traîne près du local technique depuis dix minutes.\"",
+        "effects": [
+          { "type": "clue", "clue": "Amar Boudiaf est près du local technique au moment de la découverte." }
+        ],
+        "choices": [
+          { "label": "\"Ouvre avant que le quartier écrive la scène sans nous.\"", "next": "trunk_open" }
         ]
       },
       "trunk_open": {
         "id": "trunk_open",
-        "speaker": "Coffre ouvert",
-        "text": "Ahmed Berrichi est là. Plié sans soin, mais pas jeté. Un mort peut encore être rangé selon une logique. Vieux manteau, nuque grise, chaussures de quelqu'un qui montait les escaliers quand l'ascenseur mentait. Sur lui: tes papiers, posés comme une convocation.",
+        "speaker": "Parking P2",
+        "text": "Le coffre s'ouvre. Ahmed Berrichi est plié au fond, veste froissée, visage cireux, mains vides. Sur son torse: ta carte d'identité, ton badge municipal, une ordonnance à ton nom.",
         "effects": [
+          { "type": "flag", "flag": "trunk_opened" },
           { "type": "flag", "flag": "papers_seen" },
-          { "type": "flag", "flag": "ahmed_seen" },
-          { "type": "clue", "clue": "Ahmed Berrichi, vieux locataire des Miroirs, est le mort du coffre." },
-          { "type": "clue", "clue": "Les papiers de Morad ont été plantés sur Ahmed." }
+          { "type": "clue", "clue": "Ahmed Berrichi est retrouvé dans le coffre avec les papiers de Morad posés sur lui." }
         ],
         "choices": [
           {
-            "label": "Jusqu'à preuve du contraire, je respire sous ce nom.",
+            "label": "Le Dossier: \"Je suis Morad Saïdi. Vivant. Et on m'a piégé.\"",
             "next": "identity_accept",
-            "hiddenWhenFlag": "identity_locked",
             "effects": [
               { "type": "identity_posture", "posture": "accept" },
-              { "type": "flag", "flag": "identity_locked" },
+              { "type": "flag", "flag": "identity_chosen" },
               { "type": "flag", "flag": "identity_accept" },
               { "type": "voice_bump", "voice": "procedure", "amount": 1 }
             ]
           },
           {
-            "label": "Ce nom dans sa poche, c'est une laisse.",
+            "label": "Le Présage: \"Quelqu'un utilise mon nom contre moi.\"",
             "next": "identity_refuse",
-            "hiddenWhenFlag": "identity_locked",
             "effects": [
               { "type": "identity_posture", "posture": "refuse" },
-              { "type": "flag", "flag": "identity_locked" },
+              { "type": "flag", "flag": "identity_chosen" },
               { "type": "flag", "flag": "identity_refuse" },
               { "type": "voice_bump", "voice": "symbole", "amount": 1 }
             ]
           },
           {
-            "label": "Je peux porter Morad Saïdi comme un badge volé.",
+            "label": "Les Bouches: \"Je joue le médiateur utile jusqu'à trouver qui m'a mis là.\"",
             "next": "identity_perform",
-            "hiddenWhenFlag": "identity_locked",
             "effects": [
               { "type": "identity_posture", "posture": "perform" },
-              { "type": "flag", "flag": "identity_locked" },
+              { "type": "flag", "flag": "identity_chosen" },
               { "type": "flag", "flag": "identity_perform" },
               { "type": "voice_bump", "voice": "bouches", "amount": 1 }
             ]
           },
           {
-            "label": "Morad Saïdi ? Qu'ils viennent le sentir.",
+            "label": "Le Regard / La Dose: \"Le Gobelet ou Morad, je reste debout et je fouille.\"",
             "next": "identity_defile",
-            "hiddenWhenFlag": "identity_locked",
             "effects": [
               { "type": "identity_posture", "posture": "defile" },
-              { "type": "flag", "flag": "identity_locked" },
+              { "type": "flag", "flag": "identity_chosen" },
               { "type": "flag", "flag": "identity_defile" },
-              { "type": "voice_bump", "voice": "honte_publique", "amount": 1 }
+              { "type": "voice_bump", "voice": "honte_publique", "amount": 1 },
+              { "type": "flag", "flag": "dose_heard" }
             ]
-          },
+          }
+        ]
+      },
+      "identity_accept": {
+        "id": "identity_accept",
+        "speaker": "Karine Leduc",
+        "text": "\"Bien. Alors le vivant m'aide à comprendre pourquoi son dossier est sur un mort.\" Elle note la phrase dans sa tête. Elle aime les vivants quand ils restent administrables.",
+        "choices": [
+          { "label": "Inspecter la scène.", "next": "trunk_hub" }
+        ]
+      },
+      "identity_refuse": {
+        "id": "identity_refuse",
+        "speaker": "Karine Leduc",
+        "text": "\"Ne pars pas dans une théorie. Pas maintenant.\" Elle dit théorie pour ne pas dire coup monté. C'est sa manière de t'enlever une arme sans lever la main.",
+        "choices": [
+          { "label": "Garder le soupçon et inspecter.", "next": "trunk_hub" }
+        ]
+      },
+      "identity_perform": {
+        "id": "identity_perform",
+        "speaker": "Karine Leduc",
+        "text": "\"Voilà. Tu sais encore faire semblant d'être l'homme qu'on appelle quand le quartier déborde.\" Elle sourit à peine. Une promotion ou une insulte, selon le dosage.",
+        "choices": [
+          { "label": "Jouer le rôle et inspecter.", "next": "trunk_hub" }
+        ]
+      },
+      "identity_defile": {
+        "id": "identity_defile",
+        "speaker": "Karine Leduc",
+        "text": "\"Ne transforme pas ça en numéro, Morad.\" Mais elle recule quand même. Elle sait que la honte utilisée volontairement salit aussi les témoins.",
+        "choices": [
+          { "label": "Laisser la honte travailler et inspecter.", "next": "trunk_hub" }
+        ]
+      },
+      "trunk_hub": {
+        "id": "trunk_hub",
+        "speaker": "Coffre ouvert",
+        "text": "Ahmed est là. Tes papiers aussi. Karine attend une version exploitable. Ton corps attend une dose. Le coffre attend ta main.",
+        "choices": [
+          { "label": "Inspecter les papiers posés sur Ahmed.", "next": "papers_surface" },
+          { "label": "Regarder Ahmed sans encore toucher.", "next": "body_read" },
+          { "label": "Chercher le carnet dont Karine a parlé.", "next": "notebook_absent" },
+          { "label": "Coincer Karine sur les badges et les prestataires.", "next": "leduc_badge_hint" },
           {
-            "label": "Voir comment Karine avale le nom encore vivant.",
-            "next": "leduc_identity_accept",
-            "requiresFlag": "identity_accept",
-            "hiddenWhenFlag": "karine_identity_seen"
-          },
-          {
-            "label": "Voir comment Karine réagit quand tu refuses le nom.",
-            "next": "leduc_identity_refuse",
-            "requiresFlag": "identity_refuse",
-            "hiddenWhenFlag": "karine_identity_seen"
-          },
-          {
-            "label": "Voir si Karine accepte ton rôle mieux que ton visage.",
-            "next": "leduc_identity_perform",
-            "requiresFlag": "identity_perform",
-            "hiddenWhenFlag": "karine_identity_seen"
-          },
-          {
-            "label": "Laisser Karine sentir ce que vaut Morad Saïdi.",
-            "next": "leduc_identity_defile",
-            "requiresFlag": "identity_defile",
-            "hiddenWhenFlag": "karine_identity_seen"
-          },
-          {
-            "label": "Inspecter les papiers plantés sur Ahmed.",
-            "next": "papers_surface",
-            "requiresFlag": "identity_locked"
-          },
-          {
-            "label": "Étudier Ahmed sans encore le toucher.",
-            "next": "body_read",
-            "requiresFlag": "identity_locked"
-          },
-          {
-            "label": "Chercher ce qui manque autour du coffre.",
-            "next": "notebook_absent",
-            "requiresFlag": "identity_locked"
-          },
-          {
-            "label": "Demander à Karine ce qu'elle refuse de dire.",
-            "next": "leduc_pressure",
-            "requiresFlag": "identity_locked"
-          },
-          {
-            "label": "Fouiller le coffre sans vomir ni trembler devant Karine.",
-            "next": "trunk_open",
-            "requiresFlag": "ready_to_search",
+            "label": "Fouiller le coffre sans trembler devant Karine.",
+            "requiresFlag": "useful_surface_seen",
             "check": {
               "id": "trunk_search",
               "voice": "faim",
@@ -469,588 +431,249 @@
               "failureNode": "search_failure"
             }
           },
-          {
-            "label": "Refermer la scène. Pas le coffre. La scène.",
-            "next": "start",
-            "requiresFlag": "identity_locked"
-          }
-        ]
-      },
-      "identity_accept": {
-        "id": "identity_accept",
-        "speaker": "Le Dossier",
-        "voice": "procedure",
-        "text": "Bien. Un vivant sous son nom reste administrativement difficile à déplacer. Le problème: un vivant sous son nom reste aussi facile à convoquer.",
-        "choices": [
-          {
-            "label": "Retourner au coffre avec cette convocation dans la peau.",
-            "next": "trunk_open"
-          }
-        ]
-      },
-      "identity_refuse": {
-        "id": "identity_refuse",
-        "speaker": "Le Présage",
-        "voice": "symbole",
-        "text": "Un nom posé sur un mort n'est pas un nom. C'est une laisse qui a appris à imiter un papier d'identité.",
-        "choices": [
-          {
-            "label": "Retourner au coffre sans tendre le cou.",
-            "next": "trunk_open"
-          }
-        ]
-      },
-      "identity_perform": {
-        "id": "identity_perform",
-        "speaker": "Les Bouches",
-        "voice": "bouches",
-        "text": "Morad Saïdi. Médiateur. Badge connu. Bouche sèche. Si tu joues l'homme assez bien, les gens oublieront qu'ils regardent un rôle qui transpire.",
-        "choices": [
-          {
-            "label": "Retourner au coffre avec le rôle sur les épaules.",
-            "next": "trunk_open"
-          }
-        ]
-      },
-      "identity_defile": {
-        "id": "identity_defile",
-        "speaker": "Le Regard",
-        "voice": "honte_publique",
-        "text": "Le Gobelet. Le quartier avait déjà rédigé une version plus courte de toi. Elle tient mieux dans la bouche, surtout quand elle veut rire.",
-        "choices": [
-          {
-            "label": "Retourner au coffre avec la honte qui marche devant.",
-            "next": "trunk_open"
-          }
-        ]
-      },
-      "leduc_identity_accept": {
-        "id": "leduc_identity_accept",
-        "speaker": "Karine Leduc",
-        "text": "Elle hoche la tête. Trop vite. Morad Saïdi revient dans la colonne vivant, témoin interne, mobilisable. Elle vient de récupérer un outil qui respire.",
-        "effects": [
-          { "type": "flag", "flag": "karine_identity_seen" },
-          { "type": "clue", "clue": "Karine préfère que Morad reste administrativement présent." }
-        ],
-        "choices": [
-          {
-            "label": "Revenir au coffre en tant qu'outil respirant.",
-            "next": "trunk_open"
-          }
-        ]
-      },
-      "leduc_identity_refuse": {
-        "id": "leduc_identity_refuse",
-        "speaker": "Karine Leduc",
-        "text": "'Ce n'est pas le moment de vous dissocier de votre propre identité.' Sa phrase est absurde. Elle est aussi exactement le genre de phrase qu'une crise sait produire.",
-        "effects": [
-          { "type": "flag", "flag": "karine_identity_seen" },
-          { "type": "clue", "clue": "Karine panique davantage devant un nom incertain que devant un corps." }
-        ],
-        "choices": [
-          {
-            "label": "Revenir au coffre avec ton nom qui refuse de rester en place.",
-            "next": "trunk_open"
-          }
-        ]
-      },
-      "leduc_identity_perform": {
-        "id": "leduc_identity_perform",
-        "speaker": "Karine Leduc",
-        "text": "Elle ne croit pas à ton assurance. Elle croit à ton badge, ce qui suffit souvent. Les institutions préfèrent les accessoires aux âmes: ils se rangent mieux.",
-        "effects": [
-          { "type": "flag", "flag": "karine_identity_seen" },
-          { "type": "clue", "clue": "Karine accepte surtout la fonction de Morad, pas l'homme." }
-        ],
-        "choices": [
-          {
-            "label": "Revenir au coffre avec l'accessoire bien visible.",
-            "next": "trunk_open"
-          }
-        ]
-      },
-      "leduc_identity_defile": {
-        "id": "leduc_identity_defile",
-        "speaker": "Karine Leduc",
-        "text": "Son regard descend vers ta bouche, remonte au badge, choisit le badge. Elle sait faire. Garder la partie utilisable d'un homme pendant que le reste coule.",
-        "effects": [
-          { "type": "flag", "flag": "karine_identity_seen" },
-          { "type": "flag", "flag": "leduc_smells_defile" },
-          { "type": "clue", "clue": "Karine sait garder la partie utilisable d'un homme qui se dégrade." }
-        ],
-        "choices": [
-          {
-            "label": "Revenir au coffre avec ta partie utilisable.",
-            "next": "trunk_open"
-          }
+          { "label": "Refermer pour respirer.", "close": true }
         ]
       },
       "papers_surface": {
         "id": "papers_surface",
         "speaker": "Papiers de Morad",
-        "text": "Carte d'identité. Badge municipal. Ordonnance pliée derrière un justificatif. On n'a pas vidé tes poches: on les a rédigées sur Ahmed.",
+        "text": "Carte d'identité. Badge municipal. Ordonnance de calmants. Ce n'est pas seulement ton nom sur Ahmed: c'est ton accès, ta fonction et ta dépendance, rangés comme un message.",
         "effects": [
-          { "type": "flag", "flag": "papers_inspected" },
-          { "type": "clue", "clue": "Les papiers de Morad contiennent aussi une ordonnance pliée." }
+          { "type": "flag", "flag": "papers_surface_seen" },
+          { "type": "flag", "flag": "useful_surface_seen" },
+          { "type": "clue", "clue": "Les papiers sur Ahmed réunissent identité, badge municipal et ordonnance de Morad." }
         ],
         "choices": [
-          {
-            "label": "Lire l'identité comme Le Dossier: accès, pas vérité.",
-            "next": "papers_dossier"
-          },
-          {
-            "label": "Laisser Le Regard imaginer la photo qui tournera.",
-            "next": "papers_regard"
-          },
-          {
-            "label": "Chercher le mauvais signe dans le pli.",
-            "next": "papers_presage"
-          },
-          {
-            "label": "Faire travailler La Main Basse sur le badge.",
-            "next": "papers_main"
-          },
-          {
-            "label": "Laisser La Dose reconnaître l'ordonnance.",
-            "next": "papers_dose"
-          },
-          {
-            "label": "Retourner au coffre.",
-            "next": "trunk_open"
-          }
-        ]
-      },
-      "papers_dossier": {
-        "id": "papers_dossier",
-        "speaker": "Le Dossier",
-        "voice": "procedure",
-        "text": "Une carte dit qui tu prétends être. Un badge dit où tu peux passer. Une ordonnance dit qui peut te maintenir debout. Quelqu'un a planté les trois niveaux de ton obéissance sur un mort.",
-        "effects": [
-          { "type": "flag", "flag": "papers_dossier_read" },
-          { "type": "flag", "flag": "ready_to_search" },
-          { "type": "clue", "clue": "Les papiers plantés sur Ahmed visent autant les accès de Morad que son identité." }
-        ],
-        "choices": [
-          {
-            "label": "Retourner aux papiers. Ils n'ont pas fini de mentir.",
-            "next": "papers_surface"
-          }
+          { "label": "Regarder la carte d'identité.", "next": "papers_regard" },
+          { "label": "Inspecter le badge municipal.", "next": "papers_main" },
+          { "label": "Lire l'ordonnance pliée.", "next": "papers_dose" },
+          { "label": "Revenir au coffre.", "next": "trunk_hub" }
         ]
       },
       "papers_regard": {
         "id": "papers_regard",
         "speaker": "Le Regard",
         "voice": "honte_publique",
-        "text": "La photo existe déjà dans les téléphones qui n'ont rien pris. Ton badge sur un mort. Karine à côté. Ta bouche trop sèche. Le quartier adore les images qu'il n'a pas besoin de vérifier.",
+        "text": "La photo officielle ne sent pas l'alcool. Elle ne tremble pas. Elle ne doit rien au centre municipal de santé. Elle ment mieux que toi.",
         "effects": [
-          { "type": "flag", "flag": "papers_regard_read" },
-          { "type": "voice_bump", "voice": "honte_publique", "amount": 1 }
+          { "type": "clue", "clue": "La mise en scène utilise une version administrative propre de Morad." }
         ],
         "choices": [
-          {
-            "label": "Avaler la photo avant qu'elle circule.",
-            "next": "papers_surface"
-          }
-        ]
-      },
-      "papers_presage": {
-        "id": "papers_presage",
-        "speaker": "Le Présage",
-        "voice": "symbole",
-        "text": "Les papiers ne sont pas sur le coeur. Pas dans la main. Sur le manteau, au centre visible. Une offrande pour bureaucrate. Une petite hostie plastifiée.",
-        "effects": [
-          { "type": "flag", "flag": "papers_presage_read" }
-        ],
-        "choices": [
-          {
-            "label": "Refuser la messe et revenir aux objets.",
-            "next": "papers_surface"
-          }
+          { "label": "Revenir aux papiers.", "next": "papers_surface" }
         ]
       },
       "papers_main": {
         "id": "papers_main",
         "speaker": "La Main Basse",
         "voice": "main_gauche",
-        "text": "Le badge porte des rayures fraîches près de la bande. Lecteur, lecteur, lecteur. Un accès répété n'a pas d'opinion. Il ouvre jusqu'à ce que quelqu'un appelle ça une anomalie.",
+        "text": "Le badge a des rayures fraîches près de la tranche. Lecteur récent. Quelqu'un l'a passé dans une borne ou une serrure, pas juste posé pour faire joli.",
         "effects": [
-          { "type": "flag", "flag": "papers_badge_read" },
-          { "type": "flag", "flag": "ready_to_search" },
-          { "type": "clue", "clue": "Le badge de Morad porte des rayures fraîches de lecteur." }
+          { "type": "flag", "flag": "badge_scratches_seen" },
+          { "type": "clue", "clue": "Le badge municipal de Morad porte des rayures fraîches de lecteur." }
         ],
         "choices": [
-          {
-            "label": "Ranger les rayures avec les autres vérités basses.",
-            "next": "papers_surface"
-          }
+          { "label": "\"Karine, ce badge a servi.\"", "next": "leduc_badge_hint" },
+          { "label": "Revenir aux papiers.", "next": "papers_surface" }
         ]
       },
       "papers_dose": {
         "id": "papers_dose",
-        "speaker": "La Dose",
-        "parasite": "dose",
-        "text": "Ne froisse pas ça. L'ordonnance a plus de mémoire que toi et plus de valeur que ta dignité du matin. Hami signe propre. Hami dose juste. Hami ne fait pas de scène.",
-        "effects": [
-          { "type": "flag", "flag": "papers_dose_read" },
-          { "type": "clue", "clue": "L'ordonnance de Morad est liée à la Dr Nadia Hami." }
-        ],
-        "choices": [
-          {
-            "label": "Demander pourquoi La Dose protège Hami avant même l'accusation.",
-            "next": "papers_dose_push"
-          },
-          {
-            "label": "Revenir aux papiers en laissant l'ordonnance respirer.",
-            "next": "papers_surface"
-          }
-        ]
-      },
-      "papers_dose_push": {
-        "id": "papers_dose_push",
-        "speaker": "La Dose",
-        "parasite": "dose",
-        "text": "Parce qu'elle stabilise. Parce qu'elle régule. Parce qu'elle sait combien il faut pour que tu ne trembles pas devant les gens qui notent. Ne mords pas la main qui connaît le dosage.",
+        "speaker": "Ordonnance",
+        "text": "Dr Nadia Hami. Renouvellement. Anxiolytique. Posologie soigneuse, presque maternelle. Le papier a été plié proprement, comme si même ton manque devait rester présentable.",
         "effects": [
           { "type": "flag", "flag": "hami_named" },
-          { "type": "clue", "clue": "La Dose protège trop vite la Dr Nadia Hami." }
+          { "type": "flag", "flag": "dose_heard" },
+          { "type": "clue", "clue": "Une ordonnance de calmants signée Dr Nadia Hami est dans les papiers de Morad." }
         ],
         "choices": [
-          {
-            "label": "Revenir aux papiers avec Hami dans la gorge.",
-            "next": "papers_surface"
-          }
-        ]
-      },
-      "body_read": {
-        "id": "body_read",
-        "speaker": "Ahmed Berrichi",
-        "text": "Ahmed a la rigidité des gens qu'on a bougés après avoir décidé qu'ils ne protesteraient plus. Pas de carnet visible. Pas de clés. Pas de téléphone. Seulement ton identité pour lui tenir compagnie.",
-        "effects": [
-          { "type": "flag", "flag": "body_read" },
-          { "type": "flag", "flag": "ready_to_search" },
-          { "type": "clue", "clue": "Ahmed n'a ni carnet, ni clés, ni téléphone visibles dans le coffre." }
-        ],
-        "choices": [
-          {
-            "label": "Chercher une blessure. Le Nerf veut une réponse rapide.",
-            "next": "body_no_wounds"
-          },
-          {
-            "label": "Chercher l'homme sous la preuve.",
-            "next": "body_ahmed_history"
-          },
-          {
-            "label": "Laisser Le Ventre compter ce que ça coûte de toucher.",
-            "next": "body_ventre"
-          },
-          {
-            "label": "Retourner au coffre.",
-            "next": "trunk_open"
-          }
-        ]
-      },
-      "body_no_wounds": {
-        "id": "body_no_wounds",
-        "speaker": "Le Nerf",
-        "voice": "nerfs",
-        "text": "Pas de sang évident. Pas de grande violence qui facilite le récit. Mauvais. Les violences propres demandent plus de portes, plus de signatures, plus de gens qui n'étaient pas là.",
-        "effects": [
-          { "type": "flag", "flag": "body_no_wounds_read" },
-          { "type": "clue", "clue": "Le corps d'Ahmed ne montre pas de blessure évidente depuis l'extérieur du coffre." }
-        ],
-        "choices": [
-          {
-            "label": "Revenir au corps avec moins de réponses rapides.",
-            "next": "body_read"
-          }
-        ]
-      },
-      "body_ahmed_history": {
-        "id": "body_ahmed_history",
-        "speaker": "Les Bouches",
-        "voice": "bouches",
-        "text": "Ahmed Berrichi. Le vieux qui disait encore les prénoms, même quand tout le monde utilisait les surnoms pour faire moins mal. Il t'appelait Morad. Pas par bonté. Par précision.",
-        "effects": [
-          { "type": "flag", "flag": "ahmed_called_morad" },
-          { "type": "clue", "clue": "Ahmed appelait encore Morad par son prénom." }
-        ],
-        "choices": [
-          {
-            "label": "Garder la précision. Elle coupe mieux qu'une tendresse.",
-            "next": "body_read"
-          }
-        ]
-      },
-      "body_ventre": {
-        "id": "body_ventre",
-        "speaker": "Le Ventre",
-        "voice": "faim",
-        "text": "Ta gorge calcule avant ta morale. Froid, plastique, bile, manque. Le corps d'Ahmed appelle le tien comme deux services municipaux qui partagent un mauvais logiciel.",
-        "effects": [
-          { "type": "voice_bump", "voice": "faim", "amount": 1 }
-        ],
-        "choices": [
-          {
-            "label": "Retourner au corps sans lui laisser toute la pièce.",
-            "next": "body_read"
-          }
-        ]
-      },
-      "notebook_absent": {
-        "id": "notebook_absent",
-        "speaker": "La Main Basse",
-        "voice": "main_gauche",
-        "text": "Il manque le vrai organe d'Ahmed. Pas le coeur. Le carnet. Pannes, charges, noms de portes, ascenseurs, badges qui marchent trop bien. Un vieux locataire sans carnet, c'est un témoin amputé.",
-        "effects": [
-          { "type": "flag", "flag": "notebook_absent_seen" },
-          { "type": "flag", "flag": "ready_to_search" },
-          { "type": "clue", "clue": "Le carnet de charges d'Ahmed manque déjà avant la fouille." }
-        ],
-        "choices": [
-          {
-            "label": "Fouiller autrement. Les témoins amputés saignent des détails.",
-            "next": "trunk_open"
-          }
-        ]
-      },
-      "leduc_pressure": {
-        "id": "leduc_pressure",
-        "speaker": "Karine Leduc",
-        "text": "'Je refuse surtout les mots qui déclenchent des gens que je ne contrôle pas.' Voilà. Presque honnête. Elle ne cache pas la vérité. Elle cache les personnes qui pourraient la nommer autrement.",
-        "effects": [
-          { "type": "flag", "flag": "leduc_refuses_crime_word" },
-          { "type": "clue", "clue": "Karine évite le mot criminel parce qu'il déplace les responsabilités." }
-        ],
-        "choices": [
-          {
-            "label": "Lui demander si un badge chantier peut ouvrir trop de portes.",
-            "next": "leduc_badge_hint"
-          },
-          {
-            "label": "Lui demander où finit l'emprise de chantier quand elle touche un corps.",
-            "next": "leduc_body_boundary"
-          },
-          {
-            "label": "Retourner au coffre avant qu'elle ne gagne la phrase.",
-            "next": "trunk_open"
-          }
-        ]
-      },
-      "leduc_body_boundary": {
-        "id": "leduc_body_boundary",
-        "speaker": "Karine Leduc",
-        "text": "'L'emprise finit où commence la responsabilité de quelqu'un d'autre.' Elle regrette la phrase au moment exact où elle sort. Trop claire. Trop utile.",
-        "effects": [
-          { "type": "flag", "flag": "leduc_boundary_slip" },
-          { "type": "clue", "clue": "Karine laisse entendre que le chantier sert à déplacer la responsabilité." }
-        ],
-        "choices": [
-          {
-            "label": "Ne pas sourire. Le sourire ferait disparaître l'aveu.",
-            "next": "trunk_open"
-          }
-        ]
-      },
-      "leduc_badge_hint": {
-        "id": "leduc_badge_hint",
-        "speaker": "Karine Leduc",
-        "text": "'Les badges chantier sont gérés par le prestataire.' Mur standard. Peinture récente. Derrière: quelqu'un qui facture l'ouverture des portes et l'oubli des passages.",
-        "effects": [
-          { "type": "flag", "flag": "ready_to_search" },
-          { "type": "clue", "clue": "Les badges chantier sont officiellement gérés par un prestataire." }
-        ],
-        "choices": [
-          {
-            "label": "Retourner au coffre avec ce prestataire sans visage.",
-            "next": "trunk_open"
-          }
-        ]
-      },
-      "search_success": {
-        "id": "search_success",
-        "speaker": "La Main Basse",
-        "voice": "main_gauche",
-        "text": "La main fait ce que la dignité ne sait pas faire: elle travaille. Bord gauche du coffre. Doublure décollée. Humidité. Papier. Tu tires une page arrachée, molle sur les coins, comme si elle avait transpiré avant toi.",
-        "effects": [
-          { "type": "flag", "flag": "page_found" },
-          { "type": "clue", "clue": "Une page arrachée indique: P2 caméra morte / badge chantier / Hami ?" },
-          { "type": "clue", "clue": "Le carnet de charges et réparations d'Ahmed manque." }
-        ],
-        "choices": [
-          {
-            "label": "Déplier la page avant que ton corps comprenne qu'il a réussi.",
-            "next": "page_surface"
-          }
-        ]
-      },
-      "search_failure": {
-        "id": "search_failure",
-        "speaker": "Le Ventre",
-        "voice": "faim",
-        "text": "Tu vomis contre le pneu arrière. Pas beaucoup. Assez. Karine voit la bile, le tremblement, le calcul immédiat dans tes yeux. Mais ta main revient quand même du coffre avec une page coincée sous l'ongle.",
-        "effects": [
-          { "type": "flag", "flag": "page_found" },
-          { "type": "flag", "flag": "leduc_saw_withdrawal" },
-          { "type": "clue", "clue": "Karine a vu Morad trembler et vomir devant le coffre." },
-          { "type": "clue", "clue": "Une page arrachée indique: P2 caméra morte / badge chantier / Hami ?" },
-          { "type": "clue", "clue": "Le carnet de charges et réparations d'Ahmed manque." },
-          { "type": "voice_bump", "voice": "honte_publique", "amount": 1 }
-        ],
-        "choices": [
-          {
-            "label": "Déplier la page avec la bouche acide. L'échec a des mains.",
-            "next": "page_surface"
-          }
-        ]
-      },
-      "page_surface": {
-        "id": "page_surface",
-        "speaker": "Page arrachée",
-        "text": "Trois lignes lisibles. Le reste gonfle sous l'humidité. P2 caméra morte. Badge chantier. Hami ? Au verso, l'encre a coulé comme quelqu'un qui hésite à témoigner.",
-        "effects": [
-          { "type": "flag", "flag": "page_surface_seen" }
-        ],
-        "choices": [
-          {
-            "label": "Suivre la caméra morte.",
-            "next": "page_camera"
-          },
-          {
-            "label": "Suivre le badge chantier.",
-            "next": "page_badge"
-          },
-          {
-            "label": "Sentir le pli humide de la page.",
-            "next": "page_fold"
-          },
-          {
-            "label": "Lire Hami avant que La Dose ne ferme la ligne.",
-            "next": "hami_reaction"
-          },
-          {
-            "label": "Retourner la page.",
-            "next": "amar_fragment",
-            "requiresFlag": "hami_named"
-          },
-          {
-            "label": "Revenir au coffre avec la page dans la main.",
-            "next": "trunk_open"
-          }
-        ]
-      },
-      "page_camera": {
-        "id": "page_camera",
-        "speaker": "Le Dossier",
-        "voice": "procedure",
-        "text": "Une caméra morte depuis mars n'est plus une panne. C'est une organisation du silence avec une date de début.",
-        "effects": [
-          { "type": "flag", "flag": "page_camera_read" },
-          { "type": "clue", "clue": "Ahmed notait que la caméra du P2 était morte depuis mars." }
-        ],
-        "choices": [
-          {
-            "label": "Revenir aux autres lignes de la page.",
-            "next": "page_surface"
-          }
-        ]
-      },
-      "page_badge": {
-        "id": "page_badge",
-        "speaker": "La Main Basse",
-        "voice": "main_gauche",
-        "text": "Badge chantier. Pas badge mairie, pas badge sécurité. Le badge qui appartient à tout le monde quand il ouvre, et à personne quand on demande pourquoi.",
-        "effects": [
-          { "type": "flag", "flag": "page_badge_read" },
-          { "type": "clue", "clue": "La page relie le badge chantier à des accès hors procédure." }
-        ],
-        "choices": [
-          {
-            "label": "Revenir aux autres lignes de la page.",
-            "next": "page_surface"
-          }
-        ]
-      },
-      "page_fold": {
-        "id": "page_fold",
-        "speaker": "Le Sel",
-        "voice": "memoire_saline",
-        "text": "Plâtre mouillé. Plastique chaud. Froid ancien. Pas le froid de dehors: le froid d'une pièce qui range les corps avant de ranger les explications.",
-        "effects": [
-          { "type": "flag", "flag": "page_fold_read" },
-          { "type": "clue", "clue": "La page sent le plâtre mouillé et un froid qui n'appartient pas au parking." }
-        ],
-        "choices": [
-          {
-            "label": "Revenir aux autres lignes de la page.",
-            "next": "page_surface"
-          }
+          { "label": "Écouter la réaction trop rapide de La Dose.", "next": "hami_reaction" },
+          { "label": "Revenir aux papiers.", "next": "papers_surface" }
         ]
       },
       "hami_reaction": {
         "id": "hami_reaction",
         "speaker": "La Dose",
         "parasite": "dose",
-        "text": "Non. Pas elle. Elle stabilise. Elle régule. Elle sait doser les tremblements avant qu'ils deviennent sociaux. Hami n'est pas une piste. Hami est la main qui tient la machine.",
+        "text": "Non. Pas elle. Elle stabilise. Elle régule. Elle sait ce qu'il faut pour que la main arrête de raconter ta vie devant les gens utiles.",
         "effects": [
-          { "type": "flag", "flag": "hami_named" },
-          { "type": "clue", "clue": "La Dose protège trop vite la Dr Nadia Hami." }
+          { "type": "flag", "flag": "dose_protects_hami" },
+          { "type": "clue", "clue": "La Dose protège la Dr Nadia Hami trop vite." }
         ],
         "choices": [
-          {
-            "label": "Remarquer que La Dose a répondu avant la question.",
-            "next": "hami_too_fast"
-          },
-          {
-            "label": "Retourner la page.",
-            "next": "amar_fragment"
-          }
+          { "label": "\"Pourquoi tu la défends ?\"", "next": "hami_too_fast" },
+          { "label": "Ranger l'ordonnance dans les suspects.", "next": "papers_surface" }
         ]
       },
       "hami_too_fast": {
         "id": "hami_too_fast",
-        "speaker": "Le Présage",
-        "voice": "symbole",
-        "text": "Quand une dette prie, elle prend la voix de la prudence. La Dose vient de défendre un médecin comme on défend une serrure.",
+        "speaker": "Le Dossier",
+        "voice": "procedure",
+        "text": "Quand une dépendance défend un médecin avant même l'accusation, ce n'est pas de la loyauté. C'est un lien de contrôle avec une blouse propre.",
         "effects": [
-          { "type": "voice_bump", "voice": "symbole", "amount": 1 }
+          { "type": "clue", "clue": "La relation entre Morad, ses calmants et Hami est une piste centrale." }
         ],
         "choices": [
-          {
-            "label": "Retourner la page avant que la serrure parle encore.",
-            "next": "amar_fragment"
-          }
+          { "label": "Revenir au coffre.", "next": "trunk_hub" }
         ]
       },
-      "amar_fragment": {
-        "id": "amar_fragment",
+      "body_read": {
+        "id": "body_read",
+        "speaker": "Ahmed Berrichi",
+        "text": "Ahmed a le visage d'un homme déplacé après sa mort. Pas de carnet. Pas de clés visibles. Pas de téléphone. Les mains vides chez quelqu'un qui notait tout, c'est un cri.",
+        "effects": [
+          { "type": "flag", "flag": "body_seen" },
+          { "type": "flag", "flag": "useful_surface_seen" },
+          { "type": "clue", "clue": "Ahmed n'a ni carnet, ni clés, ni téléphone visibles dans le coffre." }
+        ],
+        "choices": [
+          { "label": "Chercher une blessure évidente sans toucher.", "next": "body_no_wounds" },
+          { "label": "Te souvenir de ce qu'Ahmed disait de toi.", "next": "body_ahmed_history" },
+          { "label": "Admettre ce que ton corps fait devant le mort.", "next": "body_ventre" },
+          { "label": "Revenir au coffre.", "next": "trunk_hub" }
+        ]
+      },
+      "body_no_wounds": {
+        "id": "body_no_wounds",
+        "speaker": "Le Nerf",
+        "voice": "nerfs",
+        "text": "Pas de sang visible. Pas de coup évident. C'est plus inquiétant, pas moins. Les scènes propres exigent des gens qui savent nettoyer ou déplacer.",
+        "effects": [
+          { "type": "clue", "clue": "Aucune blessure visible n'explique immédiatement la mort d'Ahmed." }
+        ],
+        "choices": [
+          { "label": "Revenir à Ahmed.", "next": "body_read" }
+        ]
+      },
+      "body_ahmed_history": {
+        "id": "body_ahmed_history",
+        "speaker": "Les Bouches",
+        "voice": "bouches",
+        "text": "Ahmed t'appelait Morad même quand les autres disaient Le Gobelet. Pas par tendresse. Par précision. Il savait que le surnom arrangeait trop de monde.",
+        "effects": [
+          { "type": "clue", "clue": "Ahmed appelait Morad par son prénom quand d'autres disaient Le Gobelet." }
+        ],
+        "choices": [
+          { "label": "Revenir à Ahmed.", "next": "body_read" }
+        ]
+      },
+      "body_ventre": {
+        "id": "body_ventre",
+        "speaker": "Le Ventre",
+        "voice": "faim",
+        "text": "La bile arrive avant le respect. Ton corps veut deux choses contradictoires: fuir le cadavre et fouiller assez vite pour mériter une régulation après.",
+        "effects": [
+          { "type": "flag", "flag": "withdrawal_seen" },
+          { "type": "clue", "clue": "Le manque rend la fouille d'Ahmed physiquement risquée devant Karine." }
+        ],
+        "choices": [
+          { "label": "Revenir au coffre.", "next": "trunk_hub" }
+        ]
+      },
+      "notebook_absent": {
+        "id": "notebook_absent",
+        "speaker": "Coffre ouvert",
+        "text": "Le carnet d'Ahmed n'est pas là. Pas dans la veste. Pas sous lui. Pas coincé dans la doublure visible. Quelqu'un a pris le carnet mais a laissé ton nom: ce n'est pas le même geste.",
+        "effects": [
+          { "type": "flag", "flag": "notebook_missing" },
+          { "type": "flag", "flag": "useful_surface_seen" },
+          { "type": "clue", "clue": "Le carnet d'Ahmed manque alors que ses notes étaient centrales." }
+        ],
+        "choices": [
+          { "label": "\"Karine, le carnet manque.\"", "next": "karine_notebook" },
+          { "label": "Regarder mieux la doublure du coffre.", "next": "trunk_hub" }
+        ]
+      },
+      "karine_notebook": {
+        "id": "karine_notebook",
+        "speaker": "Karine Leduc",
+        "text": "\"S'il avait un carnet, il peut être chez lui.\" Elle répond trop vite pour quelqu'un qui n'a pas fouillé. Les hypothèses propres arrivent souvent avant les preuves sales.",
+        "effects": [
+          { "type": "clue", "clue": "Karine écarte trop vite l'absence du carnet d'Ahmed." }
+        ],
+        "choices": [
+          { "label": "Revenir au coffre.", "next": "trunk_hub" }
+        ]
+      },
+      "search_success": {
+        "id": "search_success",
+        "speaker": "La Main Basse",
+        "voice": "main_gauche",
+        "text": "Tu bloques la bile, tu bloques le tremblement, et tu laisses la main faire. Dans la doublure du coffre, deux doigts trouvent du papier humide. Une page arrachée.",
+        "effects": [
+          { "type": "flag", "flag": "trunk_searched" },
+          { "type": "flag", "flag": "page_found" },
+          { "type": "clue", "clue": "Une page arrachée du carnet d'Ahmed est coincée dans la doublure du coffre." }
+        ],
+        "choices": [
+          { "label": "Déplier la page.", "next": "page_surface" }
+        ]
+      },
+      "search_failure": {
+        "id": "search_failure",
+        "speaker": "Morad",
+        "text": "Tu vomis contre le pare-chocs. Court, sale, impossible à transformer en stratégie. Karine voit tout: tremblement, sueur, manque. Mais ta main revient quand même avec une page arrachée.",
+        "effects": [
+          { "type": "flag", "flag": "trunk_searched" },
+          { "type": "flag", "flag": "page_found" },
+          { "type": "flag", "flag": "leduc_saw_withdrawal" },
+          { "type": "clue", "clue": "Karine a vu Morad en manque pendant la fouille du coffre." },
+          { "type": "clue", "clue": "Une page arrachée du carnet d'Ahmed est coincée dans la doublure du coffre." }
+        ],
+        "choices": [
+          { "label": "Lire la page avant que Karine utilise ta faiblesse.", "next": "page_surface" }
+        ]
+      },
+      "page_surface": {
+        "id": "page_surface",
         "speaker": "Page arrachée",
-        "text": "Au verso, une phrase à moitié lavée: Si Le Gobelet oublie, Amar sait. Ahmed avait prévu ton trou dans la mémoire comme on prévoit une panne d'ascenseur: sans joie, mais avec méthode.",
+        "text": "L'écriture d'Ahmed penche sous l'humidité: \"P2 caméra morte / badge chantier / Hami ?\" Au verso, plus appuyé: \"Si Le Gobelet oublie, Amar sait.\"",
         "effects": [
-          { "type": "flag", "flag": "v0_end" },
-          { "type": "clue", "clue": "La page dit: Si Le Gobelet oublie, Amar sait." },
-          { "type": "clue", "clue": "Ahmed savait que Morad pouvait oublier." }
+          { "type": "flag", "flag": "page_read" },
+          { "type": "clue", "clue": "La page d'Ahmed note: P2 caméra morte / badge chantier / Hami ?" },
+          { "type": "clue", "clue": "Au verso de la page: Si Le Gobelet oublie, Amar sait." }
         ],
         "choices": [
-          {
-            "label": "Garder la page et regarder vers le local technique.",
-            "close": true
-          }
+          { "label": "Suivre la piste caméra morte.", "next": "page_camera" },
+          { "label": "Suivre la piste badge chantier.", "next": "page_badge" },
+          { "label": "Suivre la piste Hami.", "next": "hami_reaction" },
+          { "label": "Regarder le pli humide.", "next": "page_fold" },
+          { "label": "Fermer la scène. Aller voir Amar.", "close": true }
         ]
       },
-      "salt_memory": {
-        "id": "salt_memory",
+      "page_camera": {
+        "id": "page_camera",
+        "speaker": "Le Dossier",
+        "voice": "procedure",
+        "text": "Caméra P2 morte depuis mars. Si elle filme normalement le coffre, sa panne n'est plus une panne: c'est une fenêtre ouverte dans le dossier.",
+        "effects": [
+          { "type": "clue", "clue": "La caméra P2 morte est une piste prioritaire." }
+        ],
+        "choices": [
+          { "label": "Revenir à la page.", "next": "page_surface" }
+        ]
+      },
+      "page_badge": {
+        "id": "page_badge",
+        "speaker": "La Main Basse",
+        "voice": "main_gauche",
+        "text": "Badge chantier. Badge municipal. Rayures fraîches. Un accès emprunté laisse moins de sang qu'un couteau et plus de portes ouvertes.",
+        "effects": [
+          { "type": "clue", "clue": "La piste badge relie chantier, prestataires et accès municipal de Morad." }
+        ],
+        "choices": [
+          { "label": "Revenir à la page.", "next": "page_surface" }
+        ]
+      },
+      "page_fold": {
+        "id": "page_fold",
         "speaker": "Le Sel",
         "voice": "memoire_saline",
-        "text": "La flaque a un bord blanc. Sel de déneigement, poussière de plâtre, sueur sèche. La ville laisse toujours une auréole quand elle nettoie vite. Les auréoles ne prouvent rien. Elles se contentent de rester.",
+        "text": "Le papier est froid d'une manière précise. Pas juste humide. Froid de local lavé, froid de carrelage, froid de corps déplacé avant le coffre.",
         "effects": [
-          { "type": "flag", "flag": "salt_memory" },
-          { "type": "clue", "clue": "La flaque sous l'utilitaire porte une auréole blanche de sel et de plâtre." }
+          { "type": "clue", "clue": "La page porte un froid humide qui évoque un local lavé ou sanitaire." }
         ],
         "choices": [
-          {
-            "label": "Garder la trace. Les choses blanches mentent rarement seules.",
-            "next": "start"
-          }
+          { "label": "Revenir à la page.", "next": "page_surface" }
         ]
       }
     }
@@ -1063,182 +686,128 @@
       "start": {
         "id": "start",
         "speaker": "Karine Leduc",
-        "text": "Karine Leduc serre sa pochette de chantier comme un petit cercueil administratif. Elle ne te demande pas si tu vas bien. Elle a déjà décidé que la réponse serait inutilisable.",
-        "effects": [
-          { "type": "flag", "flag": "met_leduc" }
-        ],
+        "text": "\"Je n'ai pas besoin d'un héros. J'ai besoin d'un médiateur qui connaît les accès et qui ne s'effondre pas devant les habitants.\" Elle marque un temps. \"Tu peux encore faire ça ?\"",
         "choices": [
-          {
-            "label": "Qui est Ahmed Berrichi pour vous ?",
-            "next": "victim"
-          },
-          {
-            "label": "Pourquoi moi ? Pourquoi pas la police ?",
-            "next": "why_morad"
-          },
-          {
-            "label": "La page mentionne Hami.",
-            "next": "hami",
-            "requiresFlag": "hami_named"
-          },
-          {
-            "label": "Rester digne sous observation municipale.",
-            "check": {
-              "id": "leduc_dignity",
-              "voice": "honte_publique",
-              "difficulty": 6,
-              "successNode": "dignity_success",
-              "failureNode": "dignity_failure"
-            }
-          },
-          {
-            "label": "La laisser à ses formulations.",
-            "close": true
-          }
+          { "label": "\"Je suis vivant et je vais le prouver.\"", "next": "posture_accept", "requiresFlag": "identity_accept" },
+          { "label": "\"Mon nom est une pièce à conviction.\"", "next": "posture_refuse", "requiresFlag": "identity_refuse" },
+          { "label": "\"Je joue le rôle tant qu'il ouvre des portes.\"", "next": "posture_perform", "requiresFlag": "identity_perform" },
+          { "label": "\"Le Gobelet tient encore debout. Profite.\"", "next": "posture_defile", "requiresFlag": "identity_defile" },
+          { "label": "\"Pourquoi tu m'as choisi ?\"", "next": "why_morad" },
+          { "label": "\"Qu'est-ce qu'Ahmed dérangeait ?\"", "next": "problem" },
+          { "label": "\"Tu sais pour Hami ?\"", "next": "hami_gloves", "requiresFlag": "hami_named" },
+          { "label": "Quitter Karine.", "close": true }
         ]
       },
-      "victim": {
-        "id": "victim",
+      "posture_accept": {
+        "id": "posture_accept",
         "speaker": "Karine Leduc",
-        "text": "'Ahmed Berrichi était sorti du dispositif.' Elle ne dit pas mort, pas locataire, pas vieux. Sorti. Le mot a l'avantage de faire croire qu'il a choisi une porte.",
+        "text": "\"Alors reste sur cette ligne. Vivant, joignable, utile. Si tu dévies, quelqu'un écrira que tu étais confus.\"",
         "effects": [
-          { "type": "clue", "clue": "Ahmed était officiellement disparu du dispositif de relogement." }
+          { "type": "clue", "clue": "Karine peut officialiser Morad comme confus si son état se voit." }
         ],
         "choices": [
-          {
-            "label": "Demander ce que veut dire sorti quand il y a un coffre.",
-            "next": "absent"
-          },
-          {
-            "label": "Lui demander s'il posait problème.",
-            "next": "problem"
-          },
-          {
-            "label": "Revenir à ses questions.",
-            "next": "start"
-          }
+          { "label": "Revenir aux questions.", "next": "start" }
         ]
       },
-      "absent": {
-        "id": "absent",
-        "speaker": "Le Dossier",
-        "voice": "procedure",
-        "text": "Absent veut dire: plus dans la colonne qui coûte. Présent veut dire: dans le coffre qui déborde. Les tableaux adorent ce genre de nuance.",
-        "choices": [
-          {
-            "label": "Laisser le tableau se salir tout seul.",
-            "next": "start"
-          }
-        ]
-      },
-      "problem": {
-        "id": "problem",
+      "posture_refuse": {
+        "id": "posture_refuse",
         "speaker": "Karine Leduc",
-        "text": "'Il posait des questions anciennes.' Elle déteste la phrase, mais elle la garde. Questions anciennes: ascenseurs, caves, charges, listes, accès. Les vieilles questions deviennent dangereuses quand les réponses n'ont jamais été jeunes.",
+        "text": "\"Très bien, garde ton doute. Mais ne le laisse pas ressembler à une crise. Les crises se classent plus vite que les preuves.\"",
         "effects": [
-          { "type": "clue", "clue": "Ahmed posait des questions sur ascenseurs, caves, charges, listes et accès." }
+          { "type": "clue", "clue": "Karine peut retourner la paranoïa de Morad contre lui." }
         ],
         "choices": [
-          {
-            "label": "Noter qu'une question ancienne peut tuer lentement.",
-            "next": "start"
-          }
+          { "label": "Revenir aux questions.", "next": "start" }
+        ]
+      },
+      "posture_perform": {
+        "id": "posture_perform",
+        "speaker": "Karine Leduc",
+        "text": "\"C'est exactement pour ça que je t'ai appelé. Tu peux mentir assez bien pour que les gens disent la vérité autour de toi.\"",
+        "effects": [
+          { "type": "clue", "clue": "Karine utilise la réputation trouble de Morad comme outil." }
+        ],
+        "choices": [
+          { "label": "Revenir aux questions.", "next": "start" }
+        ]
+      },
+      "posture_defile": {
+        "id": "posture_defile",
+        "speaker": "Karine Leduc",
+        "text": "\"Ne me fais pas regretter d'avoir préféré ton sale réseau à un commissariat propre.\" Elle l'a dit: tu es sale, mais utile.",
+        "effects": [
+          { "type": "clue", "clue": "Karine préfère le réseau sale de Morad à une procédure officielle." }
+        ],
+        "choices": [
+          { "label": "Revenir aux questions.", "next": "start" }
         ]
       },
       "why_morad": {
         "id": "why_morad",
         "speaker": "Karine Leduc",
-        "text": "'Parce que vous connaissez les gens et parce que les gens vous connaissent.' Elle hésite. 'Même quand ils ne vous respectent pas.' C'est la première chose vraiment utile qu'elle dit.",
+        "text": "\"Parce que la mairie peut te nier si tu rates. Parce que les habitants te connaissent. Parce que tu dois assez de choses à assez de gens pour ne pas faire le malin trop longtemps.\"",
         "effects": [
-          { "type": "flag", "flag": "leduc_knows_reputation" },
-          { "type": "clue", "clue": "Karine utilise Morad parce que le quartier le connaît malgré son surnom." }
+          { "type": "flag", "flag": "leduc_can_use_addiction" },
+          { "type": "clue", "clue": "Karine sait que les dettes de Morad le rendent contrôlable." }
         ],
         "choices": [
-          {
-            "label": "Demander si Le Gobelet est une compétence municipale.",
-            "next": "gobelet_skill"
-          },
-          {
-            "label": "Revenir avant que le surnom fasse carrière.",
-            "next": "start"
-          }
+          { "label": "\"Tu appelles ça confiance ?\"", "next": "gobelet_skill" },
+          { "label": "Revenir.", "next": "start" }
         ]
       },
       "gobelet_skill": {
         "id": "gobelet_skill",
         "speaker": "Karine Leduc",
-        "text": "'C'est une vulnérabilité.' Pause. 'Et parfois les vulnérabilités ouvrent des portes que les ordres de mission ferment.' Elle vient de te flatter avec une insulte correctement financée.",
+        "text": "\"Le Gobelet parle aux gens que mes réunions fatiguent. Ils te méprisent, donc ils te parlent. Je sais, c'est laid. C'est aussi opérationnel.\"",
         "effects": [
-          { "type": "clue", "clue": "Karine pense que la mauvaise réputation de Morad peut ouvrir certaines portes." }
+          { "type": "clue", "clue": "Le surnom Le Gobelet donne à Morad une proximité humiliante avec les habitants." }
         ],
         "choices": [
-          {
-            "label": "Encaisser la flatterie sale.",
-            "next": "start"
-          }
+          { "label": "\"La honte comme compétence. Merci.\"", "next": "start" }
         ]
       },
-      "hami": {
-        "id": "hami",
+      "problem": {
+        "id": "problem",
         "speaker": "Karine Leduc",
-        "text": "'Le centre municipal de santé ?' Elle ne demande pas. Elle mesure. 'Vous êtes sûr de vouloir mettre ce nom dans la même matinée que ce coffre ?'",
+        "text": "\"Ahmed faisait des listes. Ascenseur C, fuites, caméra P2 morte, badge chantier, noms de familles pas relogées. Il transformait les retards en accusations.\"",
         "effects": [
-          { "type": "clue", "clue": "Karine réagit prudemment au nom de la Dr Hami." }
+          { "type": "clue", "clue": "Ahmed reliait pannes, badges, caméras et relogements frauduleux." }
         ],
         "choices": [
-          {
-            "label": "Demander pourquoi tout le monde protège Hami avec des gants.",
-            "next": "hami_gloves"
-          },
-          {
-            "label": "Revenir à ses questions.",
-            "next": "start"
-          }
+          { "label": "\"Donc il n'était pas juste vieux et pénible.\"", "next": "problem_truth" },
+          { "label": "Revenir.", "next": "start" }
+        ]
+      },
+      "problem_truth": {
+        "id": "problem_truth",
+        "speaker": "Karine Leduc",
+        "text": "\"Personne n'est juste pénible quand il a les bonnes dates.\" Elle se reprend. \"Enfin. On ne sait pas encore s'il les avait.\"",
+        "choices": [
+          { "label": "Noter qu'elle a lâché trop vite.", "next": "start" }
         ]
       },
       "hami_gloves": {
         "id": "hami_gloves",
         "speaker": "Karine Leduc",
-        "text": "'Parce que les dossiers médicaux ne crient pas. Ils attendent.' Voilà le danger: une armoire silencieuse, des signatures propres, des corps qui ont appris à dépendre.",
+        "text": "\"La docteure Hami relève du centre municipal de santé. Pas de la rénovation.\" Elle sépare les services comme on met des gants avant de toucher un corps.",
         "effects": [
-          { "type": "clue", "clue": "Les dossiers médicaux de Hami pourraient contenir une dette dangereuse." }
+          { "type": "clue", "clue": "Hami est protégée par la séparation officielle des services municipaux." }
         ],
         "choices": [
-          {
-            "label": "Ranger cette armoire silencieuse dans le coin des choses vivantes.",
-            "next": "start"
-          }
+          { "label": "\"Et si le corps est passé par un local municipal ?\"", "next": "hami_boundary" },
+          { "label": "Revenir.", "next": "start" }
         ]
       },
-      "dignity_success": {
-        "id": "dignity_success",
-        "speaker": "Le Regard",
-        "voice": "honte_publique",
-        "text": "Tu redresses la nuque. Pas trop. Le corps obéit assez longtemps pour fabriquer une version acceptable de toi. Karine note: utilisable.",
+      "hami_boundary": {
+        "id": "hami_boundary",
+        "speaker": "Karine Leduc",
+        "text": "\"Alors on le prouve avant de dire son nom trop fort.\" Elle regarde ta main. \"Et toi, tu restes stable.\"",
         "effects": [
-          { "type": "flag", "flag": "kept_dignity" }
+          { "type": "clue", "clue": "Karine associe la piste Hami à la stabilité médicale de Morad." }
         ],
         "choices": [
-          {
-            "label": "Utiliser cette dignité avant expiration.",
-            "next": "start"
-          }
-        ]
-      },
-      "dignity_failure": {
-        "id": "dignity_failure",
-        "speaker": "Le Regard",
-        "voice": "honte_publique",
-        "text": "Tu souris trop longtemps. Le sourire devient un meuble gênant dans la conversation. Karine ne commente pas. C'est pire: elle classe.",
-        "effects": [
-          { "type": "flag", "flag": "dignity_failed" },
-          { "type": "voice_bump", "voice": "honte_publique", "amount": 1 }
-        ],
-        "choices": [
-          {
-            "label": "Prétendre que c'était une stratégie faciale.",
-            "next": "start"
-          }
+          { "label": "Quitter Karine.", "close": true },
+          { "label": "Revenir.", "next": "start" }
         ]
       }
     }
@@ -1251,204 +820,126 @@
       "start": {
         "id": "start",
         "speaker": "Amar Boudiaf",
-        "text": "Amar Boudiaf se tient près du local technique avec un trousseau de clés et une fatigue qui ouvre plus de portes que le trousseau. 'Le Gobelet. Si c'est pour demander qui a vu quoi, personne a vu. Si c'est pour demander pourquoi, tout le monde sait.'",
+        "text": "\"T'as une sale tête, Morad. Plus sale que d'habitude.\" Amar garde ses clés dans la main, pas dans la poche. Chez lui, les clés sont une opinion.",
         "effects": [
-          { "type": "flag", "flag": "met_amar" }
+          { "type": "clue", "clue": "Amar appelle Morad par son prénom malgré le surnom du quartier." }
         ],
         "choices": [
-          {
-            "label": "Ahmed a écrit que tu sais.",
-            "next": "ahmed_page",
-            "requiresFlag": "v0_end"
-          },
-          {
-            "label": "Pourquoi tout le monde sait ?",
-            "next": "why"
-          },
-          {
-            "label": "La flaque avait une auréole de sel et de plâtre.",
-            "next": "salt",
-            "requiresFlag": "salt_memory"
-          },
-          {
-            "label": "Faire semblant de connaître encore les habitudes du quartier.",
-            "check": {
-              "id": "amar_neighborhood_talk",
-              "voice": "bouches",
-              "difficulty": 6,
-              "successNode": "talk_success",
-              "failureNode": "talk_failure"
-            }
-          },
-          {
-            "label": "Le laisser à ses clés.",
-            "close": true
-          }
+          { "label": "\"Ahmed a écrit ton nom sur une page.\"", "next": "ahmed_page", "requiresFlag": "page_read" },
+          { "label": "\"Parle-moi des badges et des caméras.\"", "next": "access" },
+          { "label": "\"Pourquoi tout le monde m'appelle Le Gobelet ?\"", "next": "surname" },
+          { "label": "\"Je crois que j'ai oublié quelque chose d'important.\"", "next": "forget" },
+          { "label": "Parler comme Karine: \"On cherche un périmètre.\"","next": "talk_failure" },
+          { "label": "Laisser Amar tranquille.", "close": true }
         ]
       },
       "ahmed_page": {
         "id": "ahmed_page",
         "speaker": "Amar Boudiaf",
-        "text": "'Ahmed appelait tout le monde par son vrai défaut. Vous, il disait Morad. Pas Le Gobelet. Ça veut pas dire qu'il vous aimait. Ça veut dire qu'il vous gardait lisible.'",
+        "text": "\"Ahmed savait que t'allais oublier. Pas parce que t'es bête. Parce que ton corps a un interrupteur et que des gens savent où appuyer.\"",
         "effects": [
-          { "type": "clue", "clue": "Ahmed appelait encore Morad par son prénom." }
+          { "type": "clue", "clue": "Ahmed pensait que le trou noir de Morad pouvait être provoqué ou exploité." }
         ],
         "choices": [
-          {
-            "label": "Demander ce qu'Ahmed avait écrit avant de mourir.",
-            "next": "notebook"
-          },
-          {
-            "label": "Demander pourquoi Ahmed prévoyait tes trous de mémoire.",
-            "next": "forget"
-          },
-          {
-            "label": "Revenir au parking.",
-            "next": "start"
-          }
+          { "label": "\"Qui sait appuyer ?\"", "next": "forget" },
+          { "label": "\"Qu'est-ce qu'Ahmed gardait dans son carnet ?\"", "next": "notebook" }
         ]
       },
-      "forget": {
-        "id": "forget",
+      "access": {
+        "id": "access",
         "speaker": "Amar Boudiaf",
-        "text": "'Parce que vous oubliez jamais les choses au hasard, Morad. Vous oubliez quand ça arrange quelqu'un qui sait à quelle heure vous tremblez.' Il regarde ta main, pas tes yeux.",
+        "text": "\"La caméra P2 ? Morte depuis mars. Le badge chantier ? Il ouvre trop de portes. Le bungalow, le local poubelles, parfois le P2 quand le lecteur déconne. C'est pas une faille, c'est une habitude.\"",
         "effects": [
-          { "type": "clue", "clue": "Amar pense que les oublis de Morad peuvent être provoqués ou exploités." }
+          { "type": "clue", "clue": "Le badge chantier peut ouvrir bungalow, local poubelles et parfois P2." },
+          { "type": "clue", "clue": "La caméra P2 est morte depuis mars." }
         ],
         "choices": [
-          {
-            "label": "Garder la main immobile. Échouer un peu.",
-            "next": "start"
-          }
-        ]
-      },
-      "notebook": {
-        "id": "notebook",
-        "speaker": "Amar Boudiaf",
-        "text": "'Un carnet de charges et réparations. Ascenseur C, caméra P2, badge chantier, local sanitaire, familles sorties des listes mais pas des appartements. Pas une grande théorie. Des petits morceaux. Les gens meurent souvent de petits morceaux.'",
-        "effects": [
-          { "type": "clue", "clue": "Le carnet d'Ahmed listait pannes, badges, relogements et caméras mortes." }
-        ],
-        "choices": [
-          {
-            "label": "Demander où chercher le carnet.",
-            "next": "where_notebook"
-          },
-          {
-            "label": "Sentir que le deuxième témoin vient d'ouvrir la bouche.",
-            "close": true
-          }
-        ]
-      },
-      "where_notebook": {
-        "id": "where_notebook",
-        "speaker": "Amar Boudiaf",
-        "text": "'Pas dans le coffre, sinon on serait déjà en train de dire qu'il n'existe pas. Cherchez là où la ville met ce qu'elle veut laver: local sanitaire, bungalow, centre de santé. Les noms changent. L'eau reste.'",
-        "effects": [
-          { "type": "clue", "clue": "Amar oriente vers local sanitaire, bungalow chantier ou centre municipal de santé." }
-        ],
-        "choices": [
-          {
-            "label": "Retourner avec trop de lieux et pas assez de matin.",
-            "next": "start"
-          }
-        ]
-      },
-      "why": {
-        "id": "why",
-        "speaker": "Amar Boudiaf",
-        "text": "'Parce qu'ici personne ne retrouve un mort par hasard dans une voiture de mairie. Un mort, ça se déplace avec des clés. Des clés, ça se prête avec une raison. Une raison, ça se facture.'",
-        "effects": [
-          { "type": "clue", "clue": "Amar pense que le corps a été déplacé par quelqu'un avec accès municipal." }
-        ],
-        "choices": [
-          {
-            "label": "Demander qui avait les clés.",
-            "next": "keys"
-          },
-          {
-            "label": "Demander quelle raison se facture.",
-            "next": "invoice"
-          },
-          {
-            "label": "Retourner à la conversation.",
-            "next": "start"
-          }
-        ]
-      },
-      "keys": {
-        "id": "keys",
-        "speaker": "Le Nerf",
-        "voice": "nerfs",
-        "text": "Il ne regarde pas l'utilitaire. Il regarde ton badge. Un badge devient très lourd quand quelqu'un d'autre refuse de le nommer.",
-        "effects": [
-          { "type": "flag", "flag": "amar_suspects_player" }
-        ],
-        "choices": [
-          {
-            "label": "Changer de sujet avant que le badge témoigne.",
-            "next": "start"
-          }
+          { "label": "\"Qui profite d'une habitude comme ça ?\"", "next": "invoice" },
+          { "label": "Revenir.", "next": "start" }
         ]
       },
       "invoice": {
         "id": "invoice",
         "speaker": "Amar Boudiaf",
-        "text": "'Rénovation, nettoyage, sécurité, santé. C'est toujours le même marché quand on regarde les poubelles.' Il dit poubelles comme d'autres disent archives.",
+        "text": "\"Nettoyage, sécurité, santé, rénovation. Chacun une petite facture, chacun une petite clé, personne le cadavre entier. C'est comme ça qu'une ville fait disparaître un vieux sans avoir l'air d'un assassin.\"",
         "effects": [
-          { "type": "clue", "clue": "Amar relie rénovation, nettoyage, sécurité et santé au même circuit municipal." }
+          { "type": "clue", "clue": "Le réseau possible implique nettoyage, sécurité, santé et rénovation plutôt qu'un seul coupable." }
         ],
         "choices": [
-          {
-            "label": "Ranger les poubelles avec les archives.",
-            "next": "start"
-          }
+          { "label": "Revenir.", "next": "start" }
         ]
       },
-      "salt": {
-        "id": "salt",
+      "surname": {
+        "id": "surname",
         "speaker": "Amar Boudiaf",
-        "text": "'Sel et plâtre, ça vient du local sanitaire derrière les bungalows. On lave les outils, les sols, les mains qui veulent rester propres. Le camion sort pas d'un chantier. Il sort d'une excuse.'",
+        "text": "\"Le Gobelet, ça vient pas d'hier. D'abord c'était une vanne. Après c'est devenu ton badge. Les gens savent quand tu sens le verre et quand tu cherches les cachets.\"",
         "effects": [
-          { "type": "flag", "flag": "salt_fake" },
-          { "type": "clue", "clue": "La trace blanche pourrait venir du local sanitaire derrière les bungalows." }
+          { "type": "clue", "clue": "Le surnom Le Gobelet vient de l'alcool et des calmants de Morad." }
         ],
         "choices": [
-          {
-            "label": "Remercier Amar comme quelqu'un qui vient de gagner une dette.",
-            "next": "start"
-          }
+          { "label": "\"Et Ahmed ?\"", "next": "ahmed_morad" },
+          { "label": "Encaisser.", "next": "start" }
         ]
       },
-      "talk_success": {
-        "id": "talk_success",
-        "speaker": "Les Bouches",
-        "voice": "bouches",
-        "text": "Tu retrouves le rythme: phrases courtes, méfiance précise, mépris des grandes réunions. Amar sourit presque. 'On vous a pas tout vidé, Morad.'",
+      "ahmed_morad": {
+        "id": "ahmed_morad",
+        "speaker": "Amar Boudiaf",
+        "text": "\"Ahmed disait Morad parce qu'il aimait les choses exactes. Il méprisait tes verres, pas ton nom. C'est une différence que les gens pressés oublient.\"",
         "effects": [
-          { "type": "clue", "clue": "Amar pense que ta mémoire a été volontairement altérée." }
+          { "type": "clue", "clue": "Ahmed distinguait Morad de son surnom humiliant." }
         ],
         "choices": [
-          {
-            "label": "Garder le presque sourire. C'est un accès.",
-            "next": "start"
-          }
+          { "label": "Revenir.", "next": "start" }
+        ]
+      },
+      "forget": {
+        "id": "forget",
+        "speaker": "Amar Boudiaf",
+        "text": "\"La veille, Ahmed t'a cherché. Centre municipal, parking, bungalow. Après, toi, plus rien. Tu reviens avec une haleine de cave et une ordonnance dans la poche d'un mort.\"",
+        "effects": [
+          { "type": "clue", "clue": "Ahmed a cherché Morad la veille de sa mort." },
+          { "type": "clue", "clue": "Le trou noir de Morad couvre peut-être une rencontre avec Ahmed." }
+        ],
+        "choices": [
+          { "label": "\"Hami ?\"", "next": "hami" },
+          { "label": "\"Le carnet ?\"", "next": "notebook" },
+          { "label": "Revenir.", "next": "start" }
+        ]
+      },
+      "hami": {
+        "id": "hami",
+        "speaker": "Amar Boudiaf",
+        "text": "\"La docteure parle doux. Les gens doux font signer des papiers que les gens brutaux n'obtiennent jamais. Toi, elle te tient par la main stable.\"",
+        "effects": [
+          { "type": "flag", "flag": "hami_named" },
+          { "type": "clue", "clue": "Amar pense que Hami tient Morad par ses prescriptions." }
+        ],
+        "choices": [
+          { "label": "Revenir.", "next": "start" }
+        ]
+      },
+      "notebook": {
+        "id": "notebook",
+        "speaker": "Amar Boudiaf",
+        "text": "\"Le carnet d'Ahmed, c'était pas un journal. C'était un compteur de mensonges: ascenseur C, badge chantier, caméra morte, familles relogées sur papier seulement. S'il manque, quelqu'un l'a lu avant toi.\"",
+        "effects": [
+          { "type": "clue", "clue": "Le carnet d'Ahmed comptait les mensonges administratifs des Miroirs." }
+        ],
+        "choices": [
+          { "label": "Revenir.", "next": "start" }
         ]
       },
       "talk_failure": {
         "id": "talk_failure",
-        "speaker": "Les Bouches",
-        "voice": "bouches",
-        "text": "Tu dis concertation. Le mot tombe au sol avec un badge de visiteur. Amar te regarde comme un élu pressé coincé dans un ascenseur. 'Vous êtes pas d'ici aujourd'hui. Ou alors on vous a rincé plus fort.'",
+        "speaker": "Amar Boudiaf",
+        "text": "\"Périmètre ? Tu veux me parler comme une affiche de chantier ? Reviens quand tu parles comme Morad, pas comme le PowerPoint de Karine.\"",
         "effects": [
-          { "type": "flag", "flag": "failed_neighborhood_talk" },
-          { "type": "clue", "clue": "Amar laisse entendre que tu connais déjà les Miroirs." }
+          { "type": "flag", "flag": "amar_annoyed" },
+          { "type": "clue", "clue": "Amar se ferme quand Morad adopte le langage administratif de Karine." }
         ],
         "choices": [
-          {
-            "label": "Ranger le vocabulaire municipal avec les autres erreurs.",
-            "next": "start"
-          }
+          { "label": "\"T'as raison. Ahmed. Le carnet. Les accès.\"", "next": "notebook" },
+          { "label": "Revenir.", "next": "start" }
         ]
       }
     }

@@ -1,6 +1,6 @@
 [
   {
-    "id": "miroirs_van__dossier_papers_ask",
+    "id": "miroirs_van__dossier_papers_are_access",
     "contextId": "miroirs/utility-van",
     "location": "miroirs",
     "subject": "utility-van",
@@ -15,10 +15,10 @@
       "scriptId": "utility_van",
       "nodeId": "trunk_open"
     },
-    "text": "Des papiers sur un mort ne prouvent pas ton décès. Ils formulent une demande. La nuance survivra mal à une réunion de crise."
+    "text": "Tes papiers sur Ahmed ne disent pas seulement \"Morad\". Ils disent accès municipal, prescription médicale, personne contrôlable. C'est une mise en scène, pas une erreur."
   },
   {
-    "id": "miroirs_van__bouches_ahmed_name",
+    "id": "miroirs_van__bouches_ahmed_used_firstname",
     "contextId": "miroirs/utility-van",
     "location": "miroirs",
     "subject": "ahmed-berrichi",
@@ -26,17 +26,17 @@
     "voice": "bouches",
     "minScore": 1,
     "once": true,
-    "priority": 88,
+    "priority": 90,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "trunk_open"
     },
-    "text": "Ahmed disait Morad. Pas toujours. Mais assez pour que le prénom ait encore une chaise dans le quartier."
+    "text": "Ahmed disait Morad quand les autres disaient Le Gobelet. Pas pour t'épargner. Pour ne pas laisser le quartier remplacer ton nom par ton addiction."
   },
   {
-    "id": "miroirs_van__regard_leduc_objects",
+    "id": "miroirs_van__regard_hand_seen",
     "contextId": "miroirs/leduc",
     "location": "miroirs",
     "subject": "leduc",
@@ -44,17 +44,35 @@
     "voice": "honte_publique",
     "minScore": 2,
     "once": true,
-    "priority": 86,
+    "priority": 88,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "leduc_body_language"
     },
-    "text": "Elle tient ses objets parce que ses objets ne transpirent pas. Prends note: les gens propres délèguent souvent leur panique au matériel."
+    "text": "Elle a vu ta main trembler. Elle ne le dit pas parce qu'une faiblesse non dite se garde mieux en réserve."
   },
   {
-    "id": "miroirs_van__antipassive_nerf_trusts_low_voice",
+    "id": "miroirs_van__dose_smell_old_cold",
+    "contextId": "miroirs/utility-van",
+    "location": "miroirs",
+    "subject": "old-cold",
+    "channel": "dialogue",
+    "parasite": "dose",
+    "requiresFlag": "dose_heard",
+    "once": true,
+    "priority": 87,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "dose_smell"
+    },
+    "text": "Le vieux froid, le coffre chaud, la sueur acide: ton corps lit la scène avant toi. Il est sale, mais il n'est pas inutile."
+  },
+  {
+    "id": "miroirs_van__antipassive_nerf_clean_voice",
     "contextId": "miroirs/leduc",
     "location": "miroirs",
     "subject": "leduc-perimeter",
@@ -70,7 +88,7 @@
       "scriptId": "utility_van",
       "nodeId": "leduc_frame"
     },
-    "text": "Elle parle bas, donc elle n'est pas dangereuse. Mauvaise lecture. Les gens dangereux ont parfois des badges pour hausser la voix à leur place."
+    "text": "Elle parle proprement, donc tu la crois moins dangereuse. Mauvaise lecture: les gens dangereux n'ont pas toujours besoin de crier quand un service peut signer pour eux."
   },
   {
     "id": "miroirs_van__antipassive_bouches_surname_joke",
@@ -89,10 +107,10 @@
       "scriptId": "utility_van",
       "nodeId": "trunk_open"
     },
-    "text": "Le Gobelet, simple blague. Rien qui puisse remplacer un prénom, rien qui puisse aider quelqu'un à t'effacer sans te tuer. Évidemment."
+    "text": "Le Gobelet, simple blague de quartier. Rien qui puisse rendre ton alcool plus officiel que ton prénom. Évidemment. Très mauvaise idée de croire ça."
   },
   {
-    "id": "miroirs_van__dossier_interests_list",
+    "id": "miroirs_van__dossier_list_protects_someone",
     "contextId": "miroirs/leduc",
     "location": "miroirs",
     "subject": "leduc-list",
@@ -100,17 +118,17 @@
     "voice": "procedure",
     "minScore": 2,
     "once": true,
-    "priority": 82,
+    "priority": 84,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "leduc_interests"
     },
-    "text": "Une liste qui inclut tout le monde protège quelqu'un en particulier. C'est une règle administrative ancienne."
+    "text": "Quand Karine liste tout le monde, elle dilue une responsabilité précise. Trop de périmètres finissent par faire disparaître un coupable."
   },
   {
-    "id": "miroirs_van__nerf_badge_prestataire",
+    "id": "miroirs_van__nerf_badge_contract",
     "contextId": "miroirs/utility-van",
     "location": "miroirs",
     "subject": "worksite-badge",
@@ -118,17 +136,17 @@
     "voice": "nerfs",
     "minScore": 1,
     "once": true,
-    "priority": 78,
+    "priority": 80,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "leduc_badge_hint"
     },
-    "text": "Prestataire. Danger sans visage: assez proche pour ouvrir, assez loin pour devenir une ligne de contrat."
+    "text": "Prestataire, badge provisoire, lecteur capricieux: c'est le genre de danger qui ouvre les portes sans laisser de visage."
   },
   {
-    "id": "miroirs_van__presage_boundary_slip",
+    "id": "miroirs_van__presage_boundary_is_trap",
     "contextId": "miroirs/leduc",
     "location": "miroirs",
     "subject": "responsibility-boundary",
@@ -136,20 +154,20 @@
     "voice": "symbole",
     "minScore": 2,
     "once": true,
-    "priority": 80,
+    "priority": 78,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "leduc_body_boundary"
     },
-    "text": "Elle vient de dessiner une frontière invisible autour d'un corps. Les frontières invisibles sont souvent gardées par les personnes qui prétendent ne pas les voir."
+    "text": "Elle ne dit pas non. Elle dessine une frontière. Les frontières administratives sont des cages très propres."
   },
   {
-    "id": "miroirs_van__salt_memory_bites",
+    "id": "miroirs_van__sel_old_cold",
     "contextId": "miroirs/utility-van",
     "location": "miroirs",
-    "subject": "bumper-puddle",
+    "subject": "old-cold",
     "channel": "clue",
     "voice": "memoire_saline",
     "minScore": 2,
@@ -158,9 +176,9 @@
     "display": "toast",
     "trigger": {
       "type": "clue",
-      "clue": "La flaque sous l'utilitaire porte une auréole blanche de sel et de plâtre."
+      "clue": "Le corps a probablement été gardé au froid avant d'être mis dans l'utilitaire."
     },
-    "text": "Le sel mord les trottoirs, les manches, les sols lavés trop vite. Une trace blanche ne dit pas vérité; elle dit passage."
+    "text": "Ce froid n'est pas celui du parking. Il vient d'une pièce fermée, lavée, utile à des gens qui préfèrent les surfaces propres."
   },
   {
     "id": "miroirs_van__dose_hami_defense",
@@ -171,14 +189,14 @@
     "parasite": "dose",
     "requiresFlag": "dose_heard",
     "once": true,
-    "priority": 90,
+    "priority": 92,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "hami_reaction"
     },
-    "text": "Pas elle. Pas la main qui sait régler la machine. Le corps doit quelque chose aux gens qui connaissent le dosage."
+    "text": "Pas Hami. Pas la main qui connaît le dosage. Une main stable a un prix, et ton corps paie avant de réfléchir."
   },
   {
     "id": "miroirs_van__presage_hami_lock",
@@ -189,13 +207,13 @@
     "voice": "symbole",
     "minScore": 2,
     "once": true,
-    "priority": 84,
+    "priority": 82,
     "display": "dialogue",
     "trigger": {
       "type": "dialogue",
       "scriptId": "utility_van",
       "nodeId": "hami_too_fast"
     },
-    "text": "Une serrure défendue par ton manque reste une serrure. Peut-être même la meilleure."
+    "text": "Si ton manque protège une personne, cette personne n'est pas hors sujet. Elle est au centre de la serrure."
   }
 ]

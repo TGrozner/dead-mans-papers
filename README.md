@@ -51,4 +51,8 @@ npm run dev
 
 Le monde doit rester petit mais dense. Les voix internes ne sont pas des bonus abstraits: elles produisent des idées, se trompent, flattent, paniquent et ouvrent parfois des options. Les objets importants sont des surfaces dialoguées, pas seulement des indices. Les checks actifs doivent arriver comme des nœuds dramatiques, et l'échec doit donner du contenu au lieu de bloquer le joueur.
 
-Le ton validé est cru social maîtrisé: base sèche, éclats d'image, voix courtes et présentes, Karine dangereuse parce qu'elle renomme, La Dose commerçante intime, échecs humiliants mais utiles. La question n'est pas seulement qui est mort, mais comment une ville, un corps et un dossier peuvent décider que tu es mort avant toi.
+La règle actuelle est clarté avant cryptage: chaque scène importante doit dire ce qui se passe, ce que le corps de Morad abîme, et quelle piste concrète s'ouvre. Les images restent possibles, mais elles doivent servir une information lisible.
+
+Le ton validé est cru social maîtrisé: base sèche, alcool, calmants, tremblements, dette médicale, voix courtes et présentes, Karine dangereuse parce qu'elle renomme, La Dose commerçante intime, échecs humiliants mais utiles. L'addiction n'est pas une couleur de fond: c'est une pression de gameplay, une dette sociale et une arme que les PNJ peuvent retourner contre Morad.
+
+La question n'est pas seulement qui est mort, mais comment une ville, un corps et un dossier peuvent décider que tu es mort avant toi.

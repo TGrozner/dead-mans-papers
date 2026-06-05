@@ -134,5 +134,9 @@ function showTutorialIfNeeded(): void {
     setTutorialHidden(tutorialHide.checked)
     setTutorialSeen(true)
     tutorialRoot.hidden = true
+
+    if (!engine.state.flags.woke_up && !ui.isDialogueOpen()) {
+      ui.openDialogue('wake_up')
+    }
   })
 }
