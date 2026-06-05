@@ -156,6 +156,17 @@ export class MirrorsScene extends Phaser.Scene {
       ['#1d2430', 6, 23, 5, 7],
       ['#1d2430', 13, 23, 5, 7],
     ])
+
+    this.makePixelTexture('sofiane', 24, 30, [
+      ['#14181f', 5, 0, 14, 6],
+      ['#8b684d', 7, 5, 10, 6],
+      ['#222b31', 4, 11, 16, 13],
+      ['#6e7a6d', 6, 14, 12, 4],
+      ['#b7be75', 2, 13, 5, 10],
+      ['#b7be75', 17, 13, 5, 10],
+      ['#111820', 6, 23, 5, 7],
+      ['#111820', 13, 23, 5, 7],
+    ])
   }
 
   private makePixelTexture(
@@ -537,6 +548,13 @@ export class MirrorsScene extends Phaser.Scene {
     graphics.fillRect(462, 338, 14, 9)
     graphics.fillStyle(0x65b7c6)
     graphics.fillRect(464, 340, 9, 5)
+
+    graphics.fillStyle(0xdcebd7, 0.28)
+    graphics.fillRect(246, 366, 7, 3)
+    graphics.fillRect(252, 360, 5, 2)
+    graphics.fillRect(258, 354, 4, 2)
+    graphics.fillStyle(0xb7be75, 0.55)
+    graphics.fillRect(238, 378, 18, 3)
   }
 
   private createColliders(): void {
@@ -570,6 +588,7 @@ export class MirrorsScene extends Phaser.Scene {
 
     this.add.sprite(548, 292, 'leduc').setDepth(4)
     this.add.sprite(326, 330, 'amar').setDepth(2)
+    this.add.sprite(244, 384, 'sofiane').setDepth(2)
   }
 
   private createHotspots(): void {
@@ -597,6 +616,14 @@ export class MirrorsScene extends Phaser.Scene {
         x: 326,
         y: 330,
         radius: 58,
+      },
+      {
+        id: 'sofiane',
+        label: 'Parler à Sofiane',
+        scriptId: 'sofiane',
+        x: 244,
+        y: 384,
+        radius: 62,
       },
     ]
 
@@ -641,7 +668,7 @@ export class MirrorsScene extends Phaser.Scene {
       },
       {
         id: 'miroirs_orb_technical_room',
-        label: 'Lire le local technique',
+        label: 'Examiner le local technique',
         mode: 'visible',
         x: 178,
         y: 282,
@@ -657,7 +684,7 @@ export class MirrorsScene extends Phaser.Scene {
       },
       {
         id: 'miroirs_orb_residents',
-        label: 'Écouter derrière la palissade',
+        label: 'Écouter la palissade',
         mode: 'proximity',
         x: 314,
         y: 388,

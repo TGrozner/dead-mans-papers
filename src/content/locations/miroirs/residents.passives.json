@@ -32,7 +32,7 @@
       "scriptId": "amar",
       "nodeId": "ahmed_page"
     },
-    "text": "Amar dit Morad, pas Le Gobelet. Il choisit le prénom au moment exact où le quartier voudrait te réduire à ton vice."
+    "text": "Amar dit Zinédine, pas Le Gobelet. Il choisit le prénom au moment exact où le quartier voudrait te réduire à ton vice."
   },
   {
     "id": "miroirs_residents__antipassive_bouches_concertation",
@@ -75,7 +75,7 @@
     "id": "miroirs_residents__forget_timing",
     "contextId": "miroirs/amar",
     "location": "miroirs",
-    "subject": "morad-memory",
+    "subject": "zinedine-memory",
     "channel": "dialogue",
     "parasite": "dose",
     "requiresFlag": "dose_heard",
@@ -88,5 +88,96 @@
       "nodeId": "forget"
     },
     "text": "Trou noir, c'est un vilain mot. Dis allégement. Dis régulation. Dis matinée rendue praticable. Les mots doux font moins peur que les trous."
+  },
+  {
+    "id": "miroirs_sofiane__bouches_dirty_witness",
+    "contextId": "miroirs/sofiane",
+    "location": "miroirs",
+    "subject": "sofiane",
+    "channel": "dialogue",
+    "voice": "bouches",
+    "minScore": 1,
+    "once": true,
+    "priority": 82,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "sofiane",
+      "nodeId": "start"
+    },
+    "text": "Le quartier parle souvent par les types qu'on ne met pas dans les comptes rendus: un mec qui fume, un hall qui tousse, une insulte qui traîne."
+  },
+  {
+    "id": "miroirs_sofiane__nerf_gants_bleus",
+    "contextId": "miroirs/sofiane",
+    "location": "miroirs",
+    "subject": "gants-bleus",
+    "channel": "dialogue",
+    "voice": "nerfs",
+    "minScore": 1,
+    "once": true,
+    "priority": 80,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "sofiane",
+      "nodeId": "vest"
+    },
+    "text": "Gants bleus, badge propre, pas de visage. Ce n'est pas un témoin flou: c'est un geste qui a appris à ne pas salir ses doigts."
+  },
+  {
+    "id": "miroirs_sofiane__dossier_camera_support",
+    "contextId": "miroirs/sofiane",
+    "location": "miroirs",
+    "subject": "dead-camera",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "minScore": 2,
+    "once": true,
+    "priority": 78,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "sofiane",
+      "nodeId": "camera"
+    },
+    "text": "Retoucher le support d'une caméra morte, c'est administratif et obscène: on ajuste le regard d'un témoin qu'on sait muet."
+  },
+  {
+    "id": "miroirs_sofiane__dose_gobelet_mirror",
+    "contextId": "miroirs/sofiane",
+    "location": "miroirs",
+    "subject": "gobelet",
+    "channel": "dialogue",
+    "parasite": "dose",
+    "requiresFlag": "dose_heard",
+    "once": true,
+    "priority": 81,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "sofiane",
+      "nodeId": "gobelet"
+    },
+    "text": "Même le type défoncé voit la facture. Haleine, yeux, main: le corps vend la mèche avant la bouche."
+  },
+  {
+    "id": "miroirs_sofiane__antipassive_shit_easy_culprit",
+    "contextId": "miroirs/sofiane",
+    "location": "miroirs",
+    "subject": "joint",
+    "channel": "dialogue",
+    "voice": "bouches",
+    "minScore": 0,
+    "maxScore": 1,
+    "once": true,
+    "priority": 84,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "sofiane",
+      "nodeId": "joint"
+    },
+    "text": "Le mec fume du shit, donc il ment, donc il ne vaut rien. Mauvaise lecture de flic fatigué. Les gens propres mentent aussi; ils ont juste une meilleure lumière."
   }
 ]

@@ -3,7 +3,7 @@
     "id": "miroirs_papers__dossier_access_dependency",
     "contextId": "miroirs/papers",
     "location": "miroirs",
-    "subject": "morad-papers",
+    "subject": "zinedine-papers",
     "channel": "dialogue",
     "voice": "procedure",
     "minScore": 2,
@@ -21,7 +21,7 @@
     "id": "miroirs_papers__regard_photo_sober",
     "contextId": "miroirs/papers",
     "location": "miroirs",
-    "subject": "morad-papers",
+    "subject": "zinedine-papers",
     "channel": "dialogue",
     "voice": "honte_publique",
     "minScore": 2,
@@ -33,13 +33,13 @@
       "scriptId": "utility_van",
       "nodeId": "papers_regard"
     },
-    "text": "La carte montre un Morad sec, rasé, conforme. Les gens croiront cette photo plus vite que ton haleine."
+    "text": "La carte montre un Zinédine sec, rasé, conforme. Les gens croiront cette photo plus vite que ton haleine."
   },
   {
     "id": "miroirs_papers__main_badge_scratches",
     "contextId": "miroirs/papers",
     "location": "miroirs",
-    "subject": "morad-badge",
+    "subject": "zinedine-badge",
     "channel": "dialogue",
     "voice": "main_gauche",
     "minScore": 2,
@@ -75,7 +75,7 @@
     "id": "miroirs_papers__antipassive_dossier_too_clean",
     "contextId": "miroirs/papers",
     "location": "miroirs",
-    "subject": "morad-papers",
+    "subject": "zinedine-papers",
     "channel": "dialogue",
     "voice": "procedure",
     "minScore": 0,

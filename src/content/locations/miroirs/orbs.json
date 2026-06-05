@@ -15,7 +15,10 @@
     "minScore": 2,
     "voiceText": "Douze appels, c'est une chronologie. Pas une panique. Elle a essayé de te joindre avant de te montrer le corps.",
     "effects": [
-      { "type": "clue", "clue": "Ton téléphone fissuré affiche 12 appels manqués de Karine Leduc." }
+      {
+        "type": "clue",
+        "clue": "Ton téléphone fissuré affiche 12 appels manqués de Karine Leduc."
+      }
     ]
   },
   {
@@ -34,8 +37,14 @@
     "minScore": 2,
     "voiceText": "Un cercueil avec une plaque de service. Pas sacré. Pire: couvert par un planning.",
     "effects": [
-      { "type": "flag", "flag": "orb_van_seen" },
-      { "type": "clue", "clue": "L'utilitaire municipal a servi à déplacer Ahmed." }
+      {
+        "type": "flag",
+        "flag": "orb_van_seen"
+      },
+      {
+        "type": "clue",
+        "clue": "L'utilitaire municipal a servi à déplacer Ahmed."
+      }
     ],
     "variants": [
       {
@@ -63,8 +72,14 @@
     "minScore": 1,
     "voiceText": "Ton estomac se contracte. Ce n'est pas seulement la mort: c'est le manque qui veut décider à ta place.",
     "effects": [
-      { "type": "clue", "clue": "Le corps est placé au fond du coffre, pas tombé près de l'ouverture." },
-      { "type": "clue", "clue": "Ahmed Berrichi était un vieux locataire historique des Miroirs." }
+      {
+        "type": "clue",
+        "clue": "Le corps est placé au fond du coffre, pas tombé près de l'ouverture."
+      },
+      {
+        "type": "clue",
+        "clue": "Ahmed Berrichi était un vieux locataire historique des Miroirs."
+      }
     ]
   },
   {
@@ -83,8 +98,14 @@
     "minScore": 1,
     "voiceText": "Angle parfait, oeil absent. Quelqu'un n'a pas seulement profité d'une caméra morte: quelqu'un l'a laissée mourir utile.",
     "effects": [
-      { "type": "flag", "flag": "orb_camera_seen" },
-      { "type": "clue", "clue": "La caméra du P2 est hors service mais son support est récent." }
+      {
+        "type": "flag",
+        "flag": "orb_camera_seen"
+      },
+      {
+        "type": "clue",
+        "clue": "La caméra du P2 est hors service mais son support est récent."
+      }
     ]
   },
   {
@@ -103,7 +124,10 @@
     "minScore": 2,
     "voiceText": "Cherche un registre. Ou mieux: cherche l'absence de registre. Les deux peuvent accuser.",
     "effects": [
-      { "type": "clue", "clue": "Le local technique pourrait contenir un registre de badges et de clés." }
+      {
+        "type": "clue",
+        "clue": "Le local technique pourrait contenir un registre de badges et de clés."
+      }
     ],
     "variants": [
       {
@@ -139,18 +163,28 @@
     "subject": "residents-offscreen",
     "mode": "proximity",
     "once": true,
-    "label": "Écouter les habitants",
+    "label": "Écouter la palissade",
     "title": "Voix derrière la palissade",
     "x": 314,
     "y": 388,
     "radius": 84,
-    "text": "Derrière la palissade, une voix dit Le Gobelet. Pas assez fort pour t'affronter. Assez fort pour rappeler que ton addiction circule avant toi.",
+    "text": "Derrière la palissade, ça chuchote et ça tire sur un joint. Une voix lâche Le Gobelet. Une autre dit: ferme ta gueule, Sofiane, y a un mort. Le quartier sait déjà que la matinée pue.",
     "voice": "bouches",
     "minScore": 1,
-    "voiceText": "Ce surnom n'est pas une blague neuve. C'est une fiche orale que tout le monde sait ressortir quand il faut te diminuer.",
+    "voiceText": "Sofiane. Un prénom qui traîne au bon endroit, avec du shit pour couvrir les odeurs. Sauf que certaines odeurs passent quand même.",
     "effects": [
-      { "type": "clue", "clue": "Des habitants baissent la voix quand tu approches de la palissade." },
-      { "type": "clue", "clue": "Les habitants connaissent ton surnom: Le Gobelet." }
+      {
+        "type": "clue",
+        "clue": "Des habitants baissent la voix quand tu approches de la palissade."
+      },
+      {
+        "type": "clue",
+        "clue": "Les habitants connaissent ton surnom: Le Gobelet."
+      },
+      {
+        "type": "clue",
+        "clue": "Sofiane fume derrière la palissade pendant la découverte du corps."
+      }
     ]
   }
 ]

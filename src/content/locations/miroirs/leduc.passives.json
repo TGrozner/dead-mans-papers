@@ -57,7 +57,7 @@
     "id": "miroirs_leduc__vulnerability_skill",
     "contextId": "miroirs/leduc",
     "location": "miroirs",
-    "subject": "morad-reputation",
+    "subject": "zinedine-reputation",
     "channel": "dialogue",
     "voice": "honte_publique",
     "minScore": 2,
@@ -93,7 +93,7 @@
     "id": "miroirs_leduc__dose_stability_word",
     "contextId": "miroirs/leduc",
     "location": "miroirs",
-    "subject": "morad-stability",
+    "subject": "zinedine-stability",
     "channel": "dialogue",
     "parasite": "dose",
     "requiresFlag": "dose_heard",
@@ -111,7 +111,7 @@
     "id": "miroirs_leduc__antipassive_regard_respect",
     "contextId": "miroirs/leduc",
     "location": "miroirs",
-    "subject": "morad-reputation",
+    "subject": "zinedine-reputation",
     "channel": "dialogue",
     "voice": "honte_publique",
     "minScore": 0,
@@ -122,7 +122,7 @@
     "trigger": {
       "type": "dialogue",
       "scriptId": "leduc",
-      "nodeId": "why_morad"
+      "nodeId": "why_zinedine"
     },
     "text": "Elle t'a choisi par respect. Mauvaise lecture. Elle t'a choisi parce qu'un homme déjà abîmé coûte moins cher à contredire."
   }

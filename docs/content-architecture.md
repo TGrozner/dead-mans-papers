@@ -75,6 +75,7 @@ Les prochains contenus peuvent suivre le même modèle:
 src/content/locations/miroirs/utility-van.dialogue.json
 src/content/locations/miroirs/leduc.dialogue.json
 src/content/locations/miroirs/amar.dialogue.json
+src/content/locations/miroirs/sofiane.dialogue.json
 src/content/locations/miroirs/orbs.json
 src/content/inventory/*.json
 src/content/thoughts/*.json
@@ -99,7 +100,7 @@ Créer une surface distincte des dialogues:
 - `revisit`: nouveau texte après flag ou indice
 - `contradiction`: une voix corrige ou contredit une lecture précédente
 
-Pour la v0 élargie: téléphone fissuré, utilitaire, Ahmed, caméra HS, local technique, néon/flaque, voix derrière palissade.
+Pour la v0 élargie: téléphone fissuré, utilitaire, Ahmed, caméra HS, local technique, néon/flaque, voix derrière palissade, Sofiane et son joint comme surface de témoignage sale.
 
 ### Contextual Voice Packs
 
