@@ -1,5 +1,4 @@
 import './style.css'
-import { createMirrorsGame } from './game/createMirrorsGame'
 import {
   isTutorialHidden,
   isTutorialSeen,
@@ -118,17 +117,7 @@ setupDebugLog()
 setupCasePanel()
 const restoredSurface = ui.restoreActiveSurface()
 
-createMirrorsGame({
-  parent: 'game-stage',
-  startDialogue: ui.openDialogue,
-  openOrb: ui.openOrb,
-  setInteraction: ui.setInteraction,
-  triggerProximityOrb: ui.triggerProximityOrb,
-  triggerExplorationPassive: ui.triggerExplorationPassive,
-  isDialogueOpen: () => tutorialOpen || ui.isDialogueOpen(),
-  closeDialogueSurface: ui.closeSurface,
-  getState: () => engine.state,
-})
+void loadGame()
 
 if (!restoredSurface) {
   showTutorialIfNeeded()
@@ -141,6 +130,22 @@ window.addEventListener('beforeunload', () => {
     saveGameState(engine.state)
   }
 })
+
+async function loadGame(): Promise<void> {
+  const { createMirrorsGame } = await import('./game/createMirrorsGame')
+
+  createMirrorsGame({
+    parent: 'game-stage',
+    startDialogue: ui.openDialogue,
+    openOrb: ui.openOrb,
+    setInteraction: ui.setInteraction,
+    triggerProximityOrb: ui.triggerProximityOrb,
+    triggerExplorationPassive: ui.triggerExplorationPassive,
+    isDialogueOpen: () => tutorialOpen || ui.isDialogueOpen(),
+    closeDialogueSurface: ui.closeSurface,
+    getState: () => engine.state,
+  })
+}
 
 function showTutorialIfNeeded(): void {
   const tutorialRoot = document.querySelector<HTMLDivElement>('#tutorial-root')
