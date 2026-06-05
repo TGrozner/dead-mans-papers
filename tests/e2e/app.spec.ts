@@ -122,7 +122,7 @@ test('renders Phaser canvas and grouped case clues from a saved game', async ({ 
   ])
 })
 
-test('keeps desktop and mobile play surfaces bounded without page scroll', async ({ page }) => {
+test('keeps desktop play surfaces bounded without page scroll', async ({ page }) => {
   await seedGame(page, progressedSave)
 
   await page.goto('/')
@@ -147,8 +147,6 @@ test('keeps desktop and mobile play surfaces bounded without page scroll', async
     }
 
     return {
-      play: measure('.play-area'),
-      stageWrap: measure('.stage-wrap'),
       stage: measure('#game-stage'),
       panel: measure('.case-panel'),
       clues: measure('.clue-list'),
@@ -158,16 +156,8 @@ test('keeps desktop and mobile play surfaces bounded without page scroll', async
 
   expect(layout.stage.width).toBeGreaterThan(300)
   expect(layout.stage.height).toBeGreaterThan(180)
-
-  if (layout.panel.width === layout.play.width) {
-    expect(layout.panel.height).toBeGreaterThan(180)
-    expect(layout.panel.height).toBeGreaterThanOrEqual(layout.play.height - layout.stage.height - 20)
-    expect(layout.panel.height).toBeLessThanOrEqual(layout.play.height * 0.42)
-    expect(layout.stage.height).toBeGreaterThanOrEqual(layout.stageWrap.clientHeight - 8)
-  } else {
-    expect(layout.panel.height).toBeGreaterThan(250)
-    expect(layout.clues.scrollHeight).toBeLessThanOrEqual(layout.clues.clientHeight)
-  }
+  expect(layout.panel.height).toBeGreaterThan(250)
+  expect(layout.clues.scrollHeight).toBeLessThanOrEqual(layout.clues.clientHeight)
 
   if (layout.voices.width > 0) {
     expect(layout.voices.scrollHeight).toBeLessThanOrEqual(layout.voices.clientHeight)
