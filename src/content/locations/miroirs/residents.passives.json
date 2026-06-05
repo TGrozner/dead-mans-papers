@@ -105,7 +105,7 @@
       "scriptId": "sofiane",
       "nodeId": "start"
     },
-    "text": "Le quartier parle souvent par les types qu'on ne met pas dans les comptes rendus: un mec qui fume, un hall qui tousse, une insulte qui traîne."
+    "text": "Le quartier parle souvent par ceux qu'on ne met pas dans les comptes rendus: un témoin qui se protège, un hall qui tousse, une insulte qui traîne."
   },
   {
     "id": "miroirs_sofiane__nerf_gants_bleus",
@@ -159,10 +159,10 @@
       "scriptId": "sofiane",
       "nodeId": "gobelet"
     },
-    "text": "Même le type défoncé voit la facture. Haleine, yeux, main: le corps vend la mèche avant la bouche."
+    "text": "Même quelqu'un qui cherche à se brouiller les nerfs voit la facture. Haleine, yeux, main: le corps vend la mèche avant la bouche."
   },
   {
-    "id": "miroirs_sofiane__antipassive_shit_easy_culprit",
+    "id": "miroirs_sofiane__antipassive_smoke_easy_culprit",
     "contextId": "miroirs/sofiane",
     "location": "miroirs",
     "subject": "joint",
@@ -178,6 +178,6 @@
       "scriptId": "sofiane",
       "nodeId": "joint"
     },
-    "text": "Le mec fume du shit, donc il ment, donc il ne vaut rien. Mauvaise lecture de flic fatigué. Les gens propres mentent aussi; ils ont juste une meilleure lumière."
+    "text": "Il fume, donc il se protège. Pas forcément qu'il ment. Mauvaise lecture de flic fatigué: les gens propres mentent aussi; ils ont juste une meilleure lumière."
   }
 ]

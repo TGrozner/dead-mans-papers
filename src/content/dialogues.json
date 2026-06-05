@@ -605,7 +605,7 @@
       "seen_by_who": {
         "id": "seen_by_who",
         "speaker": "Karine Leduc",
-        "text": "\"Un agent de nettoyage a prévenu. Il s'est barré direct. Deux habitants ont entendu. Amar traîne près du local technique. Et Sofiane fume son shit derrière la palissade comme si le parking lui devait un canapé.\"",
+        "text": "\"Un agent de nettoyage a prévenu. Il s'est barré direct. Deux habitants ont entendu. Amar traîne près du local technique. Et Sofiane reste derrière la palissade depuis trop longtemps pour n'avoir rien vu.\"",
         "effects": [
           {
             "type": "clue",
@@ -1891,7 +1891,7 @@
       "start": {
         "id": "start",
         "speaker": "Sofiane Zekraoui",
-        "text": "Sofiane est collé à la palissade, capuche basse, joint qui charbonne entre deux doigts. Pas un prophète de parking. Juste un mec qui fume du shit au mauvais endroit et qui a vu trop de choses pour dormir tranquille.",
+        "text": "Sofiane reste collé à la palissade, capuche basse, joint presque éteint entre deux doigts. Il ne joue pas au dur. Il surveille les issues, les mots, les gens qui peuvent répéter. La fumée lui donne une raison de ne pas trembler.",
         "effects": [
           {
             "type": "flag",
@@ -1909,7 +1909,7 @@
             "important": true
           },
           {
-            "label": "\"Tu fumes ça au-dessus d'un cadavre ?\"",
+            "label": "\"Tu fumes pour pas parler, ou pour pas trembler ?\"",
             "next": "joint"
           },
           {
@@ -1933,7 +1933,7 @@
             "next": "gobelet"
           },
           {
-            "label": "Le laisser tirer sur son joint.",
+            "label": "Le laisser reprendre son souffle.",
             "close": true
           }
         ]
@@ -1941,7 +1941,7 @@
       "saw_van": {
         "id": "saw_van",
         "speaker": "Sofiane Zekraoui",
-        "text": "\"J'ai vu le camion avant le matin, frère. Pas plein jour. Pas nuit non plus. L'heure des rats et des livreurs. Il roulait doucement, coffre fermé, et y avait un gars en gilet chantier qui marchait comme s'il avait pas envie d'avoir un visage.\"",
+        "text": "\"J'ai vu l'utilitaire avant le matin. Pas plein jour. Pas nuit non plus. L'heure où les livreurs se trompent d'entrée et où les gardiens font semblant de pas voir. Il roulait doucement, coffre fermé. Derrière, un gars en gilet chantier marchait tête basse, comme quelqu'un qui connaît déjà le chemin.\"",
         "effects": [
           {
             "type": "flag",
@@ -1972,7 +1972,7 @@
       "vest": {
         "id": "vest",
         "speaker": "Sofiane Zekraoui",
-        "text": "\"Gants bleus. Badge au cou. Pas le badge des médiateurs, pas ton bordel à toi. Un badge chantier propre, plastifié, le truc que les prestas gardent comme une bite sur la poitrine.\"",
+        "text": "\"Gants bleus. Badge au cou. Pas ton badge à toi, pas celui des médiateurs. Un badge chantier propre, plastifié, tenu bien visible. Le genre d'objet qui dit: je suis autorisé, ne me posez pas de question.\"",
         "effects": [
           {
             "type": "clue",
@@ -1989,11 +1989,11 @@
       "smell": {
         "id": "smell",
         "speaker": "Sofiane Zekraoui",
-        "text": "\"Et me regarde pas comme ça: je connais les odeurs. Le shit, les poubelles, la pisse d'ascenseur, le vieux frigo. Là c'était frigo sale et Javel. Même mon joint arrivait pas à couvrir cette merde.\"",
+        "text": "\"Me regarde pas comme ça. Ici, on reconnaît les odeurs parce qu'elles restent dans les cages. Poubelles, pisse d'ascenseur, frigo débranché. Là, c'était du froid sale avec de la Javel derrière. La fumée n'a rien couvert.\"",
         "effects": [
           {
             "type": "clue",
-            "clue": "Sofiane dit que l'odeur du coffre passait à travers le shit: froid sale et Javel."
+            "clue": "Sofiane dit que l'odeur du coffre passait malgré la fumée: froid sale et Javel."
           }
         ],
         "choices": [
@@ -2006,16 +2006,16 @@
       "joint": {
         "id": "joint",
         "speaker": "Sofiane Zekraoui",
-        "text": "\"Au-dessus d'un cadavre ? Wesh, le cadavre il est dans le coffre de la mairie, pas dans mon spliff. Moi je fume parce que sinon je pense trop. Toi tu bois. Chacun son petit cercueil portable.\"",
+        "text": "\"Je fume parce que ça occupe les mains. Parce que si je garde les mains vides, je regarde le coffre. Et si je regarde le coffre, je pense à Ahmed. Toi tu connais ça, non ? Trouver un truc à mettre entre soi et ce qu'on sait déjà.\"",
         "effects": [
           {
             "type": "clue",
-            "clue": "Sofiane compare son shit à l'alcool de Zinédine: deux façons de tenir dans le quartier."
+            "clue": "Sofiane rapproche son joint de l'alcool de Zinédine: deux façons de tenir dans le quartier."
           }
         ],
         "choices": [
           {
-            "label": "\"Garde ta morale de palissade.\"",
+            "label": "\"Garde tes leçons pour quelqu'un d'autre.\"",
             "next": "gobelet"
           },
           {
@@ -2031,7 +2031,7 @@
       "camera": {
         "id": "camera",
         "speaker": "Sofiane Zekraoui",
-        "text": "\"Depuis mars elle est morte, la caméra. Tout le monde le sait. Mais la semaine dernière, ils sont venus toucher le support. Tu répares pas une caméra morte pour la laisser morte, sauf si tu veux qu'elle regarde exactement rien.\"",
+        "text": "\"Depuis mars elle est morte, la caméra. Tout le monde le sait. Mais la semaine dernière, deux types sont venus toucher le support. Pas la remettre en marche. Juste l'orienter proprement. Une caméra morte qu'on règle encore, c'est pas une panne. C'est une consigne.\"",
         "effects": [
           {
             "type": "clue",
@@ -2048,7 +2048,7 @@
       "badge": {
         "id": "badge",
         "speaker": "Sofiane Zekraoui",
-        "text": "\"Badge chantier, ouais. Ça ouvre le bungalow, le local poubelles, parfois le P2 quand le lecteur est bourré comme toi. Ahmed gueulait là-dessus. Il disait: 'une clé de trop, c'est déjà un vol.'\"",
+        "text": "\"Badge chantier, ouais. Ça ouvre le bungalow, le local poubelles, parfois le P2 quand le lecteur accepte tout ce qu'on lui présente. Ahmed gueulait là-dessus. Il disait: 'une clé de trop, c'est déjà un vol.'\"",
         "effects": [
           {
             "type": "clue",
@@ -2065,7 +2065,7 @@
       "hami": {
         "id": "hami",
         "speaker": "Sofiane Zekraoui",
-        "text": "\"Hami ? Les vieux sortent de chez elle avec des papiers propres et des yeux pas tranquilles. Ahmed disait qu'elle signait les absences mieux que les présences. Moi je sais pas. Moi je fume. Mais lui, il avait peur d'elle.\"",
+        "text": "\"Hami ? Les vieux sortent de chez elle avec des papiers propres et des yeux pas tranquilles. Ahmed disait qu'elle savait signer une absence sans lever la voix. Moi, je l'ai surtout vu changer de trottoir quand il passait devant le centre de santé.\"",
         "effects": [
           {
             "type": "clue",
@@ -2082,7 +2082,7 @@
       "gobelet": {
         "id": "gobelet",
         "speaker": "Sofiane Zekraoui",
-        "text": "\"Parce que tu débarques avec les yeux qui patinent et l'haleine qui tape avant ta voix. On dit Le Gobelet parce que Zinédine, c'est trop propre pour ce que tu montres. C'est pas gentil. C'est le quartier.\"",
+        "text": "\"Parce que les gens préfèrent un surnom à une personne. Le Gobelet, ça permet de rire de toi avant de te demander un service. Zinédine, c'est plus difficile à cracher. Ça oblige à se souvenir que t'es encore quelqu'un.\"",
         "effects": [
           {
             "type": "clue",
@@ -2091,7 +2091,7 @@
         ],
         "choices": [
           {
-            "label": "\"Tu parles beaucoup pour un mec défoncé.\"",
+            "label": "\"Tu parles clair pour quelqu'un qui veut disparaître.\"",
             "next": "end_sharp"
           },
           {
@@ -2103,7 +2103,7 @@
       "end_sharp": {
         "id": "end_sharp",
         "speaker": "Sofiane Zekraoui",
-        "text": "\"Et toi tu tiens beaucoup debout pour un mec qui devrait être par terre. On fait tous des efforts.\" Il tire sur son joint. La fumée couvre rien. Elle rend juste les contours plus honnêtes.",
+        "text": "\"Et toi tu tiens debout comme quelqu'un qui a peur de tomber devant les bonnes personnes. On fait tous semblant à notre niveau.\" Il regarde le coffre sans tourner la tête. La fumée ne couvre rien. Elle lui donne juste trois secondes avant la phrase suivante.",
         "choices": [
           {
             "label": "Revenir à Sofiane.",

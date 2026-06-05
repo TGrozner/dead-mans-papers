@@ -16,8 +16,8 @@ npm run dev
 - Personnage joueur: Zinédine Saïdi, médiateur sécurité municipale fonctionnel par fragments, surnommé Le Gobelet.
 - Incident central: Ahmed Berrichi, vieux locataire officiellement disparu du relogement, est retrouvé dans le coffre d'un utilitaire municipal avec les papiers du joueur plantés sur lui.
 - Progression v0: le coffre révèle d'abord une odeur et une forme; les papiers n'arrivent qu'après une fouille physique risquée.
-- Mystère municipal: une page arrachée ouvre des pistes sales: caméra P2 morte, badge chantier, Dr Nadia Hami, et Sofiane qui a senti l'odeur du coffre malgré son joint.
-- Quatre PNJ clés: Karine Leduc, responsable rénovation urbaine; Amar Boudiaf, gardien d'immeuble; Sofiane Zekraoui, témoin de palissade qui fume du shit; Dr Nadia Hami, médecin municipal encore hors champ.
+- Mystère municipal: une page arrachée ouvre des pistes sales: caméra P2 morte, badge chantier, Dr Nadia Hami, et Sofiane qui a senti l'odeur du coffre depuis la palissade.
+- Quatre PNJ clés: Karine Leduc, responsable rénovation urbaine; Amar Boudiaf, gardien d'immeuble; Sofiane Zekraoui, témoin de palissade nerveux et utile; Dr Nadia Hami, médecin municipal encore hors champ.
 - Huit voix internes définies comme personnages systémiques.
 - La Dose, parasite non-stat lié à l'alcool, aux calmants et à la dette médicale.
 - Choix de posture identitaire devant les papiers du mort.
@@ -40,11 +40,11 @@ npm run dev
 
 - Déplacement: flèches, ZQSD, WASD ou toucher la scène pour marcher vers un point.
 - Interaction: près d'un élément, utiliser le bouton contextuel, Espace, Entrée ou E.
-- Mobile: toucher un élément important rapproche Zinédine et sélectionne l'action, mais n'ouvre plus directement de scène.
-- Mobile: ouvrir une surface narrative demande ensuite le bouton contextuel `!`, ou un second tap volontaire sur la même cible une fois Zinédine à portée.
+- Mobile: toucher un élément important sélectionne l'action, mais n'ouvre plus directement de scène.
+- Mobile: ouvrir une surface narrative demande ensuite le bouton contextuel `!`, ou un second tap volontaire sur la même cible.
 - Mobile: la scène est pensée en approcher-puis-agir plutôt qu'en joystick virtuel; les zones longues scrollent à l'intérieur du dossier ou du dialogue, pas dans toute la page.
 - Debug mobile/dev: ajouter `?debug=1` à l'URL affiche les derniers taps, cibles actives, destinations et projections de mouvement.
-- Mobile: la caméra zoome légèrement et suit Zinédine pour rendre les zones cliquables plus lisibles.
+- Mobile: la scène reste entièrement visible; on tape une cible surbrillante, puis on confirme avec le bouton d'action.
 - Mobile: les pensées flottantes sont compactes, limitées à la plus récente et disparaissent automatiquement pour éviter de masquer la carte.
 
 ## Notes Dev
@@ -58,6 +58,6 @@ Le monde doit rester petit mais dense. Les voix internes ne sont pas des bonus a
 
 La règle actuelle est clarté avant cryptage: chaque scène importante doit dire ce qui se passe, ce que le corps de Zinédine abîme, et quelle piste concrète s'ouvre. Les images restent possibles, mais elles doivent servir une information lisible.
 
-Le ton validé est raw, social, énervé: alcool, calmants, shit, tremblements, dette médicale, odeurs, honte publique, voix courtes et présentes. Karine renomme la merde pour la rendre municipale, La Dose vend de la stabilité, Sofiane fume au mauvais endroit et dit parfois la vérité. L'addiction n'est pas une couleur de fond: c'est une pression de gameplay, une dette sociale et une arme que les PNJ peuvent retourner contre Zinédine.
+Le ton validé est raw, social, énervé: alcool, calmants, tremblements, dette médicale, odeurs, honte publique, voix courtes et présentes. Karine renomme la merde pour la rendre municipale, La Dose vend de la stabilité, Sofiane se protège derrière la palissade et dit parfois la vérité. L'addiction n'est pas une couleur de fond: c'est une pression de gameplay, une dette sociale et une arme que les PNJ peuvent retourner contre Zinédine.
 
 La question n'est pas seulement qui est mort, mais comment une ville, un corps et un dossier peuvent décider que tu es mort avant toi.

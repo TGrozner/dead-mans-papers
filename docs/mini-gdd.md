@@ -32,7 +32,7 @@ Le problème immédiat n'est pas seulement de savoir ce qu'il y a dans le coffre
 - Ahmed Berrichi: vieux locataire historique des Miroirs, officiellement disparu du dispositif de relogement. Il savait des morceaux sur les badges, les caméras, les dossiers santé, les accès chantier et les relogements fantômes.
 - Karine Leduc: responsable rénovation urbaine. Elle cherche un périmètre, une communication, une formulation qui transforme un cadavre en incident maîtrisé.
 - Amar Boudiaf: gardien d'immeuble. Mémoire vivante de la dalle; il connaît les caves, badges, familles, embrouilles, accès, locaux techniques, caméras mortes, relogements et rancunes.
-- Sofiane Zekraoui: mec du quartier qui fume du shit derrière la palissade. Témoin sale mais utile: il a vu l'utilitaire avant le matin, sent le froid/Javel à travers son joint, connaît la caméra morte et les badges chantier.
+- Sofiane Zekraoui: témoin de palissade, nerveux, pas officiellement là. Il a vu l'utilitaire avant le matin, reconnaît l'odeur de froid/Javel, connaît la caméra morte et les badges chantier.
 - Dr Nadia Hami: médecin du centre municipal de santé, future présence centrale. Douce, précise, clinique, intouchable; elle connaît les dosages, renouvellements, certificats et tremblements.
 
 ## Ouverture v0
@@ -54,7 +54,7 @@ Tragicomédie sale: social et corporel dans la même phrase, administratif et ho
 
 Pas de romantisme portuaire. La poésie vient du contraste entre langue municipale propre et corps abîmés sous néons.
 
-Direction validée pour la réécriture v0: raw, social, énervé, parfois vulgaire. Voix internes très présentes mais courtes, La Dose commerçante intime, Karine administratrice dangereuse qui renomme au lieu de mentir frontalement, Ahmed témoin gênant et rugueux, Sofiane témoin de shit et de parking, Zinédine lucide mais fonctionnel dans le déni. Style: sec, frontal, choix incarnés, passifs contradictoires.
+Direction validée pour la réécriture v0: raw, social, énervé, parfois vulgaire. Voix internes très présentes mais courtes, La Dose commerçante intime, Karine administratrice dangereuse qui renomme au lieu de mentir frontalement, Ahmed témoin gênant et rugueux, Sofiane témoin de palissade qui se protège autant qu'il informe, Zinédine lucide mais fonctionnel dans le déni. Style: sec, frontal, choix incarnés, passifs contradictoires.
 
 Nouvelle contrainte de lisibilité: ne pas écrire l'enquête comme une énigme cryptique, mais ne pas spoiler le twist avant le geste physique. Le joueur doit comprendre dans l'ordre: Karine cache un incident, le coffre contient un corps, la gueule de bois rend la fouille risquée, les papiers de Zinédine ont été plantés, le carnet manque, la page ouvre caméra/badge/Hami.
 
@@ -68,15 +68,15 @@ Explorer, parler, inspecter, écouter les voix internes, subir La Dose, tenter d
 
 ## Jouabilité mobile
 
-- Toucher un élément important de la scène rapproche Zinédine et sélectionne l'action, mais n'ouvre pas directement la surface narrative.
-- L'ouverture mobile passe par le bouton contextuel `!` ou un second tap volontaire sur la même cible une fois Zinédine à portée, afin de distinguer clairement déplacement et inspection.
-- Toucher le sol fait marcher Zinédine vers ce point, avec un marqueur discret de destination.
+- Toucher un élément important de la scène sélectionne l'action, mais n'ouvre pas directement la surface narrative.
+- L'ouverture mobile passe par le bouton contextuel `!` ou un second tap volontaire sur la même cible, afin de distinguer clairement sélection et inspection.
+- Toucher le sol reste possible pour déplacer Zinédine, mais le prototype vise surtout une lecture point-and-click.
 - Les interactifs utilisent un liseré cyan et un pulse lent plutôt que des mots ou des marqueurs texte dans le décor.
-- En portrait mobile, la caméra zoome légèrement et suit Zinédine pour éviter que toute la carte devienne minuscule.
+- En portrait mobile, la carte reste entièrement visible pour préserver le contexte et les cibles surbrillantes.
 - Le prototype évite le joystick virtuel: la lecture des objets et la sélection des choix sont plus importantes que la précision du déplacement.
 - La page principale ne doit pas scroller globalement; seuls le dossier, les listes internes et le dialogue peuvent scroller si leur contenu dépasse.
 - Les pensées flottantes mobiles restent courtes: une seule visible, texte clampé, expiration automatique et nettoyage quand une scène de dialogue s'ouvre.
-- Les orbs de proximité ne surgissent pas automatiquement sur mobile: ils deviennent des actions proches.
+- Les orbs de proximité ne surgissent pas automatiquement sur mobile: la scène privilégie les cibles volontaires et lisibles.
 
 ## Identité
 

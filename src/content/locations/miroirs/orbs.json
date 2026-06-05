@@ -205,10 +205,10 @@
     "x": 704,
     "y": 454,
     "radius": 78,
-    "text": "Derrière la palissade, ça chuchote et ça tire sur un joint. Une voix lâche Le Gobelet. Une autre dit: ferme ta gueule, Sofiane, y a un mort. Le quartier sait déjà que la matinée pue.",
+    "text": "Derrière la palissade, les voix tombent d'un ton quand tu approches. Quelqu'un lâche Le Gobelet. Un autre souffle le prénom de Sofiane et se tait. Le quartier sait déjà que la matinée pue.",
     "voice": "bouches",
     "minScore": 1,
-    "voiceText": "Sofiane. Un prénom qui traîne au bon endroit, avec du shit pour couvrir les odeurs. Sauf que certaines odeurs passent quand même.",
+    "voiceText": "Sofiane. Un prénom qui traîne au bon endroit. Quelqu'un essaie de se faire petit derrière la palissade, mais certaines odeurs et certaines peurs passent quand même.",
     "effects": [
       {
         "type": "clue",
