@@ -877,12 +877,89 @@
         ],
         "choices": [
           {
+            "label": "Relire l'ordonnance malgré La Dose.",
+            "check": {
+              "id": "hami_prescription_line",
+              "voice": "memoire_saline",
+              "supportVoice": "procedure",
+              "difficulty": 8,
+              "successNode": "hami_prescription_success",
+              "failureNode": "hami_prescription_failure"
+            },
+            "hiddenWhenFlag": "hami_line_checked",
+            "important": true
+          },
+          {
             "label": "\"Pourquoi tu la défends ?\"",
             "next": "hami_too_fast"
           },
           {
             "label": "Ranger l'ordonnance dans les suspects.",
             "next": "papers_surface"
+          }
+        ]
+      },
+      "hami_prescription_success": {
+        "id": "hami_prescription_success",
+        "speaker": "Le Sel",
+        "voice": "memoire_saline",
+        "text": "Tu relis lentement. Renouvellement. Posologie. Signature propre. Ce n'est pas seulement une ordonnance dans tes papiers: c'est une preuve que Hami peut fabriquer une continuité médicale pendant que ta mémoire, elle, décroche. Une absence avec tampon reste une absence.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "hami_line_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "hami_absence_signature_understood"
+          },
+          {
+            "type": "clue",
+            "clue": "L'ordonnance de Hami peut servir à couvrir une absence de Zinédine sous une continuité médicale propre."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "memoire_saline",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Noter la continuité médicale et revenir aux papiers.",
+            "next": "papers_surface",
+            "important": true
+          }
+        ]
+      },
+      "hami_prescription_failure": {
+        "id": "hami_prescription_failure",
+        "speaker": "La Dose",
+        "parasite": "dose",
+        "text": "Tu veux lire, mais ton corps lit avant toi: dose, horaire, renouvellement, stabilité. Le reste devient du bruit administratif. Hami reste une main sur le robinet. Tu sais que c'est une piste. Tu sais aussi que la piste peut fermer ta main.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "hami_line_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "dose_deepens_hami_debt"
+          },
+          {
+            "type": "clue",
+            "clue": "La Dose transforme l'ordonnance de Hami en dette de stabilité avant que Zinédine puisse la lire clairement."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "faim",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder la dette médicale comme piste et revenir aux papiers.",
+            "next": "papers_surface",
+            "important": true
           }
         ]
       },
