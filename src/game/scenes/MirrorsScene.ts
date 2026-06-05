@@ -974,7 +974,12 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private handlePointerDown(pointer: Phaser.Input.Pointer): void {
-    if (!this.player || this.bridge.isDialogueOpen()) {
+    if (!this.player) {
+      return
+    }
+
+    if (this.bridge.isDialogueOpen()) {
+      this.bridge.closeDialogueSurface()
       return
     }
 

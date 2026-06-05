@@ -49,9 +49,7 @@ export function createGameUi(options: GameUiOptions) {
 
   function renderDialogue(): void {
     if (!activeDialogue) {
-      setDialogueSurfaceOpen(false)
-      options.root.hidden = true
-      options.root.innerHTML = ''
+      hideDialogueSurface()
       return
     }
 
@@ -90,7 +88,7 @@ export function createGameUi(options: GameUiOptions) {
     }
 
     closeButton.addEventListener('click', () => {
-      closeDialogue()
+      closeActiveSurface()
     })
 
     activeDialogue.choices.forEach((renderedChoice) => {
@@ -123,10 +121,19 @@ export function createGameUi(options: GameUiOptions) {
     })
   }
 
-  function closeDialogue(): void {
-    options.engine.close()
+  function hideDialogueSurface(): void {
+    setDialogueSurfaceOpen(false)
+    options.root.hidden = true
+    options.root.innerHTML = ''
+  }
+
+  function closeActiveSurface(): void {
+    if (activeDialogue) {
+      options.engine.close()
+    }
+
     activeDialogue = undefined
-    renderDialogue()
+    hideDialogueSurface()
     syncState()
   }
 
@@ -148,7 +155,7 @@ export function createGameUi(options: GameUiOptions) {
   function openOrb(orbId: string): void {
     clearMobileToasts(options.toastRoot)
     const orb = options.engine.inspectOrb(orbId)
-    renderOrb(orb)
+    renderOrb(orb, options.root, closeActiveSurface)
     showPassiveToasts(
       orb.passives.filter((passive) => passive.display === 'toast'),
       options.toastRoot,
@@ -180,17 +187,12 @@ export function createGameUi(options: GameUiOptions) {
     setInteraction,
     triggerProximityOrb,
     triggerExplorationPassive,
+    closeSurface: closeActiveSurface,
     isDialogueOpen: () => Boolean(activeDialogue) || !options.root.hidden,
   }
 }
 
-function renderOrb(orb: RenderedOrb): void {
-  const root = document.querySelector<HTMLDivElement>('#dialogue-root')
-
-  if (!root) {
-    return
-  }
-
+function renderOrb(orb: RenderedOrb, root: HTMLDivElement, onClose: () => void): void {
   setDialogueSurfaceOpen(true)
   const voice = orb.voice ? voiceById[orb.voice] : undefined
 
@@ -216,9 +218,7 @@ function renderOrb(orb: RenderedOrb): void {
   `
 
   root.querySelector<HTMLButtonElement>('.orb-close')?.addEventListener('click', () => {
-    setDialogueSurfaceOpen(false)
-    root.hidden = true
-    root.innerHTML = ''
+    onClose()
   })
 }
 

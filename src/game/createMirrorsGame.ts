@@ -10,6 +10,7 @@ export interface MirrorsGameBridge {
   triggerProximityOrb: (orbId: string) => void
   triggerExplorationPassive: (contextId: string) => void
   isDialogueOpen: () => boolean
+  closeDialogueSurface: () => void
   getState: () => GameState
 }
 

@@ -113,6 +113,7 @@ createMirrorsGame({
   triggerProximityOrb: ui.triggerProximityOrb,
   triggerExplorationPassive: ui.triggerExplorationPassive,
   isDialogueOpen: ui.isDialogueOpen,
+  closeDialogueSurface: ui.closeSurface,
   getState: () => engine.state,
 })
 
