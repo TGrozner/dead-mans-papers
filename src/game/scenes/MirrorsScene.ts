@@ -57,6 +57,16 @@ export class MirrorsScene extends Phaser.Scene {
     this.bridge = bridge
   }
 
+  preload(): void {
+    this.load.image('p2-background', this.assetUrl('p2-background.png'))
+    this.load.image('actor-zinedine', this.assetUrl('actor-zinedine.png'))
+    this.load.image('actor-leduc', this.assetUrl('actor-leduc.png'))
+    this.load.image('actor-amar', this.assetUrl('actor-amar.png'))
+    this.load.image('actor-sofiane', this.assetUrl('actor-sofiane.png'))
+    this.load.image('prop-cup', this.assetUrl('prop-cup.png'))
+    this.load.image('prop-phone', this.assetUrl('prop-phone.png'))
+  }
+
   create(): void {
     this.createTextures()
     this.drawMap()
@@ -122,6 +132,10 @@ export class MirrorsScene extends Phaser.Scene {
 
   private isMobileViewport(): boolean {
     return window.matchMedia(MOBILE_VIEWPORT_QUERY).matches
+  }
+
+  private assetUrl(file: string): string {
+    return `${import.meta.env.BASE_URL}assets/miroirs/${file}`
   }
 
   private createTextures(): void {
@@ -193,6 +207,21 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private drawMap(): void {
+    if (this.textures.exists('p2-background')) {
+      this.add.image(0, 0, 'p2-background').setOrigin(0).setDepth(0)
+
+      if (this.textures.exists('prop-cup')) {
+        this.add.image(430, 342, 'prop-cup').setDepth(3)
+      }
+
+      if (this.textures.exists('prop-phone')) {
+        this.add.image(456, 350, 'prop-phone').setDepth(3).setRotation(-0.18)
+      }
+
+      this.createColliders()
+      return
+    }
+
     const tile = 32
     const graphics = this.add.graphics()
 
@@ -559,10 +588,12 @@ export class MirrorsScene extends Phaser.Scene {
 
   private createColliders(): void {
     const obstacles = [
-      [54, 230, 230, 132],
-      [542, 154, 246, 126],
-      [692, 70, 176, 78],
-      [118, 88, 214, 64],
+      [0, 188, 230, 220],
+      [704, 196, 252, 196],
+      [636, 420, 320, 92],
+      [0, 410, 222, 100],
+      [244, 0, 102, 208],
+      [654, 0, 92, 208],
       [0, 0, 960, 45],
       [0, 520, 960, 76],
     ] as Array<[number, number, number, number]>
@@ -576,19 +607,32 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private createActors(): void {
-    this.player = this.physics.add.sprite(462, 318, 'player')
+    const playerKey = this.textures.exists('actor-zinedine') ? 'actor-zinedine' : 'player'
+    const leducKey = this.textures.exists('actor-leduc') ? 'actor-leduc' : 'leduc'
+    const amarKey = this.textures.exists('actor-amar') ? 'actor-amar' : 'amar'
+    const sofianeKey = this.textures.exists('actor-sofiane') ? 'actor-sofiane' : 'sofiane'
+
+    this.player = this.physics.add.sprite(414, 352, playerKey)
+    this.player.setDepth(5)
     this.player.setCollideWorldBounds(true)
-    this.player.body.setSize(16, 18)
-    this.player.body.setOffset(4, 12)
+
+    if (playerKey === 'actor-zinedine') {
+      this.player.body.setSize(22, 18)
+      this.player.body.setOffset(13, 53)
+    } else {
+      this.player.body.setSize(16, 18)
+      this.player.body.setOffset(4, 12)
+    }
+
     this.obstacles.forEach((obstacle) => {
       if (this.player) {
         this.physics.add.collider(this.player, obstacle)
       }
     })
 
-    this.add.sprite(548, 292, 'leduc').setDepth(4)
-    this.add.sprite(326, 330, 'amar').setDepth(2)
-    this.add.sprite(244, 384, 'sofiane').setDepth(2)
+    this.add.sprite(242, 348, leducKey).setDepth(5)
+    this.add.sprite(760, 186, amarKey).setDepth(5)
+    this.add.sprite(704, 454, sofianeKey).setDepth(5)
   }
 
   private createHotspots(): void {
@@ -597,33 +641,33 @@ export class MirrorsScene extends Phaser.Scene {
         id: 'utility_van',
         label: "Examiner l'utilitaire municipal",
         scriptId: 'utility_van',
-        x: 604,
-        y: 292,
-        radius: 96,
+        x: 116,
+        y: 326,
+        radius: 106,
       },
       {
         id: 'leduc',
         label: 'Parler à Karine Leduc',
         scriptId: 'leduc',
-        x: 548,
-        y: 292,
-        radius: 62,
+        x: 242,
+        y: 348,
+        radius: 70,
       },
       {
         id: 'amar',
         label: 'Parler à Amar Boudiaf',
         scriptId: 'amar',
-        x: 326,
-        y: 330,
-        radius: 58,
+        x: 760,
+        y: 186,
+        radius: 66,
       },
       {
         id: 'sofiane',
         label: 'Parler à Sofiane',
         scriptId: 'sofiane',
-        x: 244,
-        y: 384,
-        radius: 62,
+        x: 704,
+        y: 454,
+        radius: 72,
       },
     ]
 
@@ -638,56 +682,56 @@ export class MirrorsScene extends Phaser.Scene {
         id: 'miroirs_orb_phone',
         label: 'Regarder le téléphone',
         mode: 'visible',
-        x: 444,
-        y: 336,
+        x: 456,
+        y: 350,
         radius: 44,
       },
       {
         id: 'miroirs_orb_van',
         label: "Observer l'utilitaire",
         mode: 'visible',
-        x: 680,
-        y: 252,
-        radius: 58,
+        x: 120,
+        y: 300,
+        radius: 66,
       },
       {
         id: 'miroirs_orb_body',
         label: 'Regarder le corps',
         mode: 'visible',
-        x: 564,
-        y: 286,
+        x: 82,
+        y: 334,
         radius: 52,
       },
       {
         id: 'miroirs_orb_camera',
         label: 'Inspecter la caméra HS',
         mode: 'visible',
-        x: 510,
-        y: 174,
+        x: 178,
+        y: 90,
         radius: 66,
       },
       {
         id: 'miroirs_orb_technical_room',
         label: 'Examiner le local technique',
         mode: 'visible',
-        x: 178,
-        y: 282,
+        x: 838,
+        y: 128,
         radius: 78,
       },
       {
         id: 'miroirs_orb_neon',
         label: 'Écouter le néon',
         mode: 'proximity',
-        x: 470,
-        y: 464,
+        x: 476,
+        y: 272,
         radius: 96,
       },
       {
         id: 'miroirs_orb_residents',
         label: 'Écouter la palissade',
         mode: 'proximity',
-        x: 314,
-        y: 388,
+        x: 704,
+        y: 454,
         radius: 84,
       },
     ]

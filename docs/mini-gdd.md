@@ -14,6 +14,7 @@ Le problème immédiat n'est pas seulement de savoir qui est mort. C'est de prou
 - Échelle visuelle: le P2 doit être écrasé par les tours des Miroirs: silhouettes HLM, fenêtres allumées, cages d'escalier, passerelle et dalle massive autour du parking.
 - Grammaire visuelle: aucun mot écrit directement dans le décor. Le parking, la cité, le chantier et la scène de crime doivent se lire par les formes, les couleurs, les silhouettes, les lignes au sol, les cônes, la rubalise et la composition.
 - Direction v0: scène de crime prioritaire avec utilitaire municipal blanc sale, coffre ouvert noir, Karine comme obstacle physique, périmètre bloqué, 1-2 voitures secondaires claires, néons froids et béton humide.
+- Passe visuelle actuelle: background P2 bitmap, sprites PNJ transparents et props découpés depuis `public/assets/miroirs/concept-sheet.png`.
 - Type de ville: cité de ville nouvelle en rénovation interminable, sans lieu réel nommé.
 
 ## Personnage

@@ -28,6 +28,7 @@ npm run dev
 - Passifs stockés par contexte dans `src/content/locations/miroirs/*.passives.json`.
 - Orbs stockés dans `src/content/locations/miroirs/orbs.json`.
 - Passifs d'objets stockés dans `src/content/locations/miroirs/objects.passives.json`.
+- Assets visuels P2 stockés dans `public/assets/miroirs/`, avec une planche de référence et des sprites PNG découpés.
 - Checks actifs en d6 + une ou deux voix contre difficulté.
 - Échecs écrits comme des scènes, avec indices ou conséquences.
 - Options de dialogue déjà ouvertes grisées mais toujours cliquables.
