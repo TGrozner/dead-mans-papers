@@ -873,7 +873,7 @@ h1 {
 
   .play-area {
     flex: 1 1 auto;
-    grid-template-rows: minmax(0, min(50svh, 430px)) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
     align-content: start;
     align-items: stretch;
     gap: 7px;
@@ -882,17 +882,15 @@ h1 {
 
   .stage-wrap {
     display: block;
-    height: 100%;
+    height: auto;
     min-height: 0;
   }
 
   #game-stage {
-    --mobile-stage-width: max(100%, calc(min(50svh, 430px) * 5 / 3));
-
     position: relative;
-    left: calc((100% - var(--mobile-stage-width)) / 2);
-    width: var(--mobile-stage-width);
-    max-width: none;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
     transform: none;
   }
 
