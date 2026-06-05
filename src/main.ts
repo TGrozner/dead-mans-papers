@@ -1,6 +1,12 @@
 import './style.css'
 import { createMirrorsGame } from './game/createMirrorsGame'
-import { loadGameState, resetGameState, saveGameState } from './game/save'
+import {
+  isTutorialHidden,
+  loadGameState,
+  resetGameState,
+  saveGameState,
+  setTutorialHidden,
+} from './game/save'
 import { NarrativeEngine } from './game/narrative'
 import { createGameUi } from './game/ui'
 
@@ -51,6 +57,23 @@ app.innerHTML = `
     </div>
 
     <div id="dialogue-root" class="dialogue-root" hidden></div>
+
+    <div id="tutorial-root" class="tutorial-root" role="dialog" aria-modal="true" aria-labelledby="tutorial-title" hidden>
+      <article class="tutorial-panel">
+        <p class="panel-label">Avant de reprendre</p>
+        <h2 id="tutorial-title">Parking P2 se joue lentement</h2>
+        <div class="tutorial-copy">
+          <p>Touche la scène pour rapprocher Morad. Quand il est assez près, utilise le bouton <strong>!</strong> pour parler, inspecter ou écouter.</p>
+          <p>Sur mobile, rien ne s'ouvre juste parce que ton doigt passe au mauvais endroit. Les pensées importantes arrivent dans les scènes ou dans de courts signaux.</p>
+          <p>Le dossier garde les indices et les voix internes. Les choix bizarres ou indignes sont souvent aussi utiles que les choix raisonnables.</p>
+        </div>
+        <label class="tutorial-check">
+          <input id="tutorial-hide" type="checkbox" />
+          <span>Ne plus me montrer</span>
+        </label>
+        <button id="tutorial-close" class="tutorial-close" type="button">Commencer</button>
+      </article>
+    </div>
   </section>
 `
 
@@ -78,6 +101,8 @@ createMirrorsGame({
   getState: () => engine.state,
 })
 
+showTutorialIfNeeded(engine.state.flags.woke_up === true)
+
 document.querySelector<HTMLButtonElement>('#reset-save')!.addEventListener('click', () => {
   persistOnUnload = false
   resetGameState()
@@ -89,3 +114,21 @@ window.addEventListener('beforeunload', () => {
     saveGameState(engine.state)
   }
 })
+
+function showTutorialIfNeeded(hasAlreadyStarted: boolean): void {
+  const tutorialRoot = document.querySelector<HTMLDivElement>('#tutorial-root')
+  const tutorialClose = document.querySelector<HTMLButtonElement>('#tutorial-close')
+  const tutorialHide = document.querySelector<HTMLInputElement>('#tutorial-hide')
+
+  if (!tutorialRoot || !tutorialClose || !tutorialHide || hasAlreadyStarted || isTutorialHidden()) {
+    return
+  }
+
+  tutorialRoot.hidden = false
+  tutorialClose.focus()
+
+  tutorialClose.addEventListener('click', () => {
+    setTutorialHidden(tutorialHide.checked)
+    tutorialRoot.hidden = true
+  })
+}

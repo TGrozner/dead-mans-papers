@@ -2,6 +2,7 @@ import { voices } from './content'
 import type { GameState, VoiceId } from './types'
 
 const STORAGE_KEY = 'dead-mans-papers:v9'
+const TUTORIAL_HIDDEN_KEY = 'dead-mans-papers:tutorial-hidden'
 
 export function createInitialState(): GameState {
   const voiceStats = voices.reduce(
@@ -57,4 +58,17 @@ export function saveGameState(state: GameState): void {
 
 export function resetGameState(): void {
   localStorage.removeItem(STORAGE_KEY)
+}
+
+export function isTutorialHidden(): boolean {
+  return localStorage.getItem(TUTORIAL_HIDDEN_KEY) === 'true'
+}
+
+export function setTutorialHidden(hidden: boolean): void {
+  if (hidden) {
+    localStorage.setItem(TUTORIAL_HIDDEN_KEY, 'true')
+    return
+  }
+
+  localStorage.removeItem(TUTORIAL_HIDDEN_KEY)
 }
