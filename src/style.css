@@ -323,11 +323,45 @@ h1 {
   background: rgba(215, 168, 75, 0.58);
 }
 
-.clue-list li {
+.clue-list > li {
   padding: 8px 0;
   border-bottom: 1px solid rgba(220, 235, 215, 0.16);
   color: var(--foam);
   font-size: 14px;
+  line-height: 1.3;
+}
+
+.clue-group {
+  display: grid;
+  gap: 6px;
+}
+
+.clue-group-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--brass);
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.clue-group-heading span:last-child {
+  color: rgba(220, 235, 215, 0.58);
+}
+
+.clue-group-list {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.clue-group-list li {
+  color: var(--foam);
+  font-size: 13px;
   line-height: 1.3;
 }
 
@@ -913,8 +947,23 @@ h1 {
     margin-top: 5px;
   }
 
-  .clue-list li {
+  .clue-list > li {
     padding: 5px 0;
+  }
+
+  .clue-group {
+    gap: 4px;
+  }
+
+  .clue-group-heading {
+    font-size: 9px;
+  }
+
+  .clue-group-list {
+    gap: 4px;
+  }
+
+  .clue-group-list li {
     font-size: 12px;
     line-height: 1.25;
   }

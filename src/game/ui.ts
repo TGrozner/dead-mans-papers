@@ -14,6 +14,53 @@ const MOBILE_TOAST_QUERY = '(max-width: 560px)'
 const MAX_DESKTOP_TOASTS = 5
 const MAX_MOBILE_TOASTS = 1
 const MOBILE_TOAST_LIFETIME_MS = 8000
+const CLUE_GROUPS = [
+  {
+    id: 'body',
+    label: 'Corps / Ahmed',
+    keywords: ['ahmed', 'corps', 'vieux', 'vieil', 'cadavre', 'blessure', 'coffre', 'carnet', 'page arrachée'],
+  },
+  {
+    id: 'camera',
+    label: 'Caméra P2',
+    keywords: ['caméra', 'support'],
+  },
+  {
+    id: 'access',
+    label: 'Badge / accès',
+    keywords: ['badge', 'accès', 'lecteur', 'chantier', 'prestataire', 'local', 'bungalow', 'clés'],
+  },
+  {
+    id: 'hami',
+    label: 'Hami / santé',
+    keywords: ['hami', 'ordonnance', 'prescription', 'médical', 'santé'],
+  },
+  {
+    id: 'karine',
+    label: 'Karine / mairie',
+    keywords: ['karine', 'mairie', 'municipal', 'nationale', 'procédure', 'utilitaire', 'version simple', 'accuse'],
+  },
+  {
+    id: 'witnesses',
+    label: 'Témoins',
+    keywords: ['amar', 'sofiane', 'habitants', 'palissade', 'quartier'],
+  },
+  {
+    id: 'body-state',
+    label: 'Corps de Zinédine',
+    keywords: ['alcool', 'manque', 'dose', 'tremblements', 'nausée', 'vomis', 'addiction', 'dette'],
+  },
+  {
+    id: 'zinedine',
+    label: 'Zinédine',
+    keywords: ['zinédine', 'papiers', 'nom', 'gobelet', 'téléphone', 'trou noir', 'prénom', 'surnom'],
+  },
+  {
+    id: 'other',
+    label: 'À classer',
+    keywords: [],
+  },
+] as const
 
 interface GameUiOptions {
   engine: NarrativeEngine
@@ -390,14 +437,71 @@ function renderClues(state: GameState): void {
     return
   }
 
-  state.clues
-    .slice()
-    .reverse()
-    .forEach((clue) => {
-      const item = document.createElement('li')
-      item.textContent = clue
-      clueList.append(item)
-    })
+  const groupedClues = groupClues(state.clues)
+
+  CLUE_GROUPS.forEach((group) => {
+    const clues = groupedClues.get(group.id)
+
+    if (!clues?.length) {
+      return
+    }
+
+    const groupItem = document.createElement('li')
+    groupItem.className = 'clue-group'
+
+    const heading = document.createElement('div')
+    heading.className = 'clue-group-heading'
+    heading.innerHTML = `
+      <span>${escapeHtml(group.label)}</span>
+      <span>${clues.length}</span>
+    `
+    groupItem.append(heading)
+
+    const nestedList = document.createElement('ul')
+    nestedList.className = 'clue-group-list'
+
+    clues
+      .slice()
+      .reverse()
+      .forEach((clue) => {
+        const item = document.createElement('li')
+        item.textContent = clue
+        nestedList.append(item)
+      })
+
+    groupItem.append(nestedList)
+    clueList.append(groupItem)
+  })
+}
+
+function groupClues(clues: string[]): Map<(typeof CLUE_GROUPS)[number]['id'], string[]> {
+  const groupedClues = new Map<(typeof CLUE_GROUPS)[number]['id'], string[]>(
+    CLUE_GROUPS.map((group) => [group.id, []]),
+  )
+
+  clues.forEach((clue) => {
+    const normalizedClue = clue.toLocaleLowerCase('fr-FR')
+    const group = CLUE_GROUPS.reduce<(typeof CLUE_GROUPS)[number] | undefined>((bestGroup, candidate) => {
+      if (candidate.id === 'other') {
+        return bestGroup
+      }
+
+      const candidateScore = getClueGroupScore(normalizedClue, candidate.keywords)
+      const bestScore = bestGroup ? getClueGroupScore(normalizedClue, bestGroup.keywords) : 0
+
+      return candidateScore > bestScore ? candidate : bestGroup
+    }, undefined)
+
+    groupedClues.get(group?.id ?? 'other')?.push(clue)
+  })
+
+  return groupedClues
+}
+
+function getClueGroupScore(clue: string, keywords: readonly string[]): number {
+  return keywords.reduce((score, keyword) => {
+    return clue.includes(keyword) ? score + 1 : score
+  }, 0)
 }
 
 function renderVoices(state: GameState): void {
