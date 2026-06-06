@@ -35,6 +35,10 @@ if (env.FORCE_COLOR && env.NO_COLOR !== undefined) {
   delete env.NO_COLOR
 }
 
+if (command === 'playwright') {
+  env.NODE_OPTIONS = appendNodeOption(env.NODE_OPTIONS, '--disable-warning=DEP0205')
+}
+
 const child = spawn(command, commandArgs, {
   cwd: rootDir,
   env,
@@ -127,4 +131,14 @@ function formatVersion(version) {
 
 function prependPath(binDir, pathValue) {
   return [binDir, ...pathValue.split(path.delimiter).filter((entry) => entry && entry !== binDir)].join(path.delimiter)
+}
+
+function appendNodeOption(nodeOptions, option) {
+  const options = nodeOptions?.trim()
+
+  if (!options) {
+    return option
+  }
+
+  return options.split(/\s+/).includes(option) ? options : `${options} ${option}`
 }

@@ -3,9 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "packageManager": "npm@11.1.0",
+  "packageManager": "npm@11.16.0",
   "engines": {
-    "node": ">=23.8.0 <24"
+    "node": ">=26.2.0 <27"
   },
   "scripts": {
     "check:node": "node scripts/with-node.mjs node scripts/check-node.mjs",
@@ -28,6 +28,6 @@
     "vite": "^8.0.12"
   },
   "dependencies": {
-    "phaser": "^3.90.0"
+    "phaser": "^4.1.0"
   }
 }

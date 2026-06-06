@@ -15,6 +15,6 @@ export default defineConfig({
     __STATIC_ASSET_VERSION__: JSON.stringify(staticAssetVersion),
   },
   build: {
-    chunkSizeWarningLimit: 1300,
+    chunkSizeWarningLimit: 1500,
   },
 })

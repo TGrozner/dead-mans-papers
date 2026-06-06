@@ -2,9 +2,8 @@
 
 ## Runtime
 
-- Use Node `23.8.0` for project commands.
-- If the default shell Node is older, prefix commands with:
-  `PATH=/home/thomas/.nvm/versions/node/v23.8.0/bin:$PATH`
+- Use Node `26.2.0` for project commands.
+- Project npm scripts automatically select `.nvmrc` via `scripts/with-node.mjs`.
 - For code changes, run `npm test` unless the user explicitly narrows verification.
 - For docs/rules-only changes, run `git diff --check`.
 

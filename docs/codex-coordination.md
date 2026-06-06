@@ -152,10 +152,10 @@ Then inspect the changed paths against the claim. If the agent touched
 unclaimed files, review manually before merging or cherry-picking.
 
 For application changes, run the project verification from the integration
-checkout with Node `23.8.0`:
+checkout. The npm scripts select Node `26.2.0` from `.nvmrc` automatically:
 
 ```bash
-PATH=/home/thomas/.nvm/versions/node/v23.8.0/bin:$PATH npm test
+npm test
 ```
 
 For rules/docs-only changes, `git diff --check` is enough unless the changed

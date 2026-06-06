@@ -1,8 +1,8 @@
 import { defineConfig, devices } from '@playwright/test'
 
-const minimumNodeMajor = 23
-const minimumNodeMinor = 8
-const maximumNodeMajor = 24
+const minimumNodeMajor = 26
+const minimumNodeMinor = 2
+const maximumNodeMajor = 27
 const rootPort = 4173
 const pagesPort = 4174
 const rootBaseURL = `http://127.0.0.1:${rootPort}`
@@ -16,7 +16,7 @@ if (
   nodeMajor >= maximumNodeMajor
 ) {
   throw new Error(
-    `Node ${process.versions.node} is not supported. Run project commands through npm scripts or run "nvm use" / "fnm use"; this project targets Node >=23.8.0 <24.`,
+    `Node ${process.versions.node} is not supported. Run project commands through npm scripts or run "nvm use" / "fnm use"; this project targets Node >=26.2.0 <27.`,
   )
 }
 

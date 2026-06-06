@@ -10,7 +10,7 @@ npm install
 npm run dev
 ```
 
-Le projet cible Node `23.8.0` via `.nvmrc`. Un Node global plus ancien peut prendre le dessus sur `nvm`; vérifier `node -v` si le check runtime échoue.
+Le projet cible Node `26.2.0` via `.nvmrc`. Les scripts npm sélectionnent automatiquement cette version via `scripts/with-node.mjs`.
 
 ```bash
 npm test
