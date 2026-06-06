@@ -23,7 +23,7 @@
 
 - Default to one Git worktree per writing agent.
 - Create agent worktrees from the real repo root with:
-  `/home/thomas/dev/dead-mans-papers-workspace/scripts/codex-worktree.sh <agent-name> main`
+  `/home/thomas/dev/dead-mans-papers-workspace/dead-mans-papers/scripts/codex-worktree.sh <agent-name> main`
 - Every writing agent must have explicit ownership before editing:
   objective, branch, worktree path, claimed files, and forbidden files.
 - Claims can be recorded locally under:

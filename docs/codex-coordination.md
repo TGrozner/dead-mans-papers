@@ -23,7 +23,7 @@ The workspace root has support files, but the Git repository is the
 From any shell:
 
 ```bash
-/home/thomas/dev/dead-mans-papers-workspace/scripts/codex-worktree.sh ui-audit main
+/home/thomas/dev/dead-mans-papers-workspace/dead-mans-papers/scripts/codex-worktree.sh ui-audit main
 cd /home/thomas/dev/dead-mans-papers-workspace/dead-mans-papers-agent-ui-audit
 git status -sb
 ```
@@ -31,7 +31,7 @@ git status -sb
 For rules and coordination work:
 
 ```bash
-/home/thomas/dev/dead-mans-papers-workspace/scripts/codex-worktree.sh rules main
+/home/thomas/dev/dead-mans-papers-workspace/dead-mans-papers/scripts/codex-worktree.sh rules main
 cd /home/thomas/dev/dead-mans-papers-workspace/dead-mans-papers-rules
 git status -sb
 ```
