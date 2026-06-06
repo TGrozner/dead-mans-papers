@@ -8,6 +8,7 @@ import type {
   DialogueNode,
   DialogueScript,
   OrbDefinition,
+  OrbVariant,
   ParasiteDefinition,
   ParasiteId,
   PassiveDefinition,
@@ -39,7 +40,7 @@ export const dialogues = normalizeDialogueDisplayNames(
     dialogueOverridesJson as Record<string, DialogueScriptOverride>,
   ),
 )
-export const orbs = mirrorsOrbsJson as OrbDefinition[]
+export const orbs = normalizeOrbDisplayNames(mirrorsOrbsJson as OrbDefinition[])
 const passiveModules = import.meta.glob<PassiveDefinition[]>(
   '../content/locations/miroirs/*.passives.json',
   { eager: true, import: 'default' },
@@ -48,7 +49,7 @@ const contextualPassives = Object.entries(passiveModules)
   .sort(([leftPath], [rightPath]) => leftPath.localeCompare(rightPath))
   .flatMap(([, modulePassives]) => modulePassives)
 
-export const passives = [...contextualPassives].sort(
+export const passives = normalizePassiveDisplayNames([...contextualPassives]).sort(
   (left, right) => (right.priority ?? 0) - (left.priority ?? 0),
 )
 
@@ -143,6 +144,33 @@ function normalizeDialogueChoice(choice: DialogueChoice): DialogueChoice {
     ...choice,
     label: normalizeVoiceDisplayText(choice.label),
   }
+}
+
+function normalizeOrbDisplayNames(orbs: OrbDefinition[]): OrbDefinition[] {
+  return orbs.map((orb) => ({
+    ...orb,
+    label: normalizeVoiceDisplayText(orb.label),
+    title: normalizeVoiceDisplayText(orb.title),
+    text: normalizeVoiceDisplayText(orb.text),
+    voiceText: orb.voiceText ? normalizeVoiceDisplayText(orb.voiceText) : undefined,
+    variants: orb.variants?.map(normalizeOrbVariantDisplayNames),
+  }))
+}
+
+function normalizeOrbVariantDisplayNames(variant: OrbVariant): OrbVariant {
+  return {
+    ...variant,
+    title: variant.title ? normalizeVoiceDisplayText(variant.title) : undefined,
+    text: normalizeVoiceDisplayText(variant.text),
+    voiceText: variant.voiceText ? normalizeVoiceDisplayText(variant.voiceText) : undefined,
+  }
+}
+
+function normalizePassiveDisplayNames(passives: PassiveDefinition[]): PassiveDefinition[] {
+  return passives.map((passive) => ({
+    ...passive,
+    text: normalizeVoiceDisplayText(passive.text),
+  }))
 }
 
 function normalizeVoiceDisplayText(text: string): string {
