@@ -3,39 +3,39 @@
     "nodes": {
       "start": {
         "id": "start",
-        "text": "Tu n'as pas encore ouvert les yeux. Le béton dit parking. Ta bouche dit alcool. Ta main dit cachets. À dix mètres, l'utilitaire municipal est entrouvert, et quelque chose dedans porte déjà ton nom.",
+        "text": "Tu n'as pas encore ouvert les yeux. Béton. Alcool. Cachets. L'eau goutte comme un métronome malade. À dix mètres, l'utilitaire entrouvert porte déjà ton nom.",
         "choices": [
           {
-            "label": "Ramasser le téléphone. Comprendre qui te cherche.",
+            "label": "Chercher le téléphone à l'aveugle. Garder une preuve.",
             "next": "phone",
             "important": true
           },
           {
-            "label": "Laisser le téléphone par terre. D'abord ton corps.",
-            "next": "stand",
+            "label": "Rester dans le noir. Laisser La Dose mentir.",
+            "next": "dose_first",
             "important": true,
             "effects": [
               {
                 "type": "flag",
-                "flag": "phone_left_ground"
+                "flag": "dose_heard"
               },
               {
                 "type": "clue",
-                "clue": "Zinédine laisse volontairement le téléphone de Karine par terre au réveil."
+                "clue": "Au réveil, Zinédine laisse La Dose prendre la parole avant les faits."
               },
               {
                 "type": "voice_bump",
-                "voice": "honte_publique",
+                "voice": "faim",
                 "amount": 1
               }
             ]
           },
           {
-            "label": "Regarder ce qui traîne à côté de toi.",
+            "label": "Sentir le béton: gobelet, flotte sale, métal froid.",
             "next": "ground"
           },
           {
-            "label": "Te lever sans vomir.",
+            "label": "Avaler la bile et forcer le corps debout.",
             "check": {
               "id": "wake_stand_control",
               "voice": "faim",
@@ -48,7 +48,7 @@
             "important": true
           },
           {
-            "label": "Laisser les 12 appels vibrer et aller vers l'utilitaire.",
+            "label": "Marcher vers le hayon sans lire les appels. Laisser ton corps signer.",
             "next": "end",
             "important": true,
             "effects": [
@@ -61,8 +61,21 @@
                 "flag": "karine_call_ignored"
               },
               {
+                "type": "flag",
+                "flag": "arrived_unready"
+              },
+              {
+                "type": "flag",
+                "flag": "leduc_can_frame_agitation"
+              },
+              {
                 "type": "clue",
-                "clue": "Zinédine part vers l'utilitaire sans répondre aux 12 appels de Karine."
+                "clue": "Zinédine part vers l'utilitaire sans lire les appels de Karine, encore malade et sans levier."
+              },
+              {
+                "type": "voice_bump",
+                "voice": "honte_publique",
+                "amount": 1
               }
             ]
           }
@@ -70,16 +83,16 @@
       },
       "ground": {
         "id": "ground",
-        "text": "Un gobelet vide. De l'alcool fort. Ton téléphone fissuré. Rien d'assez grave pour expliquer le trou noir. Pas encore.",
+        "text": "Un gobelet vide. De l'alcool fort. Ton téléphone fissuré. Une flaque qui goutte depuis le plafond et découpe ton visage en morceaux. Rien d'assez grave pour expliquer le trou noir. Pas encore.",
         "choices": [
           {
-            "label": "Prendre le téléphone avant qu'il redisparaisse.",
+            "label": "Prendre le téléphone avant qu'il redisparaisse sous l'eau sale.",
             "next": "phone",
             "hiddenWhenFlag": "phone_left_ground",
             "important": true
           },
           {
-            "label": "Laisser le téléphone. Pas de laisse dans la main.",
+            "label": "Laisser le téléphone sonner dans la flaque. Refuser sa laisse.",
             "next": "stand",
             "important": true,
             "effects": [
@@ -98,12 +111,12 @@
             ]
           },
           {
-            "label": "Retourner le gobelet. Savoir ce que ton corps a avalé.",
+            "label": "Retourner le gobelet. Savoir si ton corps a été utilisé.",
             "next": "cup",
             "important": true
           },
           {
-            "label": "Écraser le gobelet et avancer.",
+            "label": "Écraser le gobelet. Sauver ta honte, perdre une trace.",
             "next": "stand",
             "effects": [
               {
@@ -125,15 +138,15 @@
       },
       "cup": {
         "id": "cup",
-        "text": "Le plastique colle aux doigts. Tu connais ce geste: boire, avaler, tenir debout. Même vide, ce gobelet peut te condamner."
+        "text": "Le plastique colle aux doigts. Tu connais ce geste: boire, avaler, négocier cinq minutes de main stable. Même vide, ce gobelet peut te sauver ou te condamner. Il a exactement la taille d'une preuve qu'on préfère appeler déchet."
       },
       "cup_trace_success": {
         "id": "cup_trace_success",
-        "text": "Au fond: alcool et dépôt amer. Pas une preuve. Une méthode. Quelqu'un pouvait compter sur ton corps pour lâcher."
+        "text": "Au fond: alcool et dépôt amer. Pas une preuve propre. Une méthode. Quelqu'un pouvait compter sur ton corps pour lâcher, puis sur ta honte pour te faire jeter le récipient."
       },
       "cup_trace_failure": {
         "id": "cup_trace_failure",
-        "text": "Tu cherches une preuve. Tu trouves surtout l'envie de finir le fond. Ça suffit: ton manque est dans la scène."
+        "text": "Tu cherches une preuve. Tu trouves surtout l'envie de finir le fond. Voilà le simulateur exact: une scène de crime dans les yeux, une pharmacie basse dans la gorge, et ton corps qui vote contre toi."
       },
       "phone": {
         "id": "phone",
@@ -215,11 +228,64 @@
       },
       "karine_call": {
         "id": "karine_call",
-        "text": "\"P2. Maintenant.\" Karine coupe presque ta question. \"Tu viens, tu regardes, tu ne touches pas. Et tu ne dis pas dans quel état tu es.\""
+        "text": "\"P2. Maintenant.\" Karine coupe presque ta question. \"Tu viens, tu regardes, tu ne touches pas. Et tu ne dis pas dans quel état tu es.\"",
+        "choices": [
+          {
+            "label": "\"Je suis déjà là, et tu m'appelais avant que je revienne.\"",
+            "next": "karine_cut",
+            "important": true,
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "karine_arrival_challenged"
+              },
+              {
+                "type": "voice_bump",
+                "voice": "procedure",
+                "amount": 1
+              }
+            ]
+          },
+          {
+            "label": "\"Quel problème ? Dis le mot.\"",
+            "next": "karine_cut",
+            "important": true,
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "karine_word_pressed"
+              },
+              {
+                "type": "voice_bump",
+                "voice": "nerfs",
+                "amount": 1
+              }
+            ]
+          },
+          {
+            "label": "Ne rien demander. Respirer comme quelqu'un qu'on peut déjà discréditer.",
+            "next": "dose_first",
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "leduc_heard_wreck"
+              },
+              {
+                "type": "flag",
+                "flag": "leduc_can_frame_agitation"
+              },
+              {
+                "type": "voice_bump",
+                "voice": "honte_publique",
+                "amount": 1
+              }
+            ]
+          }
+        ]
       },
       "karine_cut": {
         "id": "karine_cut",
-        "text": "\"Pas au téléphone. Si tu as bu ou pris un truc, tu te tais. J'ai besoin de cinq minutes propres.\""
+        "text": "\"Pas au téléphone. Si tu as bu ou pris un truc, tu te tais. J'ai besoin de cinq minutes propres.\" Elle dit propres comme si quelqu'un avait déjà lavé quelque chose."
       },
       "phone_timeline_success": {
         "id": "phone_timeline_success",
@@ -231,11 +297,66 @@
       },
       "dose_first": {
         "id": "dose_first",
-        "text": "La Dose promet une main stable. Cinq minutes sans trembler. Ici, cinq minutes peuvent suffire à fabriquer une version."
+        "text": "La Dose promet une main stable. Cinq minutes sans trembler. Ici, cinq minutes peuvent suffire à fabriquer une version. Elle parle doux parce qu'elle sait que tu as déjà payé pire pour moins que ça.",
+        "choices": [
+          {
+            "label": "Croire la promesse. Gagner la main, perdre une couche de toi.",
+            "next": "stand",
+            "important": true,
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "dose_bargained"
+              },
+              {
+                "type": "flag",
+                "flag": "dose_heard"
+              },
+              {
+                "type": "voice_bump",
+                "voice": "faim",
+                "amount": 1
+              }
+            ]
+          },
+          {
+            "label": "Lui dire non. Garder le tremblement comme témoin.",
+            "next": "stand",
+            "important": true,
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "dose_refused_at_wake"
+              },
+              {
+                "type": "voice_bump",
+                "voice": "procedure",
+                "amount": 1
+              }
+            ]
+          },
+          {
+            "label": "Ramasser le téléphone avant que la voix gagne.",
+            "next": "phone",
+            "hiddenWhenFlag": "phone_checked",
+            "important": true
+          }
+        ]
       },
       "stand": {
         "id": "stand",
         "text": "Tu te lèves. Le parking penche. L'utilitaire attend plus loin, entrouvert comme une bouche. Tu n'as pas l'impression d'arriver sur une scène; tu as l'impression qu'elle t'a gardé une place."
+      },
+      "end": {
+        "id": "end",
+        "text": "Karine Leduc t'attend devant l'utilitaire blanc. Hayon mal fermé. Néon qui grésille au-dessus, eau qui tombe derrière toi, téléphone encore chaud dans la main ou abandonné par terre. Tu ne marches pas vers une scène: tu entres dans la version où quelqu'un t'a déjà placé.",
+        "choices": [
+          {
+            "label": "Aller vers elle et payer ce que tu as choisi.",
+            "close": true,
+            "important": true
+          }
+        ]
       }
     }
   },
@@ -243,7 +364,91 @@
     "nodes": {
       "start": {
         "id": "start",
-        "text": "\"On va appeler ça un incident de chantier.\" Karine bloque l'utilitaire. \"Pas un mort. Pas encore. Tu touches à rien. J'ai six minutes avant que deux fenêtres filment ton nom au mauvais endroit.\""
+        "text": "\"On va appeler ça un incident de chantier.\" Karine bloque l'utilitaire. \"Pas un mort. Pas encore. Tu touches à rien. J'ai six minutes avant que deux fenêtres filment ton nom au mauvais endroit.\"",
+        "choices": [
+          {
+            "label": "\"Tu m'appelais avant que je sois réveillé.\"",
+            "next": "dead_name",
+            "requiresFlag": "karine_called_before_wake",
+            "important": true,
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "karine_timeline_pressed"
+              },
+              {
+                "type": "voice_bump",
+                "voice": "procedure",
+                "amount": 1
+              }
+            ]
+          },
+          {
+            "label": "\"Pas un mort pas encore ? Tu viens de choisir le mot.\"",
+            "next": "leduc_frame",
+            "important": true,
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "leduc_language_attacked"
+              },
+              {
+                "type": "voice_bump",
+                "voice": "nerfs",
+                "amount": 1
+              }
+            ]
+          },
+          {
+            "label": "\"Pourquoi moi ?\"",
+            "next": "why_zinedine",
+            "important": true,
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "asks_why_zinedine"
+              },
+              {
+                "type": "voice_bump",
+                "voice": "honte_publique",
+                "amount": 1
+              }
+            ]
+          },
+          {
+            "label": "\"Montre-moi le coffre. Maintenant.\"",
+            "next": "trunk_block",
+            "important": true,
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "trunk_access_negotiated"
+              },
+              {
+                "type": "voice_bump",
+                "voice": "nerfs",
+                "amount": 1
+              }
+            ]
+          },
+          {
+            "label": "Ne rien dire. Garder la bile derrière les dents.",
+            "next": "dose_smell",
+            "requiresFlag": "arrived_unready",
+            "important": true,
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "leduc_saw_withdrawal"
+              },
+              {
+                "type": "voice_bump",
+                "voice": "faim",
+                "amount": 1
+              }
+            ]
+          }
+        ]
       },
       "leduc_frame": {
         "id": "leduc_frame",

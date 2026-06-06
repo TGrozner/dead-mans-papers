@@ -13,7 +13,7 @@ import { createGameUi } from './game/ui'
 import { type DebugEntry, isDebugEnabled, setDebugEnabled } from './game/debug'
 import { trapFocus } from './game/focus'
 import type { InteractionTarget } from './game/types'
-import { AmbientAudioController, versionedAudioAsset } from './game/audio'
+import { AmbientAudioController } from './game/audio'
 
 const appRoot = getAppRoot()
 const INITIAL_MOBILE_SCENE_STOP = 0.5
@@ -162,10 +162,7 @@ const refs = {
 }
 new AmbientAudioController({
   button: refs.audioToggle,
-  sources: [
-    { format: 'ogg', src: versionedAudioAsset('p2-ambience-loop.ogg') },
-    { format: 'mp3', src: versionedAudioAsset('p2-ambience-loop.mp3') },
-  ],
+  volume: 0.22,
 })
 const ui = createGameUi({
   engine,

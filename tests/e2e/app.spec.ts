@@ -605,7 +605,7 @@ test('starts with a bounded tutorial and opens the first dialogue', async ({ pag
   await expect(page.getByRole('dialog', { name: "Avant d'ouvrir les yeux" })).toBeHidden()
   await expect(page.locator('.dialogue-root')).toContainText('Parking P2')
   await expect(page.locator('.dialogue-root')).toContainText("Tu n'as pas encore ouvert les yeux")
-  await expect(page.getByRole('button', { name: "Laisser les 12 appels vibrer et aller vers l'utilitaire." })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Marcher vers le hayon sans lire les appels. Laisser ton corps signer.' })).toBeVisible()
   await page.keyboard.press('Tab')
   await expectFocusInside(page, '#dialogue-root')
 })
@@ -614,10 +614,10 @@ test('lets the player push straight from wake-up toward the utility van', async 
   await gotoApp(page)
 
   await page.getByRole('button', { name: 'Commencer' }).click()
-  await page.getByRole('button', { name: "Laisser les 12 appels vibrer et aller vers l'utilitaire." }).click()
-  await expect(page.locator('.dialogue-root')).toContainText("Karine Leduc t'attend devant l'utilitaire")
+  await page.getByRole('button', { name: 'Marcher vers le hayon sans lire les appels. Laisser ton corps signer.' }).click()
+  await expect(page.locator('.dialogue-root')).toContainText("Karine Leduc t'attend devant l'utilitaire blanc")
   await expect(page.locator('#case-momentum')).toContainText('Angles contre toi')
-  await page.getByRole('button', { name: 'Aller vers elle.' }).click()
+  await page.getByRole('button', { name: 'Aller vers elle et payer ce que tu as choisi.' }).click()
   await expect(page.locator('#dialogue-root')).toBeHidden()
 
   await clickScenePoint(page, scenePointForHotspot('utility_van').x, scenePointForHotspot('utility_van').y)
@@ -633,7 +633,7 @@ test('lets the player push straight from wake-up toward the utility van', async 
         }
         const flags = savedPayload.state?.flags ?? {}
 
-        return flags.woke_up === true && flags.karine_call_ignored === true
+        return flags.woke_up === true && flags.karine_call_ignored === true && flags.arrived_unready === true
       }, saveKey)
     })
     .toBe(true)

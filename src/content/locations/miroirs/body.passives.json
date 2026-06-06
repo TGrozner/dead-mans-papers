@@ -35,6 +35,62 @@
     "text": "Ferme encore les yeux. Une gorgée, un cachet, et le monde redeviendra assez simple pour mentir dedans."
   },
   {
+    "id": "miroirs_wake__arrived_unready_shame",
+    "contextId": "miroirs/wake-up",
+    "location": "miroirs",
+    "subject": "blind-arrival",
+    "channel": "dialogue",
+    "voice": "honte_publique",
+    "requiresFlag": "karine_call_ignored",
+    "minScore": 2,
+    "once": true,
+    "priority": 115,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "start"
+    },
+    "text": "Tu arrives sans chronologie, sans objet en main, avec ton haleine comme première pièce du dossier. Karine n'a même pas besoin d'inventer ta faiblesse: tu viens de la lui amener."
+  },
+  {
+    "id": "miroirs_wake__dose_bargain_at_van",
+    "contextId": "miroirs/wake-up",
+    "location": "miroirs",
+    "subject": "dose-bargain",
+    "channel": "dialogue",
+    "parasite": "dose",
+    "requiresFlag": "dose_heard",
+    "once": true,
+    "priority": 114,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "start"
+    },
+    "text": "Voilà. Main presque droite, regard presque stable. Presque est un luxe, ici. Maintenant avance avant que le prix remonte."
+  },
+  {
+    "id": "miroirs_wake__timeline_loaded",
+    "contextId": "miroirs/wake-up",
+    "location": "miroirs",
+    "subject": "phone-timeline",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "requiresFlag": "karine_called_before_wake",
+    "minScore": 2,
+    "once": true,
+    "priority": 113,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "start"
+    },
+    "text": "Tu as une ligne de force: Karine appelait avant ton retour au monde. Une question bien posée peut devenir plus solide que ton corps."
+  },
+  {
     "id": "miroirs_body__ventre_before_morals",
     "contextId": "miroirs/body",
     "location": "miroirs",
