@@ -13,6 +13,7 @@ import { createGameUi } from './game/ui'
 import { type DebugEntry, isDebugEnabled, setDebugEnabled } from './game/debug'
 import { trapFocus } from './game/focus'
 import type { InteractionTarget } from './game/types'
+import { AmbientAudioController, versionedAudioAsset } from './game/audio'
 
 const appRoot = getAppRoot()
 const INITIAL_MOBILE_SCENE_STOP = 0.5
@@ -20,13 +21,18 @@ const INITIAL_MOBILE_SCENE_STOP = 0.5
 appRoot.innerHTML = `
   <section class="game-shell" aria-label="Dead Man's Papers">
     <header class="topbar">
-      <div>
+      <div class="topbar-title">
         <p class="kicker">Dead Man's Papers</p>
         <h1>Parking P2</h1>
       </div>
-      <button id="case-toggle" class="case-stamp case-toggle" type="button" aria-controls="case-panel" aria-expanded="true">
-        Dossier ouvert
-      </button>
+      <div class="topbar-actions">
+        <button id="audio-toggle" class="case-stamp audio-toggle" type="button" aria-pressed="true">
+          Son
+        </button>
+        <button id="case-toggle" class="case-stamp case-toggle" type="button" aria-controls="case-panel" aria-expanded="true">
+          Dossier ouvert
+        </button>
+      </div>
     </header>
 
     <div class="play-area">
@@ -121,7 +127,7 @@ let tutorialOpen = false
 let tutorialRestoreFocusTo: HTMLElement | undefined
 const refs = {
   dialogueRoot: getRequiredElement<HTMLDivElement>('#dialogue-root'),
-  topbar: getRequiredElement<HTMLElement>('.topbar'),
+  topbarTitle: getRequiredElement<HTMLElement>('.topbar-title'),
   prompt: getRequiredElement<HTMLButtonElement>('#interaction-prompt'),
   promptLabel: getRequiredElement<HTMLSpanElement>('#interaction-label'),
   toastRoot: getRequiredElement<HTMLDivElement>('#passive-toast-root'),
@@ -137,10 +143,18 @@ const refs = {
   resetButton: getRequiredElement<HTMLButtonElement>('#reset-save'),
   casePanel: getRequiredElement<HTMLElement>('#case-panel'),
   caseToggle: getRequiredElement<HTMLButtonElement>('#case-toggle'),
+  audioToggle: getRequiredElement<HTMLButtonElement>('#audio-toggle'),
   debugRoot: getRequiredElement<HTMLDivElement>('#debug-log'),
   debugList: getRequiredElement<HTMLOListElement>('#debug-log-list'),
   debugDisable: getRequiredElement<HTMLButtonElement>('#debug-log-disable'),
 }
+new AmbientAudioController({
+  button: refs.audioToggle,
+  sources: [
+    { format: 'ogg', src: versionedAudioAsset('p2-ambience-loop.ogg') },
+    { format: 'mp3', src: versionedAudioAsset('p2-ambience-loop.mp3') },
+  ],
+})
 const ui = createGameUi({
   engine,
   root: refs.dialogueRoot,
@@ -335,7 +349,8 @@ function syncModalState(): void {
 
   document.body.classList.toggle('modal-open', modalOpen)
   document.body.classList.toggle('tutorial-open', tutorialOpen)
-  setBackgroundInert(refs.topbar, modalOpen)
+  setBackgroundInert(refs.topbarTitle, modalOpen)
+  setBackgroundInert(refs.caseToggle, modalOpen)
   setBackgroundInert(refs.playArea, modalOpen)
   setBackgroundInert(refs.dialogueRoot, tutorialOpen)
 }

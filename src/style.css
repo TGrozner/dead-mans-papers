@@ -62,7 +62,8 @@ body.dialogue-open::before {
   pointer-events: auto;
 }
 
-body.modal-open .topbar,
+body.modal-open .topbar-title,
+body.modal-open .case-toggle,
 body.modal-open .play-area,
 body.tutorial-open .dialogue-root {
   pointer-events: none;
@@ -110,6 +111,18 @@ button {
   min-width: 0;
 }
 
+.topbar-title {
+  flex: 1 1 auto;
+}
+
+.topbar-actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: end;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
 .kicker,
 .panel-label {
   margin: 0;
@@ -147,6 +160,22 @@ h1 {
 .case-toggle {
   cursor: pointer;
   touch-action: manipulation;
+}
+
+.audio-toggle {
+  position: relative;
+  z-index: 35;
+  min-width: 64px;
+  border-color: var(--cold-light);
+  cursor: pointer;
+  touch-action: manipulation;
+  transform: rotate(-1deg);
+}
+
+.audio-toggle--muted {
+  color: rgba(244, 236, 216, 0.72);
+  border-color: var(--line);
+  background: rgba(13, 17, 23, 0.52);
 }
 
 .play-area {
@@ -288,6 +317,7 @@ h1 {
 .interaction-prompt:focus-visible,
 .choice-button:focus-visible,
 .case-toggle:focus-visible,
+.audio-toggle:focus-visible,
 .dialogue-close:focus-visible,
 .orb-close:focus-visible,
 .reset-button:focus-visible,
@@ -979,6 +1009,10 @@ h1 {
     gap: 8px 10px;
   }
 
+  .topbar-actions {
+    gap: 6px;
+  }
+
   .kicker,
   .panel-label {
     font-size: 10px;
@@ -993,6 +1027,11 @@ h1 {
     padding: 6px 9px;
     font-size: 11px;
     transform: rotate(0.8deg);
+  }
+
+  .audio-toggle {
+    min-width: 54px;
+    transform: rotate(-0.7deg);
   }
 
   .stage-wrap {
@@ -1082,6 +1121,11 @@ h1 {
   .topbar {
     align-items: flex-start;
     flex-wrap: nowrap;
+  }
+
+  .topbar-actions {
+    flex-wrap: wrap;
+    align-items: flex-start;
   }
 
   h1 {
