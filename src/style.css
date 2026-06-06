@@ -434,6 +434,11 @@ h1 {
   flex: 0 0 auto;
 }
 
+.case-section--momentum,
+.case-section--leads {
+  flex: 0 0 auto;
+}
+
 .case-section--clues,
 .case-section--voices {
   display: flex;
@@ -458,14 +463,186 @@ h1 {
   line-height: 1.38;
 }
 
+.case-momentum {
+  --case-evidence-progress: 0%;
+  --case-pressure-progress: 0%;
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.case-gauge-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.case-meter {
+  position: relative;
+  min-width: 0;
+  min-height: 54px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 5px 8px;
+  align-items: end;
+  padding: 7px 8px 9px;
+  border: 1px solid rgba(220, 235, 215, 0.16);
+  border-radius: 3px;
+  background: rgba(13, 17, 23, 0.36);
+  overflow: hidden;
+}
+
+.case-meter span {
+  min-width: 0;
+  color: rgba(220, 235, 215, 0.66);
+  font-family: var(--mono);
+  font-size: 9px;
+  line-height: 1.15;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.case-meter strong {
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 15px;
+  line-height: 1;
+}
+
+.case-meter i {
+  grid-column: 1 / -1;
+  height: 4px;
+  background: rgba(220, 235, 215, 0.14);
+}
+
+.case-meter i::before {
+  display: block;
+  width: var(--case-evidence-progress);
+  height: 100%;
+  content: "";
+  background: var(--cold-light);
+}
+
+.case-meter--pressure {
+  border-color: rgba(212, 93, 89, 0.3);
+}
+
+.case-meter--pressure i::before {
+  width: var(--case-pressure-progress);
+  background: var(--danger);
+}
+
+.case-step-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.case-step {
+  min-width: 0;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border: 1px solid rgba(220, 235, 215, 0.1);
+  color: rgba(220, 235, 215, 0.52);
+  background: rgba(18, 24, 32, 0.34);
+  font-size: 10.5px;
+  line-height: 1.15;
+}
+
+.case-step::before {
+  flex: 0 0 7px;
+  width: 7px;
+  height: 7px;
+  content: "";
+  background: rgba(220, 235, 215, 0.22);
+}
+
+.case-step span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.case-step--current {
+  border-color: rgba(215, 168, 75, 0.56);
+  color: var(--paper);
+  background: rgba(215, 168, 75, 0.12);
+}
+
+.case-step--current::before {
+  background: var(--brass);
+  box-shadow: 0 0 10px rgba(215, 168, 75, 0.72);
+}
+
+.case-step--done {
+  border-color: rgba(42, 114, 129, 0.42);
+  color: rgba(220, 235, 215, 0.78);
+  background: rgba(42, 114, 129, 0.12);
+}
+
+.case-step--done::before {
+  background: var(--cold-light);
+}
+
+.case-heatline {
+  margin: 0;
+  color: rgba(244, 236, 216, 0.82);
+  font-size: 12px;
+  line-height: 1.32;
+}
+
+.lead-list {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lead-item {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+  padding: 7px 8px;
+  border-left: 3px solid rgba(220, 235, 215, 0.18);
+  background: rgba(13, 17, 23, 0.28);
+}
+
+.lead-item--hot {
+  border-left-color: var(--brass);
+  background:
+    linear-gradient(90deg, rgba(215, 168, 75, 0.13), rgba(13, 17, 23, 0.24)),
+    rgba(13, 17, 23, 0.28);
+}
+
+.lead-item span {
+  min-width: 0;
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.lead-item small {
+  min-width: 0;
+  color: rgba(220, 235, 215, 0.72);
+  font-size: 12px;
+  line-height: 1.28;
+  overflow-wrap: anywhere;
+}
+
 .clue-list {
-  flex: 1 1 auto;
-  min-height: 0;
+  flex: 0 0 auto;
   margin: 7px 0 0;
   padding: 0;
   list-style: none;
-  overflow: auto;
-  padding-right: 4px;
+  overflow: visible;
   overscroll-behavior: contain;
   scrollbar-color: rgba(215, 168, 75, 0.58) rgba(18, 24, 32, 0.42);
   scrollbar-width: thin;
@@ -1049,6 +1226,27 @@ h1 {
     font-size: 15px;
   }
 
+  .case-gauge-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .case-meter {
+    min-height: 58px;
+  }
+
+  .case-step-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .case-step {
+    min-height: 32px;
+    font-size: 11px;
+  }
+
+  .lead-item {
+    padding: 8px;
+  }
+
   .clue-list > li {
     font-size: 13.5px;
   }
@@ -1381,7 +1579,7 @@ h1 {
   }
 
   .case-section--clues {
-    flex: 1 1 auto;
+    flex: 0 0 auto;
   }
 
   .case-section--voices {

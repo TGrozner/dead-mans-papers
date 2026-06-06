@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import type { MirrorsGameBridge } from '../createMirrorsGame'
 import { debugLog } from '../debug'
+import type { GameState } from '../types'
 import {
   MIRRORS_HOTSPOTS,
   MIRRORS_ORB_SPOTS,
@@ -67,6 +68,7 @@ export class MirrorsScene extends Phaser.Scene {
   private lastLoggedActiveTarget?: string
   private lastNotifiedInteractionTarget?: string
   private targetAvailabilityKey?: string
+  private priorityTargetKeys = new Set<string>()
   private playerShadow?: Phaser.GameObjects.Graphics
   private idleActors: Phaser.GameObjects.Sprite[] = []
 
@@ -94,6 +96,7 @@ export class MirrorsScene extends Phaser.Scene {
     this.createForegroundOccluders()
     this.createHotspots()
     this.createOrbs()
+    this.syncInteractionTargetAvailability()
     this.auditInteractionTargets()
     this.createInput()
     this.configureCamera()
@@ -1024,9 +1027,16 @@ export class MirrorsScene extends Phaser.Scene {
 
   private syncInteractionTargetAvailability(): void {
     const state = this.bridge.getState()
+    const priorityTargetKeys = this.getPriorityTargetKeys(state)
     const nextAvailabilityKey = [
-      ...this.hotspots.map((hotspot) => `hotspot:${hotspot.id}:${this.isHotspotInteractable(hotspot, state) ? '1' : '0'}`),
-      ...this.orbSpots.map((orb) => `orb:${orb.id}:${this.isOrbInteractable(orb, state) ? '1' : '0'}`),
+      ...this.hotspots.map((hotspot) => {
+        const key = `hotspot:${hotspot.id}`
+        return `${key}:${this.isHotspotInteractable(hotspot, state) ? '1' : '0'}:${priorityTargetKeys.has(key) ? 'p' : '-'}`
+      }),
+      ...this.orbSpots.map((orb) => {
+        const key = `orb:${orb.id}`
+        return `${key}:${this.isOrbInteractable(orb, state) ? '1' : '0'}:${priorityTargetKeys.has(key) ? 'p' : '-'}`
+      }),
     ].join('|')
 
     if (nextAvailabilityKey === this.targetAvailabilityKey) {
@@ -1034,7 +1044,9 @@ export class MirrorsScene extends Phaser.Scene {
     }
 
     this.targetAvailabilityKey = nextAvailabilityKey
+    this.priorityTargetKeys = priorityTargetKeys
     this.updateInteractionMarkerVisibility(state)
+    this.updatePointerTargetMarkerScale()
 
     if (this.activePointerTarget && !this.isPointerTargetInteractable(this.activePointerTarget, state)) {
       this.setActivePointerTarget(undefined)
@@ -1139,12 +1151,24 @@ export class MirrorsScene extends Phaser.Scene {
       : undefined
 
     this.hotspots.forEach((hotspot) => {
-      hotspot.marker?.setScale(activeKey === `hotspot:${hotspot.id}` ? 1.08 : 1)
+      const key = `hotspot:${hotspot.id}`
+      hotspot.marker?.setScale(this.getMarkerScale(key, activeKey))
     })
 
     this.orbSpots.forEach((orb) => {
-      orb.marker?.setScale(activeKey === `orb:${orb.id}` ? 1.08 : 1)
+      const key = `orb:${orb.id}`
+      orb.marker?.setScale(this.getMarkerScale(key, activeKey))
     })
+  }
+
+  private getMarkerScale(key: string, activeKey: string | undefined): number {
+    const priorityScale = this.priorityTargetKeys.has(key) ? 1.16 : 1
+
+    if (activeKey === key) {
+      return priorityScale + 0.1
+    }
+
+    return priorityScale
   }
 
   private openPointerTarget(target: PointerTarget): void {
@@ -1268,6 +1292,64 @@ export class MirrorsScene extends Phaser.Scene {
     return orb ? this.isOrbInteractable(orb, state) : false
   }
 
+  private getPriorityTargetKeys(state: GameState): Set<string> {
+    const keys = new Set<string>()
+    const { completedChecks, flags } = state
+    const addHotspot = (id: string) => keys.add(`hotspot:${id}`)
+    const addOrb = (id: string) => keys.add(`orb:${id}`)
+
+    if (!flags.phone_checked) {
+      addOrb('miroirs_orb_phone')
+    }
+
+    if (!flags.woke_up) {
+      addOrb('miroirs_orb_neon')
+      return keys
+    }
+
+    if (!flags.trunk_opened) {
+      addHotspot('utility_van')
+      addHotspot('leduc')
+      return keys
+    }
+
+    if (!flags.papers_seen || !flags.page_read) {
+      addHotspot('utility_van')
+      addOrb('miroirs_orb_body')
+      return keys
+    }
+
+    if (!completedChecks.camera_dead_angle) {
+      addOrb('miroirs_orb_camera')
+      addHotspot('utility_van')
+    }
+
+    if (!completedChecks.badge_access_chain) {
+      addOrb('miroirs_orb_technical_room')
+      addHotspot('utility_van')
+    }
+
+    if (!completedChecks.hami_prescription_line) {
+      addHotspot('utility_van')
+    }
+
+    if (
+      completedChecks.camera_dead_angle &&
+      completedChecks.badge_access_chain &&
+      completedChecks.hami_prescription_line
+    ) {
+      if (!hasAmarConfrontation(flags)) {
+        addHotspot('amar')
+      }
+
+      if (!hasSofianeConfrontation(flags)) {
+        addHotspot('sofiane')
+      }
+    }
+
+    return keys
+  }
+
   private clearSelectionHalo(): void {
     if (!this.selectionHalo) {
       return
@@ -1326,4 +1408,18 @@ export class MirrorsScene extends Phaser.Scene {
       },
     })
   }
+}
+
+function hasAmarConfrontation(flags: GameState['flags']): boolean {
+  return Boolean(flags.amar_confronted || flags.amar_vendor_checked || flags.amar_last_warning_checked)
+}
+
+function hasSofianeConfrontation(flags: GameState['flags']): boolean {
+  return Boolean(
+    flags.sofiane_confronted ||
+      flags.sofiane_saw_van ||
+      flags.sofiane_saw_returning_worker ||
+      flags.sofiane_trusts_wreck ||
+      (flags.sofiane_fled && flags.page_read && (flags.hami_line_checked || flags.badge_chain_checked)),
+  )
 }

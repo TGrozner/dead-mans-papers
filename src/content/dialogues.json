@@ -36,6 +36,21 @@
             "label": "Chercher le téléphone.",
             "next": "phone",
             "important": true
+          },
+          {
+            "label": "Laisser les 12 appels vibrer et aller vers l'utilitaire.",
+            "next": "end",
+            "important": true,
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "karine_call_ignored"
+              },
+              {
+                "type": "clue",
+                "clue": "Zinédine part vers l'utilitaire sans répondre aux 12 appels de Karine."
+              }
+            ]
           }
         ]
       },

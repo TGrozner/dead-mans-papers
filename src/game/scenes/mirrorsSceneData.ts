@@ -5,8 +5,7 @@ export const MIRRORS_SCENE_HEIGHT = 720
 
 // Interaction targets are authored directly in the 1280x720 scene space.
 // Do not pass these values through the old 960x576 layout conversion.
-const WITNESS_REQUIRED_FLAGS = ['page_read'] as const
-const WITNESS_REQUIRED_CHECKS = ['camera_dead_angle', 'badge_access_chain', 'hami_prescription_line'] as const
+const WITNESS_REQUIRED_FLAGS = ['trunk_opened'] as const
 
 export interface MirrorsHotspotDefinition {
   id: string
@@ -58,7 +57,6 @@ export const MIRRORS_HOTSPOTS = [
     radius: 102.5,
     tapRadius: 72.5,
     requiredFlags: WITNESS_REQUIRED_FLAGS,
-    requiredCompletedChecks: WITNESS_REQUIRED_CHECKS,
   },
   {
     id: 'sofiane',
@@ -69,7 +67,6 @@ export const MIRRORS_HOTSPOTS = [
     radius: 107.5,
     tapRadius: 75,
     requiredFlags: WITNESS_REQUIRED_FLAGS,
-    requiredCompletedChecks: WITNESS_REQUIRED_CHECKS,
   },
 ] satisfies readonly MirrorsHotspotDefinition[]
 

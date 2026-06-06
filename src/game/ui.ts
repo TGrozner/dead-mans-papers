@@ -33,10 +33,78 @@ interface GameUiOptions {
   promptLabel: HTMLSpanElement
   toastRoot: HTMLDivElement
   objective: HTMLParagraphElement
+  caseMomentum: HTMLDivElement
+  leadList: HTMLOListElement
   clueList: HTMLUListElement
   voiceList: HTMLDivElement
   onStateChanged: (state: GameState) => void
 }
+
+interface CaseStep {
+  id: string
+  label: string
+  isDone: (state: GameState) => boolean
+}
+
+interface ActiveLead {
+  label: string
+  detail: string
+  hot?: boolean
+}
+
+const CASE_STEPS: CaseStep[] = [
+  {
+    id: 'wake',
+    label: 'Reprendre corps',
+    isDone: (state) => Boolean(state.flags.woke_up),
+  },
+  {
+    id: 'trunk',
+    label: 'Forcer le coffre',
+    isDone: (state) => Boolean(state.flags.trunk_opened),
+  },
+  {
+    id: 'name',
+    label: 'Nom sur Ahmed',
+    isDone: (state) => Boolean(state.flags.papers_seen || state.flags.identity_chosen),
+  },
+  {
+    id: 'page',
+    label: "Page d'Ahmed",
+    isDone: (state) => Boolean(state.flags.page_read),
+  },
+  {
+    id: 'camera',
+    label: 'Caméra P2',
+    isDone: (state) => Boolean(state.completedChecks.camera_dead_angle),
+  },
+  {
+    id: 'badge',
+    label: 'Badge / accès',
+    isDone: (state) => Boolean(state.completedChecks.badge_access_chain),
+  },
+  {
+    id: 'hami',
+    label: 'Hami / ordonnance',
+    isDone: (state) => Boolean(state.completedChecks.hami_prescription_line),
+  },
+  {
+    id: 'witnesses',
+    label: 'Amar + Sofiane',
+    isDone: (state) => hasAmarConfrontation(state.flags) && hasSofianeConfrontation(state.flags),
+  },
+]
+
+const PRESSURE_FLAGS = [
+  'karine_call_ignored',
+  'leduc_knows_addiction',
+  'leduc_saw_hand',
+  'leduc_can_use_addiction',
+  'leduc_saw_withdrawal',
+  'wake_body_exposed',
+  'cup_craving_exposed',
+  'leduc_can_frame_agitation',
+] as const
 
 export function createGameUi(options: GameUiOptions) {
   let activeDialogue: RenderedDialogue | undefined
@@ -46,6 +114,8 @@ export function createGameUi(options: GameUiOptions) {
 
   function syncState(): void {
     renderObjective(options.engine.state, options.objective)
+    renderCaseMomentum(options.engine.state, options.caseMomentum)
+    renderActiveLeads(options.engine.state, options.leadList)
     renderClues(options.engine.state, options.clueList)
     renderVoices(options.engine.state, options.voiceList)
     options.onStateChanged(options.engine.state)
@@ -446,6 +516,233 @@ function getPassiveChannel(passive: PassiveTrigger): { name: string; color: stri
 
 function renderObjective(state: GameState, objective: HTMLParagraphElement): void {
   objective.textContent = getObjective(state)
+}
+
+function renderCaseMomentum(state: GameState, caseMomentum: HTMLDivElement): void {
+  const completedSteps = CASE_STEPS.filter((step) => step.isDone(state)).length
+  const evidenceProgress = Math.round((completedSteps / CASE_STEPS.length) * 100)
+  const pressureCount = PRESSURE_FLAGS.filter((flag) => state.flags[flag]).length
+  const pressureProgress = Math.round((Math.min(pressureCount, 6) / 6) * 100)
+
+  caseMomentum.dataset.evidenceCount = String(completedSteps)
+  caseMomentum.dataset.pressureCount = String(pressureCount)
+  caseMomentum.style.setProperty('--case-evidence-progress', `${evidenceProgress}%`)
+  caseMomentum.style.setProperty('--case-pressure-progress', `${pressureProgress}%`)
+  caseMomentum.innerHTML = `
+    <div class="case-gauge-grid">
+      <div class="case-meter case-meter--evidence">
+        <span>Appuis</span>
+        <strong>${completedSteps}/${CASE_STEPS.length}</strong>
+        <i aria-hidden="true"></i>
+      </div>
+      <div class="case-meter case-meter--pressure">
+        <span>Angles contre toi</span>
+        <strong>${pressureCount}</strong>
+        <i aria-hidden="true"></i>
+      </div>
+    </div>
+    <ol class="case-step-list">
+      ${CASE_STEPS.map((step, index) => {
+        const done = step.isDone(state)
+        const current = !done && CASE_STEPS.slice(0, index).every((previousStep) => previousStep.isDone(state))
+
+        return `
+          <li class="case-step ${done ? 'case-step--done' : ''} ${current ? 'case-step--current' : ''}">
+            <span>${escapeHtml(step.label)}</span>
+          </li>
+        `
+      }).join('')}
+    </ol>
+    <p class="case-heatline">${escapeHtml(getCaseHeatline(completedSteps, pressureCount, state))}</p>
+  `
+}
+
+function getCaseHeatline(completedSteps: number, pressureCount: number, state: GameState): string {
+  if (!state.flags.woke_up) {
+    return "Karine a déjà appelé. Ton premier geste décide l'état dans lequel elle va te raconter."
+  }
+
+  if (pressureCount > completedSteps) {
+    return 'Karine a plus de matière contre toi que toi contre la scène.'
+  }
+
+  if (!state.flags.page_read && state.flags.trunk_opened) {
+    return "Le coffre est ouvert, mais la vraie prise est encore dans la doublure."
+  }
+
+  if (completedSteps >= 7 && (!hasAmarConfrontation(state.flags) || !hasSofianeConfrontation(state.flags))) {
+    return 'Les preuves sont assez chaudes pour ouvrir les témoins.'
+  }
+
+  if (completedSteps === CASE_STEPS.length) {
+    return 'La version officielle n’est plus seule dans le parking.'
+  }
+
+  return 'Chaque appui réduit la place où Karine peut ranger ton trou noir.'
+}
+
+function renderActiveLeads(state: GameState, leadList: HTMLOListElement): void {
+  const leads = getActiveLeads(state).slice(0, 3)
+  const leadDocument = leadList.ownerDocument
+  leadList.innerHTML = ''
+
+  leads.forEach((lead) => {
+    const item = leadDocument.createElement('li')
+    item.className = lead.hot ? 'lead-item lead-item--hot' : 'lead-item'
+    item.innerHTML = `
+      <span>${escapeHtml(lead.label)}</span>
+      <small>${escapeHtml(lead.detail)}</small>
+    `
+    leadList.append(item)
+  })
+}
+
+function getActiveLeads(state: GameState): ActiveLead[] {
+  const { completedChecks, flags } = state
+
+  if (!flags.woke_up) {
+    return [
+      {
+        label: 'Téléphone fissuré',
+        detail: 'Karine a laissé 12 appels avant même que tu tiennes debout.',
+        hot: true,
+      },
+      {
+        label: 'Gobelet',
+        detail: 'Le plastique peut devenir honte, preuve ou dette chimique.',
+      },
+      {
+        label: 'Corps debout',
+        detail: 'Le premier check donne à Karine plus ou moins de prise.',
+      },
+    ]
+  }
+
+  if (!flags.trunk_opened) {
+    return [
+      {
+        label: 'Utilitaire municipal',
+        detail: "Forcer Karine à ouvrir avant qu'elle fixe le mot incident.",
+        hot: true,
+      },
+      {
+        label: 'Karine Leduc',
+        detail: "Ses appels et ses mots propres peuvent devenir des contradictions.",
+      },
+    ]
+  }
+
+  if (!flags.papers_seen) {
+    return [
+      {
+        label: 'Nom sur le mort',
+        detail: 'Regarder ce que la scène a planté sur Ahmed.',
+        hot: true,
+      },
+      {
+        label: 'Corps sans carnet',
+        detail: "L'absence d'objets parle autant que le coffre.",
+      },
+    ]
+  }
+
+  if (!flags.identity_chosen) {
+    return [
+      {
+        label: 'Posture',
+        detail: 'Choisir comment porter Zinédine Saïdi quand le papier parle plus propre que toi.',
+        hot: true,
+      },
+    ]
+  }
+
+  if (!flags.page_found) {
+    return [
+      {
+        label: 'Fouille du coffre',
+        detail: 'La page sort même si le corps te trahit, mais Karine peut le voir.',
+        hot: true,
+      },
+      {
+        label: 'Papiers',
+        detail: 'Badge, ordonnance, photo: trois façons de te rendre administrativement utile.',
+      },
+      {
+        label: 'Carnet absent',
+        detail: "Ahmed notait trop de choses pour disparaître sans manque.",
+      },
+    ]
+  }
+
+  if (!flags.page_read) {
+    return [
+      {
+        label: "Page d'Ahmed",
+        detail: 'Caméra morte, badge chantier, Hami, Amar, Sofiane: lis la prise.',
+        hot: true,
+      },
+    ]
+  }
+
+  const evidenceLeads: ActiveLead[] = []
+
+  if (!completedChecks.camera_dead_angle) {
+    evidenceLeads.push({
+      label: 'Caméra P2',
+      detail: "Comprendre pourquoi l'angle mort a été choisi.",
+      hot: true,
+    })
+  }
+
+  if (!completedChecks.badge_access_chain) {
+    evidenceLeads.push({
+      label: 'Badge / accès',
+      detail: 'Relier badge chantier, badge municipal et lecteur P2.',
+      hot: true,
+    })
+  }
+
+  if (!completedChecks.hami_prescription_line) {
+    evidenceLeads.push({
+      label: 'Hami / ordonnance',
+      detail: 'Lire ce que La Dose protège trop vite.',
+      hot: true,
+    })
+  }
+
+  if (evidenceLeads.length > 0) {
+    return evidenceLeads
+  }
+
+  const witnessLeads: ActiveLead[] = []
+
+  if (!hasAmarConfrontation(flags)) {
+    witnessLeads.push({
+      label: 'Amar',
+      detail: "L'ancien gardien peut relier Ahmed, badges et dates.",
+      hot: true,
+    })
+  }
+
+  if (!hasSofianeConfrontation(flags)) {
+    witnessLeads.push({
+      label: 'Sofiane',
+      detail: "La palissade a vu l'utilitaire avant le matin.",
+      hot: true,
+    })
+  }
+
+  if (witnessLeads.length > 0) {
+    return witnessLeads
+  }
+
+  return [
+    {
+      label: 'Version concurrente',
+      detail: 'Tu as assez de prises pour contredire le dossier propre de Karine.',
+      hot: true,
+    },
+  ]
 }
 
 function getObjective(state: GameState): string {

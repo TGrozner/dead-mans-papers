@@ -62,6 +62,16 @@ appRoot.innerHTML = `
           <p id="objective" class="objective">Rester debout assez longtemps pour comprendre ce que Karine cache dans l'utilitaire.</p>
         </section>
 
+        <section class="case-section case-section--momentum">
+          <p class="panel-label">Pression</p>
+          <div id="case-momentum" class="case-momentum"></div>
+        </section>
+
+        <section class="case-section case-section--leads">
+          <p class="panel-label">Pistes actives</p>
+          <ol id="lead-list" class="lead-list"></ol>
+        </section>
+
         <section class="case-section case-section--clues">
           <p class="panel-label">Indices</p>
           <ul id="clue-list" class="clue-list"></ul>
@@ -132,6 +142,8 @@ const refs = {
   promptLabel: getRequiredElement<HTMLSpanElement>('#interaction-label'),
   toastRoot: getRequiredElement<HTMLDivElement>('#passive-toast-root'),
   objective: getRequiredElement<HTMLParagraphElement>('#objective'),
+  caseMomentum: getRequiredElement<HTMLDivElement>('#case-momentum'),
+  leadList: getRequiredElement<HTMLOListElement>('#lead-list'),
   clueList: getRequiredElement<HTMLUListElement>('#clue-list'),
   voiceList: getRequiredElement<HTMLDivElement>('#voice-list'),
   playArea: getRequiredElement<HTMLElement>('.play-area'),
@@ -162,6 +174,8 @@ const ui = createGameUi({
   promptLabel: refs.promptLabel,
   toastRoot: refs.toastRoot,
   objective: refs.objective,
+  caseMomentum: refs.caseMomentum,
+  leadList: refs.leadList,
   clueList: refs.clueList,
   voiceList: refs.voiceList,
   onStateChanged: (state) => saveGameState(state),

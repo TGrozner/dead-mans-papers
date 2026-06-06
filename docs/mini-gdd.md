@@ -66,6 +66,12 @@ Inspiration structurelle maximale: hubs ramifiés, surfaces objet, voix contextu
 
 Explorer, parler, inspecter, écouter les voix internes, subir La Dose, tenter des checks, accumuler des indices et des contradictions.
 
+Le dossier doit rendre la boucle immédiatement lisible: objectif court, compteur d'appuis, angles que Karine peut retourner contre Zinédine, et pistes actives limitées à ce qui peut vraiment faire avancer la scène. Les indices restent archivés, mais le joueur doit toujours voir quelle prise chaude utiliser maintenant.
+
+La première minute doit permettre une décision nette: lire les surfaces de réveil ou ignorer les appels pour aller droit vers l'utilitaire. Le coffre et les papiers plantés sur Ahmed sont le hook prioritaire; les lectures de téléphone, gobelet et corps enrichissent la pression sans bloquer ce hook.
+
+Les témoins ne doivent pas disparaître derrière une checklist parfaite. Dès que le coffre est ouvert, Amar et Sofiane peuvent être approchés; s'il manque la page ou les preuves, ils opposent de la friction au lieu de rester invisibles.
+
 ## Jouabilité mobile
 
 - Toucher un élément important de la scène ouvre directement son observation, son dialogue ou son écoute.

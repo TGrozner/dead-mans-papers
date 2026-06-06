@@ -64,6 +64,21 @@ const progressedSave = {
   voiceStats,
 }
 
+const trunkOpenedSave = {
+  flags: {
+    woke_up: true,
+    trunk_opened: true,
+  },
+  clues: [
+    "Le corps d'un vieil homme probablement Ahmed Berrichi est dans l'utilitaire avec les papiers de Zinédine posés sur lui.",
+  ],
+  completedChecks: {},
+  triggeredOrbs: {},
+  triggeredPassives: {},
+  visitedChoices: {},
+  voiceStats,
+}
+
 const completedEvidenceChecks = {
   camera_dead_angle: {
     checkId: 'camera_dead_angle',
@@ -526,6 +541,28 @@ async function tapScenePoint(page: Page, x: number, y: number) {
   })
 }
 
+async function clickScenePoint(page: Page, x: number, y: number) {
+  await expect(page.locator('#game-stage canvas')).toBeVisible()
+  await expectSceneReady(page)
+
+  await page.locator('.stage-viewport').evaluate((element, options) => {
+    const maxScroll = Math.max(0, element.scrollWidth - element.clientWidth)
+    const targetScroll = element.scrollWidth * (options.sceneX / options.sceneWidth) - element.clientWidth / 2
+
+    element.scrollLeft = Math.max(0, Math.min(maxScroll, targetScroll))
+  }, { sceneX: x, sceneWidth: MIRRORS_SCENE_WIDTH })
+
+  const canvas = page.locator('#game-stage canvas')
+  const canvasBox = await canvas.boundingBox()
+
+  expect(canvasBox).not.toBeNull()
+
+  await page.mouse.click(
+    canvasBox!.x + (x / MIRRORS_SCENE_WIDTH) * canvasBox!.width,
+    canvasBox!.y + (y / MIRRORS_SCENE_HEIGHT) * canvasBox!.height,
+  )
+}
+
 test('keeps Mirrors interactable anchors aligned with the visual fixture', () => {
   expect(MIRRORS_SCENE_WIDTH).toBe(expectedMirrorsSceneFixture.width)
   expect(MIRRORS_SCENE_HEIGHT).toBe(expectedMirrorsSceneFixture.height)
@@ -544,6 +581,9 @@ test('starts with a bounded tutorial and opens the first dialogue', async ({ pag
 
   await expect(page.getByRole('dialog', { name: 'Observe, clique, choisis' })).toBeVisible()
   await expect(page.locator('#objective')).toContainText('Reprendre assez de corps')
+  await expect(page.locator('#case-momentum')).toContainText('Appuis')
+  await expect(page.locator('#case-momentum')).toContainText('Angles contre toi')
+  await expect(page.locator('#lead-list')).toContainText('Téléphone fissuré')
   await expect(page.getByText('Le dossier garde les indices.')).toHaveCount(1)
   await expectFocusInside(page, '#tutorial-root')
   await page.keyboard.press('Tab')
@@ -565,8 +605,52 @@ test('starts with a bounded tutorial and opens the first dialogue', async ({ pag
   await expect(page.getByRole('dialog', { name: 'Observe, clique, choisis' })).toBeHidden()
   await expect(page.locator('.dialogue-root')).toContainText('Parking P2')
   await expect(page.locator('.dialogue-root')).toContainText('Tu reviens au monde')
+  await expect(page.getByRole('button', { name: "Laisser les 12 appels vibrer et aller vers l'utilitaire." })).toBeVisible()
   await page.keyboard.press('Tab')
   await expectFocusInside(page, '#dialogue-root')
+})
+
+test('lets the player push straight from wake-up toward the utility van', async ({ page }) => {
+  await gotoApp(page)
+
+  await page.getByRole('button', { name: 'Commencer' }).click()
+  await page.getByRole('button', { name: "Laisser les 12 appels vibrer et aller vers l'utilitaire." }).click()
+  await expect(page.locator('.dialogue-root')).toContainText("Karine Leduc t'attend devant l'utilitaire")
+  await expect(page.locator('#case-momentum')).toContainText('Angles contre toi')
+  await page.getByRole('button', { name: 'Aller vers elle.' }).click()
+  await expect(page.locator('#dialogue-root')).toBeHidden()
+
+  await clickScenePoint(page, scenePointForHotspot('utility_van').x, scenePointForHotspot('utility_van').y)
+  await expect(page.locator('.dialogue-root')).toContainText('incident de chantier')
+
+  await expect
+    .poll(async () => {
+      return await page.evaluate((key) => {
+        const savedPayload = JSON.parse(localStorage.getItem(key) ?? '{}') as {
+          state?: {
+            flags?: Record<string, boolean>
+          }
+        }
+        const flags = savedPayload.state?.flags ?? {}
+
+        return flags.woke_up === true && flags.karine_call_ignored === true
+      }, saveKey)
+    })
+    .toBe(true)
+})
+
+test('surfaces lead cards and unlocks weak witness contact after the trunk opens', async ({ page }) => {
+  await seedGame(page, trunkOpenedSave)
+
+  await gotoApp(page)
+
+  await expect(page.locator('#case-momentum')).toContainText('2/8')
+  await expect(page.locator('#lead-list')).toContainText('Nom sur le mort')
+
+  await clickScenePoint(page, scenePointForHotspot('amar').x, scenePointForHotspot('amar').y)
+  await expect(page.locator('.dialogue-root')).toContainText('Amar Boudiaf')
+  await page.getByRole('button', { name: "Lui demander ce qu'il sait sans preuve en main." }).click()
+  await expect(page.locator('.dialogue-root')).toContainText('Tu viens les mains vides')
 })
 
 test('renders Phaser canvas and grouped case clues from a saved game', async ({ page }) => {

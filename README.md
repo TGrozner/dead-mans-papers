@@ -51,6 +51,8 @@ Ouvrir ensuite `http://127.0.0.1:4173/dead-mans-papers/`. `npm run dev` reste ut
 - Échecs écrits comme des scènes, avec indices ou conséquences.
 - Options de dialogue déjà ouvertes grisées mais toujours cliquables.
 - Options à enjeu mises en avant discrètement quand elles ouvrent une piste, une posture ou un check.
+- Dossier actif avec appuis, angles contre Zinédine et pistes chaudes, pour éviter que les indices restent une simple archive.
+- Témoins approchables dès le coffre ouvert: sans preuve, Amar et Sofiane résistent au lieu d'être masqués.
 - Sauvegarde locale via `localStorage`.
 
 ## Contrôles
