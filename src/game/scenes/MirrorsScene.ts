@@ -4,21 +4,23 @@ import { debugLog } from '../debug'
 import {
   MIRRORS_HOTSPOTS,
   MIRRORS_ORB_SPOTS,
-  SOFIANE_PALISADE_X,
-  SOFIANE_PALISADE_Y,
+  MIRRORS_SCENE_HEIGHT,
+  MIRRORS_SCENE_WIDTH,
   type MirrorsHotspotDefinition,
   type MirrorsOrbSpotDefinition,
 } from './mirrorsSceneData'
 
 declare const __STATIC_ASSET_VERSION__: string
 
-const SCENE_WIDTH = 1280
-const SCENE_HEIGHT = 720
-const LEGACY_WIDTH = 960
-const LEGACY_HEIGHT = 576
-const CONTENT_SCALE = SCENE_HEIGHT / LEGACY_HEIGHT
-const CONTENT_WIDTH = LEGACY_WIDTH * CONTENT_SCALE
-const CONTENT_OFFSET_X = (SCENE_WIDTH - CONTENT_WIDTH) / 2
+const SCENE_WIDTH = MIRRORS_SCENE_WIDTH
+const SCENE_HEIGHT = MIRRORS_SCENE_HEIGHT
+const FALLBACK_LAYOUT_WIDTH = 960
+const FALLBACK_LAYOUT_HEIGHT = 576
+const FALLBACK_LAYOUT_SCALE = SCENE_HEIGHT / FALLBACK_LAYOUT_HEIGHT
+const FALLBACK_LAYOUT_CONTENT_WIDTH = FALLBACK_LAYOUT_WIDTH * FALLBACK_LAYOUT_SCALE
+const FALLBACK_LAYOUT_OFFSET_X = (SCENE_WIDTH - FALLBACK_LAYOUT_CONTENT_WIDTH) / 2
+const SOFIANE_PALISADE_LAYOUT_X = 786
+const SOFIANE_PALISADE_LAYOUT_Y = 468
 const FOREGROUND_DEPTH = 4.9
 const HD_SCENE_ASSET_SCALE = 4
 const ACTOR_DISPLAY_MULTIPLIER = 1.65
@@ -152,19 +154,19 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private sceneX(x: number): number {
-    return CONTENT_OFFSET_X + x * CONTENT_SCALE
+    return FALLBACK_LAYOUT_OFFSET_X + x * FALLBACK_LAYOUT_SCALE
   }
 
   private sceneY(y: number): number {
-    return y * CONTENT_SCALE
+    return y * FALLBACK_LAYOUT_SCALE
   }
 
   private sceneSize(value: number): number {
-    return value * CONTENT_SCALE
+    return value * FALLBACK_LAYOUT_SCALE
   }
 
-  private addLegacyGraphics(depth = 0): Phaser.GameObjects.Graphics {
-    return this.add.graphics({ x: CONTENT_OFFSET_X, y: 0 }).setScale(CONTENT_SCALE).setDepth(depth)
+  private addFallbackLayoutGraphics(depth = 0): Phaser.GameObjects.Graphics {
+    return this.add.graphics({ x: FALLBACK_LAYOUT_OFFSET_X, y: 0 }).setScale(FALLBACK_LAYOUT_SCALE).setDepth(depth)
   }
 
   private createTextures(): void {
@@ -268,7 +270,7 @@ export class MirrorsScene extends Phaser.Scene {
     }
 
     const tile = 32
-    const graphics = this.addLegacyGraphics()
+    const graphics = this.addFallbackLayoutGraphics()
 
     for (let row = 0; row < 18; row += 1) {
       for (let col = 0; col < 30; col += 1) {
@@ -288,9 +290,9 @@ export class MirrorsScene extends Phaser.Scene {
     this.drawParkingSurface(graphics)
 
     graphics.fillStyle(0x22262c)
-    graphics.fillRect(0, 0, LEGACY_WIDTH, 42)
+    graphics.fillRect(0, 0, FALLBACK_LAYOUT_WIDTH, 42)
     graphics.fillStyle(0xcfd6d2)
-    graphics.fillRect(0, 42, LEGACY_WIDTH, 2)
+    graphics.fillRect(0, 42, FALLBACK_LAYOUT_WIDTH, 2)
     this.drawUtilityVan(574, 154)
     this.drawParkedVehicles()
     this.drawPrefab(692, 70)
@@ -305,15 +307,20 @@ export class MirrorsScene extends Phaser.Scene {
     graphics.fillStyle(0x0b1015)
     graphics.fillRect(0, 0, SCENE_WIDTH, SCENE_HEIGHT)
     graphics.fillStyle(0x101920)
-    graphics.fillRect(0, 0, CONTENT_OFFSET_X, SCENE_HEIGHT)
-    graphics.fillRect(CONTENT_OFFSET_X + CONTENT_WIDTH, 0, CONTENT_OFFSET_X, SCENE_HEIGHT)
+    graphics.fillRect(0, 0, FALLBACK_LAYOUT_OFFSET_X, SCENE_HEIGHT)
+    graphics.fillRect(FALLBACK_LAYOUT_OFFSET_X + FALLBACK_LAYOUT_CONTENT_WIDTH, 0, FALLBACK_LAYOUT_OFFSET_X, SCENE_HEIGHT)
     graphics.lineStyle(2, 0x2a7281, 0.18)
-    graphics.lineBetween(CONTENT_OFFSET_X - 1, 0, CONTENT_OFFSET_X - 1, SCENE_HEIGHT)
-    graphics.lineBetween(CONTENT_OFFSET_X + CONTENT_WIDTH + 1, 0, CONTENT_OFFSET_X + CONTENT_WIDTH + 1, SCENE_HEIGHT)
+    graphics.lineBetween(FALLBACK_LAYOUT_OFFSET_X - 1, 0, FALLBACK_LAYOUT_OFFSET_X - 1, SCENE_HEIGHT)
+    graphics.lineBetween(
+      FALLBACK_LAYOUT_OFFSET_X + FALLBACK_LAYOUT_CONTENT_WIDTH + 1,
+      0,
+      FALLBACK_LAYOUT_OFFSET_X + FALLBACK_LAYOUT_CONTENT_WIDTH + 1,
+      SCENE_HEIGHT,
+    )
   }
 
   private drawTowerBackdrop(): void {
-    const graphics = this.addLegacyGraphics()
+    const graphics = this.addFallbackLayoutGraphics()
     this.drawCloudTower(graphics, 2, 48, 88, 414)
     this.drawCloudTower(graphics, 862, 42, 94, 430)
     this.drawCloudTower(graphics, 332, 36, 124, 140)
@@ -451,7 +458,7 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private drawUtilityVan(x: number, y: number): void {
-    const graphics = this.addLegacyGraphics()
+    const graphics = this.addFallbackLayoutGraphics()
     graphics.fillStyle(0x0d1117, 0.5)
     graphics.fillRect(x + 12, y + 24, 226, 116)
 
@@ -510,7 +517,7 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private drawParkedCar(x: number, y: number, color: number): void {
-    const graphics = this.addLegacyGraphics()
+    const graphics = this.addFallbackLayoutGraphics()
     graphics.fillStyle(0x0d1117, 0.4)
     graphics.fillRect(x + 5, y + 8, 48, 40)
     graphics.fillStyle(color)
@@ -533,7 +540,7 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private drawPrefab(x: number, y: number): void {
-    const graphics = this.addLegacyGraphics()
+    const graphics = this.addFallbackLayoutGraphics()
     graphics.fillStyle(0xcfd6d2)
     graphics.fillRect(x, y, 176, 78)
     graphics.lineStyle(3, 0x0d1117)
@@ -549,7 +556,7 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private drawPalisade(x: number, y: number): void {
-    const graphics = this.addLegacyGraphics()
+    const graphics = this.addFallbackLayoutGraphics()
     graphics.fillStyle(0x755337)
     graphics.fillRect(x, y, 214, 64)
     graphics.lineStyle(2, 0x0d1117, 0.35)
@@ -565,7 +572,7 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private drawTechnicalRoom(): void {
-    const graphics = this.addLegacyGraphics()
+    const graphics = this.addFallbackLayoutGraphics()
     graphics.fillStyle(0x253039)
     graphics.fillRect(54, 230, 230, 132)
     graphics.lineStyle(3, 0x0d1117)
@@ -581,7 +588,7 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private drawProps(): void {
-    const graphics = this.addLegacyGraphics()
+    const graphics = this.addFallbackLayoutGraphics()
 
     for (const [x, y] of [
       [540, 262],
@@ -650,7 +657,7 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private createWetSurfaceReflections(): void {
-    const reflections = this.addLegacyGraphics(2).setAlpha(0.78)
+    const reflections = this.addFallbackLayoutGraphics(2).setAlpha(0.78)
 
     reflections.fillStyle(0x65d8e6, 0.08)
     reflections.fillEllipse(492, 326, 286, 42)
@@ -689,7 +696,7 @@ export class MirrorsScene extends Phaser.Scene {
       ease: 'Sine.easeInOut',
     })
 
-    const droplets = this.addLegacyGraphics(4.35).setAlpha(0.34)
+    const droplets = this.addFallbackLayoutGraphics(4.35).setAlpha(0.34)
     const specks = [
       [352, 284],
       [372, 334],
@@ -726,7 +733,7 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private createNeonLighting(): void {
-    const glow = this.addLegacyGraphics(4.25).setAlpha(0.76)
+    const glow = this.addFallbackLayoutGraphics(4.25).setAlpha(0.76)
 
     this.drawNeonPool(glow, 482, 80, 168, 170, 0x65d8e6)
     this.drawNeonPool(glow, 792, 104, 156, 154, 0x65d8e6)
@@ -741,7 +748,7 @@ export class MirrorsScene extends Phaser.Scene {
       ease: 'Sine.easeInOut',
     })
 
-    const flicker = this.addLegacyGraphics(4.45).setAlpha(0)
+    const flicker = this.addFallbackLayoutGraphics(4.45).setAlpha(0)
     flicker.fillStyle(0xd7ffff, 0.34)
     flicker.fillRect(402, 78, 166, 3)
     flicker.fillRect(724, 102, 142, 3)
@@ -815,7 +822,7 @@ export class MirrorsScene extends Phaser.Scene {
 
     this.createActorShadow(242, 366, 32, 8)
     this.createActorShadow(668, 240, 32, 8)
-    this.createActorShadow(SOFIANE_PALISADE_X, SOFIANE_PALISADE_Y + 18, 32, 8)
+    this.createActorShadow(SOFIANE_PALISADE_LAYOUT_X, SOFIANE_PALISADE_LAYOUT_Y + 18, 32, 8)
 
     const leduc = this.add
       .sprite(this.sceneX(242), this.sceneY(348), leducKey)
@@ -826,8 +833,8 @@ export class MirrorsScene extends Phaser.Scene {
       .setDepth(this.depthForY(this.sceneY(222)))
       .setScale(this.textureDisplayScale(amarKey))
     const sofiane = this.add
-      .sprite(this.sceneX(SOFIANE_PALISADE_X), this.sceneY(SOFIANE_PALISADE_Y), sofianeKey)
-      .setDepth(this.depthForY(this.sceneY(SOFIANE_PALISADE_Y)))
+      .sprite(this.sceneX(SOFIANE_PALISADE_LAYOUT_X), this.sceneY(SOFIANE_PALISADE_LAYOUT_Y), sofianeKey)
+      .setDepth(this.depthForY(this.sceneY(SOFIANE_PALISADE_LAYOUT_Y)))
       .setScale(this.textureDisplayScale(sofianeKey))
 
     this.idleActors.push(zinedine, leduc, amar, sofiane)
@@ -847,14 +854,14 @@ export class MirrorsScene extends Phaser.Scene {
 
   private textureDisplayScale(key: string): number {
     if (key.startsWith('actor-')) {
-      return (CONTENT_SCALE / HD_SCENE_ASSET_SCALE) * ACTOR_DISPLAY_MULTIPLIER
+      return (FALLBACK_LAYOUT_SCALE / HD_SCENE_ASSET_SCALE) * ACTOR_DISPLAY_MULTIPLIER
     }
 
     if (key.startsWith('prop-')) {
-      return (CONTENT_SCALE / HD_SCENE_ASSET_SCALE) * PROP_DISPLAY_MULTIPLIER
+      return (FALLBACK_LAYOUT_SCALE / HD_SCENE_ASSET_SCALE) * PROP_DISPLAY_MULTIPLIER
     }
 
-    return CONTENT_SCALE
+    return FALLBACK_LAYOUT_SCALE
   }
 
   private updateActorPresentation(): void {
@@ -903,20 +910,12 @@ export class MirrorsScene extends Phaser.Scene {
   private scaleHotspot(hotspot: MirrorsHotspotDefinition): Hotspot {
     return {
       ...hotspot,
-      x: this.sceneX(hotspot.x),
-      y: this.sceneY(hotspot.y),
-      radius: this.sceneSize(hotspot.radius),
-      tapRadius: hotspot.tapRadius ? this.sceneSize(hotspot.tapRadius) : undefined,
     }
   }
 
   private scaleOrb(orb: MirrorsOrbSpotDefinition): OrbSpot {
     return {
       ...orb,
-      x: this.sceneX(orb.x),
-      y: this.sceneY(orb.y),
-      radius: this.sceneSize(orb.radius),
-      tapRadius: orb.tapRadius ? this.sceneSize(orb.tapRadius) : undefined,
     }
   }
 

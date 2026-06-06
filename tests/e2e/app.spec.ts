@@ -1,4 +1,10 @@
 import { expect, test, type Locator, type Page } from '@playwright/test'
+import {
+  MIRRORS_HOTSPOTS,
+  MIRRORS_ORB_SPOTS,
+  MIRRORS_SCENE_HEIGHT,
+  MIRRORS_SCENE_WIDTH,
+} from '../../src/game/scenes/mirrorsSceneData'
 
 const saveKey = 'dead-mans-papers:v12'
 const tutorialSeenKey = 'dead-mans-papers:tutorial-seen-v2'
@@ -13,9 +19,6 @@ const voiceStats = {
   symbole: 2,
   main_gauche: 2,
 }
-
-const sceneWidth = 1280
-const sceneHeight = 720
 
 const runtimeMirrorAssetFiles = [
   'p2-background.png',
@@ -35,7 +38,6 @@ const allMirrorAssetFiles = [
   'actor-sofiane.png',
   'actor-zinedine.png',
   'concept-sheet.png',
-  'p2-background-legacy.png',
   'prop-badge.png',
   'prop-page.png',
 ].filter((file, index, files) => files.indexOf(file) === index)
@@ -60,6 +62,47 @@ const progressedSave = {
   triggeredPassives: {},
   visitedChoices: {},
   voiceStats,
+}
+
+const completedEvidenceChecks = {
+  camera_dead_angle: {
+    checkId: 'camera_dead_angle',
+    voice: 'procedure',
+    supportVoice: 'memoire_saline',
+    roll: 4,
+    stat: 2,
+    supportStat: 2,
+    total: 8,
+    difficulty: 8,
+    passed: true,
+  },
+  badge_access_chain: {
+    checkId: 'badge_access_chain',
+    voice: 'main_gauche',
+    supportVoice: 'procedure',
+    roll: 4,
+    stat: 2,
+    supportStat: 2,
+    total: 8,
+    difficulty: 8,
+    passed: true,
+  },
+  hami_prescription_line: {
+    checkId: 'hami_prescription_line',
+    voice: 'memoire_saline',
+    supportVoice: 'procedure',
+    roll: 4,
+    stat: 2,
+    supportStat: 2,
+    total: 8,
+    difficulty: 8,
+    passed: true,
+  },
+}
+
+const witnessReadySave = {
+  ...progressedSave,
+  completedChecks: completedEvidenceChecks,
 }
 
 test.beforeEach(async ({ page }) => {
@@ -377,29 +420,59 @@ function boxesOverlap(firstBox: VisibleBox, secondBox: VisibleBox): boolean {
   return horizontalOverlap > 0 && verticalOverlap > 0
 }
 
+function scenePointForHotspot(hotspotId: string): { x: number; y: number } {
+  const hotspot = MIRRORS_HOTSPOTS.find((candidate) => candidate.id === hotspotId)
+
+  if (!hotspot) {
+    throw new Error(`Unknown test hotspot: ${hotspotId}`)
+  }
+
+  return {
+    x: hotspot.x,
+    y: hotspot.y,
+  }
+}
+
+function scenePointForOrb(orbId: string): { x: number; y: number } {
+  const orb = MIRRORS_ORB_SPOTS.find((candidate) => candidate.id === orbId)
+
+  if (!orb) {
+    throw new Error(`Unknown test orb: ${orbId}`)
+  }
+
+  return {
+    x: orb.x,
+    y: orb.y,
+  }
+}
+
 async function tapScenePoint(page: Page, x: number, y: number) {
-  await page.locator('.stage-viewport').evaluate((element, sceneX) => {
+  await page.locator('.stage-viewport').evaluate((element, options) => {
     const maxScroll = Math.max(0, element.scrollWidth - element.clientWidth)
-    const targetScroll = element.scrollWidth * (sceneX / 1280) - element.clientWidth / 2
+    const targetScroll = element.scrollWidth * (options.sceneX / options.sceneWidth) - element.clientWidth / 2
 
     element.scrollLeft = Math.max(0, Math.min(maxScroll, targetScroll))
-  }, x)
+  }, { sceneX: x, sceneWidth: MIRRORS_SCENE_WIDTH })
 
-  const canvasBox = await page.locator('#game-stage canvas').boundingBox()
-  const viewport = page.viewportSize()
+  const canvas = page.locator('#game-stage canvas')
+  const canvasBox = await canvas.boundingBox()
 
   expect(canvasBox).not.toBeNull()
-  expect(viewport).not.toBeNull()
 
-  const tapX = canvasBox!.x + (x / sceneWidth) * canvasBox!.width
-  const tapY = canvasBox!.y + (y / sceneHeight) * canvasBox!.height
+  const tapX = (x / MIRRORS_SCENE_WIDTH) * canvasBox!.width
+  const tapY = (y / MIRRORS_SCENE_HEIGHT) * canvasBox!.height
 
   expect(tapX).toBeGreaterThanOrEqual(0)
   expect(tapY).toBeGreaterThanOrEqual(0)
-  expect(tapX).toBeLessThanOrEqual(viewport!.width)
-  expect(tapY).toBeLessThanOrEqual(viewport!.height)
+  expect(tapX).toBeLessThanOrEqual(canvasBox!.width)
+  expect(tapY).toBeLessThanOrEqual(canvasBox!.height)
 
-  await page.touchscreen.tap(tapX, tapY)
+  await canvas.tap({
+    position: {
+      x: tapX,
+      y: tapY,
+    },
+  })
 }
 
 test('starts with a bounded tutorial and opens the first dialogue', async ({ page }) => {
@@ -692,7 +765,7 @@ test('triggers proximity orbs as one-shot toasts instead of modal inspections', 
 })
 
 test('supports real mobile touch taps on primary hotspots @mobile', async ({ page }) => {
-  await seedGame(page, progressedSave)
+  await seedGame(page, witnessReadySave)
 
   await gotoApp(page)
 
@@ -714,16 +787,16 @@ test('supports real mobile touch taps on primary hotspots @mobile', async ({ pag
 
   const dialogue = page.locator('.dialogue-root')
   const targets = [
-    { x: 300, y: 430, text: 'incident de chantier' },
-    { x: 443, y: 435, text: "Je n'ai pas besoin d'un héros" },
-    { x: 975, y: 278, text: 'sale gueule' },
-    { x: 1123, y: 585, text: 'La palissade garde Sofiane' },
+    { ...scenePointForHotspot('utility_van'), text: 'incident de chantier' },
+    { ...scenePointForHotspot('leduc'), text: "Je n'ai pas besoin d'un héros" },
+    { ...scenePointForHotspot('amar'), text: 'sale gueule' },
+    { ...scenePointForHotspot('sofiane'), text: 'La palissade garde Sofiane' },
   ]
 
   for (const target of targets) {
     await tapScenePoint(page, target.x, target.y)
     await expect(dialogue).toContainText(target.text)
-    await page.getByRole('button', { name: 'Quitter' }).click()
+    await dialogue.getByRole('button', { name: 'Quitter', exact: true }).click()
     await expect(dialogue).toBeHidden()
   }
 })
@@ -735,7 +808,8 @@ test('keeps mobile toasts, dossier, and scene navigation separated @mobile', asy
 
   await expect(page.locator('#game-stage canvas')).toBeVisible()
   await expectSceneReady(page)
-  await tapScenePoint(page, 635, 340)
+  const neonOrb = scenePointForOrb('miroirs_orb_neon')
+  await tapScenePoint(page, neonOrb.x, neonOrb.y)
 
   await expect(page.locator('.orb-toast')).toContainText('Flaque sous néon')
   await expect(page.locator('#mobile-scene-nav')).toBeVisible()
@@ -833,44 +907,7 @@ test('drops impossible saved check results instead of advancing objectives', asy
 })
 
 test('moves the objective from evidence checks to witness confrontation', async ({ page }) => {
-  await seedGame(page, {
-    ...progressedSave,
-    completedChecks: {
-      camera_dead_angle: {
-        checkId: 'camera_dead_angle',
-        voice: 'procedure',
-        supportVoice: 'memoire_saline',
-        roll: 4,
-        stat: 2,
-        supportStat: 2,
-        total: 8,
-        difficulty: 8,
-        passed: true,
-      },
-      badge_access_chain: {
-        checkId: 'badge_access_chain',
-        voice: 'main_gauche',
-        supportVoice: 'procedure',
-        roll: 4,
-        stat: 2,
-        supportStat: 2,
-        total: 8,
-        difficulty: 8,
-        passed: true,
-      },
-      hami_prescription_line: {
-        checkId: 'hami_prescription_line',
-        voice: 'memoire_saline',
-        supportVoice: 'procedure',
-        roll: 4,
-        stat: 2,
-        supportStat: 2,
-        total: 8,
-        difficulty: 8,
-        passed: true,
-      },
-    },
-  })
+  await seedGame(page, witnessReadySave)
 
   await gotoApp(page)
 
