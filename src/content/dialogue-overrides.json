@@ -3,11 +3,106 @@
     "nodes": {
       "start": {
         "id": "start",
-        "text": "Tu reviens au monde contre une borne en béton. Bouche brûlée. Main qui tremble. Sur ton téléphone: douze appels de Karine."
+        "text": "Tu reviens au monde contre une borne en béton. Bouche brûlée. Main qui tremble. Sur ton téléphone: douze appels de Karine.",
+        "choices": [
+          {
+            "label": "Ramasser le téléphone. Comprendre qui te cherche.",
+            "next": "phone",
+            "important": true
+          },
+          {
+            "label": "Laisser le téléphone par terre. D'abord ton corps.",
+            "next": "stand",
+            "important": true,
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "phone_left_ground"
+              },
+              {
+                "type": "clue",
+                "clue": "Zinédine laisse volontairement le téléphone de Karine par terre au réveil."
+              },
+              {
+                "type": "voice_bump",
+                "voice": "honte_publique",
+                "amount": 1
+              }
+            ]
+          },
+          {
+            "label": "Regarder ce qui traîne à côté de toi.",
+            "next": "ground"
+          },
+          {
+            "label": "Te lever sans vomir.",
+            "check": {
+              "id": "wake_stand_control",
+              "voice": "faim",
+              "supportVoice": "honte_publique",
+              "difficulty": 6,
+              "successNode": "stand_control_success",
+              "failureNode": "stand_control_failure"
+            },
+            "hiddenWhenFlag": "wake_stand_checked",
+            "important": true
+          }
+        ]
       },
       "ground": {
         "id": "ground",
-        "text": "Un gobelet vide. De l'alcool fort. Ton téléphone fissuré. Rien d'assez grave pour expliquer le trou noir. Pas encore."
+        "text": "Un gobelet vide. De l'alcool fort. Ton téléphone fissuré. Rien d'assez grave pour expliquer le trou noir. Pas encore.",
+        "choices": [
+          {
+            "label": "Prendre le téléphone avant qu'il redisparaisse.",
+            "next": "phone",
+            "hiddenWhenFlag": "phone_left_ground",
+            "important": true
+          },
+          {
+            "label": "Laisser le téléphone. Pas de laisse dans la main.",
+            "next": "stand",
+            "important": true,
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "phone_left_ground"
+              },
+              {
+                "type": "flag",
+                "flag": "karine_call_ignored"
+              },
+              {
+                "type": "clue",
+                "clue": "Zinédine refuse de répondre aux appels de Karine avant d'aller vers l'utilitaire."
+              }
+            ]
+          },
+          {
+            "label": "Retourner le gobelet. Savoir ce que ton corps a avalé.",
+            "next": "cup",
+            "important": true
+          },
+          {
+            "label": "Écraser le gobelet et avancer.",
+            "next": "stand",
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "cup_destroyed"
+              },
+              {
+                "type": "clue",
+                "clue": "Zinédine détruit le gobelet vide qui pouvait documenter son état."
+              },
+              {
+                "type": "voice_bump",
+                "voice": "main_gauche",
+                "amount": 1
+              }
+            ]
+          }
+        ]
       },
       "cup": {
         "id": "cup",
@@ -23,7 +118,81 @@
       },
       "phone": {
         "id": "phone",
-        "text": "Douze appels de Karine. Dernier message: \"pas la police, pas encore, viens seul.\" Elle ne demande pas de l'aide. Elle gagne du temps."
+        "text": "Douze appels de Karine. Dernier message: \"pas la police, pas encore, viens seul.\" Elle ne demande pas de l'aide. Elle gagne du temps.",
+        "choices": [
+          {
+            "label": "Rappeler Karine. Entrer dans son urgence.",
+            "next": "karine_call",
+            "important": true,
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "karine_called_back"
+              }
+            ]
+          },
+          {
+            "label": "Reconstituer les appels. Traiter ça comme une preuve.",
+            "check": {
+              "id": "phone_call_timeline",
+              "voice": "procedure",
+              "supportVoice": "memoire_saline",
+              "difficulty": 7,
+              "successNode": "phone_timeline_success",
+              "failureNode": "phone_timeline_failure"
+            },
+            "hiddenWhenFlag": "phone_timeline_checked",
+            "important": true
+          },
+          {
+            "label": "Couper le son et garder le téléphone. Tu choisis quand elle parle.",
+            "next": "stand",
+            "important": true,
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "phone_kept_silent"
+              },
+              {
+                "type": "clue",
+                "clue": "Zinédine garde le téléphone mais refuse de laisser Karine guider la scène."
+              },
+              {
+                "type": "voice_bump",
+                "voice": "procedure",
+                "amount": 1
+              }
+            ]
+          },
+          {
+            "label": "Le laisser au sol, écran allumé. Qu'elle appelle le vide.",
+            "next": "stand",
+            "important": true,
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "phone_left_ground"
+              },
+              {
+                "type": "flag",
+                "flag": "karine_call_ignored"
+              },
+              {
+                "type": "clue",
+                "clue": "Zinédine abandonne le téléphone allumé au sol au lieu de répondre à Karine."
+              },
+              {
+                "type": "voice_bump",
+                "voice": "symbole",
+                "amount": 1
+              }
+            ]
+          },
+          {
+            "label": "Compter les appels comme des dettes.",
+            "next": "dose_first"
+          }
+        ]
       },
       "karine_call": {
         "id": "karine_call",
@@ -119,7 +288,53 @@
       },
       "trunk_open": {
         "id": "trunk_open",
-        "text": "Le hayon monte. Froid. Javel. Un vieux corps. Ahmed, probablement. Sur sa poitrine: ta carte, ton badge, une ordonnance. Ton nom sur un mort."
+        "text": "Le hayon monte. Froid. Javel. Un vieux corps. Ahmed, probablement. Sur sa poitrine: ta carte, ton badge, une ordonnance. Ton nom sur un mort.",
+        "choices": [
+          {
+            "label": "Fixer ton nom sur le mort. Choisir ce que tu es dans cette scène.",
+            "next": "papers_reveal",
+            "important": true
+          },
+          {
+            "label": "Regarder Ahmed sans toucher. Le mort d'abord.",
+            "next": "body_precheck",
+            "important": true
+          },
+          {
+            "label": "Forcer Karine à appeler la police maintenant.",
+            "close": true,
+            "important": true,
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "police_forced_early"
+              },
+              {
+                "type": "clue",
+                "clue": "Zinédine force Karine à officialiser la scène avant d'avoir fouillé le coffre."
+              },
+              {
+                "type": "voice_bump",
+                "voice": "procedure",
+                "amount": 1
+              }
+            ]
+          },
+          {
+            "label": "Accuser Karine d'avoir su trop tôt.",
+            "next": "leduc_after_open",
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "leduc_confronted_early"
+              }
+            ]
+          },
+          {
+            "label": "Reculer avant que ton corps décide pour toi.",
+            "next": "open_sickness"
+          }
+        ]
       },
       "leduc_after_open": {
         "id": "leduc_after_open",
@@ -131,7 +346,118 @@
       },
       "papers_reveal": {
         "id": "papers_reveal",
-        "text": "Carte d'identité. Badge municipal. Ordonnance. Trois fois ton nom. Quelqu'un n'accuse pas seulement Zinédine Saïdi: il explique déjà pourquoi personne ne devrait le croire."
+        "text": "Carte d'identité. Badge municipal. Ordonnance. Trois fois ton nom. Quelqu'un n'accuse pas seulement Zinédine Saïdi: il explique déjà pourquoi personne ne devrait le croire.",
+        "choices": [
+          {
+            "label": "Assumer le nom. Reprendre Zinédine avant le rapport.",
+            "next": "identity_accept",
+            "hiddenWhenFlag": "identity_chosen",
+            "important": true,
+            "effects": [
+              {
+                "type": "identity_posture",
+                "posture": "accept"
+              },
+              {
+                "type": "flag",
+                "flag": "identity_chosen"
+              },
+              {
+                "type": "flag",
+                "flag": "identity_accept"
+              },
+              {
+                "type": "voice_bump",
+                "voice": "procedure",
+                "amount": 1
+              }
+            ]
+          },
+          {
+            "label": "Refuser le nom. C'est une signature posée par quelqu'un d'autre.",
+            "next": "identity_refuse",
+            "hiddenWhenFlag": "identity_chosen",
+            "important": true,
+            "effects": [
+              {
+                "type": "identity_posture",
+                "posture": "refuse"
+              },
+              {
+                "type": "flag",
+                "flag": "identity_chosen"
+              },
+              {
+                "type": "flag",
+                "flag": "identity_refuse"
+              },
+              {
+                "type": "voice_bump",
+                "voice": "symbole",
+                "amount": 1
+              }
+            ]
+          },
+          {
+            "label": "Jouer Le Gobelet. Laisser les gens te sous-estimer.",
+            "next": "identity_perform",
+            "hiddenWhenFlag": "identity_chosen",
+            "important": true,
+            "effects": [
+              {
+                "type": "identity_posture",
+                "posture": "perform"
+              },
+              {
+                "type": "flag",
+                "flag": "identity_chosen"
+              },
+              {
+                "type": "flag",
+                "flag": "identity_perform"
+              },
+              {
+                "type": "voice_bump",
+                "voice": "bouches",
+                "amount": 1
+              }
+            ]
+          },
+          {
+            "label": "Salir la scène exprès. S'ils veulent Le Gobelet, ils vont l'avoir.",
+            "next": "identity_defile",
+            "hiddenWhenFlag": "identity_chosen",
+            "important": true,
+            "effects": [
+              {
+                "type": "identity_posture",
+                "posture": "defile"
+              },
+              {
+                "type": "flag",
+                "flag": "identity_chosen"
+              },
+              {
+                "type": "flag",
+                "flag": "identity_defile"
+              },
+              {
+                "type": "voice_bump",
+                "voice": "honte_publique",
+                "amount": 1
+              },
+              {
+                "type": "flag",
+                "flag": "dose_heard"
+              }
+            ]
+          },
+          {
+            "label": "Revenir au coffre avec ce choix déjà fait.",
+            "next": "trunk_hub",
+            "requiresFlag": "identity_chosen"
+          }
+        ]
       },
       "identity_accept": {
         "id": "identity_accept",
@@ -151,7 +477,58 @@
       },
       "trunk_hub": {
         "id": "trunk_hub",
-        "text": "Le corps au fond. Tes papiers dehors. Une page manque peut-être encore. Karine veut une version. Toi, tu veux la pièce qui la casse."
+        "text": "Le corps au fond. Tes papiers dehors. Une page manque peut-être encore. Karine veut une version. Toi, tu veux la pièce qui la casse.",
+        "choices": [
+          {
+            "label": "Fouiller la doublure. Contaminer la scène pour trouver mieux.",
+            "check": {
+              "id": "trunk_search",
+              "voice": "faim",
+              "supportVoice": "main_gauche",
+              "difficulty": 8,
+              "successNode": "search_success",
+              "failureNode": "search_failure"
+            },
+            "hiddenWhenFlag": "page_found",
+            "important": true
+          },
+          {
+            "label": "Lire la page arrachée serrée dans ta main.",
+            "next": "page_surface",
+            "requiresFlag": "page_found",
+            "important": true
+          },
+          {
+            "label": "Lire les papiers de Zinédine.",
+            "next": "papers_surface",
+            "important": true
+          },
+          {
+            "label": "Revenir au corps d'Ahmed.",
+            "next": "body_read",
+            "important": true
+          },
+          {
+            "label": "Chercher le carnet manquant.",
+            "next": "notebook_absent",
+            "important": true
+          },
+          {
+            "label": "Arrêter là. Laisser la procédure reprendre la main.",
+            "close": true,
+            "important": true,
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "procedure_takes_over"
+              },
+              {
+                "type": "clue",
+                "clue": "Zinédine choisit d'arrêter la fouille du coffre et de laisser la procédure reprendre la main."
+              }
+            ]
+          }
+        ]
       },
       "papers_surface": {
         "id": "papers_surface",
