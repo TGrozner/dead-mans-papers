@@ -1,0 +1,194 @@
+{
+  "wake_up": {
+    "nodes": {
+      "start": {
+        "id": "start",
+        "text": "Tu reprends connaissance contre une borne en béton. Goût de vodka tiède. Coton de calmants dans le crâne. Ta main droite tremble avant toi."
+      },
+      "ground": {
+        "id": "ground",
+        "text": "Un gobelet plastique vide traîne près de ta jambe. Alcool fort, bon marché, bu trop vite. Ton téléphone fissuré clignote à côté. Douze appels manqués."
+      },
+      "cup": {
+        "id": "cup",
+        "text": "Le plastique colle aux doigts. Ton corps reconnaît l'ordre avant toi: boire, avaler de quoi calmer la main, dire que ça ira mieux. Même vide, le gobelet peut te salir."
+      },
+      "cup_trace_success": {
+        "id": "cup_trace_success",
+        "text": "Tu inclines le gobelet. Pas seulement de l'alcool: un dépôt amer colle au fond. Ça ne dit pas pourquoi tu as décroché. Ça dit comment ton corps était disponible."
+      },
+      "cup_trace_failure": {
+        "id": "cup_trace_failure",
+        "text": "Tu cherches une preuve et tu trouves surtout l'envie de lécher le fond. C'est moche, mais utile: si ton corps réclame encore, quelqu'un a pu compter dessus."
+      },
+      "phone": {
+        "id": "phone",
+        "text": "Douze appels manqués de Karine Leduc. Le dernier message vocal dure six secondes: \"pas la police, pas encore, viens seul.\" Ce n'est pas l'inquiétude d'une amie. C'est quelqu'un qui veut contenir une catastrophe."
+      },
+      "karine_cut": {
+        "id": "karine_cut",
+        "text": "\"Pas au téléphone. Et si tu as bu ou pris un truc, tu te tais là-dessus. J'ai besoin que tu tiennes cinq minutes, pas qu'on te filme en train de délirer devant le chantier.\""
+      },
+      "phone_timeline_success": {
+        "id": "phone_timeline_success",
+        "text": "Tu forces les chiffres à rester en ordre. Premier appel: avant ton réveil. Message vocal: \"pas la police, pas encore, viens seul.\" Dernier appel: deux minutes avant que tu ouvres les yeux. Karine savait où poser sa panique."
+      }
+    }
+  },
+  "utility_van": {
+    "nodes": {
+      "start": {
+        "id": "start",
+        "text": "\"On va appeler ça un incident de chantier.\" Karine te bloque le passage, téléphone serré dans la main. \"Tu touches à rien. Tu t'es réveillé à dix mètres de mon utilitaire, et deux fenêtres peuvent déjà nous filmer.\""
+      },
+      "leduc_frame": {
+        "id": "leduc_frame",
+        "text": "\"Un incident, c'est ce qu'on dit tant qu'on contrôle encore la phrase. Un coffre, c'est ce que les gens filment. Je préfère un mot moche à une vidéo qui tourne avant les gyrophares.\""
+      },
+      "why_zinedine": {
+        "id": "why_zinedine",
+        "text": "\"Parce que tu connais les badges, les caméras, les caves, les gardiens. Parce que les habitants te parlent quand ils ne veulent pas laisser de mail. Et parce que je t'ai retrouvé à dix mètres du problème avec une gueule de certificat médical.\""
+      },
+      "leduc_useful_suspect": {
+        "id": "leduc_useful_suspect",
+        "text": "\"Les deux peuvent tenir dans la même personne.\" Elle regarde ta bouche, pas tes yeux. \"Surtout quand cette personne sent le verre et la pharmacie.\""
+      },
+      "trunk_block": {
+        "id": "trunk_block",
+        "text": "Elle garde la main sur le hayon. Son téléphone vibre deux fois; elle le retourne sans lire. \"Tu regardes, tu respires, tu ne me fais pas une scène de manque devant mon véhicule. Si tu tombes, quelqu'un écrira que tu étais instable avant même d'écrire ce qu'il y avait dedans.\""
+      },
+      "public_composure_success": {
+        "id": "public_composure_success",
+        "text": "Tu ranges le tremblement dans la poche. Tu verrouilles la bouche. Pas sobre. Pas sain. Présentable. Ça suffit pour enlever à Karine son dernier prétexte."
+      },
+      "public_composure_failure": {
+        "id": "public_composure_failure",
+        "text": "La sueur coule, la bile monte, ta main cherche un appui. Karine voit tout. Elle ouvre quand même: une épave utile vaut mieux qu'une procédure arrivée trop tôt."
+      },
+      "trunk_open": {
+        "id": "trunk_open",
+        "text": "Le hayon monte. Odeur de vieux froid. Javel. Un vieil homme tassé dans la tôle. Le profil te frappe avant le nom: Ahmed Berrichi, ou quelqu'un veut que tu le reconnaisses ainsi. Sur sa poitrine, bien visibles: ta carte, ton badge municipal, une ordonnance pliée. Ton nom posé sur un mort."
+      },
+      "trunk_hub": {
+        "id": "trunk_hub",
+        "text": "Les papiers sont sortis du coffre. Le corps reste au fond, froid, mal rangé. Quelque chose manque encore dans la doublure. Karine veut une version propre. Ton corps veut une dose. Le dossier veut juste que tu arrêtes de trembler avant de lire."
+      },
+      "papers_surface": {
+        "id": "papers_surface",
+        "text": "Carte d'identité. Badge municipal. Ordonnance de calmants. Ton nom, ton accès, ta came légale. Quelqu'un n'a pas planté un portefeuille: quelqu'un a planté ce qui permet de te résumer."
+      },
+      "papers_reveal": {
+        "id": "papers_reveal",
+        "text": "Carte d'identité. Badge municipal. Ordonnance de calmants. Même nom trois fois: Zinédine Saïdi. Ton nom. Ou celui qu'on vient de poser sur un mort pendant que tu cuvais ton trou noir."
+      },
+      "hami_reaction": {
+        "id": "hami_reaction",
+        "text": "Non. Pas Hami. Elle stabilise. Elle régule. Elle sait combien il faut pour que ta main ferme sa gueule. On ne crache pas sur le robinet quand on a la bouche en feu."
+      },
+      "body_read": {
+        "id": "body_read",
+        "text": "Ahmed n'a pas l'air endormi. Il a l'air déplacé. Rangé. Géré par des gens qui disent prise en charge quand ils veulent dire débarrassez-moi de ça."
+      },
+      "notebook_absent": {
+        "id": "notebook_absent",
+        "text": "Le carnet d'Ahmed n'est pas là. Pas dans la veste. Pas sous lui. Quelqu'un a pris le carnet et laissé tes papiers. Ce ne sont pas deux oublis. C'est un choix."
+      },
+      "search_success": {
+        "id": "search_success",
+        "text": "Tu bloques la bile, puis le tremblement. Sous la doublure du coffre, ta main trouve une page arrachée que personne n'a pensé à retirer. Pas un miracle: une erreur de gens pressés."
+      },
+      "search_failure": {
+        "id": "search_failure",
+        "text": "Tu vomis contre le pare-chocs. Public, acide, impossible à rattraper. Karine voit le manque. Mais ta main revient quand même de la doublure avec une page humide. Défaite sociale, preuve utile."
+      },
+      "page_surface": {
+        "id": "page_surface",
+        "text": "L'écriture d'Ahmed penche sous l'humidité: \"P2 caméra morte / badge chantier / Hami ?\" Au verso: \"Si Le Gobelet oublie, Amar sait. Sofiane a senti.\" Sous la dernière ligne, presque effacé: \"il était déjà mort dans leurs papiers.\""
+      },
+      "page_camera": {
+        "id": "page_camera",
+        "text": "Caméra P2 morte depuis mars. Si elle devait filmer le coffre, sa panne n'est plus juste une panne. C'est un trou dans le dossier."
+      },
+      "page_badge": {
+        "id": "page_badge",
+        "text": "Badge chantier. Badge municipal. Rayures fraîches. Un accès emprunté laisse moins de sang qu'un couteau, mais plus de portes ouvertes."
+      },
+      "page_fold": {
+        "id": "page_fold",
+        "text": "Le papier est froid. Pas seulement humide: froid de carrelage, de local lavé, de corps déplacé avant le coffre."
+      }
+    }
+  },
+  "leduc": {
+    "nodes": {
+      "start": {
+        "id": "start",
+        "text": "\"Je n'ai pas besoin d'un héros. J'ai besoin d'un type assez sale pour que le quartier lui parle, et assez debout pour ne pas tomber dans mon dossier. Tu peux encore faire ça ?\""
+      },
+      "why_zinedine": {
+        "id": "why_zinedine",
+        "text": "\"Parce que la mairie peut te nier si tu rates. Parce que les habitants te connaissent. Parce que tu dois assez de choses à assez de gens pour ne pas jouer au chevalier. Et parce que tu étais déjà dans le périmètre avant de savoir pourquoi.\""
+      },
+      "gobelet_skill": {
+        "id": "gobelet_skill",
+        "text": "\"Le Gobelet parle aux gens que mes réunions fatiguent. Ils te méprisent, donc ils te parlent. C'est dégueulasse. C'est opérationnel. La ville marche aussi avec ça.\""
+      }
+    }
+  },
+  "amar": {
+    "nodes": {
+      "invoice": {
+        "id": "invoice",
+        "text": "\"Nettoyage, sécurité, santé, rénovation. Une petite facture chacun. Une petite clé chacun. À la fin, personne n'a porté le corps en entier.\""
+      },
+      "talk_failure": {
+        "id": "talk_failure",
+        "text": "\"Périmètre ? Tu veux me parler comme une affiche de chantier ? Reviens quand tu parles comme Zinédine, pas comme le PowerPoint de Karine.\""
+      }
+    }
+  },
+  "sofiane": {
+    "nodes": {
+      "start": {
+        "id": "start",
+        "text": "Sofiane reste derrière la palissade, capuche basse, joint presque mort entre deux doigts. Il regarde les issues plus souvent que toi."
+      },
+      "early_no_page": {
+        "id": "early_no_page",
+        "text": "\"Tu viens avec la tête de quelqu'un qu'on utilise, pas avec une question.\" Il garde le joint bas et les yeux ailleurs. \"Quand tu sauras ce qu'Ahmed a laissé, tu sauras peut-être quoi me demander.\""
+      },
+      "after_fled": {
+        "id": "after_fled",
+        "text": "Sofiane n'est plus là. Joint écrasé. Place vide. Il a compris trop tard qu'il venait de parler à quelqu'un qui pouvait le faire tomber."
+      },
+      "keep_talking_success": {
+        "id": "keep_talking_success",
+        "text": "Tu ne le bloques pas avec ton corps. Tu bloques la sortie avec son intérêt. \"Si tu pars maintenant, ils vont dire témoin toxico et fermer ta bouche à ta place.\" Sofiane ravale la fumée. \"Le gars au badge chantier est revenu après. Il regardait toi, pas le coffre.\""
+      },
+      "keep_talking_failure": {
+        "id": "keep_talking_failure",
+        "text": "Tu mets trop de pression. Il recule, joint écrasé, capuche déjà tournée. Avant de filer, il lâche: \"Le badge avait pas juste chantier. Y avait un logo du centre de santé dessous. J'ai pas vu plus.\""
+      },
+      "saw_van": {
+        "id": "saw_van",
+        "text": "\"J'ai vu l'utilitaire avant le matin. Pas plein jour. Pas nuit non plus. L'heure où les livreurs se trompent d'entrée et où les gardiens font semblant de rien voir. Il roulait doucement, coffre fermé. Derrière, un gars en gilet chantier marchait tête basse.\""
+      },
+      "joint": {
+        "id": "joint",
+        "text": "\"Je fume parce que ça occupe les mains. Si je garde les mains vides, je regarde le coffre. Et si je regarde le coffre, je pense à Ahmed. Toi tu connais ça, non ? Mettre un truc entre soi et ce qu'on sait déjà.\""
+      },
+      "coping_mirror_success": {
+        "id": "coping_mirror_success",
+        "text": "Tu ne lui fais pas la morale. Tu poses le miroir entre vous: lui met de la fumée devant le coffre, toi alcool et cachets devant les heures. Sofiane entend la différence. \"L'odeur venait déjà du coffre avant qu'ils l'ouvrent. Et le gars au badge a lavé ses gants dans une bouteille d'eau.\""
+      },
+      "gobelet": {
+        "id": "gobelet",
+        "text": "\"Parce que les gens préfèrent un surnom à une personne. Le Gobelet, ça permet de rire de toi avant de te demander un service. Zinédine, c'est plus difficile à cracher. Ça oblige à se souvenir que t'es encore quelqu'un.\""
+      },
+      "end_sharp": {
+        "id": "end_sharp",
+        "text": "\"Et toi tu tiens debout comme quelqu'un qui a peur de tomber devant les bonnes personnes. On fait tous semblant à notre niveau.\" Il regarde le coffre sans tourner la tête. La fumée ne couvre rien. Elle lui donne juste trois secondes."
+      }
+    }
+  }
+}
