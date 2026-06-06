@@ -15,7 +15,7 @@
       "scriptId": "utility_van",
       "nodeId": "papers_surface"
     },
-    "text": "Carte, badge, ordonnance: identité, accès, dépendance. Quelqu'un n'a pas planté un portefeuille. Quelqu'un a planté un système."
+    "text": "Carte, badge, ordonnance: identité, accès, dépendance. Trois pièces faciles à classer. Trois pièces faciles à retourner contre toi."
   },
   {
     "id": "miroirs_papers__regard_photo_sober",
@@ -51,7 +51,7 @@
       "scriptId": "utility_van",
       "nodeId": "papers_main"
     },
-    "text": "Une rayure fraîche, c'est une phrase sans style: ce badge a touché un lecteur récemment."
+    "text": "Rayure fraîche sur la tranche. Ce badge a touché un lecteur récemment. Pas besoin d'une belle théorie pour ça."
   },
   {
     "id": "miroirs_papers__dose_prescription_blackmail",
@@ -69,7 +69,7 @@
       "scriptId": "utility_van",
       "nodeId": "papers_dose"
     },
-    "text": "Ce papier est un robinet. Hami sait l'ouvrir, le fermer, le réduire. Appelle ça suivi si tu veux dormir."
+    "text": "Ce papier tient ta main par l'heure et par la dose. Hami peut appeler ça suivi. Toi, tu sais comment ça ferme une bouche."
   },
   {
     "id": "miroirs_papers__antipassive_dossier_too_clean",
@@ -88,7 +88,7 @@
       "scriptId": "utility_van",
       "nodeId": "papers_surface"
     },
-    "text": "Les papiers sont propres, donc la scène est claire. Mauvaise lecture: les coups montés propres coûtent justement plus cher."
+    "text": "Les papiers sont propres, donc tu veux les croire simples. Mauvaise lecture: ce qui est propre s'imprime plus vite."
   },
   {
     "id": "miroirs_body__ventre_counts_hours",
@@ -106,7 +106,7 @@
       "scriptId": "utility_van",
       "nodeId": "body_read"
     },
-    "text": "Ton corps compte les heures depuis la dernière vraie régulation. Ahmed compte les heures depuis sa mort. Deux horloges sales dans le même coffre."
+    "text": "Ton corps compte depuis la dernière régulation. Ahmed, lui, impose une autre heure. Le coffre mélange deux urgences qui ne devraient pas se toucher."
   },
   {
     "id": "miroirs_body__bouches_old_firstname",
@@ -124,7 +124,7 @@
       "scriptId": "utility_van",
       "nodeId": "body_ahmed_history"
     },
-    "text": "Ahmed gardait ton vrai prénom. Dans un quartier, ça peut devenir une preuve."
+    "text": "Ahmed gardait ton prénom entier. Dans un quartier, ça peut suffire à refuser le surnom qu'on colle aux gens."
   },
   {
     "id": "miroirs_body__nerf_no_blood_bad",
@@ -142,7 +142,7 @@
       "scriptId": "utility_van",
       "nodeId": "body_no_wounds"
     },
-    "text": "Pas de sang visible ne veut pas dire pas de violence. Ça veut dire violence déplacée, lavée, ou faite ailleurs."
+    "text": "Pas de sang visible ne veut pas dire pas de violence. Ça peut vouloir dire ailleurs, avant, ou nettoyé."
   },
   {
     "id": "miroirs_notebook__main_missing",
@@ -160,7 +160,7 @@
       "scriptId": "utility_van",
       "nodeId": "notebook_absent"
     },
-    "text": "Un homme qui note tout sans carnet, c'est une scène déjà nettoyée. Si Karine raconte l'absence du carnet avant toi, elle décide ce qui n'a jamais existé."
+    "text": "Un homme qui note tout sans carnet, ce n'est pas une absence neutre. Si Karine raconte le manque avant toi, elle choisit déjà ce qui n'existe pas."
   },
   {
     "id": "miroirs_page__dossier_camera_as_decision",
@@ -178,7 +178,7 @@
       "scriptId": "utility_van",
       "nodeId": "page_camera"
     },
-    "text": "Une caméra morte depuis mars devient une décision en juin si le corps arrive pile dans son angle."
+    "text": "Caméra morte depuis mars. Corps placé en juin. La panne devient intéressante seulement parce que quelqu'un l'a utilisée."
   },
   {
     "id": "miroirs_page__main_badge_opens_dirty",
@@ -196,7 +196,7 @@
       "scriptId": "utility_van",
       "nodeId": "page_badge"
     },
-    "text": "Le badge chantier est parfait pour un sale boulot: assez officiel pour passer, assez provisoire pour devenir flou. Le danger suivant, c'est le registre qui dira que ton badge à toi a fini la phrase."
+    "text": "Le badge chantier est parfait pour passer sans forcer. Assez officiel pour ouvrir. Assez provisoire pour que tout le monde hausse les épaules après."
   },
   {
     "id": "miroirs_page__sel_local_washed",
@@ -214,7 +214,7 @@
       "scriptId": "utility_van",
       "nodeId": "page_fold"
     },
-    "text": "Humide, froid, lavé. La page ne vient pas seulement du coffre. Elle a connu un local où on nettoie pour oublier. Le Sel reconnaît une pièce avant de retrouver l'adresse."
+    "text": "Humide, froid, lavé. La page a connu autre chose que le coffre: carrelage, bonde, Javel trop rapide."
   },
   {
     "id": "miroirs_papers__sel_hami_date",
@@ -232,7 +232,7 @@
       "scriptId": "utility_van",
       "nodeId": "papers_dose"
     },
-    "text": "18 h 40. L'heure colle à la langue comme un médicament mal avalé. Une ordonnance datée, ce n'est pas seulement un soin: c'est un alibi avec posologie."
+    "text": "18 h 40. Une ordonnance datée n'est pas seulement un soin. C'est une heure qui peut parler à la place de ta mémoire."
   },
   {
     "id": "miroirs_page__presage_admin_death",
@@ -250,7 +250,7 @@
       "scriptId": "utility_van",
       "nodeId": "page_surface"
     },
-    "text": "Mort dans leurs papiers avant le corps. Le Présage n'a pas besoin de mystère: ici, un formulaire peut creuser le trou pendant que quelqu'un respire encore."
+    "text": "Mort dans leurs papiers avant le corps. Ici, un formulaire peut commencer le trou pendant que quelqu'un respire encore."
   },
   {
     "id": "miroirs_page__dossier_camera_synthesis_pressure",
@@ -269,7 +269,7 @@
       "scriptId": "utility_van",
       "nodeId": "page_camera_success"
     },
-    "text": "L'angle mort ne disculpe personne. Il prouve pire: quelqu'un a choisi l'endroit exact où une preuve ne naîtrait pas."
+    "text": "L'angle mort ne disculpe personne. Il montre surtout où demander les traces: intervention, date, technicien, validation."
   },
   {
     "id": "miroirs_page__main_badge_synthesis_pressure",
@@ -288,7 +288,7 @@
       "scriptId": "utility_van",
       "nodeId": "page_badge_success"
     },
-    "text": "Deux badges propres peuvent fabriquer une scène sale. Le registre P2 devient une arme: s'il ment, il accuse; s'il dit vrai, il accuse aussi."
+    "text": "Deux badges propres peuvent fabriquer une scène sale. Le registre P2 dira peut-être qui est entré; il dira surtout qui a eu le droit d'effacer l'entrée."
   },
   {
     "id": "miroirs_page__sel_camera_support_suspect",
@@ -307,7 +307,7 @@
       "scriptId": "utility_van",
       "nodeId": "page_camera_failure"
     },
-    "text": "Tu rates l'angle, pas le geste. Un support retouché après la panne, c'est déjà une main dans le dossier."
+    "text": "Tu rates l'angle, pas le geste. Un support retouché après la panne laisse déjà une date à chercher."
   },
   {
     "id": "miroirs_page__dossier_badge_reader_suspect",
@@ -326,7 +326,7 @@
       "scriptId": "utility_van",
       "nodeId": "page_badge_failure"
     },
-    "text": "Le lecteur P2 devient le témoin technique: moins spectaculaire qu'un nom, plus difficile à intimider."
+    "text": "Le lecteur P2 devient le témoin technique: moins spectaculaire qu'un nom, plus difficile à faire taire."
   },
   {
     "id": "miroirs_page__sel_sanitary_room_trail",
@@ -345,6 +345,6 @@
       "scriptId": "utility_van",
       "nodeId": "page_cold_success"
     },
-    "text": "Le local sanitaire n'est pas une ambiance: carrelage, bonde, Javel, une pièce qui sait recevoir un corps puis redevenir municipale."
+    "text": "Local sanitaire: carrelage, bonde, Javel. Une pièce faite pour nettoyer vite, pas forcément pour faire disparaître proprement."
   }
 ]

@@ -1,57 +1,57 @@
 [
   {
     "id": "memoire_saline",
-    "name": "Le Sel",
-    "tagline": "Mémoire chimique: sueur, larmes, sel de déneigement, béton humide et déjà-vu qui reviennent par le corps.",
+    "name": "Mémoire",
+    "tagline": "Souvenirs physiques: odeurs, goûts, lieux, humidité, déjà-vu et détails que le corps garde avant la tête.",
     "color": "#65b7c6",
     "startingValue": 2
   },
   {
     "id": "procedure",
-    "name": "Le Dossier",
-    "tagline": "Preuves, papiers, procédure, mensonges officiels et tampons qui enterrent les vivants.",
+    "name": "Procédure",
+    "tagline": "Preuves, chronologies, papiers, accès, versions officielles et traces qui tiennent dans un dossier.",
     "color": "#d7a84b",
     "startingValue": 2
   },
   {
     "id": "nerfs",
-    "name": "Le Nerf",
-    "tagline": "Danger, colère, menace, fuite et violence qui arrive avant la pensée.",
+    "name": "Danger",
+    "tagline": "Menace immédiate, colère, fuite, violence possible et réflexes qui arrivent avant la pensée.",
     "color": "#d45d59",
     "startingValue": 1
   },
   {
     "id": "honte_publique",
-    "name": "Le Regard",
-    "tagline": "Honte, réputation, gêne, posture sociale et petites morts en public.",
+    "name": "Honte",
+    "tagline": "Réputation, regard des autres, gêne publique, posture sociale et peur d'être discrédité.",
     "color": "#c77bb8",
     "startingValue": 2
   },
   {
     "id": "bouches",
-    "name": "Les Bouches",
-    "tagline": "Rumeurs, surnoms, accents, mensonges du quartier et vérités mâchées trop longtemps.",
+    "name": "Rumeur",
+    "tagline": "Quartier, témoins, surnoms, non-dits, mensonges utiles et vérités qui passent de bouche en bouche.",
     "color": "#7bcf8e",
     "startingValue": 1
   },
   {
     "id": "faim",
-    "name": "Le Ventre",
-    "tagline": "Faim, fatigue, manque matériel, corps humiliant et besoins sans élégance.",
+    "name": "Corps",
+    "tagline": "Faim, fatigue, manque, douleur, nausée, tremblements et besoins qui ne demandent pas la permission.",
     "color": "#d98c4a",
     "startingValue": 1
   },
   {
     "id": "symbole",
-    "name": "Le Présage",
-    "tagline": "Signes, religion, paranoïa, poésie sale et certitudes qui brillent sous néon malade.",
+    "name": "Signes",
+    "tagline": "Intuition, symboles, coïncidences, paranoïa et sens caché quand la scène paraît trop bien rangée.",
     "color": "#8ea0ff",
     "startingValue": 2
   },
   {
     "id": "main_gauche",
-    "name": "La Main Basse",
-    "tagline": "Gestes sales, fouille, crochetage, coups, vols et solutions sous la table.",
+    "name": "Débrouille",
+    "tagline": "Fouille, accès, gestes discrets, bricolage, coups bas et solutions qui ne passent pas par la voie propre.",
     "color": "#b7be75",
     "startingValue": 2
   }
