@@ -636,6 +636,8 @@ test('keeps the action prompt attached to the rendered scene @responsive', async
 
   const canvas = page.locator('#game-stage canvas')
   const prompt = page.getByRole('button', { name: 'Regarder le téléphone' })
+  const phoneOrb = scenePointForOrb('miroirs_orb_phone')
+  const technicalRoomOrb = scenePointForOrb('miroirs_orb_technical_room')
 
   await expect(canvas).toBeVisible()
   await expectSceneReady(page)
@@ -643,16 +645,18 @@ test('keeps the action prompt attached to the rendered scene @responsive', async
   const compactWidth = (page.viewportSize()?.width ?? 0) < 900
 
   if (compactWidth) {
-    await page.locator('.stage-viewport').evaluate((element) => {
-      element.scrollLeft = element.scrollWidth * (610 / 1280) - element.clientWidth / 2
-    })
+    await page.locator('.stage-viewport').evaluate((element, options) => {
+      element.scrollLeft = element.scrollWidth * (options.sceneX / options.sceneWidth) - element.clientWidth / 2
+    }, { sceneX: phoneOrb.x, sceneWidth: MIRRORS_SCENE_WIDTH })
   }
 
   const canvasBox = await canvas.boundingBox()
   expect(canvasBox).not.toBeNull()
-  await page.mouse.move(canvasBox!.x + (610 / 1280) * canvasBox!.width, canvasBox!.y + (438 / 720) * canvasBox!.height, {
-    steps: 6,
-  })
+  await page.mouse.move(
+    canvasBox!.x + (phoneOrb.x / MIRRORS_SCENE_WIDTH) * canvasBox!.width,
+    canvasBox!.y + (phoneOrb.y / MIRRORS_SCENE_HEIGHT) * canvasBox!.height,
+    { steps: 6 },
+  )
   await expect(prompt).toBeVisible()
 
   const geometry = await page.evaluate(() => {
@@ -687,14 +691,14 @@ test('keeps the action prompt attached to the rendered scene @responsive', async
     await expectInViewport(page, '.stage-viewport')
     await expectNoElementOverlap(page, '#interaction-prompt', '#mobile-scene-nav')
 
-    await page.locator('.stage-viewport').evaluate((element) => {
-      element.scrollLeft = element.scrollWidth * (1150 / 1280) - element.clientWidth / 2
-    })
+    await page.locator('.stage-viewport').evaluate((element, options) => {
+      element.scrollLeft = element.scrollWidth * (options.sceneX / options.sceneWidth) - element.clientWidth / 2
+    }, { sceneX: technicalRoomOrb.x, sceneWidth: MIRRORS_SCENE_WIDTH })
     const pannedCanvasBox = await canvas.boundingBox()
     expect(pannedCanvasBox).not.toBeNull()
     await page.mouse.move(
-      pannedCanvasBox!.x + (1150 / 1280) * pannedCanvasBox!.width,
-      pannedCanvasBox!.y + (198 / 720) * pannedCanvasBox!.height,
+      pannedCanvasBox!.x + (technicalRoomOrb.x / MIRRORS_SCENE_WIDTH) * pannedCanvasBox!.width,
+      pannedCanvasBox!.y + (technicalRoomOrb.y / MIRRORS_SCENE_HEIGHT) * pannedCanvasBox!.height,
       { steps: 6 },
     )
     await expect(page.getByRole('button', { name: 'Examiner le local technique' })).toBeVisible()
@@ -719,12 +723,20 @@ test('opens utility and trunk visible orbs apart from the utility hotspot', asyn
 
   const canvasBox = await canvas.boundingBox()
   expect(canvasBox).not.toBeNull()
+  const vanOrb = scenePointForOrb('miroirs_orb_van')
+  const bodyOrb = scenePointForOrb('miroirs_orb_body')
 
-  await page.mouse.click(canvasBox!.x + (190 / 1280) * canvasBox!.width, canvasBox!.y + (375 / 720) * canvasBox!.height)
+  await page.mouse.click(
+    canvasBox!.x + (vanOrb.x / MIRRORS_SCENE_WIDTH) * canvasBox!.width,
+    canvasBox!.y + (vanOrb.y / MIRRORS_SCENE_HEIGHT) * canvasBox!.height,
+  )
   await expect(page.locator('.dialogue-root')).toContainText('Utilitaire municipal')
   await page.getByRole('button', { name: 'Fermer' }).click()
 
-  await page.mouse.click(canvasBox!.x + (143 / 1280) * canvasBox!.width, canvasBox!.y + (418 / 720) * canvasBox!.height)
+  await page.mouse.click(
+    canvasBox!.x + (bodyOrb.x / MIRRORS_SCENE_WIDTH) * canvasBox!.width,
+    canvasBox!.y + (bodyOrb.y / MIRRORS_SCENE_HEIGHT) * canvasBox!.height,
+  )
   await expect(page.locator('.dialogue-root')).toContainText('Corps dans le coffre')
 })
 
@@ -739,9 +751,10 @@ test('triggers proximity orbs as one-shot toasts instead of modal inspections', 
   await expectCanvasToHaveRenderedPixels(canvas)
   const canvasBox = await canvas.boundingBox()
   expect(canvasBox).not.toBeNull()
+  const neonOrb = scenePointForOrb('miroirs_orb_neon')
 
-  const flaqueX = canvasBox!.x + (635 / 1280) * canvasBox!.width
-  const flaqueY = canvasBox!.y + (340 / 720) * canvasBox!.height
+  const flaqueX = canvasBox!.x + (neonOrb.x / MIRRORS_SCENE_WIDTH) * canvasBox!.width
+  const flaqueY = canvasBox!.y + (neonOrb.y / MIRRORS_SCENE_HEIGHT) * canvasBox!.height
   await page.mouse.click(flaqueX, flaqueY)
 
   await expect(page.locator('.orb-toast')).toContainText('Flaque sous néon')
@@ -749,9 +762,13 @@ test('triggers proximity orbs as one-shot toasts instead of modal inspections', 
   await expect
     .poll(async () => {
       return await page.evaluate((key) => {
-        const savedState = JSON.parse(localStorage.getItem(key) ?? '{}') as {
+        const savedPayload = JSON.parse(localStorage.getItem(key) ?? '{}') as {
+          state?: {
+            triggeredOrbs?: Record<string, boolean>
+          }
           triggeredOrbs?: Record<string, boolean>
         }
+        const savedState = savedPayload.state ?? savedPayload
 
         return savedState.triggeredOrbs?.miroirs_orb_neon === true
       }, saveKey)
