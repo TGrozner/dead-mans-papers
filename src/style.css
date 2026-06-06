@@ -17,6 +17,9 @@
   --hairline: rgba(220, 235, 215, 0.14);
   --sans: Inter, ui-sans-serif, system-ui, "Segoe UI", Arial, sans-serif;
   --mono: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+  --mobile-bottom-inset: max(8px, env(safe-area-inset-bottom, 0px));
+  --mobile-nav-reserve: 76px;
+  --mobile-prompt-reserve: 66px;
 
   color: var(--foam);
   background:
@@ -48,6 +51,21 @@ body {
   min-width: 0;
   margin: 0;
   overscroll-behavior: none;
+}
+
+body.dialogue-open::before {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  content: "";
+  background: rgba(13, 17, 23, 0.46);
+  pointer-events: auto;
+}
+
+body.modal-open .topbar,
+body.modal-open .play-area,
+body.tutorial-open .dialogue-root {
+  pointer-events: none;
 }
 
 button {
@@ -111,7 +129,7 @@ h1 {
 
 .case-stamp {
   flex: 0 0 auto;
-  min-height: 36px;
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -245,7 +263,7 @@ h1 {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  min-height: 42px;
+  min-height: 44px;
   max-width: none;
   padding: 8px 14px;
   border: 2px solid var(--blackline);
@@ -322,6 +340,8 @@ h1 {
 }
 
 .debug-log button {
+  min-width: 44px;
+  min-height: 44px;
   border: 1px solid rgba(244, 236, 216, 0.38);
   color: var(--paper);
   background: rgba(183, 87, 56, 0.72);
@@ -585,8 +605,11 @@ h1 {
 
 .case-danger-zone summary {
   width: max-content;
+  min-height: 44px;
   margin-left: auto;
-  padding: 4px 0;
+  padding: 0 4px;
+  display: inline-flex;
+  align-items: center;
   color: rgba(220, 235, 215, 0.52);
   font-family: var(--mono);
   font-size: 10px;
@@ -615,7 +638,7 @@ h1 {
 
 .reset-button {
   width: 100%;
-  min-height: 34px;
+  min-height: 44px;
   flex: 0 0 auto;
   margin-top: 6px;
   border: 1px solid rgba(212, 93, 89, 0.42);
@@ -636,7 +659,7 @@ h1 {
 .dialogue-root {
   position: fixed;
   inset: auto 10px 10px;
-  z-index: 10;
+  z-index: 26;
   max-width: 1040px;
   max-height: min(70svh, calc(100svh - 20px));
   margin: 0 auto;
@@ -703,20 +726,21 @@ h1 {
   display: flex;
   align-items: center;
   gap: 9px;
+  min-height: 44px;
   margin-top: 16px;
   color: var(--ink);
   font-size: 14px;
 }
 
 .tutorial-check input {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   accent-color: var(--rust);
 }
 
 .tutorial-close {
   width: 100%;
-  min-height: 42px;
+  min-height: 44px;
   margin-top: 14px;
   border: 2px solid var(--ink);
   border-radius: 7px;
@@ -786,10 +810,10 @@ h1 {
 }
 
 .passive-toast button {
-  flex: 0 0 40px;
+  flex: 0 0 44px;
   pointer-events: auto;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
   border: 2px solid var(--ink);
@@ -841,8 +865,8 @@ h1 {
 .dialogue-close,
 .orb-close {
   flex: 0 0 auto;
-  min-height: 34px;
-  padding: 5px 10px;
+  min-height: 44px;
+  padding: 6px 12px;
   border: 2px solid var(--ink);
   border-radius: 6px;
   color: var(--ink);
@@ -965,7 +989,7 @@ h1 {
   }
 
   .case-stamp {
-    min-height: 34px;
+    min-height: 44px;
     padding: 6px 9px;
     font-size: 11px;
     transform: rotate(0.8deg);
@@ -1044,7 +1068,7 @@ h1 {
   }
 
   .choice-button {
-    min-height: 42px;
+    min-height: 44px;
     padding: 8px 10px;
   }
 }
@@ -1065,7 +1089,7 @@ h1 {
   }
 
   .case-stamp {
-    min-height: 36px;
+    min-height: 44px;
     margin-top: 6px;
     white-space: nowrap;
   }
@@ -1119,20 +1143,25 @@ h1 {
     position: fixed;
     right: 8px;
     left: 8px;
-    bottom: 8px;
+    bottom: calc(var(--mobile-bottom-inset) + var(--mobile-nav-reserve));
     z-index: 24;
     width: auto;
     max-width: none;
     justify-content: flex-start;
   }
 
+  body.case-panel-open .interaction-prompt,
+  body.dialogue-open .interaction-prompt {
+    display: none;
+  }
+
   .case-panel {
     position: fixed;
-    inset: auto 8px 8px;
+    inset: auto 8px var(--mobile-bottom-inset);
     z-index: 22;
     width: auto;
     height: min(72svh, 620px);
-    max-height: calc(100svh - 86px);
+    max-height: calc(100svh - 86px - env(safe-area-inset-bottom, 0px));
     box-shadow:
       0 0 0 1px rgba(244, 236, 216, 0.08),
       0 -18px 54px rgba(0, 0, 0, 0.6);
@@ -1145,7 +1174,7 @@ h1 {
   .play-area--case-collapsed .mobile-scene-nav {
     position: fixed;
     right: 10px;
-    bottom: max(10px, env(safe-area-inset-bottom));
+    bottom: var(--mobile-bottom-inset);
     left: 10px;
     z-index: 20;
     display: grid;
@@ -1213,10 +1242,19 @@ h1 {
     position: fixed;
     top: auto;
     right: 8px;
-    bottom: 8px;
+    bottom: calc(var(--mobile-bottom-inset) + var(--mobile-nav-reserve));
     left: 8px;
     width: auto;
     z-index: 23;
+  }
+
+  body.interaction-prompt-active .passive-toast-root {
+    bottom: calc(var(--mobile-bottom-inset) + var(--mobile-nav-reserve) + var(--mobile-prompt-reserve));
+  }
+
+  body.case-panel-open .passive-toast-root,
+  body.dialogue-open .passive-toast-root {
+    display: none;
   }
 }
 

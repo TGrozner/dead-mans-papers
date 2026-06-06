@@ -12,6 +12,7 @@ import { NarrativeEngine } from './game/narrative'
 import { createGameUi } from './game/ui'
 import { type DebugEntry, isDebugEnabled, setDebugEnabled } from './game/debug'
 import { trapFocus } from './game/focus'
+import type { InteractionTarget } from './game/types'
 
 const appRoot = getAppRoot()
 const INITIAL_MOBILE_SCENE_STOP = 0.5
@@ -120,12 +121,14 @@ let tutorialOpen = false
 let tutorialRestoreFocusTo: HTMLElement | undefined
 const refs = {
   dialogueRoot: getRequiredElement<HTMLDivElement>('#dialogue-root'),
+  topbar: getRequiredElement<HTMLElement>('.topbar'),
   prompt: getRequiredElement<HTMLButtonElement>('#interaction-prompt'),
   promptLabel: getRequiredElement<HTMLSpanElement>('#interaction-label'),
   toastRoot: getRequiredElement<HTMLDivElement>('#passive-toast-root'),
   objective: getRequiredElement<HTMLParagraphElement>('#objective'),
   clueList: getRequiredElement<HTMLUListElement>('#clue-list'),
   voiceList: getRequiredElement<HTMLDivElement>('#voice-list'),
+  playArea: getRequiredElement<HTMLElement>('.play-area'),
   stageViewport: getRequiredElement<HTMLDivElement>('#stage-viewport'),
   sceneNav: getRequiredElement<HTMLElement>('#mobile-scene-nav'),
   tutorialRoot: getRequiredElement<HTMLDivElement>('#tutorial-root'),
@@ -153,6 +156,7 @@ const ui = createGameUi({
 setupDebugLog()
 setupCasePanel()
 setupMobileSceneNavigation()
+setupModalLayer()
 const restoredSurface = ui.restoreActiveSurface()
 
 void loadGame()
@@ -176,7 +180,7 @@ async function loadGame(): Promise<void> {
     parent: 'game-stage',
     startDialogue: ui.openDialogue,
     openOrb: ui.openOrb,
-    setInteraction: ui.setInteraction,
+    setInteraction: setInteractionTarget,
     triggerProximityOrb: ui.triggerProximityOrb,
     triggerExplorationPassive: ui.triggerExplorationPassive,
     isDialogueOpen: () => tutorialOpen || ui.isDialogueOpen(),
@@ -194,6 +198,7 @@ function showTutorialIfNeeded(): void {
   tutorialRestoreFocusTo = activeElement instanceof HTMLElement ? activeElement : undefined
   tutorialOpen = true
   refs.tutorialRoot.hidden = false
+  syncModalState()
   refs.tutorialClose.focus()
   document.addEventListener('keydown', handleTutorialKeydown)
 
@@ -205,6 +210,7 @@ function closeTutorial(): void {
   setTutorialSeen(true)
   tutorialOpen = false
   refs.tutorialRoot.hidden = true
+  syncModalState()
   document.removeEventListener('keydown', handleTutorialKeydown)
 
   if (!engine.state.flags.woke_up && !ui.isDialogueOpen()) {
@@ -272,6 +278,7 @@ function setupCasePanel(): void {
     panel.classList.toggle('case-panel--expanded', expanded)
     panel.classList.toggle('case-panel--collapsed', !expanded)
     playArea?.classList.toggle('play-area--case-collapsed', !expanded)
+    syncCasePanelState(expanded)
     toggle.textContent = expanded ? 'Dossier ouvert' : 'Dossier fermé'
     toggle.setAttribute('aria-expanded', String(expanded))
   }
@@ -280,13 +287,68 @@ function setupCasePanel(): void {
   mobileSceneMedia.addEventListener('change', (event) => {
     if (!userToggled) {
       setExpanded(!event.matches)
+      return
     }
+
+    syncCasePanelState(toggle.getAttribute('aria-expanded') === 'true')
   })
 
   toggle.addEventListener('click', () => {
     userToggled = true
     setExpanded(toggle.getAttribute('aria-expanded') !== 'true')
   })
+}
+
+function setInteractionTarget(target?: InteractionTarget): void {
+  const visibleTarget = isMobileCasePanelOpen() ? undefined : target
+
+  ui.setInteraction(visibleTarget)
+  document.body.classList.toggle('interaction-prompt-active', Boolean(visibleTarget))
+}
+
+function clearInteractionPrompt(): void {
+  setInteractionTarget(undefined)
+}
+
+function syncCasePanelState(expanded: boolean): void {
+  const mobileCaseOpen = expanded && mobileSceneMedia.matches
+  document.body.classList.toggle('case-panel-open', mobileCaseOpen)
+
+  if (mobileCaseOpen) {
+    clearInteractionPrompt()
+  }
+}
+
+function isMobileCasePanelOpen(): boolean {
+  return document.body.classList.contains('case-panel-open')
+}
+
+function setupModalLayer(): void {
+  const observer = new MutationObserver(syncModalState)
+  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
+  syncModalState()
+}
+
+function syncModalState(): void {
+  const dialogueOpen = document.body.classList.contains('dialogue-open')
+  const modalOpen = dialogueOpen || tutorialOpen
+
+  document.body.classList.toggle('modal-open', modalOpen)
+  document.body.classList.toggle('tutorial-open', tutorialOpen)
+  setBackgroundInert(refs.topbar, modalOpen)
+  setBackgroundInert(refs.playArea, modalOpen)
+  setBackgroundInert(refs.dialogueRoot, tutorialOpen)
+}
+
+function setBackgroundInert(element: HTMLElement, inert: boolean): void {
+  element.inert = inert
+
+  if (inert) {
+    element.setAttribute('aria-hidden', 'true')
+    return
+  }
+
+  element.removeAttribute('aria-hidden')
 }
 
 function setupMobileSceneNavigation(): void {
