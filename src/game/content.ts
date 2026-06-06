@@ -1,4 +1,5 @@
 import dialoguesJson from '../content/dialogues.json'
+import dialogueOverridesJson from '../content/dialogue-overrides.json'
 import mirrorsOrbsJson from '../content/locations/miroirs/orbs.json'
 import parasitesJson from '../content/parasites.json'
 import voicesJson from '../content/voices.json'
@@ -14,7 +15,10 @@ import type {
 
 export const voices = voicesJson as VoiceDefinition[]
 export const parasites = parasitesJson as ParasiteDefinition[]
-export const dialogues = dialoguesJson as Record<string, DialogueScript>
+export const dialogues = mergeDialogueOverrides(
+  dialoguesJson as Record<string, DialogueScript>,
+  dialogueOverridesJson as Record<string, Partial<DialogueScript>>,
+)
 export const orbs = mirrorsOrbsJson as OrbDefinition[]
 const passiveModules = import.meta.glob<PassiveDefinition[]>(
   '../content/locations/miroirs/*.passives.json',
@@ -43,3 +47,29 @@ export const parasiteById = parasites.reduce(
   },
   {} as Record<ParasiteId, ParasiteDefinition>,
 )
+
+function mergeDialogueOverrides(
+  baseDialogues: Record<string, DialogueScript>,
+  overrides: Record<string, Partial<DialogueScript>>,
+): Record<string, DialogueScript> {
+  const mergedDialogues = { ...baseDialogues }
+
+  Object.entries(overrides).forEach(([scriptId, scriptOverride]) => {
+    const baseScript = mergedDialogues[scriptId]
+
+    if (!baseScript) {
+      return
+    }
+
+    mergedDialogues[scriptId] = {
+      ...baseScript,
+      ...scriptOverride,
+      nodes: {
+        ...baseScript.nodes,
+        ...(scriptOverride.nodes ?? {}),
+      },
+    }
+  })
+
+  return mergedDialogues
+}
