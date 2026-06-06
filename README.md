@@ -32,8 +32,8 @@ Ouvrir ensuite `http://127.0.0.1:4173/dead-mans-papers/`. `npm run dev` reste ut
 - Lieu jouable: Parking P2, parking semi-enterré d'une cité en rénovation interminable.
 - Personnage joueur: Zinédine Saïdi, médiateur sécurité municipale fonctionnel par fragments, surnommé Le Gobelet.
 - Incident central: Ahmed Berrichi, vieux locataire officiellement disparu du relogement, est retrouvé dans le coffre d'un utilitaire municipal avec les papiers du joueur plantés sur lui.
-- Progression v0: le coffre révèle d'abord une odeur et une forme; les papiers n'arrivent qu'après une fouille physique risquée.
-- Mystère municipal: une page arrachée ouvre des pistes sales: caméra P2 morte, badge chantier, Dr Nadia Hami, et Sofiane qui a senti l'odeur du coffre depuis la palissade.
+- Progression v0: le coffre révèle le corps avec les papiers de Zinédine; la fouille physique risquée arrache ensuite la page qui ouvre les vraies pistes.
+- Mystère municipal: la page arrachée pointe vers caméra P2 morte, badge chantier, Dr Nadia Hami, et Sofiane qui a senti l'odeur du coffre depuis la palissade.
 - Quatre PNJ clés: Karine Leduc, responsable rénovation urbaine; Amar Boudiaf, gardien d'immeuble; Sofiane Zekraoui, témoin de palissade nerveux et utile; Dr Nadia Hami, médecin municipal encore hors champ.
 - Huit voix internes définies comme personnages systémiques.
 - La Dose, parasite non-stat lié à l'alcool, aux calmants et à la dette médicale.
@@ -55,19 +55,17 @@ Ouvrir ensuite `http://127.0.0.1:4173/dead-mans-papers/`. `npm run dev` reste ut
 
 ## Contrôles
 
-- Déplacement: flèches, ZQSD, WASD ou toucher la scène pour marcher vers un point.
-- Interaction: près d'un élément, utiliser le bouton contextuel, Espace, Entrée ou E.
-- Mobile: toucher un élément important sélectionne l'action et fait marcher Zinédine vers son point d'approche, mais n'ouvre plus directement de scène.
-- Mobile: ouvrir une surface narrative demande ensuite d'être à portée, puis d'utiliser le bouton contextuel `!`, E/Espace/Entrée, ou un second tap volontaire sur la même cible.
-- Mobile: la scène est pensée en approcher-puis-agir plutôt qu'en joystick virtuel; les zones longues scrollent à l'intérieur du dossier ou du dialogue, pas dans toute la page.
-- Debug mobile/dev: ajouter `?debug=1` à l'URL affiche les derniers taps, cibles actives, destinations et projections de mouvement.
-- Mobile: la scène reste entièrement visible; on tape une cible surbrillante, puis on confirme avec le bouton d'action.
+- Point-and-click: toucher ou cliquer une cible surbrillante ouvre directement son dialogue, son observation ou son écoute.
+- Desktop: le survol affiche le bouton contextuel `!`, qui reprend l'action active sans exiger de déplacement.
+- Mobile: la scène reste entièrement visible; les zones longues scrollent à l'intérieur du dossier ou du dialogue, pas dans toute la page.
+- Debug mobile/dev: ajouter `?debug=1` à l'URL affiche les derniers clics et cibles actives.
 - Mobile: les pensées flottantes sont compactes, limitées à la plus récente et disparaissent automatiquement pour éviter de masquer la carte.
 
 ## Notes Dev
 
 - Les fichiers source et narratifs restent en UTF-8: `.ts`, `.css`, `.html`, `.json`, `.md`.
 - Garder les accents dans les dialogues français; vérifier `Mémoire`, `Réussi`, `à`, `œ`, `É` dans le navigateur plutôt que dans l'affichage PowerShell.
+- Standard visuel runtime: scène logique `1280x720` en 16:9. Le fond legacy `960x576` reste un fallback centré sans déformation; les nouveaux masters doivent viser `2560x1440` avec foreground transparent aligné.
 
 ## Direction v0
 

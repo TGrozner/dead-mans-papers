@@ -1,5 +1,6 @@
 import { parasiteById, voiceById, voices } from './content'
 import clueGroupsJson from './clue-groups.json'
+import { trapFocus } from './focus'
 import type {
   CheckResult,
   DialogueChoice,
@@ -66,7 +67,7 @@ export function createGameUi(options: GameUiOptions) {
     const node = activeDialogue.node
     const voice = node.voice ? voiceById[node.voice] : undefined
     const parasite = node.parasite ? parasiteById[node.parasite] : undefined
-    const channelColor = voice?.color ?? parasite?.color
+    const channelColor = getSafeColor(voice?.color ?? parasite?.color)
     const check = activeDialogue.checkResult
     const dialoguePassives = activeDialogue.passives.filter((passive) => passive.display === 'dialogue')
     const checkLabel = check ? formatDetailedCheckResult(check) : ''
@@ -228,12 +229,17 @@ export function createGameUi(options: GameUiOptions) {
 
   options.prompt.addEventListener('click', () => interactionTarget?.run())
   uiDocument.addEventListener('keydown', (event) => {
-    if (event.key !== 'Escape' || options.root.hidden) {
+    if (options.root.hidden) {
       return
     }
 
-    event.preventDefault()
-    closeActiveSurface()
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      closeActiveSurface()
+      return
+    }
+
+    trapFocus(event, options.root)
   })
   syncState()
 
@@ -271,6 +277,7 @@ export function createGameUi(options: GameUiOptions) {
 function renderOrb(orb: RenderedOrb, root: HTMLDivElement, onClose: () => void): void {
   setDialogueSurfaceOpen(root, true)
   const voice = orb.voice ? voiceById[orb.voice] : undefined
+  const voiceColor = getSafeColor(voice?.color)
 
   root.hidden = false
   root.innerHTML = `
@@ -281,9 +288,9 @@ function renderOrb(orb: RenderedOrb, root: HTMLDivElement, onClose: () => void):
       </div>
       <p class="dialogue-text">${escapeHtml(orb.text)}</p>
       ${
-        voice && orb.voiceText
+        voice && orb.voiceText && voiceColor
           ? `
-            <aside class="passive-aside" style="--voice-color: ${voice.color}">
+            <aside class="passive-aside" style="--voice-color: ${voiceColor}">
               <div class="passive-speaker">${escapeHtml(voice.name)}</div>
               <p>${escapeHtml(orb.voiceText)}</p>
             </aside>
@@ -307,9 +314,10 @@ function setDialogueSurfaceOpen(root: HTMLElement, open: boolean): void {
 
 function renderPassiveAside(passive: PassiveTrigger): string {
   const channel = getPassiveChannel(passive)
+  const channelColor = getSafeColor(channel.color) ?? '#d7a84b'
 
   return `
-    <aside class="passive-aside" style="--voice-color: ${channel.color}">
+    <aside class="passive-aside" style="--voice-color: ${channelColor}">
       <div class="passive-speaker">${escapeHtml(channel.name)}</div>
       <p>${escapeHtml(passive.text)}</p>
     </aside>
@@ -323,7 +331,7 @@ function showPassiveToasts(passives: PassiveTrigger[], toastRoot: HTMLDivElement
     const channel = getPassiveChannel(passive)
     const toast = toastDocument.createElement('article')
     toast.className = 'passive-toast'
-    toast.style.setProperty('--voice-color', channel.color)
+    toast.style.setProperty('--voice-color', getSafeColor(channel.color) ?? '#d7a84b')
     toast.innerHTML = `
       <div class="passive-toast-head">
         <span>${escapeHtml(channel.name)}</span>
@@ -340,9 +348,10 @@ function showPassiveToasts(passives: PassiveTrigger[], toastRoot: HTMLDivElement
 function showOrbToast(orb: RenderedOrb, toastRoot: HTMLDivElement): void {
   const toastDocument = toastRoot.ownerDocument
   const voice = orb.voice ? voiceById[orb.voice] : undefined
+  const voiceColor = getSafeColor(voice?.color)
   const toast = toastDocument.createElement('article')
   toast.className = 'passive-toast orb-toast'
-  toast.style.setProperty('--voice-color', voice?.color ?? '#d7a84b')
+  toast.style.setProperty('--voice-color', voiceColor ?? '#d7a84b')
   toast.innerHTML = `
     <div class="passive-toast-head">
       <span>${escapeHtml(orb.title)}</span>
@@ -521,13 +530,16 @@ function renderVoices(state: GameState, voiceList: HTMLDivElement): void {
   voiceList.innerHTML = ''
 
   voices.forEach((voice) => {
+    const score = state.voiceStats[voice.id]
     const row = voiceDocument.createElement('div')
     row.className = 'voice-row'
     row.title = voice.tagline
+    row.style.setProperty('--voice-color', getSafeColor(voice.color) ?? '#d7a84b')
+    row.style.setProperty('--voice-fill', `${Math.max(0, Math.min(score, 4)) * 25}%`)
     row.innerHTML = `
-      <span class="voice-chip" style="background:${voice.color}"></span>
+      <span class="voice-chip"></span>
       <span class="voice-name">${escapeHtml(voice.name)}</span>
-      <span class="voice-score">${state.voiceStats[voice.id]}</span>
+      <span class="voice-score">${score}</span>
     `
     voiceList.append(row)
   })
@@ -537,8 +549,10 @@ function renderVoices(state: GameState, voiceList: HTMLDivElement): void {
     const row = voiceDocument.createElement('div')
     row.className = 'voice-row voice-row--parasite'
     row.title = dose.tagline
+    row.style.setProperty('--voice-color', getSafeColor(dose.color) ?? '#d7a84b')
+    row.style.setProperty('--voice-fill', '100%')
     row.innerHTML = `
-      <span class="voice-chip" style="background:${dose.color}"></span>
+      <span class="voice-chip"></span>
       <span class="voice-name">${escapeHtml(dose.name)}</span>
       <span class="voice-score">parasite</span>
     `
@@ -595,4 +609,8 @@ function escapeHtml(value: string): string {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#039;')
+}
+
+function getSafeColor(color: string | undefined): string | undefined {
+  return color && /^#[0-9a-fA-F]{6}$/.test(color) ? color : undefined
 }

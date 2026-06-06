@@ -59,7 +59,7 @@ Chaque passif contient:
 `GameState` contient maintenant:
 
 - `identityPosture`: `accept`, `refuse`, `perform` ou `defile`
-- flags de posture, par exemple `identity_accept`
+- un flag de posture actif, par exemple `identity_accept`
 - `triggeredOrbs`
 - `triggeredPassives`
 - `completedChecks`, avec voix principale et voix de soutien optionnelle

@@ -11,6 +11,7 @@ import {
 import { NarrativeEngine } from './game/narrative'
 import { createGameUi } from './game/ui'
 import { type DebugEntry, isDebugEnabled, setDebugEnabled } from './game/debug'
+import { trapFocus } from './game/focus'
 
 const appRoot = getAppRoot()
 
@@ -28,18 +29,20 @@ appRoot.innerHTML = `
 
     <div class="play-area">
       <div class="stage-wrap">
-        <div id="game-stage" aria-label="Les Miroirs, parking P2"></div>
-        <button id="interaction-prompt" class="interaction-prompt" type="button" hidden>
-          <span class="prompt-mark">!</span>
-          <span id="interaction-label"></span>
-        </button>
-        <div id="passive-toast-root" class="passive-toast-root" aria-live="polite"></div>
-        <div id="debug-log" class="debug-log" aria-label="Debug log" hidden>
-          <div class="debug-log-head">
-            <span>debug</span>
-            <button id="debug-log-disable" type="button">off</button>
+        <div class="stage-frame">
+          <div id="game-stage" aria-label="Les Miroirs, parking P2"></div>
+          <button id="interaction-prompt" class="interaction-prompt" type="button" hidden>
+            <span class="prompt-mark" aria-hidden="true">!</span>
+            <span id="interaction-label"></span>
+          </button>
+          <div id="passive-toast-root" class="passive-toast-root" aria-live="polite"></div>
+          <div id="debug-log" class="debug-log" aria-label="Debug log" hidden>
+            <div class="debug-log-head">
+              <span>debug</span>
+              <button id="debug-log-disable" type="button">off</button>
+            </div>
+            <ol id="debug-log-list"></ol>
           </div>
-          <ol id="debug-log-list"></ol>
         </div>
       </div>
 
@@ -79,10 +82,10 @@ appRoot.innerHTML = `
     <div id="tutorial-root" class="tutorial-root" role="dialog" aria-modal="true" aria-labelledby="tutorial-title" hidden>
       <article class="tutorial-panel">
         <p class="panel-label">Avant de reprendre</p>
-        <h2 id="tutorial-title">Avance, observe, choisis</h2>
+        <h2 id="tutorial-title">Observe, clique, choisis</h2>
         <div class="tutorial-copy">
-          <p>Touche ou clique la scène pour te déplacer. Approche une cible, puis utilise le bouton <strong>!</strong> ou retouche-la pour inspecter, parler ou écouter.</p>
-          <p>Rien ne s'ouvre par accident: prends une seconde, choisis ton angle, puis assume la scène que tu déclenches.</p>
+          <p>Touche ou clique une cible surbrillante pour inspecter, parler ou écouter. Le bouton <strong>!</strong> reprend l'action active quand une cible est survolée.</p>
+          <p>Rien ne dépend d'une marche précise: prends une seconde, choisis ton angle, puis assume la scène que tu déclenches.</p>
           <p>Le dossier garde les indices. Les voix internes ne sont pas des conseils sages: elles peuvent aider, mentir, paniquer ou pousser trop loin.</p>
         </div>
         <label class="tutorial-check">
@@ -197,12 +200,17 @@ function closeTutorial(): void {
 }
 
 function handleTutorialKeydown(event: KeyboardEvent): void {
-  if (event.key !== 'Escape' || !tutorialOpen) {
+  if (!tutorialOpen) {
     return
   }
 
-  event.preventDefault()
-  closeTutorial()
+  if (event.key === 'Escape') {
+    event.preventDefault()
+    closeTutorial()
+    return
+  }
+
+  trapFocus(event, refs.tutorialRoot)
 }
 
 function setupResetButton(): void {

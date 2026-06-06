@@ -41,9 +41,9 @@ Le problème immédiat n'est pas seulement de savoir ce qu'il y a dans le coffre
 2. La Dose pousse: `Tu réponds à Karine. Tu tiens debout. Après, on discute de ce que tu dois au corps.`
 3. Karine encadre la scène: `On va appeler ça un incident de chantier.`
 4. La Dose sent le vieux froid dans une voiture chaude avant que Zinédine comprenne.
-5. Le coffre s'ouvre d'abord sur une forme, une odeur et une vieille mort mal visible, pas sur tout le twist.
-6. Zinédine doit se pencher et fouiller malgré la nausée; succès ou échec, la main revient avec les papiers et une page arrachée.
-7. Le joueur voit `Zinédine Saïdi` sur les papiers et choisit comment porter ou salir ce nom.
+5. Le coffre s'ouvre sur le corps et les papiers de Zinédine déjà plantés dessus.
+6. Le joueur voit `Zinédine Saïdi` sur les papiers et choisit comment porter ou salir ce nom.
+7. Zinédine doit ensuite se pencher et fouiller malgré la nausée; succès ou échec, la main revient avec une page arrachée.
 8. Karine réagit différemment selon la posture identitaire choisie.
 9. Le joueur inspecte les surfaces utiles: papiers, badge, ordonnance, Ahmed, carnet absent, page arrachée.
 10. Sofiane devient une piste de terrain: odeur du coffre, badge chantier, caméra morte, témoin en gilet.
@@ -56,7 +56,7 @@ Pas de romantisme portuaire. La poésie vient du contraste entre langue municipa
 
 Direction validée pour la réécriture v0: raw, social, énervé, parfois vulgaire. Voix internes très présentes mais courtes, La Dose commerçante intime, Karine administratrice dangereuse qui renomme au lieu de mentir frontalement, Ahmed témoin gênant et rugueux, Sofiane témoin de palissade qui se protège autant qu'il informe, Zinédine lucide mais fonctionnel dans le déni. Style: sec, frontal, choix incarnés, passifs contradictoires.
 
-Nouvelle contrainte de lisibilité: ne pas écrire l'enquête comme une énigme cryptique, mais ne pas spoiler le twist avant le geste physique. Le joueur doit comprendre dans l'ordre: Karine cache un incident, le coffre contient un corps, la gueule de bois rend la fouille risquée, les papiers de Zinédine ont été plantés, le carnet manque, la page ouvre caméra/badge/Hami.
+Nouvelle contrainte de lisibilité: ne pas écrire l'enquête comme une énigme cryptique, mais garder la page comme récompense du geste physique. Le joueur doit comprendre dans l'ordre: Karine cache un incident, le coffre contient un corps, les papiers de Zinédine ont été plantés, la gueule de bois rend la fouille risquée, le carnet manque, la page ouvre caméra/badge/Hami.
 
 L'alcool et les calmants sont centraux. Ils touchent le corps, les choix, les checks, la réputation et les rapports de force. La Dose ne doit jamais romantiser l'addiction: elle vend de la stabilité, protège Hami, et transforme le besoin en dette.
 
@@ -68,15 +68,15 @@ Explorer, parler, inspecter, écouter les voix internes, subir La Dose, tenter d
 
 ## Jouabilité mobile
 
-- Toucher un élément important de la scène sélectionne l'action et fait marcher Zinédine jusqu'à son point d'approche, mais n'ouvre pas directement la surface narrative.
-- L'ouverture mobile passe par le bouton contextuel `!` ou un second tap volontaire sur la même cible uniquement quand Zinédine est à portée, afin de distinguer clairement sélection, approche et inspection.
-- Toucher le sol reste possible pour déplacer Zinédine, mais le prototype vise surtout une lecture point-and-click.
+- Toucher un élément important de la scène ouvre directement son observation, son dialogue ou son écoute.
+- Le prototype n'utilise plus de déplacement jouable: Zinédine reste une présence de scène, pas un pion à placer.
+- Le bouton contextuel `!` sert de rappel d'action au survol ou à la cible active, pas de confirmation après approche.
 - Les interactifs utilisent un liseré cyan et un pulse lent plutôt que des mots ou des marqueurs texte dans le décor.
 - En portrait mobile, la carte reste entièrement visible pour préserver le contexte et les cibles surbrillantes.
-- Le prototype évite le joystick virtuel: la lecture des objets et la sélection des choix sont plus importantes que la précision du déplacement.
+- Le prototype évite le joystick virtuel: la lecture des objets et la sélection des choix sont plus importantes que la précision d'un trajet.
 - La page principale ne doit pas scroller globalement; seuls le dossier, les listes internes et le dialogue peuvent scroller si leur contenu dépasse.
 - Les pensées flottantes mobiles restent courtes: une seule visible, texte clampé, expiration automatique et nettoyage quand une scène de dialogue s'ouvre.
-- Les orbs de proximité ne surgissent pas automatiquement sur mobile: la scène privilégie les cibles volontaires et lisibles.
+- Les anciennes orbes de proximité deviennent des cibles volontaires et lisibles.
 
 ## Identité
 
@@ -87,7 +87,7 @@ Le choix d'identité arrive devant les papiers du mort. Le joueur lit `Zinédine
 - Jouer: je peux faire semblant d'être lui.
 - Salir: qu'ils le disent encore, je veux voir ce qu'il vaut quand il pue.
 
-Système actuel: `identityPosture` sauvegardé, flags de posture, bump léger d'une voix.
+Système actuel: `identityPosture` sauvegardé, un seul flag de posture actif, bump léger d'une voix.
 
 ## Passifs v1
 
@@ -117,8 +117,8 @@ Système actuel: `identityPosture` sauvegardé, flags de posture, bump léger d'
 - Les options importantes sont soulignées visuellement de façon légère: piste concrète, posture, check ou information structurante.
 - Le bandeau de résultat affiche le détail du jet.
 - Cliquer un check déjà tenté rejoue la scène du résultat mémorisé.
-- Check principal v0: se pencher dans le coffre avant de tout comprendre, sans vomir ni trembler devant Karine, avec `Le Ventre + La Main Basse`.
-- Le check principal révèle les papiers et la page arrachée. Il arrive avant le choix de posture identitaire, pas après.
+- Check principal v0: se pencher dans le coffre après avoir vu les papiers, sans vomir ni trembler devant Karine, avec `Le Ventre + La Main Basse`.
+- Le check principal révèle la page arrachée. Il arrive après le choix de posture identitaire, quand la fouille devient volontaire.
 - Échec premium: Zinédine vomit et Karine voit sa faiblesse, mais sa main revient quand même avec la page arrachée.
 
 ## Voix internes v0
@@ -162,6 +162,6 @@ Surfaces objet v0:
 - Papiers de Zinédine: identité, badge, ordonnance, accès.
 - Badge: rayures de lecteur récent, piste chantier/prestataire.
 - Page arrachée: caméra morte, badge chantier, Hami, verso Amar.
-- Corps d'Ahmed: déplacement, absence de carnet, mémoire sociale du prénom Zinédine.
+- Corps d'Ahmed: corps déplacé, absence de carnet, mémoire sociale du prénom Zinédine.
 
 Le joueur est-il la victime, l'usurpateur, le témoin, ou le mensonge encore debout ?

@@ -118,8 +118,8 @@ async function expectCanvasToHaveRenderedPixels(canvas: Locator) {
     .toBeGreaterThan(24)
 
   const pixels = await sampleCanvasPixels(canvas)
-  expect(pixels.sourceWidth).toBeGreaterThan(100)
-  expect(pixels.sourceHeight).toBeGreaterThan(60)
+  expect(pixels.sourceWidth).toBeGreaterThanOrEqual(1280)
+  expect(pixels.sourceHeight).toBeGreaterThanOrEqual(720)
 }
 
 async function expectPageHasNoForcedScroll(page: Page) {
@@ -166,12 +166,28 @@ async function expectNoHorizontalDocumentOverflow(page: Page) {
   expect(overflow.appScrollWidth).toBeLessThanOrEqual(overflow.appClientWidth)
 }
 
+async function expectFocusInside(page: Page, selector: string) {
+  await expect
+    .poll(async () => {
+      return await page.evaluate((rootSelector) => {
+        const root = document.querySelector(rootSelector)
+        return Boolean(root?.contains(document.activeElement))
+      }, selector)
+    })
+    .toBe(true)
+}
+
 test('starts with a bounded tutorial and opens the first dialogue', async ({ page }) => {
   await gotoApp(page)
 
-  await expect(page.getByRole('dialog', { name: 'Avance, observe, choisis' })).toBeVisible()
+  await expect(page.getByRole('dialog', { name: 'Observe, clique, choisis' })).toBeVisible()
   await expect(page.locator('#objective')).toContainText('Reprendre assez de corps')
   await expect(page.getByText('Le dossier garde les indices.')).toHaveCount(1)
+  await expectFocusInside(page, '#tutorial-root')
+  await page.keyboard.press('Tab')
+  await expectFocusInside(page, '#tutorial-root')
+  await page.keyboard.press('Shift+Tab')
+  await expectFocusInside(page, '#tutorial-root')
 
   const tutorialPanel = page.locator('.tutorial-panel')
   const panelBox = await tutorialPanel.boundingBox()
@@ -184,9 +200,11 @@ test('starts with a bounded tutorial and opens the first dialogue', async ({ pag
 
   await page.getByRole('button', { name: 'Commencer' }).click()
 
-  await expect(page.getByRole('dialog', { name: 'Avance, observe, choisis' })).toBeHidden()
+  await expect(page.getByRole('dialog', { name: 'Observe, clique, choisis' })).toBeHidden()
   await expect(page.locator('.dialogue-root')).toContainText('Parking P2')
   await expect(page.locator('.dialogue-root')).toContainText('Tu reviens au monde')
+  await page.keyboard.press('Tab')
+  await expectFocusInside(page, '#dialogue-root')
 })
 
 test('renders Phaser canvas and grouped case clues from a saved game', async ({ page }) => {
@@ -254,6 +272,92 @@ test('keeps desktop play surfaces bounded without page scroll', async ({ page })
   }
 })
 
+test('keeps the action prompt attached to the rendered scene @responsive', async ({ page }) => {
+  await seedGame(page, progressedSave)
+
+  await gotoApp(page)
+
+  const canvas = page.locator('#game-stage canvas')
+  const prompt = page.getByRole('button', { name: 'Regarder le téléphone' })
+
+  await expect(canvas).toBeVisible()
+  await expectCanvasToHaveRenderedPixels(canvas)
+  const canvasBox = await canvas.boundingBox()
+  expect(canvasBox).not.toBeNull()
+  await page.mouse.move(canvasBox!.x + (610 / 1280) * canvasBox!.width, canvasBox!.y + (438 / 720) * canvasBox!.height, {
+    steps: 6,
+  })
+  await expect(prompt).toBeVisible()
+
+  const geometry = await page.evaluate(() => {
+    const getBox = (selector: string) => {
+      const box = document.querySelector(selector)?.getBoundingClientRect()
+
+      return box
+        ? {
+            bottom: box.bottom,
+            height: box.height,
+            left: box.left,
+            right: box.right,
+            top: box.top,
+            width: box.width,
+          }
+        : undefined
+    }
+
+    return {
+      canvas: getBox('#game-stage canvas'),
+      prompt: getBox('#interaction-prompt'),
+      stage: getBox('.stage-wrap'),
+    }
+  })
+
+  expect(geometry.canvas).toBeDefined()
+  expect(geometry.prompt).toBeDefined()
+  expect(geometry.stage).toBeDefined()
+  expect(geometry.stage!.height - geometry.canvas!.height).toBeLessThanOrEqual(12)
+  expect(geometry.prompt!.bottom).toBeLessThanOrEqual(geometry.canvas!.bottom - 8)
+  expect(geometry.prompt!.left).toBeGreaterThanOrEqual(geometry.canvas!.left + 8)
+  expect(geometry.prompt!.right).toBeLessThanOrEqual(geometry.canvas!.right - 8)
+
+  await expectInViewport(page, '.stage-wrap')
+})
+
+test('triggers proximity orbs as one-shot toasts instead of modal inspections', async ({ page }) => {
+  await seedGame(page, progressedSave)
+
+  await gotoApp(page)
+
+  const canvas = page.locator('#game-stage canvas')
+  await expect(canvas).toBeVisible()
+  await expectCanvasToHaveRenderedPixels(canvas)
+  const canvasBox = await canvas.boundingBox()
+  expect(canvasBox).not.toBeNull()
+
+  const flaqueX = canvasBox!.x + (476 / 960) * canvasBox!.width
+  const flaqueY = canvasBox!.y + (272 / 576) * canvasBox!.height
+  await page.mouse.click(flaqueX, flaqueY)
+
+  await expect(page.locator('.orb-toast')).toContainText('Flaque sous néon')
+  await expect(page.locator('#dialogue-root')).toBeHidden()
+  await expect
+    .poll(async () => {
+      return await page.evaluate((key) => {
+        const savedState = JSON.parse(localStorage.getItem(key) ?? '{}') as {
+          triggeredOrbs?: Record<string, boolean>
+        }
+
+        return savedState.triggeredOrbs?.miroirs_orb_neon === true
+      }, saveKey)
+    })
+    .toBe(true)
+
+  await page.getByRole('button', { name: "Fermer l'observation" }).click()
+  await expect(page.locator('.orb-toast')).toHaveCount(0)
+  await page.mouse.click(flaqueX, flaqueY)
+  await expect(page.locator('.orb-toast')).toHaveCount(0)
+})
+
 test('keeps restored dialogue inside the viewport', async ({ page }) => {
   await seedGame(page, {
     ...progressedSave,
@@ -316,6 +420,29 @@ test('updates the case objective from saved progression', async ({ page }) => {
   await expect(page.locator('#objective')).toContainText('Traiter la piste badge')
 })
 
+test('drops impossible saved check results instead of advancing objectives', async ({ page }) => {
+  await seedGame(page, {
+    ...progressedSave,
+    completedChecks: {
+      camera_dead_angle: {
+        checkId: 'camera_dead_angle',
+        voice: 'procedure',
+        supportVoice: 'memoire_saline',
+        roll: 6,
+        stat: 2,
+        supportStat: 2,
+        total: 99,
+        difficulty: 8,
+        passed: true,
+      },
+    },
+  })
+
+  await gotoApp(page)
+
+  await expect(page.locator('#objective')).toContainText('Traiter la piste caméra')
+})
+
 test('moves the objective from evidence checks to witness confrontation', async ({ page }) => {
   await seedGame(page, {
     ...progressedSave,
@@ -366,7 +493,12 @@ test('serves the saved game from the Pages base path @pages', async ({ page }) =
 
   await gotoApp(page)
 
+  const backgroundResponse = await page.request.get(
+    new URL('assets/miroirs/p2-background.png', page.url()).toString(),
+  )
   const canvas = page.locator('#game-stage canvas')
+  expect(backgroundResponse.ok()).toBe(true)
+  expect(backgroundResponse.headers()['content-type']).toContain('image/png')
   await expect(canvas).toBeVisible()
   await expectCanvasToHaveRenderedPixels(canvas)
   await expect(page.locator('#objective')).toContainText('Traiter la piste caméra')

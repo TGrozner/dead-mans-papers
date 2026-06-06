@@ -3,8 +3,10 @@ import fs from 'node:fs'
 const readJson = (path) => JSON.parse(fs.readFileSync(path, 'utf8'))
 
 const dialogues = readJson('src/content/dialogues.json')
-const voices = new Set(readJson('src/content/voices.json').map((voice) => voice.id))
-const parasites = new Set(readJson('src/content/parasites.json').map((parasite) => parasite.id))
+const voiceDefinitions = readJson('src/content/voices.json')
+const parasiteDefinitions = readJson('src/content/parasites.json')
+const voices = new Set(voiceDefinitions.map((voice) => voice.id))
+const parasites = new Set(parasiteDefinitions.map((parasite) => parasite.id))
 const clueGroups = readJson('src/game/clue-groups.json')
 const orbs = readJson('src/content/locations/miroirs/orbs.json')
 const passiveFiles = fs
@@ -22,6 +24,7 @@ const orbIds = new Set()
 const passiveIds = new Set()
 const effectTypes = new Set(['flag', 'clue', 'voice_bump', 'identity_posture'])
 const identityPostures = new Set(['accept', 'refuse', 'perform', 'defile'])
+const colorPattern = /^#[0-9a-fA-F]{6}$/
 const suspiciousMojibakePattern =
   /[A-Za-zÀ-ÿ]\?[A-Za-zÀ-ÿ]|[a-zàâçéèêëîïôùûüœ]\?(?=\s+[a-zàâçéèêëîïôùûüœ])|\?[a-zàâçéèêëîïôùûüœ]/u
 
@@ -57,6 +60,8 @@ scanText(passives, 'passives')
 scanText(clueGroups, 'clueGroups')
 
 validateClueGroups()
+validateChannels(voiceDefinitions, 'voice')
+validateChannels(parasiteDefinitions, 'parasite')
 
 function trackEffects(effects = [], owner, property = 'effects') {
   if (!Array.isArray(effects)) {
@@ -149,6 +154,10 @@ for (const [scriptId, script] of Object.entries(dialogues)) {
       errors.push(`${owner} references unknown parasite: ${node.parasite}`)
     }
 
+    if (node.parasite === 'dose' && !hasFlagEffect(node.effects, 'dose_heard')) {
+      errors.push(`${owner} uses La Dose without setting dose_heard`)
+    }
+
     trackEffects(node.effects, owner)
 
     const choices = node.choices ?? []
@@ -177,6 +186,7 @@ for (const [scriptId, script] of Object.entries(dialogues)) {
       }
 
       trackEffects(choice.effects, choiceOwner)
+      validateIdentityChoice(choice, choiceOwner)
 
       if (!choice.check) {
         return
@@ -354,6 +364,42 @@ function validateClueGroups() {
   if (!hasOtherGroup) {
     errors.push('Missing required clue group: other')
   }
+}
+
+function validateChannels(channels, kind) {
+  for (const channel of channels) {
+    if (!channel.id) {
+      errors.push(`${kind} is missing an id`)
+    }
+
+    if (!channel.name) {
+      errors.push(`${kind} ${channel.id ?? '<unknown>'} is missing a name`)
+    }
+
+    if (!colorPattern.test(channel.color ?? '')) {
+      errors.push(`${kind} ${channel.id ?? '<unknown>'} has invalid color: ${channel.color}`)
+    }
+  }
+}
+
+function validateIdentityChoice(choice, owner) {
+  const hasIdentityPosture = (choice.effects ?? []).some((effect) => effect.type === 'identity_posture')
+
+  if (!hasIdentityPosture) {
+    return
+  }
+
+  if (choice.hiddenWhenFlag !== 'identity_chosen') {
+    errors.push(`${owner} identity posture choice must be hidden after identity_chosen`)
+  }
+
+  if (!hasFlagEffect(choice.effects, 'identity_chosen')) {
+    errors.push(`${owner} identity posture choice must set identity_chosen`)
+  }
+}
+
+function hasFlagEffect(effects = [], flag) {
+  return effects.some((effect) => effect.type === 'flag' && effect.flag === flag)
 }
 
 function getClueGroup(clue) {

@@ -9,16 +9,20 @@ const DEBUG_STORAGE_KEY = 'dead-mans-papers:debug'
 
 export function isDebugEnabled(): boolean {
   const params = new URLSearchParams(window.location.search)
-  return params.has('debug') || localStorage.getItem(DEBUG_STORAGE_KEY) === '1'
+  return params.has('debug') || readDebugStorage() === '1'
 }
 
 export function setDebugEnabled(enabled: boolean): void {
-  if (enabled) {
-    localStorage.setItem(DEBUG_STORAGE_KEY, '1')
-    return
-  }
+  try {
+    if (enabled) {
+      localStorage.setItem(DEBUG_STORAGE_KEY, '1')
+      return
+    }
 
-  localStorage.removeItem(DEBUG_STORAGE_KEY)
+    localStorage.removeItem(DEBUG_STORAGE_KEY)
+  } catch {
+    // Debug mode is optional; blocked storage should not affect gameplay.
+  }
 }
 
 export function debugLog(scope: string, event: string, data?: Record<string, unknown>): void {
@@ -35,4 +39,12 @@ export function debugLog(scope: string, event: string, data?: Record<string, unk
 
   console.debug(`[DMP:${scope}] ${event}`, data ?? {})
   window.dispatchEvent(new CustomEvent<DebugEntry>('dmp:debug', { detail: entry }))
+}
+
+function readDebugStorage(): string | null {
+  try {
+    return localStorage.getItem(DEBUG_STORAGE_KEY)
+  } catch {
+    return null
+  }
 }

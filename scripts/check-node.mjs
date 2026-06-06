@@ -1,8 +1,9 @@
 const minimumMajor = 23
 const minimumMinor = 8
+const maximumMajor = 24
 const { major, minor } = parseVersion(process.versions.node)
 
-if (major < minimumMajor || (major === minimumMajor && minor < minimumMinor)) {
+if (major < minimumMajor || (major === minimumMajor && minor < minimumMinor) || major >= maximumMajor) {
   console.error(
     `Node ${process.versions.node} is not supported. Run "nvm use" or "fnm use" in this repo; this project targets Node >=23.8.0 <24.`,
   )

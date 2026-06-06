@@ -1,8 +1,8 @@
 :root {
   --ink: #171c24;
   --paper: #f4ecd8;
-  --panel: #24313a;
-  --panel-soft: #334550;
+  --panel: #223038;
+  --panel-soft: #30434c;
   --panel-deep: #121820;
   --line: #6e7a6d;
   --cold-light: #2a7281;
@@ -18,8 +18,8 @@
 
   color: var(--foam);
   background:
-    linear-gradient(180deg, rgba(23, 28, 36, 0.92), rgba(23, 28, 36, 0.98)),
-    radial-gradient(circle at 10% 0%, rgba(42, 114, 129, 0.22), transparent 36%),
+    linear-gradient(90deg, rgba(183, 87, 56, 0.08), transparent 34%, rgba(42, 114, 129, 0.1)),
+    linear-gradient(180deg, rgba(23, 28, 36, 0.94), rgba(18, 24, 32, 0.98)),
     #171c24;
   font-family: var(--sans);
   font-synthesis: none;
@@ -61,14 +61,14 @@ button {
 }
 
 .game-shell {
-  width: min(1420px, 100%);
+  width: min(1720px, 100%);
   min-width: 0;
   min-height: 100svh;
   margin: 0 auto;
-  padding: 12px;
+  padding: clamp(10px, 1.2vw, 18px);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .topbar {
@@ -78,7 +78,7 @@ button {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 16px;
-  padding: 6px 2px 2px;
+  padding: 2px 2px 0;
 }
 
 .kicker,
@@ -100,10 +100,10 @@ h1 {
 
 .case-stamp {
   flex: 0 0 auto;
-  padding: 6px 9px;
+  padding: 7px 10px;
   border: 2px solid var(--rust);
   color: var(--paper);
-  background: transparent;
+  background: rgba(13, 17, 23, 0.36);
   font-family: var(--mono);
   font-size: 12px;
   text-transform: uppercase;
@@ -116,7 +116,7 @@ h1 {
 }
 
 .play-area {
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   min-width: 0;
   min-height: 0;
   display: grid;
@@ -137,47 +137,93 @@ h1 {
   aspect-ratio: 5 / 3;
   min-width: 0;
   min-height: 0;
-  display: grid;
-  place-items: start center;
-  overflow: hidden;
+  overflow: visible;
   border: 2px solid var(--blackline);
   background: var(--blackline);
-  box-shadow: 0 20px 52px rgba(0, 0, 0, 0.44);
+  box-shadow:
+    0 0 0 1px rgba(244, 236, 216, 0.08),
+    0 14px 0 rgba(13, 17, 23, 0.88),
+    0 28px 58px rgba(0, 0, 0, 0.46);
   touch-action: none;
   user-select: none;
 }
 
+.stage-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--blackline);
+}
+
+.stage-frame::before,
+.stage-frame::after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  content: "";
+  pointer-events: none;
+}
+
+.stage-frame::before {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.3), transparent 14%, transparent 84%, rgba(0, 0, 0, 0.34)),
+    linear-gradient(180deg, rgba(3, 6, 10, 0.26), transparent 18%, transparent 76%, rgba(1, 4, 8, 0.48));
+}
+
+.stage-frame::after {
+  opacity: 0.4;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, rgba(101, 216, 230, 0.06), transparent 42%);
+  mix-blend-mode: screen;
+}
+
 #game-stage {
   width: 100%;
+  height: 100%;
   aspect-ratio: 5 / 3;
   touch-action: none;
 }
 
 #game-stage canvas {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
   image-rendering: pixelated;
   touch-action: none;
 }
 
 .interaction-prompt {
   position: absolute;
-  left: 50%;
-  bottom: 18px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  z-index: 4;
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  max-width: calc(100% - 32px);
-  padding: 9px 13px;
+  justify-content: center;
+  gap: 10px;
+  min-height: 42px;
+  max-width: none;
+  padding: 8px 14px;
   border: 2px solid var(--blackline);
-  border-radius: 7px;
-  color: var(--ink);
-  background: var(--paper);
-  box-shadow: 0 8px 0 var(--blackline);
-  transform: translateX(-50%);
+  border-radius: 6px;
+  color: var(--paper);
+  background:
+    linear-gradient(90deg, rgba(183, 87, 56, 0.28), transparent 120px),
+    rgba(18, 24, 32, 0.9);
+  box-shadow: inset 0 0 0 1px rgba(244, 236, 216, 0.16), 0 7px 0 rgba(13, 17, 23, 0.86);
   cursor: pointer;
   touch-action: manipulation;
+  transition: background 140ms ease, transform 140ms ease;
+}
+
+.interaction-prompt:hover {
+  background:
+    linear-gradient(90deg, rgba(183, 87, 56, 0.36), transparent 120px),
+    rgba(29, 38, 46, 0.94);
+  transform: translateY(-1px);
 }
 
 .interaction-prompt:focus-visible,
@@ -198,9 +244,11 @@ h1 {
 .prompt-mark {
   width: 24px;
   height: 24px;
+  flex: 0 0 auto;
   display: grid;
   place-items: center;
-  border-radius: 50%;
+  border: 1px solid rgba(244, 236, 216, 0.52);
+  border-radius: 6px;
   color: var(--paper);
   background: var(--rust);
   font-weight: 800;
@@ -255,19 +303,28 @@ h1 {
 }
 
 .case-panel {
+  position: relative;
   min-height: 0;
   height: auto;
   max-height: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 12px;
+  gap: 11px;
+  padding: 13px;
   border: 2px solid var(--blackline);
+  border-left: 4px solid var(--rust);
   background:
-    linear-gradient(180deg, rgba(51, 69, 80, 0.42), transparent 128px),
+    linear-gradient(90deg, rgba(244, 236, 216, 0.07), transparent 52px),
+    repeating-linear-gradient(0deg, rgba(244, 236, 216, 0.03) 0 1px, transparent 1px 5px),
+    linear-gradient(180deg, rgba(51, 69, 80, 0.62), rgba(18, 24, 32, 0.18) 55%),
     var(--panel);
-  box-shadow: 0 20px 52px rgba(0, 0, 0, 0.38);
-  overflow: visible;
+  box-shadow:
+    0 0 0 1px rgba(244, 236, 216, 0.06),
+    0 14px 0 rgba(13, 17, 23, 0.78),
+    0 24px 52px rgba(0, 0, 0, 0.38);
+  overflow: auto;
+  scrollbar-color: rgba(215, 168, 75, 0.58) rgba(18, 24, 32, 0.42);
+  scrollbar-width: thin;
 }
 
 .case-panel--collapsed {
@@ -276,6 +333,12 @@ h1 {
 
 .case-section {
   min-height: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(220, 235, 215, 0.13);
+}
+
+.case-section--objective {
+  flex: 0 0 auto;
 }
 
 .case-section--clues,
@@ -286,24 +349,26 @@ h1 {
 }
 
 .case-section--clues {
-  flex: 1.45 1 0;
+  flex: 0 0 auto;
 }
 
 .case-section--voices {
-  flex: 1 1 0;
+  flex: 0 0 auto;
+  padding-bottom: 0;
+  border-bottom: 0;
 }
 
 .objective {
-  margin: 6px 0 0;
+  margin: 7px 0 0;
   color: var(--paper);
-  font-size: 14px;
-  line-height: 1.26;
+  font-size: 14.5px;
+  line-height: 1.34;
 }
 
 .clue-list {
   flex: 1 1 auto;
   min-height: 0;
-  margin: 6px 0 0;
+  margin: 7px 0 0;
   padding: 0;
   list-style: none;
   overflow: auto;
@@ -338,16 +403,16 @@ h1 {
 }
 
 .clue-list > li {
-  padding: 5px 0;
-  border-bottom: 1px solid rgba(220, 235, 215, 0.16);
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(220, 235, 215, 0.14);
   color: var(--foam);
   font-size: 13px;
-  line-height: 1.24;
+  line-height: 1.3;
 }
 
 .clue-group {
   display: grid;
-  gap: 4px;
+  gap: 5px;
 }
 
 .clue-group-heading {
@@ -367,7 +432,7 @@ h1 {
 
 .clue-group-list {
   display: grid;
-  gap: 3px;
+  gap: 4px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -376,7 +441,7 @@ h1 {
 .clue-group-list li {
   color: var(--foam);
   font-size: 12px;
-  line-height: 1.18;
+  line-height: 1.22;
 }
 
 .empty-line {
@@ -388,10 +453,10 @@ h1 {
   flex: 1 1 auto;
   min-height: 0;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
   align-content: start;
-  gap: 6px;
-  margin-top: 7px;
+  gap: 7px;
+  margin-top: 8px;
   overflow: auto;
   padding-right: 4px;
   scrollbar-color: rgba(215, 168, 75, 0.58) rgba(18, 24, 32, 0.42);
@@ -399,24 +464,43 @@ h1 {
 }
 
 .voice-row {
+  position: relative;
   display: grid;
   grid-template-columns: 8px minmax(0, 1fr) auto;
   gap: 6px;
   align-items: center;
-  padding: 5px 7px;
-  border: 1px solid rgba(220, 235, 215, 0.12);
-  background: rgba(18, 24, 32, 0.34);
+  min-height: 30px;
+  overflow: hidden;
+  padding: 6px 7px 8px;
+  border: 1px solid rgba(220, 235, 215, 0.16);
+  background:
+    linear-gradient(90deg, rgba(18, 24, 32, 0.48), rgba(18, 24, 32, 0.22)),
+    rgba(18, 24, 32, 0.42);
+}
+
+.voice-row::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  content: "";
+  background:
+    linear-gradient(90deg, var(--voice-color, var(--brass)) var(--voice-fill, 50%), transparent 0);
+  opacity: 0.72;
 }
 
 .voice-chip {
   width: 8px;
   height: 8px;
+  background: var(--voice-color, var(--brass));
+  box-shadow: 0 0 10px var(--voice-color, var(--brass));
 }
 
 .voice-name {
   overflow: hidden;
   color: var(--foam);
-  font-size: 12px;
+  font-size: 11px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -429,7 +513,9 @@ h1 {
 
 .voice-row--parasite {
   border-color: rgba(154, 106, 63, 0.7);
-  background: rgba(154, 106, 63, 0.2);
+  background:
+    linear-gradient(90deg, rgba(154, 106, 63, 0.32), rgba(18, 24, 32, 0.42)),
+    rgba(154, 106, 63, 0.2);
 }
 
 .voice-row--parasite .voice-score {
@@ -441,7 +527,7 @@ h1 {
 .case-danger-zone {
   flex: 0 0 auto;
   border-top: 1px solid rgba(220, 235, 215, 0.12);
-  padding-top: 5px;
+  padding-top: 4px;
 }
 
 .case-danger-zone summary {
@@ -670,7 +756,7 @@ h1 {
   color: var(--rust);
   font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -809,6 +895,7 @@ h1 {
   }
 
   .game-shell {
+    width: min(1720px, calc(100vw - 32px));
     min-width: 900px;
     height: 100svh;
     min-height: 0;
@@ -820,9 +907,11 @@ h1 {
   }
 
   .play-area {
-    grid-template-columns: minmax(0, 1fr) 338px;
-    align-items: stretch;
-    overflow: hidden;
+    flex: 0 1 auto;
+    grid-template-columns: minmax(0, 1fr) clamp(330px, 22vw, 380px);
+    grid-template-rows: auto;
+    align-items: start;
+    overflow: visible;
   }
 
   .play-area--case-collapsed {
@@ -830,19 +919,38 @@ h1 {
   }
 
   .stage-wrap {
-    height: 100%;
-    aspect-ratio: auto;
+    width: min(100%, calc((100svh - 90px) * 5 / 3));
+    height: auto;
+    aspect-ratio: 5 / 3;
+    justify-self: center;
   }
 
   #game-stage {
-    width: min(100%, calc((100svh - 86px) * 5 / 3));
-    max-height: 100%;
+    width: 100%;
+    max-height: none;
   }
 
   .case-panel {
-    height: 100%;
-    max-height: 100%;
-    overflow: hidden;
+    align-self: stretch;
+    height: auto;
+    max-height: calc(100svh - 90px);
+    overflow: auto;
+  }
+
+  .case-section--clues {
+    flex: 1 1 auto;
+  }
+
+  .case-section--voices {
+    flex: 0 0 auto;
+  }
+
+  .clue-list {
+    max-height: min(320px, 38svh);
+  }
+
+  .voice-list {
+    max-height: min(190px, 24svh);
   }
 
   .dialogue-root {

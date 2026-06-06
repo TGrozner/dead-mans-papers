@@ -172,7 +172,7 @@
             "important": true
           },
           {
-            "label": "Avancer vers l'utilitaire.",
+            "label": "Fixer l'utilitaire.",
             "next": "end"
           }
         ]
@@ -701,7 +701,7 @@
       "trunk_hub": {
         "id": "trunk_hub",
         "speaker": "Coffre ouvert",
-        "text": "Les papiers sont sortis du coffre. La page aussi. Le corps reste au fond, froid et mal rangé. Karine veut une version qui ne flingue pas sa mairie. Ton corps veut une dose. Le dossier veut que tu arrêtes de trembler avant de lire.",
+        "text": "Les papiers sont sortis du coffre. Le corps reste au fond, froid et mal rangé. Quelque chose manque encore dans la doublure, mais Karine veut déjà une version qui ne flingue pas sa mairie. Ton corps veut une dose. Le dossier veut que tu arrêtes de trembler avant de lire.",
         "choices": [
           {
             "label": "Inspecter les papiers sortis du coffre.",
@@ -868,6 +868,10 @@
         "effects": [
           {
             "type": "flag",
+            "flag": "dose_heard"
+          },
+          {
+            "type": "flag",
             "flag": "dose_protects_hami"
           },
           {
@@ -907,6 +911,10 @@
         "effects": [
           {
             "type": "flag",
+            "flag": "dose_heard"
+          },
+          {
+            "type": "flag",
             "flag": "hami_line_checked"
           },
           {
@@ -941,6 +949,10 @@
         "parasite": "dose",
         "text": "Tu veux lire, mais ton corps lit avant toi: dose, horaire, renouvellement, stabilité. Le reste devient du bruit administratif. Hami reste une main sur le robinet. Tu sais que c'est une piste. Tu sais aussi que la piste peut fermer ta main.",
         "effects": [
+          {
+            "type": "flag",
+            "flag": "dose_heard"
+          },
           {
             "type": "flag",
             "flag": "hami_line_checked"
@@ -1546,6 +1558,7 @@
           {
             "label": "Le Dossier: \"Je respire sous ce nom. Pour l'instant, ça suffit.\"",
             "next": "identity_accept",
+            "hiddenWhenFlag": "identity_chosen",
             "effects": [
               {
                 "type": "identity_posture",
@@ -1569,6 +1582,7 @@
           {
             "label": "Le Présage: \"Ce nom dans le coffre, c'est une laisse.\"",
             "next": "identity_refuse",
+            "hiddenWhenFlag": "identity_chosen",
             "effects": [
               {
                 "type": "identity_posture",
@@ -1592,6 +1606,7 @@
           {
             "label": "Les Bouches: \"Je peux jouer Zinédine jusqu'à savoir qui distribue les rôles.\"",
             "next": "identity_perform",
+            "hiddenWhenFlag": "identity_chosen",
             "effects": [
               {
                 "type": "identity_posture",
@@ -1615,6 +1630,7 @@
           {
             "label": "Le Regard / La Dose: \"Zinédine, Le Gobelet, peu importe: ils vont me sentir vivant.\"",
             "next": "identity_defile",
+            "hiddenWhenFlag": "identity_chosen",
             "effects": [
               {
                 "type": "identity_posture",
@@ -1638,6 +1654,11 @@
                 "flag": "dose_heard"
               }
             ]
+          },
+          {
+            "label": "Revenir au coffre avec ce nom déjà choisi.",
+            "next": "trunk_hub",
+            "requiresFlag": "identity_chosen"
           }
         ]
       },

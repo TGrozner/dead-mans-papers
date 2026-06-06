@@ -1,11 +1,12 @@
-import { voices } from './content'
-import type { ActiveSurface, CheckResult, GameState, IdentityPosture, VoiceId } from './types'
+import { dialogues, voices } from './content'
+import type { ActiveSurface, CheckDefinition, CheckResult, GameState, IdentityPosture, VoiceId } from './types'
 
 const STORAGE_KEY = 'dead-mans-papers:v12'
 const TUTORIAL_HIDDEN_KEY = 'dead-mans-papers:tutorial-hidden-v2'
 const TUTORIAL_SEEN_KEY = 'dead-mans-papers:tutorial-seen-v2'
 const identityPostures = new Set<IdentityPosture>(['accept', 'refuse', 'perform', 'defile'])
 const voiceIds = new Set<VoiceId>(voices.map((voice) => voice.id))
+const checkDefinitions = collectCheckDefinitions()
 
 export function createInitialState(): GameState {
   const voiceStats = voices.reduce(
@@ -144,7 +145,8 @@ function parseCompletedChecks(value: unknown): Record<string, CheckResult> {
   const checks: Record<string, CheckResult> = {}
 
   for (const [key, result] of Object.entries(value)) {
-    const parsedResult = parseCheckResult(result)
+    const expectedCheck = checkDefinitions.get(key)
+    const parsedResult = expectedCheck ? parseCheckResult(result, expectedCheck) : undefined
 
     if (parsedResult && parsedResult.checkId === key) {
       checks[key] = parsedResult
@@ -154,7 +156,7 @@ function parseCompletedChecks(value: unknown): Record<string, CheckResult> {
   return checks
 }
 
-function parseCheckResult(value: unknown): CheckResult | undefined {
+function parseCheckResult(value: unknown, expectedCheck: CheckDefinition): CheckResult | undefined {
   if (!isRecord(value)) {
     return undefined
   }
@@ -162,17 +164,32 @@ function parseCheckResult(value: unknown): CheckResult | undefined {
   if (
     typeof value.checkId !== 'string' ||
     !isVoiceId(value.voice) ||
-    !isFiniteNumber(value.roll) ||
-    !isFiniteNumber(value.stat) ||
-    !isFiniteNumber(value.total) ||
-    !isFiniteNumber(value.difficulty) ||
+    !isInteger(value.roll) ||
+    !isInteger(value.stat) ||
+    !isInteger(value.total) ||
+    !isInteger(value.difficulty) ||
     typeof value.passed !== 'boolean'
   ) {
     return undefined
   }
 
   const supportVoice = isVoiceId(value.supportVoice) ? value.supportVoice : undefined
-  const supportStat = isFiniteNumber(value.supportStat) ? value.supportStat : undefined
+  const supportStat = isInteger(value.supportStat) ? value.supportStat : undefined
+  const expectedTotal = value.roll + value.stat + (supportStat ?? 0)
+
+  if (
+    value.checkId !== expectedCheck.id ||
+    value.voice !== expectedCheck.voice ||
+    supportVoice !== expectedCheck.supportVoice ||
+    value.difficulty !== expectedCheck.difficulty ||
+    value.roll < 1 ||
+    value.roll > 6 ||
+    expectedTotal !== value.total ||
+    value.passed !== (value.total >= value.difficulty) ||
+    Boolean(expectedCheck.supportVoice) !== (supportStat !== undefined)
+  ) {
+    return undefined
+  }
 
   return {
     checkId: value.checkId,
@@ -222,8 +239,28 @@ function isFiniteNumber(value: unknown): value is number {
   return typeof value === 'number' && Number.isFinite(value)
 }
 
+function isInteger(value: unknown): value is number {
+  return Number.isInteger(value)
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
+}
+
+function collectCheckDefinitions(): Map<string, CheckDefinition> {
+  const definitions = new Map<string, CheckDefinition>()
+
+  Object.values(dialogues).forEach((script) => {
+    Object.values(script.nodes).forEach((node) => {
+      node.choices.forEach((choice) => {
+        if (choice.check) {
+          definitions.set(choice.check.id, choice.check)
+        }
+      })
+    })
+  })
+
+  return definitions
 }
 
 function readStorage(key: string): string | null {

@@ -125,11 +125,16 @@ export class NarrativeEngine {
       return undefined
     }
 
-    if (this.state.triggeredOrbs[orb.id]) {
+    const isOneShot = orb.once !== false
+
+    if (isOneShot && this.state.triggeredOrbs[orb.id]) {
       return undefined
     }
 
-    this.state.triggeredOrbs[orb.id] = true
+    if (isOneShot) {
+      this.state.triggeredOrbs[orb.id] = true
+    }
+
     return this.renderOrb(orb)
   }
 
@@ -282,6 +287,10 @@ export class NarrativeEngine {
 
       if (effect.type === 'identity_posture' && effect.posture) {
         this.state.identityPosture = effect.posture
+        delete this.state.flags.identity_accept
+        delete this.state.flags.identity_refuse
+        delete this.state.flags.identity_perform
+        delete this.state.flags.identity_defile
       }
     }
 
