@@ -23,6 +23,7 @@
     "variants": [
       {
         "requiresFlag": "page_read",
+        "priority": 10,
         "text": "L'écran fissuré reprend vie avec un message de Karine: \"plus maintenant, on stabilise la version.\" Le téléphone n'est plus un rappel. C'est une laisse qui vibre.",
         "voice": "procedure",
         "minScore": 2,
@@ -30,6 +31,7 @@
       },
       {
         "requiresFlag": "leduc_saw_withdrawal",
+        "priority": 20,
         "text": "Douze appels manqués, plus le vomi, plus ton silence. Dans une main hostile, ce téléphone raconte déjà que tu étais ingérable avant d'être utile.",
         "voice": "honte_publique",
         "minScore": 2,
@@ -65,6 +67,7 @@
     "variants": [
       {
         "requiresFlag": "papers_seen",
+        "priority": 20,
         "text": "Après les papiers, le message est clair: un corps, ton identité, un véhicule municipal. On ne t'accuse pas encore. On te prépare.",
         "voice": "procedure",
         "minScore": 2,
@@ -72,6 +75,7 @@
       },
       {
         "requiresFlag": "trunk_opened",
+        "priority": 10,
         "text": "Le coffre ouvert ne donne pas toute la scène. Il donne une odeur, une forme, et la nécessité dégueulasse de se pencher plus près.",
         "voice": "faim",
         "minScore": 1,
@@ -103,6 +107,7 @@
     "variants": [
       {
         "requiresFlag": "ahmed_identified",
+        "priority": 20,
         "title": "Ahmed Berrichi",
         "text": "Ahmed Berrichi, vieux locataire des Miroirs. Pas de carnet. Pas de clés. Pas de téléphone. On a laissé le corps et retiré les outils qui expliquaient sa vie.",
         "voice": "faim",
@@ -121,6 +126,7 @@
       },
       {
         "requiresFlag": "trunk_opened",
+        "priority": 10,
         "title": "Corps dans le coffre",
         "text": "Un vieux corps au fond. Visage dans l'ombre, mains vides à distance. Pas assez d'image pour conclure. Assez pour salir la matinée.",
         "voice": "faim",
@@ -252,6 +258,7 @@
     "variants": [
       {
         "requiresFlag": "sofiane_fled",
+        "priority": 20,
         "text": "Derrière la palissade, la place de Sofiane est vide. Le silence a une forme: un témoin qui a compris qu'il venait de trop parler.",
         "voice": "bouches",
         "minScore": 1,
@@ -259,6 +266,7 @@
       },
       {
         "requiresFlag": "page_read",
+        "priority": 10,
         "text": "Derrière la palissade, les voix se coupent sur le nom de Sofiane. La page d'Ahmed n'a pas inventé un témoin: elle a désigné quelqu'un que tout le monde protège déjà mal.",
         "voice": "bouches",
         "minScore": 1,

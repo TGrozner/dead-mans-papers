@@ -289,5 +289,62 @@
       "nodeId": "page_badge_success"
     },
     "text": "Deux badges propres peuvent fabriquer une scène sale. Le registre P2 devient une arme: s'il ment, il accuse; s'il dit vrai, il accuse aussi."
+  },
+  {
+    "id": "miroirs_page__sel_camera_support_suspect",
+    "contextId": "miroirs/page",
+    "location": "miroirs",
+    "subject": "dead-camera",
+    "channel": "dialogue",
+    "voice": "memoire_saline",
+    "requiresFlag": "camera_support_suspect",
+    "minScore": 2,
+    "once": true,
+    "priority": 87,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "page_camera_failure"
+    },
+    "text": "Tu rates l'angle, pas le geste. Un support retouché après la panne, c'est déjà une main dans le dossier."
+  },
+  {
+    "id": "miroirs_page__dossier_badge_reader_suspect",
+    "contextId": "miroirs/page",
+    "location": "miroirs",
+    "subject": "worksite-badge",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "requiresFlag": "badge_reader_suspect",
+    "minScore": 2,
+    "once": true,
+    "priority": 87,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "page_badge_failure"
+    },
+    "text": "Le lecteur P2 devient le témoin technique: moins spectaculaire qu'un nom, plus difficile à intimider."
+  },
+  {
+    "id": "miroirs_page__sel_sanitary_room_trail",
+    "contextId": "miroirs/page",
+    "location": "miroirs",
+    "subject": "washed-room",
+    "channel": "dialogue",
+    "voice": "memoire_saline",
+    "requiresFlag": "sanitary_room_trail",
+    "minScore": 2,
+    "once": true,
+    "priority": 88,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "page_cold_success"
+    },
+    "text": "Le local sanitaire n'est pas une ambiance: carrelage, bonde, Javel, une pièce qui sait recevoir un corps puis redevenir municipale."
   }
 ]

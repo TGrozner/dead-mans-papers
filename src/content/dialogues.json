@@ -10,10 +10,6 @@
         "text": "Tu reviens au monde contre une borne en béton. Pas un réveil: un coup de masse par l'intérieur. Vodka tiède au fond de la bouche, calmants en coton dans le crâne, main droite qui tremble avant même de demander ton avis.",
         "effects": [
           {
-            "type": "flag",
-            "flag": "woke_up"
-          },
-          {
             "type": "clue",
             "clue": "Tu te réveilles au Parking P2 avec alcool, calmants, tremblements et trou noir."
           }
@@ -214,6 +210,10 @@
         "text": "Douze appels manqués de Karine Leduc. Douze. Le dernier message vocal dure six secondes: \"pas la police, pas encore, viens seul.\" Pas l'inquiétude d'une amie: la panique d'une cheffe de chantier qui veut garder une catastrophe dans son périmètre avant qu'elle devienne un dossier.",
         "effects": [
           {
+            "type": "flag",
+            "flag": "phone_checked"
+          },
+          {
             "type": "clue",
             "clue": "Ton téléphone fissuré affiche 12 appels manqués de Karine Leduc."
           }
@@ -406,8 +406,15 @@
         ],
         "choices": [
           {
+            "label": "Le téléphone insiste encore. Le prendre avant d'avancer.",
+            "next": "phone",
+            "hiddenWhenFlag": "phone_checked",
+            "important": true
+          },
+          {
             "label": "Fixer l'utilitaire avant que le corps réclame autre chose.",
             "next": "end",
+            "requiresFlag": "phone_checked",
             "important": true
           },
           {
@@ -446,13 +453,20 @@
         ],
         "choices": [
           {
+            "label": "Le téléphone clignote encore sur le béton.",
+            "next": "phone",
+            "hiddenWhenFlag": "phone_checked",
+            "important": true
+          },
+          {
             "label": "S'essuyer la bouche et continuer.",
             "next": "dose_first",
             "important": true
           },
           {
             "label": "Fixer l'utilitaire comme si personne n'avait vu.",
-            "next": "end"
+            "next": "end",
+            "requiresFlag": "phone_checked"
           }
         ]
       },
@@ -468,13 +482,20 @@
         ],
         "choices": [
           {
+            "label": "Ramasser le téléphone avant que Karine devienne seulement une vibration.",
+            "next": "phone",
+            "hiddenWhenFlag": "phone_checked",
+            "important": true
+          },
+          {
             "label": "Laisser la voix intérieure finir sa négociation.",
             "next": "dose_first",
             "important": true
           },
           {
             "label": "Fixer l'utilitaire.",
-            "next": "end"
+            "next": "end",
+            "requiresFlag": "phone_checked"
           }
         ]
       },
@@ -499,12 +520,20 @@
         ],
         "choices": [
           {
+            "label": "Le téléphone d'abord. Karine ne doit pas rester hors champ.",
+            "next": "phone",
+            "hiddenWhenFlag": "phone_checked",
+            "important": true
+          },
+          {
             "label": "\"Pas maintenant.\"",
-            "next": "end"
+            "next": "end",
+            "requiresFlag": "phone_checked"
           },
           {
             "label": "\"Après. Si je reste debout.\"",
-            "next": "end"
+            "next": "end",
+            "requiresFlag": "phone_checked"
           }
         ]
       },
@@ -512,6 +541,12 @@
         "id": "end",
         "speaker": "Parking P2",
         "text": "Karine Leduc t'attend devant l'utilitaire blanc du chantier. Hayon mal fermé. Visage fermé. À cette distance tu ne comprends pas encore ce qu'il y a dedans. Ton ventre, lui, commence déjà à voter contre toi.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "woke_up"
+          }
+        ],
         "choices": [
           {
             "label": "Aller vers elle.",
@@ -3075,6 +3110,11 @@
         ],
         "choices": [
           {
+            "label": "Lui demander ce qu'il sait sans preuve en main.",
+            "next": "early_no_page",
+            "hiddenWhenFlag": "page_read"
+          },
+          {
             "label": "\"Ahmed a écrit ton nom sur une page.\"",
             "next": "ahmed_page",
             "requiresFlag": "page_read",
@@ -3083,6 +3123,7 @@
           {
             "label": "\"Parle-moi des badges et des caméras.\"",
             "next": "access",
+            "requiresFlag": "badge_chain_checked",
             "important": true
           },
           {
@@ -3092,14 +3133,33 @@
           {
             "label": "\"Je crois que j'ai oublié quelque chose d'important.\"",
             "next": "forget",
+            "requiresFlag": "hami_line_checked",
             "important": true
           },
           {
             "label": "Parler comme Karine: \"On cherche un périmètre.\"",
-            "next": "talk_failure"
+            "next": "talk_failure",
+            "requiresFlag": "page_read"
           },
           {
             "label": "Laisser Amar tranquille.",
+            "close": true
+          }
+        ]
+      },
+      "early_no_page": {
+        "id": "early_no_page",
+        "speaker": "Amar Boudiaf",
+        "text": "\"Tu viens les mains vides et la bouche pleine de parking. Je te donne rien qui finira dans la phrase de Karine. Va regarder ce qu'elle garde dans son utilitaire, après on parle.\"",
+        "effects": [
+          {
+            "type": "clue",
+            "clue": "Amar refuse de parler des accès tant que Zinédine n'a pas une preuve sortie du coffre."
+          }
+        ],
+        "choices": [
+          {
+            "label": "Retourner vers l'utilitaire.",
             "close": true
           }
         ]
@@ -3109,6 +3169,10 @@
         "speaker": "Amar Boudiaf",
         "text": "\"Ahmed savait que t'allais oublier. Pas parce que t'es con. Parce que ton corps a un interrupteur et que des gens savent appuyer dessus sans laisser de bleu.\"",
         "effects": [
+          {
+            "type": "flag",
+            "flag": "amar_confronted"
+          },
           {
             "type": "clue",
             "clue": "Ahmed pensait que le trou noir de Zinédine pouvait être provoqué ou exploité."
@@ -3130,6 +3194,10 @@
         "speaker": "Amar Boudiaf",
         "text": "\"La caméra P2 ? Morte depuis mars, mais on a changé son support comme si on voulait qu'elle regarde bien sa propre panne. Le badge chantier ? Il ouvre trop de portes. C'est pas une faille, c'est une habitude de merde.\"",
         "effects": [
+          {
+            "type": "flag",
+            "flag": "amar_confronted"
+          },
           {
             "type": "clue",
             "clue": "Le badge chantier peut ouvrir bungalow, local poubelles et parfois P2."
@@ -3294,6 +3362,10 @@
         "speaker": "Amar Boudiaf",
         "text": "\"La veille, Ahmed t'a cherché. Centre municipal, parking, bungalow. Après, toi: trou noir. Tu reviens avec une haleine de cave, une ordonnance dans la poche d'un mort, et Karine qui te tient par la honte. T'appelles ça hasard ?\"",
         "effects": [
+          {
+            "type": "flag",
+            "flag": "amar_confronted"
+          },
           {
             "type": "clue",
             "clue": "Ahmed a cherché Zinédine la veille de sa mort."
@@ -3489,6 +3561,11 @@
         ],
         "choices": [
           {
+            "label": "Le faire parler sans savoir encore quoi lui opposer.",
+            "next": "early_no_page",
+            "hiddenWhenFlag": "page_read"
+          },
+          {
             "label": "Lire la place vide qu'il a laissée.",
             "next": "after_fled",
             "requiresFlag": "sofiane_fled",
@@ -3497,6 +3574,7 @@
           {
             "label": "\"T'as vu l'utilitaire arriver ?\"",
             "next": "saw_van",
+            "requiresFlag": "page_read",
             "hiddenWhenFlag": "sofiane_fled",
             "important": true
           },
@@ -3508,19 +3586,21 @@
           {
             "label": "\"La caméra P2, elle est morte depuis quand ?\"",
             "next": "camera",
+            "requiresFlag": "camera_angle_checked",
             "hiddenWhenFlag": "sofiane_fled",
             "important": true
           },
           {
             "label": "\"Badge chantier. Tu connais ?\"",
             "next": "badge",
+            "requiresFlag": "badge_chain_checked",
             "hiddenWhenFlag": "sofiane_fled",
             "important": true
           },
           {
             "label": "\"Hami. Ce nom te parle ?\"",
             "next": "hami",
-            "requiresFlag": "hami_named",
+            "requiresFlag": "hami_line_checked",
             "hiddenWhenFlag": "sofiane_fled",
             "important": true
           },
@@ -3539,12 +3619,30 @@
               "successNode": "keep_talking_success",
               "failureNode": "keep_talking_failure"
             },
+            "requiresFlag": "hami_line_checked",
             "hiddenWhenFlag": "sofiane_keep_talking_checked",
             "important": true
           },
           {
             "label": "Le laisser reprendre son souffle.",
             "hiddenWhenFlag": "sofiane_fled",
+            "close": true
+          }
+        ]
+      },
+      "early_no_page": {
+        "id": "early_no_page",
+        "speaker": "Sofiane Zekraoui",
+        "text": "\"Tu viens avec la tête de quelqu'un qu'on utilise, pas avec une question.\" Il garde le joint bas et les yeux ailleurs. \"Quand tu sauras ce qu'Ahmed a laissé, tu sauras peut-être quoi me demander.\"",
+        "effects": [
+          {
+            "type": "clue",
+            "clue": "Sofiane refuse de s'exposer tant que Zinédine n'a pas la piste laissée par Ahmed."
+          }
+        ],
+        "choices": [
+          {
+            "label": "Le laisser derrière la palissade pour l'instant.",
             "close": true
           }
         ]
@@ -3572,6 +3670,10 @@
         "speaker": "Sofiane Zekraoui",
         "text": "Tu ne le bloques pas avec ton corps. Tu bloques la sortie avec son intérêt. \"Si tu pars maintenant, ils vont dire témoin toxico et fermer ta bouche à ta place.\" Sofiane ravale la fumée. \"Le gars au badge chantier est revenu après. Il regardait toi, pas le coffre.\"",
         "effects": [
+          {
+            "type": "flag",
+            "flag": "sofiane_confronted"
+          },
           {
             "type": "flag",
             "flag": "sofiane_keep_talking_checked"
@@ -3609,6 +3711,10 @@
         "effects": [
           {
             "type": "flag",
+            "flag": "sofiane_confronted"
+          },
+          {
+            "type": "flag",
             "flag": "sofiane_keep_talking_checked"
           },
           {
@@ -3642,6 +3748,10 @@
         "speaker": "Sofiane Zekraoui",
         "text": "\"J'ai vu l'utilitaire avant le matin. Pas plein jour. Pas nuit non plus. L'heure où les livreurs se trompent d'entrée et où les gardiens font semblant de pas voir. Il roulait doucement, coffre fermé. Derrière, un gars en gilet chantier marchait tête basse, comme quelqu'un qui connaît déjà le chemin.\"",
         "effects": [
+          {
+            "type": "flag",
+            "flag": "sofiane_confronted"
+          },
           {
             "type": "flag",
             "flag": "sofiane_saw_van"
@@ -3723,6 +3833,7 @@
               "successNode": "coping_mirror_success",
               "failureNode": "coping_mirror_failure"
             },
+            "requiresFlag": "hami_line_checked",
             "hiddenWhenFlag": "sofiane_coping_mirror_checked",
             "important": true
           },
@@ -3732,7 +3843,8 @@
           },
           {
             "label": "\"Dis-moi plutôt ce que tu as senti.\"",
-            "next": "smell"
+            "next": "smell",
+            "requiresFlag": "page_read"
           },
           {
             "label": "Revenir.",
@@ -3746,6 +3858,10 @@
         "voice": "bouches",
         "text": "Tu ne lui fais pas la morale. Tu poses le miroir entre vous: lui met de la fumée devant le coffre, toi tu mets alcool et cachets devant les heures. Sofiane entend la différence entre accusation et reconnaissance. \"L'odeur venait déjà du coffre avant qu'ils l'ouvrent. Et le gars au badge a lavé ses gants dans une bouteille d'eau.\"",
         "effects": [
+          {
+            "type": "flag",
+            "flag": "sofiane_confronted"
+          },
           {
             "type": "flag",
             "flag": "sofiane_coping_mirror_checked"
@@ -3781,6 +3897,10 @@
         "speaker": "Sofiane Zekraoui",
         "text": "\"Me compare pas à toi.\" Il recule sec. Tu as voulu lire son joint avec ta bouche de manque, il a entendu jugement. Il file presque, puis lâche quand même: \"Ça sentait la Javel avant Karine. Avant toi. Voilà.\"",
         "effects": [
+          {
+            "type": "flag",
+            "flag": "sofiane_confronted"
+          },
           {
             "type": "flag",
             "flag": "sofiane_coping_mirror_checked"
@@ -3821,6 +3941,10 @@
         "text": "\"Depuis mars elle est morte, la caméra. Tout le monde le sait. Mais la semaine dernière, deux types sont venus toucher le support. Pas la remettre en marche. Juste l'orienter proprement. Une caméra morte qu'on règle encore, c'est pas une panne. C'est une consigne.\"",
         "effects": [
           {
+            "type": "flag",
+            "flag": "sofiane_confronted"
+          },
+          {
             "type": "clue",
             "clue": "Sofiane confirme que la caméra P2 est morte depuis mars mais que son support a été retouché récemment."
           }
@@ -3838,6 +3962,10 @@
         "text": "\"Badge chantier, ouais. Ça ouvre le bungalow, le local poubelles, parfois le P2 quand le lecteur accepte tout ce qu'on lui présente. Ahmed gueulait là-dessus. Il disait: 'une clé de trop, c'est déjà un vol.'\"",
         "effects": [
           {
+            "type": "flag",
+            "flag": "sofiane_confronted"
+          },
+          {
             "type": "clue",
             "clue": "Sofiane relie le badge chantier au bungalow, au local poubelles et au lecteur P2."
           }
@@ -3854,6 +3982,10 @@
         "speaker": "Sofiane Zekraoui",
         "text": "\"Hami ? Les vieux sortent de chez elle avec des papiers propres et des yeux pas tranquilles. Ahmed disait qu'elle savait signer une absence sans lever la voix. Moi, je l'ai vu attendre derrière le centre de santé, pas devant. Comme quelqu'un qui évite les caméras et les salles d'attente.\"",
         "effects": [
+          {
+            "type": "flag",
+            "flag": "sofiane_confronted"
+          },
           {
             "type": "clue",
             "clue": "Sofiane dit qu'Ahmed évitait l'entrée du centre de santé lié à la Dr Hami."

@@ -75,6 +75,7 @@ export function createGameUi(options: GameUiOptions) {
     const check = activeDialogue.checkResult
     const dialoguePassives = activeDialogue.passives.filter((passive) => passive.display === 'dialogue')
     const checkLabel = check ? formatDetailedCheckResult(check) : ''
+    const canCloseDialogue = canCloseActiveDialogue(activeDialogue, options.engine.state)
 
     options.root.hidden = false
     options.root.innerHTML = `
@@ -83,7 +84,7 @@ export function createGameUi(options: GameUiOptions) {
           <span id="dialogue-title">${escapeHtml(node.speaker)}</span>
           <div class="speaker-actions">
             <span class="check-result">${escapeHtml(checkLabel)}</span>
-            <button class="dialogue-close" type="button">Quitter</button>
+            ${canCloseDialogue ? '<button class="dialogue-close" type="button">Quitter</button>' : ''}
           </div>
         </div>
         ${dialoguePassives.map(renderPassiveAside).join('')}
@@ -97,19 +98,20 @@ export function createGameUi(options: GameUiOptions) {
     const choiceList = options.root.querySelector<HTMLDivElement>('.choice-list')
     const closeButton = options.root.querySelector<HTMLButtonElement>('.dialogue-close')
 
-    if (!choiceList || !closeButton) {
+    if (!choiceList) {
       throw new Error('Dialogue choice list did not render')
     }
 
-    closeButton.addEventListener('click', () => {
+    closeButton?.addEventListener('click', () => {
       closeActiveSurface()
     })
-    closeButton.focus()
 
+    let firstChoiceButton: HTMLButtonElement | undefined
     activeDialogue.choices.forEach((renderedChoice) => {
       const choice = renderedChoice.choice
       const button = uiDocument.createElement('button')
       button.type = 'button'
+      firstChoiceButton ??= button
       button.className = [
         'choice-button',
         renderedChoice.important ? 'choice-button--important' : '',
@@ -144,6 +146,9 @@ export function createGameUi(options: GameUiOptions) {
       })
       choiceList.append(button)
     })
+
+    const initialFocus = closeButton ?? firstChoiceButton
+    initialFocus?.focus()
   }
 
   function hideDialogueSurface(): void {
@@ -153,6 +158,10 @@ export function createGameUi(options: GameUiOptions) {
   }
 
   function closeActiveSurface(): void {
+    if (!canCloseActiveDialogue(activeDialogue, options.engine.state)) {
+      return
+    }
+
     options.engine.close()
     activeDialogue = undefined
     hideDialogueSurface()
@@ -310,6 +319,10 @@ function renderOrb(orb: RenderedOrb, root: HTMLDivElement, onClose: () => void):
     onClose()
   })
   closeButton?.focus()
+}
+
+function canCloseActiveDialogue(dialogue: RenderedDialogue | undefined, state: GameState): boolean {
+  return !dialogue || dialogue.script.id !== 'wake_up' || Boolean(state.flags.woke_up)
 }
 
 function setDialogueSurfaceOpen(root: HTMLElement, open: boolean): void {
@@ -471,11 +484,25 @@ function getObjective(state: GameState): string {
     return "Traiter la piste Hami: relire l'ordonnance malgré ce que La Dose protège."
   }
 
-  if (!flags.sofiane_met || !flags.amar_met) {
+  if (!hasAmarConfrontation(flags) || !hasSofianeConfrontation(flags)) {
     return "Confronter Amar et Sofiane avec caméra, badge et Hami avant que les pistes refroidissent."
   }
 
   return "Reconstruire qui a utilisé la ville, tes papiers et ton corps pour te déclarer mort à ta place."
+}
+
+function hasAmarConfrontation(flags: GameState['flags']): boolean {
+  return Boolean(flags.amar_confronted || flags.amar_vendor_checked || flags.amar_last_warning_checked)
+}
+
+function hasSofianeConfrontation(flags: GameState['flags']): boolean {
+  return Boolean(
+    flags.sofiane_confronted ||
+      flags.sofiane_saw_van ||
+      flags.sofiane_saw_returning_worker ||
+      flags.sofiane_trusts_wreck ||
+      (flags.sofiane_fled && flags.page_read && (flags.hami_line_checked || flags.badge_chain_checked)),
+  )
 }
 
 function renderClues(state: GameState, clueList: HTMLUListElement): void {

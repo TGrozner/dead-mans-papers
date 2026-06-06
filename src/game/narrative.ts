@@ -15,6 +15,8 @@ import type {
   RenderedDialogueChoice,
 } from './types'
 
+type PrioritizedOrbVariant = OrbVariant & { priority?: number }
+
 export class NarrativeEngine {
   state: GameState
 
@@ -247,17 +249,28 @@ export class NarrativeEngine {
   }
 
   private selectOrbVariant(orb: OrbDefinition): OrbVariant | undefined {
-    return orb.variants?.find((variant) => {
+    const variants = orb.variants as PrioritizedOrbVariant[] | undefined
+    let selectedVariant: PrioritizedOrbVariant | undefined
+
+    variants?.forEach((variant) => {
       if (variant.requiresFlag && !this.state.flags[variant.requiresFlag]) {
-        return false
+        return
       }
 
       if (variant.hiddenWhenFlag && this.state.flags[variant.hiddenWhenFlag]) {
-        return false
+        return
       }
 
-      return true
+      if (!selectedVariant || this.getOrbVariantPriority(variant) > this.getOrbVariantPriority(selectedVariant)) {
+        selectedVariant = variant
+      }
     })
+
+    return selectedVariant
+  }
+
+  private getOrbVariantPriority(variant: PrioritizedOrbVariant): number {
+    return variant.priority ?? 0
   }
 
   private applyEffects(effects: Effect[] | undefined): PassiveTrigger[] {

@@ -326,5 +326,41 @@
       "nodeId": "cup_trace_failure"
     },
     "text": "Tu as voulu une preuve, tu as montré un besoin. La Dose appelle ça honnêteté chimique. Le Dossier appelle ça vulnérabilité exploitable."
+  },
+  {
+    "id": "miroirs_wake__cup_kept_pressure",
+    "contextId": "miroirs/wake-up",
+    "location": "miroirs",
+    "subject": "cup",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "requiresFlag": "cup_kept",
+    "once": true,
+    "priority": 89,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "start"
+    },
+    "text": "Le gobelet dans ta poche garde une preuve et un risque. S'il parle, il dira alcool, résidu, trou noir. S'il tombe, Karine saura où appuyer."
+  },
+  {
+    "id": "miroirs_wake__cup_discarded_pressure",
+    "contextId": "miroirs/wake-up",
+    "location": "miroirs",
+    "subject": "cup",
+    "channel": "dialogue",
+    "voice": "honte_publique",
+    "requiresFlag": "cup_discarded",
+    "once": true,
+    "priority": 88,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "start"
+    },
+    "text": "Le gobelet est loin de ta main, pas loin de la scène. Jeter une honte ne l'efface pas; ça donne juste à quelqu'un d'autre la chance de la ramasser."
   }
 ]
