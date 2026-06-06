@@ -18,6 +18,18 @@
 - Use the rules worktree for durable Codex instructions, coordination docs, custom agents, and helper scripts.
 - Do not edit product code from the rules worktree unless the user explicitly widens the scope.
 
+## Agent Fan-Out
+
+- Treat subagent fan-out as a standing user preference for non-trivial work.
+- Start each non-trivial task with a fan-out preflight: identify independent
+  read-only audits, searches, test/log checks, verification passes, or disjoint
+  writing slices that can run in parallel.
+- Spawn useful independent subagents early instead of waiting for a per-task
+  request. If none are spawned, state why: trivial task, strictly linear path, a
+  single blocking result, or overlapping write ownership.
+- Read-only agents may inspect the foreground checkout. Writing agents must use
+  isolated worktrees, explicit ownership, and claim files before editing.
+
 ## Hard Stop For Writing Agents
 
 - The foreground checkout on `main` is for integration, inspection, and final

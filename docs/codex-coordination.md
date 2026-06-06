@@ -3,6 +3,14 @@
 This project uses aggressive Codex fan-out, but writing agents must not share a
 checkout. The coordinator owns integration; workers own narrow slices.
 
+## Fan-Out Default
+
+The user has given standing authorization for subagent fan-out on non-trivial
+work. Start with a fan-out preflight, spawn independent read-only audits,
+searches, test/log checks, verification passes, or disjoint writing slices early,
+and only skip subagents when the work is trivial, strictly linear, blocked on one
+result, or write ownership would overlap.
+
 ## Boot Rule
 
 If Codex starts in `/home/thomas/dev/dead-mans-papers-workspace`, it is not in a
@@ -71,8 +79,8 @@ Then start Codex from that worktree:
 codex --cd "$PWD"
 ```
 
-If the agent is started from a parent thread, ask for the relevant agent type
-and include the ownership block below in the prompt.
+When starting an agent from a parent thread, assign the agent type, worktree,
+branch, and ownership block up front.
 
 ## Ownership Block
 
