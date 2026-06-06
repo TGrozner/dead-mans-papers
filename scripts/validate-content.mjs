@@ -16,9 +16,11 @@ const passiveFiles = fs
 const passives = passiveFiles.flatMap((fileName) => readJson(`src/content/locations/miroirs/${fileName}`))
 
 const errors = []
+const warnings = []
 const emittedClues = new Set()
 const emittedFlags = new Set()
 const flagReferences = []
+const runtimeFlagReferences = collectRuntimeFlagReferences('src')
 const checkIds = new Map()
 const orbIds = new Set()
 const passiveIds = new Set()
@@ -63,7 +65,11 @@ validateClueGroups()
 validateChannels(voiceDefinitions, 'voice')
 validateChannels(parasiteDefinitions, 'parasite')
 
-function trackEffects(effects = [], owner, property = 'effects') {
+function trackEffects(effects, owner, property = 'effects') {
+  if (effects === undefined) {
+    return
+  }
+
   if (!Array.isArray(effects)) {
     errors.push(`${owner} ${property} must be an array`)
     return
@@ -72,7 +78,7 @@ function trackEffects(effects = [], owner, property = 'effects') {
   effects.forEach((effect, index) => {
     const effectOwner = `${owner}.${property}[${index}]`
 
-    if (!effect || typeof effect !== 'object') {
+    if (!isRecord(effect)) {
       errors.push(`${effectOwner} must be an object`)
       return
     }
@@ -83,7 +89,7 @@ function trackEffects(effects = [], owner, property = 'effects') {
     }
 
     if (effect.type === 'flag') {
-      if (!effect.flag) {
+      if (!isNonEmptyString(effect.flag)) {
         errors.push(`${effectOwner} flag effect is missing flag`)
       } else {
         emittedFlags.add(effect.flag)
@@ -93,7 +99,7 @@ function trackEffects(effects = [], owner, property = 'effects') {
     }
 
     if (effect.type === 'clue') {
-      if (!effect.clue) {
+      if (!isNonEmptyString(effect.clue)) {
         errors.push(`${effectOwner} clue effect is missing clue`)
       } else {
         emittedClues.add(effect.clue)
@@ -103,14 +109,14 @@ function trackEffects(effects = [], owner, property = 'effects') {
     }
 
     if (effect.type === 'voice_bump') {
-      if (!effect.voice) {
+      if (!isNonEmptyString(effect.voice)) {
         errors.push(`${effectOwner} voice_bump effect is missing voice`)
       } else if (!voices.has(effect.voice)) {
         errors.push(`${effectOwner} references unknown voice: ${effect.voice}`)
       }
 
-      if (effect.amount !== undefined && typeof effect.amount !== 'number') {
-        errors.push(`${effectOwner} voice_bump amount must be numeric`)
+      if (effect.amount !== undefined && !isFiniteNumber(effect.amount)) {
+        errors.push(`${effectOwner} voice_bump amount must be a finite number`)
       }
 
       return
@@ -123,35 +129,77 @@ function trackEffects(effects = [], owner, property = 'effects') {
 }
 
 function trackFlagReference(flag, owner, field) {
-  if (!flag) {
+  if (flag === undefined) {
+    return
+  }
+
+  if (!isNonEmptyString(flag)) {
+    errors.push(`${owner} ${field} must be a non-empty string`)
     return
   }
 
   flagReferences.push({ flag, owner, field })
 }
 
-for (const [scriptId, script] of Object.entries(dialogues)) {
-  if (script.id !== scriptId) {
+if (!isRecord(dialogues)) {
+  errors.push('Dialogues root must be an object keyed by script id')
+}
+
+for (const [scriptId, script] of Object.entries(isRecord(dialogues) ? dialogues : {})) {
+  if (!isRecord(script)) {
+    errors.push(`${scriptId} script must be an object`)
+    continue
+  }
+
+  validateRequiredString(script.id, `${scriptId}.id`)
+  validateRequiredString(script.title, `${scriptId}.title`)
+  validateRequiredString(script.start, `${scriptId}.start`)
+
+  if (isNonEmptyString(script.id) && script.id !== scriptId) {
     errors.push(`Script key/id mismatch: ${scriptId} vs ${script.id}`)
   }
 
-  if (!script.nodes?.[script.start]) {
+  if (!isRecord(script.nodes)) {
+    errors.push(`${scriptId}.nodes must be an object keyed by node id`)
+    continue
+  }
+
+  const nodes = script.nodes
+
+  if (isNonEmptyString(script.start) && !Object.hasOwn(nodes, script.start)) {
     errors.push(`${scriptId} start node is missing: ${script.start}`)
   }
 
-  for (const [nodeId, node] of Object.entries(script.nodes ?? {})) {
+  for (const [nodeId, node] of Object.entries(nodes)) {
     const owner = `${scriptId}.${nodeId}`
 
-    if (node.id !== nodeId) {
+    if (!isRecord(node)) {
+      errors.push(`${owner} must be an object`)
+      continue
+    }
+
+    validateRequiredString(node.id, `${owner}.id`)
+    validateRequiredString(node.speaker, `${owner}.speaker`)
+    validateRequiredString(node.text, `${owner}.text`)
+
+    if (isNonEmptyString(node.id) && node.id !== nodeId) {
       errors.push(`Node key/id mismatch: ${owner} vs ${node.id}`)
     }
 
-    if (node.voice && !voices.has(node.voice)) {
-      errors.push(`${owner} references unknown voice: ${node.voice}`)
+    if (node.voice !== undefined) {
+      if (!isNonEmptyString(node.voice)) {
+        errors.push(`${owner}.voice must be a non-empty string`)
+      } else if (!voices.has(node.voice)) {
+        errors.push(`${owner} references unknown voice: ${node.voice}`)
+      }
     }
 
-    if (node.parasite && !parasites.has(node.parasite)) {
-      errors.push(`${owner} references unknown parasite: ${node.parasite}`)
+    if (node.parasite !== undefined) {
+      if (!isNonEmptyString(node.parasite)) {
+        errors.push(`${owner}.parasite must be a non-empty string`)
+      } else if (!parasites.has(node.parasite)) {
+        errors.push(`${owner} references unknown parasite: ${node.parasite}`)
+      }
     }
 
     if (node.parasite === 'dose' && !hasFlagEffect(node.effects, 'dose_heard')) {
@@ -160,71 +208,115 @@ for (const [scriptId, script] of Object.entries(dialogues)) {
 
     trackEffects(node.effects, owner)
 
-    const choices = node.choices ?? []
+    if (!Array.isArray(node.choices)) {
+      errors.push(`${owner}.choices must be an array`)
+      continue
+    }
+
+    const choices = node.choices
     const choiceIds = new Set()
 
     choices.forEach((choice, index) => {
       const choiceOwner = `${owner}.choices[${index}]`
 
-      if (choice.id) {
-        if (choiceIds.has(choice.id)) {
-          errors.push(`${owner} has duplicate choice id: ${choice.id}`)
-        }
-
-        choiceIds.add(choice.id)
+      if (!isRecord(choice)) {
+        errors.push(`${choiceOwner} must be an object`)
+        return
       }
 
-      if (choice.next && !script.nodes[choice.next]) {
-        errors.push(`${choiceOwner} points to missing node: ${choice.next}`)
+      validateRequiredString(choice.label, `${choiceOwner}.label`)
+
+      if (choice.id !== undefined) {
+        if (!isNonEmptyString(choice.id)) {
+          errors.push(`${choiceOwner}.id must be a non-empty string`)
+        } else if (choiceIds.has(choice.id)) {
+          errors.push(`${owner} has duplicate choice id: ${choice.id}`)
+        } else {
+          choiceIds.add(choice.id)
+        }
+      }
+
+      if (choice.next !== undefined) {
+        if (!isNonEmptyString(choice.next)) {
+          errors.push(`${choiceOwner}.next must be a non-empty string`)
+        } else if (!Object.hasOwn(nodes, choice.next)) {
+          errors.push(`${choiceOwner} points to missing node: ${choice.next}`)
+        }
+      }
+
+      if (choice.close !== undefined && typeof choice.close !== 'boolean') {
+        errors.push(`${choiceOwner}.close must be a boolean`)
+      }
+
+      if (choice.important !== undefined && typeof choice.important !== 'boolean') {
+        errors.push(`${choiceOwner}.important must be a boolean`)
       }
 
       trackFlagReference(choice.requiresFlag, choiceOwner, 'requiresFlag')
       trackFlagReference(choice.hiddenWhenFlag, choiceOwner, 'hiddenWhenFlag')
 
-      if (!choice.next && !choice.close && !choice.check) {
+      if (!hasChoiceExit(choice)) {
         errors.push(`${choiceOwner} has no next, close, or check`)
       }
 
       trackEffects(choice.effects, choiceOwner)
       validateIdentityChoice(choice, choiceOwner)
 
-      if (!choice.check) {
+      if (choice.check === undefined) {
+        return
+      }
+
+      if (!isRecord(choice.check)) {
+        errors.push(`${choiceOwner}.check must be an object`)
         return
       }
 
       const check = choice.check
-      if (checkIds.has(check.id)) {
-        errors.push(`Duplicate check id: ${check.id}`)
-      }
-      checkIds.set(check.id, choiceOwner)
+      validateRequiredString(check.id, `${choiceOwner}.check.id`)
+      validateRequiredString(check.voice, `${choiceOwner}.check.voice`)
+      validateRequiredString(check.successNode, `${choiceOwner}.check.successNode`)
+      validateRequiredString(check.failureNode, `${choiceOwner}.check.failureNode`)
 
-      if (!voices.has(check.voice)) {
+      if (isNonEmptyString(check.id)) {
+        if (checkIds.has(check.id)) {
+          errors.push(`Duplicate check id: ${check.id}`)
+        }
+        checkIds.set(check.id, choiceOwner)
+      }
+
+      if (isNonEmptyString(check.voice) && !voices.has(check.voice)) {
         errors.push(`${choiceOwner} check uses unknown voice: ${check.voice}`)
       }
 
-      if (check.supportVoice && !voices.has(check.supportVoice)) {
-        errors.push(`${choiceOwner} check uses unknown support voice: ${check.supportVoice}`)
+      if (check.supportVoice !== undefined) {
+        if (!isNonEmptyString(check.supportVoice)) {
+          errors.push(`${choiceOwner}.check.supportVoice must be a non-empty string`)
+        } else if (!voices.has(check.supportVoice)) {
+          errors.push(`${choiceOwner} check uses unknown support voice: ${check.supportVoice}`)
+        }
       }
 
-      if (!script.nodes[check.successNode]) {
+      if (!isFiniteNumber(check.difficulty)) {
+        errors.push(`${choiceOwner}.check.difficulty must be a finite number`)
+      }
+
+      if (isNonEmptyString(check.successNode) && !Object.hasOwn(nodes, check.successNode)) {
         errors.push(`${choiceOwner} check success node is missing: ${check.successNode}`)
       }
 
-      if (!script.nodes[check.failureNode]) {
+      if (isNonEmptyString(check.failureNode) && !Object.hasOwn(nodes, check.failureNode)) {
         errors.push(`${choiceOwner} check failure node is missing: ${check.failureNode}`)
       }
 
-      if (choice.hiddenWhenFlag && script.nodes[check.successNode] && script.nodes[check.failureNode]) {
-        const successFlags = new Set(
-          (script.nodes[check.successNode].effects ?? [])
-            .filter((effect) => effect.type === 'flag')
-            .map((effect) => effect.flag),
-        )
-        const failureFlags = new Set(
-          (script.nodes[check.failureNode].effects ?? [])
-            .filter((effect) => effect.type === 'flag')
-            .map((effect) => effect.flag),
-        )
+      if (
+        isNonEmptyString(choice.hiddenWhenFlag) &&
+        isNonEmptyString(check.successNode) &&
+        isNonEmptyString(check.failureNode) &&
+        Object.hasOwn(nodes, check.successNode) &&
+        Object.hasOwn(nodes, check.failureNode)
+      ) {
+        const successFlags = getNodeFlagEffects(nodes[check.successNode])
+        const failureFlags = getNodeFlagEffects(nodes[check.failureNode])
 
         if (!successFlags.has(choice.hiddenWhenFlag) || !failureFlags.has(choice.hiddenWhenFlag)) {
           errors.push(
@@ -234,6 +326,8 @@ for (const [scriptId, script] of Object.entries(dialogues)) {
       }
     })
   }
+
+  validateScriptReachability(scriptId, script, nodes)
 }
 
 for (const orb of orbs) {
@@ -312,6 +406,23 @@ for (const { flag, owner, field } of flagReferences) {
   }
 }
 
+for (const flag of runtimeFlagReferences) {
+  if (!emittedFlags.has(flag)) {
+    errors.push(`Runtime statically reads a flag that is never emitted: ${flag}`)
+  }
+}
+
+const referencedFlags = new Set(flagReferences.map((reference) => reference.flag))
+const unreadEmittedFlags = [...emittedFlags]
+  .filter((flag) => !referencedFlags.has(flag) && !runtimeFlagReferences.has(flag))
+  .sort((left, right) => left.localeCompare(right))
+
+if (unreadEmittedFlags.length > 0) {
+  warnings.push(
+    `Flags emitted but never read by content gates or static runtime reads: ${unreadEmittedFlags.join(', ')}`,
+  )
+}
+
 for (const clue of emittedClues) {
   const group = getClueGroup(clue)
 
@@ -331,6 +442,10 @@ const summary = [
 if (errors.length) {
   console.error(errors.map((error) => `Error: ${error}`).join('\n'))
   process.exit(1)
+}
+
+if (warnings.length) {
+  console.warn(warnings.map((warning) => `Warning: ${warning}`).join('\n'))
 }
 
 console.log(`Content validation OK: ${summary.join(', ')}`)
@@ -367,12 +482,24 @@ function validateClueGroups() {
 }
 
 function validateChannels(channels, kind) {
-  for (const channel of channels) {
-    if (!channel.id) {
+  if (!Array.isArray(channels)) {
+    errors.push(`${kind} definitions must be an array`)
+    return
+  }
+
+  for (const [index, channel] of channels.entries()) {
+    const owner = `${kind} ${isRecord(channel) ? (channel.id ?? index) : index}`
+
+    if (!isRecord(channel)) {
+      errors.push(`${owner} must be an object`)
+      continue
+    }
+
+    if (!isNonEmptyString(channel.id)) {
       errors.push(`${kind} is missing an id`)
     }
 
-    if (!channel.name) {
+    if (!isNonEmptyString(channel.name)) {
       errors.push(`${kind} ${channel.id ?? '<unknown>'} is missing a name`)
     }
 
@@ -383,7 +510,9 @@ function validateChannels(channels, kind) {
 }
 
 function validateIdentityChoice(choice, owner) {
-  const hasIdentityPosture = (choice.effects ?? []).some((effect) => effect.type === 'identity_posture')
+  const hasIdentityPosture = Array.isArray(choice.effects)
+    ? choice.effects.some((effect) => isRecord(effect) && effect.type === 'identity_posture')
+    : false
 
   if (!hasIdentityPosture) {
     return
@@ -398,8 +527,78 @@ function validateIdentityChoice(choice, owner) {
   }
 }
 
-function hasFlagEffect(effects = [], flag) {
-  return effects.some((effect) => effect.type === 'flag' && effect.flag === flag)
+function validateScriptReachability(scriptId, script, nodes) {
+  if (!isNonEmptyString(script.start) || !Object.hasOwn(nodes, script.start)) {
+    return
+  }
+
+  const reachable = new Set([script.start])
+  const queue = [script.start]
+
+  while (queue.length > 0) {
+    const nodeId = queue.shift()
+    const node = nodes[nodeId]
+
+    if (!isRecord(node) || !Array.isArray(node.choices)) {
+      continue
+    }
+
+    node.choices.forEach((choice, index) => {
+      if (!isRecord(choice)) {
+        return
+      }
+
+      for (const target of getChoiceTargets(choice)) {
+        if (!isNonEmptyString(target)) {
+          continue
+        }
+
+        if (!Object.hasOwn(nodes, target)) {
+          errors.push(`${scriptId}.${nodeId}.choices[${index}] reaches missing node: ${target}`)
+          continue
+        }
+
+        if (!reachable.has(target)) {
+          reachable.add(target)
+          queue.push(target)
+        }
+      }
+    })
+  }
+
+  const unreachableNodes = Object.keys(nodes).filter((nodeId) => !reachable.has(nodeId)).sort()
+
+  if (unreachableNodes.length > 0) {
+    errors.push(`${scriptId} has unreachable nodes from start "${script.start}": ${unreachableNodes.join(', ')}`)
+  }
+}
+
+function getChoiceTargets(choice) {
+  if (isRecord(choice.check)) {
+    return [choice.check.successNode, choice.check.failureNode]
+  }
+
+  return [choice.next]
+}
+
+function hasChoiceExit(choice) {
+  return isNonEmptyString(choice.next) || choice.close === true || isRecord(choice.check)
+}
+
+function hasFlagEffect(effects, flag) {
+  return Array.isArray(effects) && effects.some((effect) => isRecord(effect) && effect.type === 'flag' && effect.flag === flag)
+}
+
+function getNodeFlagEffects(node) {
+  if (!isRecord(node) || !Array.isArray(node.effects)) {
+    return new Set()
+  }
+
+  return new Set(
+    node.effects
+      .filter((effect) => isRecord(effect) && effect.type === 'flag' && isNonEmptyString(effect.flag))
+      .map((effect) => effect.flag),
+  )
 }
 
 function getClueGroup(clue) {
@@ -418,7 +617,63 @@ function getClueGroup(clue) {
 }
 
 function getClueGroupScore(clue, keywords = []) {
+  if (!Array.isArray(keywords)) {
+    return 0
+  }
+
   return keywords.reduce((score, keyword) => {
     return clue.includes(keyword) ? score + 1 : score
   }, 0)
+}
+
+function validateRequiredString(value, owner) {
+  if (!isNonEmptyString(value)) {
+    errors.push(`${owner} must be a non-empty string`)
+  }
+}
+
+function isNonEmptyString(value) {
+  return typeof value === 'string' && value.trim().length > 0
+}
+
+function isFiniteNumber(value) {
+  return typeof value === 'number' && Number.isFinite(value)
+}
+
+function isRecord(value) {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
+}
+
+function collectRuntimeFlagReferences(rootDirectory) {
+  const references = new Set()
+
+  if (!fs.existsSync(rootDirectory)) {
+    return references
+  }
+
+  for (const filePath of listSourceFiles(rootDirectory)) {
+    const source = fs.readFileSync(filePath, 'utf8')
+
+    for (const match of source.matchAll(/\bflags\.([A-Za-z_$][\w$]*)/g)) {
+      references.add(match[1])
+    }
+
+    for (const match of source.matchAll(/\bflags\[['"]([^'"]+)['"]\]/g)) {
+      references.add(match[1])
+    }
+  }
+
+  return references
+}
+
+function listSourceFiles(directory) {
+  return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const entryPath = `${directory}/${entry.name}`
+
+    if (entry.isDirectory()) {
+      return listSourceFiles(entryPath)
+    }
+
+    return entry.isFile() && entry.name.endsWith('.ts') ? [entryPath] : []
+  })
 }

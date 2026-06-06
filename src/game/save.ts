@@ -2,11 +2,18 @@ import { dialogues, voices } from './content'
 import type { ActiveSurface, CheckDefinition, CheckResult, GameState, IdentityPosture, VoiceId } from './types'
 
 const STORAGE_KEY = 'dead-mans-papers:v12'
+const CURRENT_SAVE_SCHEMA_VERSION = 13
+const LEGACY_RAW_SAVE_SCHEMA_VERSION = 12
 const TUTORIAL_HIDDEN_KEY = 'dead-mans-papers:tutorial-hidden-v2'
 const TUTORIAL_SEEN_KEY = 'dead-mans-papers:tutorial-seen-v2'
 const identityPostures = new Set<IdentityPosture>(['accept', 'refuse', 'perform', 'defile'])
 const voiceIds = new Set<VoiceId>(voices.map((voice) => voice.id))
 const checkDefinitions = collectCheckDefinitions()
+
+interface VersionedSavePayload {
+  schemaVersion: typeof CURRENT_SAVE_SCHEMA_VERSION
+  state: GameState
+}
 
 export function createInitialState(): GameState {
   const voiceStats = voices.reduce(
@@ -40,24 +47,50 @@ export function loadGameState(): GameState {
 
   try {
     const parsedState = JSON.parse(rawState) as unknown
+    const migratedState = migrateSavedState(parsedState)
 
-    if (!isRecord(parsedState)) {
-      return initialState
-    }
-
-    return {
-      activeSurface: parseActiveSurface(parsedState.activeSurface),
-      flags: parseBooleanRecord(parsedState.flags),
-      clues: parseStringList(parsedState.clues),
-      completedChecks: parseCompletedChecks(parsedState.completedChecks),
-      identityPosture: parseIdentityPosture(parsedState.identityPosture),
-      triggeredOrbs: parseBooleanRecord(parsedState.triggeredOrbs),
-      triggeredPassives: parseBooleanRecord(parsedState.triggeredPassives),
-      visitedChoices: parseBooleanRecord(parsedState.visitedChoices),
-      voiceStats: parseVoiceStats(parsedState.voiceStats, initialState.voiceStats),
-    }
+    return parseGameState(migratedState, initialState)
   } catch {
     return initialState
+  }
+}
+
+function migrateSavedState(value: unknown): unknown {
+  if (!isRecord(value)) {
+    return undefined
+  }
+
+  if (value.schemaVersion === CURRENT_SAVE_SCHEMA_VERSION) {
+    return value.state
+  }
+
+  if (value.schemaVersion === LEGACY_RAW_SAVE_SCHEMA_VERSION) {
+    return isRecord(value.state) ? value.state : value
+  }
+
+  // Legacy v12 saves stored the raw GameState under the same localStorage key.
+  if (value.schemaVersion === undefined) {
+    return value
+  }
+
+  return undefined
+}
+
+function parseGameState(value: unknown, initialState: GameState): GameState {
+  if (!isRecord(value)) {
+    return initialState
+  }
+
+  return {
+    activeSurface: parseActiveSurface(value.activeSurface),
+    flags: parseBooleanRecord(value.flags),
+    clues: parseStringList(value.clues),
+    completedChecks: parseCompletedChecks(value.completedChecks),
+    identityPosture: parseIdentityPosture(value.identityPosture),
+    triggeredOrbs: parseBooleanRecord(value.triggeredOrbs),
+    triggeredPassives: parseBooleanRecord(value.triggeredPassives),
+    visitedChoices: parseBooleanRecord(value.visitedChoices),
+    voiceStats: parseVoiceStats(value.voiceStats, initialState.voiceStats),
   }
 }
 
@@ -86,7 +119,12 @@ function parseActiveSurface(surface: unknown): ActiveSurface | undefined {
 }
 
 export function saveGameState(state: GameState): void {
-  writeStorage(STORAGE_KEY, JSON.stringify(state))
+  const payload: VersionedSavePayload = {
+    schemaVersion: CURRENT_SAVE_SCHEMA_VERSION,
+    state,
+  }
+
+  writeStorage(STORAGE_KEY, JSON.stringify(payload))
 }
 
 export function resetGameState(): void {
