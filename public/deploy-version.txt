@@ -1,0 +1,3 @@
+voice-labels-renamed
+expected-voices=Memoire,Procedure,Danger,Honte,Rumeur,Corps,Signes,Debrouille
+source-commit=07794fb67e97e79dfb1f26f71f4cc9a382525bdf
