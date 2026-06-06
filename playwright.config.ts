@@ -7,7 +7,7 @@ const rootPort = 4173
 const pagesPort = 4174
 const rootBaseURL = `http://127.0.0.1:${rootPort}`
 const pagesBaseURL = `http://127.0.0.1:${pagesPort}/dead-mans-papers/`
-const focusedProjectTests = /@(pages|responsive)/
+const focusedProjectTests = /@(mobile|pages|responsive)/
 const { major: nodeMajor, minor: nodeMinor } = parseNodeVersion(process.versions.node)
 
 if (
@@ -23,7 +23,8 @@ if (
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
-  reporter: process.env.CI ? [['github'], ['list']] : 'list',
+  reporter: process.env.CI ? [['github'], ['list'], ['html', { open: 'never' }]] : 'list',
+  retries: process.env.CI ? 2 : 0,
   use: {
     baseURL: rootBaseURL,
     trace: 'on-first-retry',
@@ -59,6 +60,17 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 390, height: 844 },
+      },
+    },
+    {
+      name: 'mobile-touch-chromium',
+      grep: /@mobile/,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 390, height: 844 },
+        deviceScaleFactor: 3,
+        hasTouch: true,
+        isMobile: true,
       },
     },
     {

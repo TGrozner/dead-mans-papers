@@ -14,6 +14,32 @@ const voiceStats = {
   main_gauche: 2,
 }
 
+const sceneWidth = 1280
+const sceneHeight = 720
+
+const runtimeMirrorAssetFiles = [
+  'p2-background.png',
+  'p2-foreground.png',
+  'actor-zinedine.png',
+  'actor-leduc.png',
+  'actor-amar.png',
+  'actor-sofiane.png',
+  'prop-cup.png',
+  'prop-phone.png',
+]
+
+const allMirrorAssetFiles = [
+  ...runtimeMirrorAssetFiles,
+  'actor-amar.png',
+  'actor-leduc.png',
+  'actor-sofiane.png',
+  'actor-zinedine.png',
+  'concept-sheet.png',
+  'p2-background-legacy.png',
+  'prop-badge.png',
+  'prop-page.png',
+].filter((file, index, files) => files.indexOf(file) === index)
+
 const progressedSave = {
   flags: {
     woke_up: true,
@@ -175,6 +201,61 @@ async function expectRuntimeAssetVersioned(page: Page, assetPath: string) {
     .toBe(true)
 }
 
+async function expectPagesRuntimeMirrorAssetsVersioned(page: Page) {
+  const runtimeAssetUrls = await page.evaluate(() => {
+    return performance
+      .getEntriesByType('resource')
+      .map((entry) => entry.name)
+      .filter((name) => name.includes('/assets/miroirs/'))
+  })
+
+  expect(runtimeAssetUrls.length).toBeGreaterThanOrEqual(runtimeMirrorAssetFiles.length)
+
+  const runtimeFiles = new Set<string>()
+
+  runtimeAssetUrls.forEach((assetUrl) => {
+    const parsedUrl = new URL(assetUrl)
+    const filename = parsedUrl.pathname.split('/').at(-1)
+
+    if (filename) {
+      runtimeFiles.add(filename)
+    }
+
+    expect(parsedUrl.pathname, `${assetUrl} should use the GitHub Pages base path`).toContain(
+      '/dead-mans-papers/assets/miroirs/',
+    )
+    expect(parsedUrl.pathname, `${assetUrl} should not be requested from the site root`).not.toMatch(
+      /^\/assets\/miroirs\//,
+    )
+    expect(parsedUrl.searchParams.get('v'), `${assetUrl} should include a cache-busting version`).toBeTruthy()
+  })
+
+  runtimeMirrorAssetFiles.forEach((assetFile) => {
+    expect(runtimeFiles.has(assetFile), `${assetFile} should be loaded by the runtime`).toBe(true)
+  })
+}
+
+async function expectAllPagesMirrorAssetsServed(page: Page) {
+  const failedAssets: Array<{ file: string; status: number }> = []
+
+  for (const assetFile of allMirrorAssetFiles) {
+    const assetUrl = new URL(`assets/miroirs/${assetFile}?v=e2e`, page.url())
+
+    expect(assetUrl.pathname).toBe(`/dead-mans-papers/assets/miroirs/${assetFile}`)
+
+    const response = await page.request.get(assetUrl.toString())
+
+    if (!response.ok()) {
+      failedAssets.push({ file: assetFile, status: response.status() })
+      continue
+    }
+
+    expect(response.headers()['content-type'] ?? '').toContain('image/png')
+  }
+
+  expect(failedAssets).toEqual([])
+}
+
 async function expectPageHasNoForcedScroll(page: Page) {
   const overflow = await page.evaluate(() => {
     return {
@@ -228,6 +309,97 @@ async function expectFocusInside(page: Page, selector: string) {
       }, selector)
     })
     .toBe(true)
+}
+
+interface VisibleBox {
+  bottom: number
+  left: number
+  right: number
+  top: number
+}
+
+async function getVisibleBox(page: Page, selector: string): Promise<VisibleBox | undefined> {
+  return await page.evaluate((targetSelector) => {
+    const element = document.querySelector(targetSelector)
+
+    if (!element) {
+      return undefined
+    }
+
+    const htmlElement = element as HTMLElement
+    const style = window.getComputedStyle(element)
+    const box = element.getBoundingClientRect()
+    const visible =
+      !htmlElement.hidden &&
+      style.display !== 'none' &&
+      style.visibility !== 'hidden' &&
+      box.width > 0 &&
+      box.height > 0
+
+    if (!visible) {
+      return undefined
+    }
+
+    return {
+      bottom: box.bottom,
+      left: box.left,
+      right: box.right,
+      top: box.top,
+    }
+  }, selector)
+}
+
+async function expectNoElementOverlap(page: Page, firstSelector: string, secondSelector: string) {
+  const firstBox = await getVisibleBox(page, firstSelector)
+  const secondBox = await getVisibleBox(page, secondSelector)
+
+  expect(firstBox, `${firstSelector} should be visible`).toBeDefined()
+  expect(secondBox, `${secondSelector} should be visible`).toBeDefined()
+
+  expect(boxesOverlap(firstBox!, secondBox!), `${firstSelector} should not overlap ${secondSelector}`).toBe(false)
+}
+
+async function expectNoVisibleElementOverlap(page: Page, firstSelector: string, secondSelector: string) {
+  const firstBox = await getVisibleBox(page, firstSelector)
+  const secondBox = await getVisibleBox(page, secondSelector)
+
+  if (!firstBox || !secondBox) {
+    return
+  }
+
+  expect(boxesOverlap(firstBox, secondBox), `${firstSelector} should not overlap ${secondSelector}`).toBe(false)
+}
+
+function boxesOverlap(firstBox: VisibleBox, secondBox: VisibleBox): boolean {
+  const horizontalOverlap = Math.max(0, Math.min(firstBox.right, secondBox.right) - Math.max(firstBox.left, secondBox.left))
+  const verticalOverlap = Math.max(0, Math.min(firstBox.bottom, secondBox.bottom) - Math.max(firstBox.top, secondBox.top))
+
+  return horizontalOverlap > 0 && verticalOverlap > 0
+}
+
+async function tapScenePoint(page: Page, x: number, y: number) {
+  await page.locator('.stage-viewport').evaluate((element, sceneX) => {
+    const maxScroll = Math.max(0, element.scrollWidth - element.clientWidth)
+    const targetScroll = element.scrollWidth * (sceneX / 1280) - element.clientWidth / 2
+
+    element.scrollLeft = Math.max(0, Math.min(maxScroll, targetScroll))
+  }, x)
+
+  const canvasBox = await page.locator('#game-stage canvas').boundingBox()
+  const viewport = page.viewportSize()
+
+  expect(canvasBox).not.toBeNull()
+  expect(viewport).not.toBeNull()
+
+  const tapX = canvasBox!.x + (x / sceneWidth) * canvasBox!.width
+  const tapY = canvasBox!.y + (y / sceneHeight) * canvasBox!.height
+
+  expect(tapX).toBeGreaterThanOrEqual(0)
+  expect(tapY).toBeGreaterThanOrEqual(0)
+  expect(tapX).toBeLessThanOrEqual(viewport!.width)
+  expect(tapY).toBeLessThanOrEqual(viewport!.height)
+
+  await page.touchscreen.tap(tapX, tapY)
 }
 
 test('starts with a bounded tutorial and opens the first dialogue', async ({ page }) => {
@@ -437,8 +609,10 @@ test('keeps the action prompt attached to the rendered scene @responsive', async
   expect(geometry.prompt).toBeDefined()
   expect(geometry.stage).toBeDefined()
   if (compactWidth) {
+    await expect(page.locator('#mobile-scene-nav')).toBeVisible()
     await expectInViewport(page, '#interaction-prompt')
     await expectInViewport(page, '.stage-viewport')
+    await expectNoElementOverlap(page, '#interaction-prompt', '#mobile-scene-nav')
 
     await page.locator('.stage-viewport').evaluate((element) => {
       element.scrollLeft = element.scrollWidth * (1150 / 1280) - element.clientWidth / 2
@@ -515,6 +689,62 @@ test('triggers proximity orbs as one-shot toasts instead of modal inspections', 
   await expect(page.locator('.orb-toast')).toHaveCount(0)
   await page.mouse.click(flaqueX, flaqueY)
   await expect(page.locator('.orb-toast')).toHaveCount(0)
+})
+
+test('supports real mobile touch taps on primary hotspots @mobile', async ({ page }) => {
+  await seedGame(page, progressedSave)
+
+  await gotoApp(page)
+
+  const canvas = page.locator('#game-stage canvas')
+  await expect(canvas).toBeVisible()
+  await expectSceneReady(page)
+  await expectCanvasToHaveRenderedPixels(canvas)
+  await expect(page.locator('#mobile-scene-nav')).toBeVisible()
+
+  const touchSupport = await page.evaluate(() => {
+    return {
+      coarsePointer: window.matchMedia('(pointer: coarse)').matches,
+      maxTouchPoints: navigator.maxTouchPoints,
+    }
+  })
+
+  expect(touchSupport.coarsePointer).toBe(true)
+  expect(touchSupport.maxTouchPoints).toBeGreaterThan(0)
+
+  const dialogue = page.locator('.dialogue-root')
+  const targets = [
+    { x: 300, y: 430, text: 'incident de chantier' },
+    { x: 443, y: 435, text: "Je n'ai pas besoin d'un héros" },
+    { x: 975, y: 278, text: 'sale gueule' },
+    { x: 1123, y: 585, text: 'La palissade garde Sofiane' },
+  ]
+
+  for (const target of targets) {
+    await tapScenePoint(page, target.x, target.y)
+    await expect(dialogue).toContainText(target.text)
+    await page.getByRole('button', { name: 'Quitter' }).click()
+    await expect(dialogue).toBeHidden()
+  }
+})
+
+test('keeps mobile toasts, dossier, and scene navigation separated @mobile', async ({ page }) => {
+  await seedGame(page, progressedSave)
+
+  await gotoApp(page)
+
+  await expect(page.locator('#game-stage canvas')).toBeVisible()
+  await expectSceneReady(page)
+  await tapScenePoint(page, 635, 340)
+
+  await expect(page.locator('.orb-toast')).toContainText('Flaque sous néon')
+  await expect(page.locator('#mobile-scene-nav')).toBeVisible()
+  await expectNoElementOverlap(page, '.orb-toast', '#mobile-scene-nav')
+
+  await page.getByRole('button', { name: 'Dossier fermé' }).click()
+  await expect(page.locator('.case-panel')).toBeVisible()
+  await expect(page.locator('#mobile-scene-nav')).toBeHidden()
+  await expectNoVisibleElementOverlap(page, '.orb-toast', '.case-panel')
 })
 
 test('keeps restored dialogue inside the viewport', async ({ page }) => {
@@ -648,6 +878,16 @@ test('moves the objective from evidence checks to witness confrontation', async 
 })
 
 test('serves the saved game from the Pages base path @pages', async ({ page }) => {
+  const mirrorAssetResponses: Array<{ status: number; url: string }> = []
+
+  page.on('response', (response) => {
+    const responseUrl = response.url()
+
+    if (responseUrl.includes('/assets/miroirs/')) {
+      mirrorAssetResponses.push({ status: response.status(), url: responseUrl })
+    }
+  })
+
   await seedGame(page, progressedSave)
   await page.evaluate(() => performance.clearResourceTimings())
 
@@ -660,6 +900,9 @@ test('serves the saved game from the Pages base path @pages', async ({ page }) =
   expect(backgroundResponse.ok()).toBe(true)
   expect(backgroundResponse.headers()['content-type']).toContain('image/png')
   await expectRuntimeAssetVersioned(page, 'assets/miroirs/p2-background.png')
+  await expectPagesRuntimeMirrorAssetsVersioned(page)
+  await expectAllPagesMirrorAssetsServed(page)
+  expect(mirrorAssetResponses.filter((response) => response.status >= 400)).toEqual([])
   await expectImageNaturalSize(page, 'assets/miroirs/p2-background.png', 2560, 1440)
   await expect(canvas).toBeVisible()
   await expectCanvasToHaveRenderedPixels(canvas)
