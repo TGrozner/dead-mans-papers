@@ -17,7 +17,7 @@
   },
   "utility_van": {
     "nodes": {
-      "start": {"id": "start", "text": "\"On va appeler ça un incident de chantier.\" Karine te bloque le passage, téléphone serré dans la main. \"Tu touches à rien. Tu t'es réveillé à dix mètres de mon utilitaire, et deux fenêtres peuvent déjà nous filmer.\""},
+      "start": {"id": "start", "text": "\"On va appeler ça un incident de chantier.\" Karine te bloque le passage, téléphone serré dans la main. \"Tu touches à rien. Normalement, on sécurise et on appelle. Là, j'ai six minutes avant que deux fenêtres nous filment.\""},
       "leduc_frame": {"id": "leduc_frame", "text": "\"Un incident, c'est ce qu'on dit tant qu'on contrôle encore la phrase. Un coffre, c'est ce que les gens filment. Je préfère un mot moche à une vidéo qui tourne avant les gyrophares.\""},
       "leduc_body_language": {"id": "leduc_body_language", "text": "Karine tient son téléphone prêt, écran contre la paume. Elle a vu ta main trembler. Elle ne dit rien. Elle garde ça pour plus tard."},
       "why_zinedine": {"id": "why_zinedine", "text": "\"Parce que tu connais les badges, les caméras, les caves, les gardiens. Parce que les habitants te parlent quand ils ne veulent pas laisser de mail. Et parce que je t'ai retrouvé à dix mètres du problème avec une gueule de certificat médical.\""},
@@ -28,13 +28,13 @@
       "leduc_badge_hint": {"id": "leduc_badge_hint", "text": "\"Badges chantier, badges sécurité, badges nettoyage. Les accès provisoires deviennent permanents parce que personne n'a le temps de refaire une liste.\""},
       "dose_smell": {"id": "dose_smell", "text": "Ça ne sent pas le chantier. Ça sent le froid gardé trop longtemps, la Javel, le plastique chaud. Et par-dessus, ta sueur de manque. Deux saletés au même endroit."},
       "cold_question": {"id": "cold_question", "text": "\"Je ne veux pas savoir d'où vient l'odeur avant de savoir qui va devoir l'expliquer.\" Karine recule d'un demi-pas. Pas par pudeur. Pour éviter ton vomi."},
-      "trunk_block": {"id": "trunk_block", "text": "Elle garde la main sur le hayon. Son téléphone vibre deux fois; elle le retourne sans lire. \"Tu regardes, tu respires, tu ne me fais pas une scène de manque devant mon véhicule. Si tu tombes, quelqu'un écrira que tu étais instable avant même d'écrire ce qu'il y avait dedans.\""},
+      "trunk_block": {"id": "trunk_block", "text": "Elle garde la main sur le hayon. Son téléphone vibre deux fois; elle le retourne sans lire. \"Tu regardes, tu respires, tu ne me fais pas une scène de manque devant mon véhicule. Si tu tombes, quelqu'un écrira ton état avant même d'écrire ce qu'il y avait dedans.\""},
       "public_composure_success": {"id": "public_composure_success", "text": "Tu ranges le tremblement dans la poche. Tu verrouilles la bouche. Pas sobre. Pas sain. Présentable. Ça suffit pour enlever à Karine son dernier prétexte."},
       "public_composure_failure": {"id": "public_composure_failure", "text": "La sueur coule, la bile monte, ta main cherche un appui. Karine voit tout. Elle ouvre quand même: une épave utile vaut mieux qu'une procédure arrivée trop tôt."},
       "medical_shame": {"id": "medical_shame", "text": "\"Zinédine, tout le monde sait que tu as des matins pourris. Je ne te juge pas. Je calcule le risque.\" Voilà. Ton manque vient d'entrer dans la colonne utile."},
       "seen_by_who": {"id": "seen_by_who", "text": "\"Un agent de nettoyage a prévenu et s'est barré. Deux habitants ont entendu. Amar traîne près du local technique. Sofiane reste derrière la palissade. Si l'un d'eux poste avant moi, tu deviens le type bourré trouvé à côté du coffre.\""},
-      "trunk_open": {"id": "trunk_open", "text": "Le hayon monte. Odeur de vieux froid. Javel. Un vieil homme tassé dans la tôle. Le profil te frappe avant le nom: Ahmed Berrichi, ou quelqu'un veut que tu le reconnaisses ainsi. Sur sa poitrine, bien visibles: ta carte, ton badge municipal, une ordonnance pliée. Ton nom posé sur un mort."},
-      "trunk_hub": {"id": "trunk_hub", "text": "Les papiers sont sortis du coffre. Le corps reste au fond, froid, mal rangé. Quelque chose manque encore dans la doublure. Karine veut une version propre. Ton corps veut une dose. Le dossier veut juste que tu arrêtes de trembler avant de lire."},
+      "trunk_open": {"id": "trunk_open", "text": "Le hayon monte. Odeur de vieux froid. Javel. Un vieil homme tassé dans la tôle. Le profil te frappe avant le nom: Ahmed Berrichi, ou quelqu'un veut que tu le reconnaisses ainsi. Sur sa poitrine, bien visibles: ta carte, ton badge municipal, une ordonnance pliée. Ton nom posé sur un mort. La bonne procédure dirait: recule. La scène, elle, t'a déjà choisi."},
+      "trunk_hub": {"id": "trunk_hub", "text": "Les papiers sont sortis du coffre. Le corps reste au fond, froid, mal rangé. Quelque chose manque encore dans la doublure. Karine veut une version propre. Ton corps veut une dose. La procédure voudrait que tu t'arrêtes. Le dossier veut savoir pourquoi on t'a mis là."},
       "papers_surface": {"id": "papers_surface", "text": "Carte d'identité. Badge municipal. Ordonnance de calmants. Ton nom, ton accès, ta came légale. Quelqu'un n'a pas planté un portefeuille: quelqu'un a planté ce qui permet de te résumer."},
       "papers_regard": {"id": "papers_regard", "text": "La photo officielle ne sent pas l'alcool. Elle ne tremble pas. Elle a l'air de quelqu'un qu'un rapport peut croire."},
       "papers_main": {"id": "papers_main", "text": "Le badge a des rayures fraîches près de la tranche. Quelqu'un l'a passé dans un lecteur, pas seulement posé sur un mort."},
@@ -50,13 +50,13 @@
       "body_ahmed_history": {"id": "body_ahmed_history", "text": "Ahmed t'appelait Zinédine quand les autres disaient Le Gobelet. Pas par tendresse. Par précision. Il savait qu'un surnom peut servir à effacer quelqu'un."},
       "notebook_absent": {"id": "notebook_absent", "text": "Le carnet d'Ahmed n'est pas là. Pas dans la veste. Pas sous lui. Quelqu'un a pris le carnet et laissé tes papiers. Ce ne sont pas deux oublis. C'est un choix."},
       "karine_notebook": {"id": "karine_notebook", "text": "\"S'il avait un carnet, il peut être chez lui.\" Elle répond trop vite pour quelqu'un qui n'a pas fouillé. Même elle entend la vitesse de sa réponse."},
-      "search_success": {"id": "search_success", "text": "Tu bloques la bile, puis le tremblement. Sous la doublure du coffre, ta main trouve une page arrachée que personne n'a pensé à retirer. Pas un miracle: une erreur de gens pressés."},
-      "search_failure": {"id": "search_failure", "text": "Tu vomis contre le pare-chocs. Public, acide, impossible à rattraper. Karine voit le manque. Mais ta main revient quand même de la doublure avec une page humide. Défaite sociale, preuve utile."},
+      "search_success": {"id": "search_success", "text": "Tu sais que tu salis la scène. Tu le fais quand même. Tu bloques la bile, puis le tremblement. Sous la doublure du coffre, ta main trouve une page arrachée que personne n'a pensé à retirer."},
+      "search_failure": {"id": "search_failure", "text": "Tu vomis contre le pare-chocs. Public, acide, impossible à rattraper. Karine voit le manque. Mais ta main revient quand même de la doublure avec une page humide. Tu viens de salir la scène, et d'en sortir une preuve."},
       "page_surface": {"id": "page_surface", "text": "L'écriture d'Ahmed penche sous l'humidité: \"P2 caméra morte / badge chantier / Hami ?\" Au verso: \"Si Le Gobelet oublie, Amar sait. Sofiane a senti.\" Sous la dernière ligne, presque effacé: \"il était déjà mort dans leurs papiers.\""},
       "page_camera": {"id": "page_camera", "text": "Caméra P2 morte depuis mars. Si elle devait filmer le coffre, sa panne n'est plus juste une panne. C'est un trou dans le dossier."},
       "page_badge": {"id": "page_badge", "text": "Badge chantier. Badge municipal. Rayures fraîches. Un accès emprunté laisse moins de sang qu'un couteau, mais plus de portes ouvertes."},
       "page_fold": {"id": "page_fold", "text": "Le papier est froid. Pas seulement humide: froid de carrelage, de local lavé, de corps déplacé avant le coffre."},
-      "leduc_after_open": {"id": "leduc_after_open", "text": "\"Je savais qu'il y avait quelque chose. Pas ça.\" Elle ment peut-être. Ou elle réduit. \"Si la nationale arrive avant nous, ils prennent ton état, mon utilitaire, ses papiers, et ils fabriquent une histoire simple.\""}
+      "leduc_after_open": {"id": "leduc_after_open", "text": "\"Je savais qu'il y avait quelque chose. Pas ça.\" Elle ment peut-être. Ou elle réduit. \"Si la police arrive avant nous, ils prennent ton état, mon utilitaire, ses papiers, et ils fabriquent une histoire simple.\""}
     }
   },
   "leduc": {
@@ -90,9 +90,9 @@
   },
   "sofiane": {
     "nodes": {
-      "start": {"id": "start", "text": "Sofiane reste derrière la palissade, capuche basse, joint presque mort entre deux doigts. Il regarde les issues plus souvent que toi."},
+      "start": {"id": "start", "text": "Derrière la palissade, la fumée tient mieux que les témoins. Quand Sofiane est encore là, capuche basse et joint presque mort, il regarde les issues plus souvent que toi."},
       "early_no_page": {"id": "early_no_page", "text": "\"Tu viens avec la tête de quelqu'un qu'on utilise, pas avec une question.\" Il garde le joint bas et les yeux ailleurs. \"Quand tu sauras ce qu'Ahmed a laissé, tu sauras peut-être quoi me demander.\""},
-      "after_fled": {"id": "after_fled", "text": "Sofiane n'est plus là. Joint écrasé. Place vide. Il a compris trop tard qu'il venait de parler à quelqu'un qui pouvait le faire tomber."},
+      "after_fled": {"id": "after_fled", "text": "Sofiane n'est plus là. Joint écrasé. Place vide. La palissade a gardé l'odeur, pas le témoin."},
       "keep_talking_success": {"id": "keep_talking_success", "text": "Tu ne le bloques pas avec ton corps. Tu bloques la sortie avec son intérêt. \"Si tu pars maintenant, ils vont dire témoin toxico et fermer ta bouche à ta place.\" Sofiane ravale la fumée. \"Le gars au badge chantier est revenu après. Il regardait toi, pas le coffre.\""},
       "keep_talking_failure": {"id": "keep_talking_failure", "text": "Tu mets trop de pression. Il recule, joint écrasé, capuche déjà tournée. Avant de filer, il lâche: \"Le badge avait pas juste chantier. Y avait un logo du centre de santé dessous. J'ai pas vu plus.\""},
       "saw_van": {"id": "saw_van", "text": "\"J'ai vu l'utilitaire avant le matin. Pas plein jour. Pas nuit non plus. L'heure où les livreurs se trompent d'entrée et où les gardiens font semblant de rien voir. Il roulait doucement, coffre fermé. Derrière, un gars en gilet chantier marchait tête basse.\""},
