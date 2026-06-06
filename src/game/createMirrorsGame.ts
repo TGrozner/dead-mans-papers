@@ -18,6 +18,8 @@ export interface MirrorsGameBridge {
 }
 
 export function createMirrorsGame(bridge: MirrorsGameBridge): Phaser.Game {
+  const preserveDrawingBuffer = shouldPreserveDrawingBuffer()
+
   return new Phaser.Game({
     type: Phaser.AUTO,
     parent: bridge.parent,
@@ -27,7 +29,7 @@ export function createMirrorsGame(bridge: MirrorsGameBridge): Phaser.Game {
     pixelArt: false,
     roundPixels: true,
     render: {
-      preserveDrawingBuffer: true,
+      preserveDrawingBuffer,
     },
     scale: {
       mode: Phaser.Scale.FIT,
@@ -35,4 +37,27 @@ export function createMirrorsGame(bridge: MirrorsGameBridge): Phaser.Game {
     },
     scene: [new MirrorsScene(bridge)],
   })
+}
+
+function shouldPreserveDrawingBuffer(): boolean {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+    return false
+  }
+
+  try {
+    const parameters = new URLSearchParams(window.location.search)
+    const explicitReadback = parameters.get('renderReadback') ?? parameters.get('preserveDrawingBuffer')
+
+    if (explicitReadback) {
+      return ['1', 'true', 'yes'].includes(explicitReadback.toLowerCase())
+    }
+
+    if (window.localStorage.getItem('dead-mans-papers:render-readback') === 'true') {
+      return true
+    }
+  } catch {
+    return navigator.webdriver === true
+  }
+
+  return navigator.webdriver === true
 }

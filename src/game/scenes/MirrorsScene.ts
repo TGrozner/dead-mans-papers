@@ -1,6 +1,14 @@
 import Phaser from 'phaser'
 import type { MirrorsGameBridge } from '../createMirrorsGame'
 import { debugLog } from '../debug'
+import {
+  MIRRORS_HOTSPOTS,
+  MIRRORS_ORB_SPOTS,
+  SOFIANE_PALISADE_X,
+  SOFIANE_PALISADE_Y,
+  type MirrorsHotspotDefinition,
+  type MirrorsOrbSpotDefinition,
+} from './mirrorsSceneData'
 
 declare const __STATIC_ASSET_VERSION__: string
 
@@ -15,28 +23,12 @@ const FOREGROUND_DEPTH = 4.9
 const HD_SCENE_ASSET_SCALE = 4
 const ACTOR_DISPLAY_MULTIPLIER = 1.65
 const PROP_DISPLAY_MULTIPLIER = 1.55
-const SOFIANE_PALISADE_X = 786
-const SOFIANE_PALISADE_Y = 468
 
-interface Hotspot {
-  id: string
-  label: string
-  scriptId: string
-  x: number
-  y: number
-  radius: number
-  tapRadius?: number
+interface Hotspot extends MirrorsHotspotDefinition {
   marker?: Phaser.GameObjects.Graphics
 }
 
-interface OrbSpot {
-  id: string
-  label: string
-  mode: 'visible' | 'proximity'
-  x: number
-  y: number
-  radius: number
-  tapRadius?: number
+interface OrbSpot extends MirrorsOrbSpotDefinition {
   marker?: Phaser.GameObjects.Graphics
 }
 
@@ -71,6 +63,8 @@ export class MirrorsScene extends Phaser.Scene {
   private activePointerTarget?: PointerTarget
   private selectionHalo?: Phaser.GameObjects.Graphics
   private lastLoggedActiveTarget?: string
+  private lastNotifiedInteractionTarget?: string
+  private targetAvailabilityKey?: string
   private playerShadow?: Phaser.GameObjects.Graphics
   private idleActors: Phaser.GameObjects.Sprite[] = []
 
@@ -113,6 +107,7 @@ export class MirrorsScene extends Phaser.Scene {
 
   update(): void {
     this.updateActorPresentation()
+    this.syncInteractionTargetAvailability()
     this.updateInteractionTarget()
   }
 
@@ -890,127 +885,22 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private createHotspots(): void {
-    const hotspots = [
-      {
-        id: 'utility_van',
-        label: "Examiner l'utilitaire municipal",
-        scriptId: 'utility_van',
-        x: 116,
-        y: 326,
-        radius: 92,
-        tapRadius: 72,
-      },
-      {
-        id: 'leduc',
-        label: 'Parler à Karine Leduc',
-        scriptId: 'leduc',
-        x: 242,
-        y: 348,
-        radius: 82,
-        tapRadius: 58,
-      },
-      {
-        id: 'amar',
-        label: 'Parler à Amar Boudiaf',
-        scriptId: 'amar',
-        x: 668,
-        y: 222,
-        radius: 82,
-        tapRadius: 58,
-      },
-      {
-        id: 'sofiane',
-        label: 'Parler à Sofiane',
-        scriptId: 'sofiane',
-        x: SOFIANE_PALISADE_X,
-        y: SOFIANE_PALISADE_Y,
-        radius: 86,
-        tapRadius: 60,
-      },
-    ] satisfies Hotspot[]
-
-    this.hotspots = hotspots.map((hotspot) => this.scaleHotspot(hotspot))
+    this.hotspots = MIRRORS_HOTSPOTS.map((hotspot) => this.scaleHotspot(hotspot))
     this.hotspots.forEach((hotspot) => {
       hotspot.marker = this.createInteractionHalo(hotspot.x, hotspot.y, hotspot.radius, 'primary')
+      hotspot.marker.setVisible(this.isHotspotInteractable(hotspot))
     })
   }
 
   private createOrbs(): void {
-    const orbs = [
-      {
-        id: 'miroirs_orb_phone',
-        label: 'Regarder le téléphone',
-        mode: 'visible',
-        x: 456,
-        y: 350,
-        radius: 58,
-        tapRadius: 44,
-      },
-      {
-        id: 'miroirs_orb_van',
-        label: "Observer l'utilitaire",
-        mode: 'visible',
-        x: 120,
-        y: 300,
-        radius: 74,
-        tapRadius: 54,
-      },
-      {
-        id: 'miroirs_orb_body',
-        label: 'Regarder le coffre',
-        mode: 'visible',
-        x: 82,
-        y: 334,
-        radius: 72,
-        tapRadius: 54,
-      },
-      {
-        id: 'miroirs_orb_camera',
-        label: 'Inspecter la caméra HS',
-        mode: 'visible',
-        x: 178,
-        y: 90,
-        radius: 68,
-        tapRadius: 52,
-      },
-      {
-        id: 'miroirs_orb_technical_room',
-        label: 'Examiner le local technique',
-        mode: 'visible',
-        x: 888,
-        y: 158,
-        radius: 86,
-        tapRadius: 70,
-      },
-      {
-        id: 'miroirs_orb_neon',
-        label: 'Regarder la flaque',
-        mode: 'proximity',
-        x: 476,
-        y: 272,
-        radius: 96,
-        tapRadius: 66,
-      },
-      {
-        id: 'miroirs_orb_residents',
-        label: 'Écouter la palissade',
-        mode: 'proximity',
-        x: SOFIANE_PALISADE_X + 16,
-        y: SOFIANE_PALISADE_Y + 40,
-        radius: 78,
-        tapRadius: 58,
-      },
-    ] satisfies OrbSpot[]
-
-    this.orbSpots = orbs.map((orb) => this.scaleOrb(orb))
-    this.orbSpots
-      .filter((orb) => this.isOrbInteractable(orb))
-      .forEach((orb) => {
-        orb.marker = this.createInteractionHalo(orb.x, orb.y, orb.radius, 'secondary')
-      })
+    this.orbSpots = MIRRORS_ORB_SPOTS.map((orb) => this.scaleOrb(orb))
+    this.orbSpots.forEach((orb) => {
+      orb.marker = this.createInteractionHalo(orb.x, orb.y, orb.radius, 'secondary')
+      orb.marker.setVisible(this.isOrbInteractable(orb))
+    })
   }
 
-  private scaleHotspot(hotspot: Hotspot): Hotspot {
+  private scaleHotspot(hotspot: MirrorsHotspotDefinition): Hotspot {
     return {
       ...hotspot,
       x: this.sceneX(hotspot.x),
@@ -1020,7 +910,7 @@ export class MirrorsScene extends Phaser.Scene {
     }
   }
 
-  private scaleOrb(orb: OrbSpot): OrbSpot {
+  private scaleOrb(orb: MirrorsOrbSpotDefinition): OrbSpot {
     return {
       ...orb,
       x: this.sceneX(orb.x),
@@ -1123,14 +1013,33 @@ export class MirrorsScene extends Phaser.Scene {
     })
   }
 
-  private updateInteractionMarkerVisibility(): void {
+  private updateInteractionMarkerVisibility(state = this.bridge.getState()): void {
     this.hotspots.forEach((hotspot) => {
-      hotspot.marker?.setVisible(true)
+      hotspot.marker?.setVisible(this.isHotspotInteractable(hotspot, state))
     })
 
     this.orbSpots.forEach((orb) => {
-      orb.marker?.setVisible(this.isOrbInteractable(orb))
+      orb.marker?.setVisible(this.isOrbInteractable(orb, state))
     })
+  }
+
+  private syncInteractionTargetAvailability(): void {
+    const state = this.bridge.getState()
+    const nextAvailabilityKey = [
+      ...this.hotspots.map((hotspot) => `hotspot:${hotspot.id}:${this.isHotspotInteractable(hotspot, state) ? '1' : '0'}`),
+      ...this.orbSpots.map((orb) => `orb:${orb.id}:${this.isOrbInteractable(orb, state) ? '1' : '0'}`),
+    ].join('|')
+
+    if (nextAvailabilityKey === this.targetAvailabilityKey) {
+      return
+    }
+
+    this.targetAvailabilityKey = nextAvailabilityKey
+    this.updateInteractionMarkerVisibility(state)
+
+    if (this.activePointerTarget && !this.isPointerTargetInteractable(this.activePointerTarget, state)) {
+      this.setActivePointerTarget(undefined)
+    }
   }
 
   private handlePointerDown(pointer: Phaser.Input.Pointer): void {
@@ -1297,8 +1206,9 @@ export class MirrorsScene extends Phaser.Scene {
     x: number,
     y: number,
   ): PointerTarget | undefined {
+    const state = this.bridge.getState()
     const orbTargets = this.orbSpots
-      .filter((orb) => this.isOrbInteractable(orb))
+      .filter((orb) => this.isOrbInteractable(orb, state))
       .map((orb) => ({
         kind: 'orb' as const,
         id: orb.id,
@@ -1311,29 +1221,52 @@ export class MirrorsScene extends Phaser.Scene {
         distance: Phaser.Math.Distance.Between(x, y, orb.x, orb.y),
       }))
 
-    const hotspotTargets = this.hotspots.map((hotspot) => ({
-      kind: 'hotspot' as const,
-      id: hotspot.id,
-      label: hotspot.label,
-      scriptId: hotspot.scriptId,
-      x: hotspot.x,
-      y: hotspot.y,
-      radius: hotspot.radius,
-      tapRadius: hotspot.tapRadius ?? Math.max(hotspot.radius, 58),
-      distance: Phaser.Math.Distance.Between(x, y, hotspot.x, hotspot.y),
-    }))
+    const hotspotTargets = this.hotspots
+      .filter((hotspot) => this.isHotspotInteractable(hotspot, state))
+      .map((hotspot) => ({
+        kind: 'hotspot' as const,
+        id: hotspot.id,
+        label: hotspot.label,
+        scriptId: hotspot.scriptId,
+        x: hotspot.x,
+        y: hotspot.y,
+        radius: hotspot.radius,
+        tapRadius: hotspot.tapRadius ?? Math.max(hotspot.radius, 58),
+        distance: Phaser.Math.Distance.Between(x, y, hotspot.x, hotspot.y),
+      }))
 
     return [...hotspotTargets, ...orbTargets]
       .filter((target) => target.distance <= target.tapRadius)
       .sort((left, right) => left.distance - right.distance)[0]
   }
 
-  private isOrbInteractable(orb: OrbSpot): boolean {
+  private isHotspotInteractable(hotspot: Hotspot, state = this.bridge.getState()): boolean {
+    const { completedChecks, flags } = state
+    const requiredFlags = hotspot.requiredFlags ?? []
+    const requiredCompletedChecks = hotspot.requiredCompletedChecks ?? []
+
+    return (
+      requiredFlags.every((flag) => flags[flag]) &&
+      requiredCompletedChecks.every((checkId) => Boolean(completedChecks[checkId]))
+    )
+  }
+
+  private isOrbInteractable(orb: OrbSpot, state = this.bridge.getState()): boolean {
     if (orb.mode === 'visible') {
       return true
     }
 
-    return !this.bridge.getState().triggeredOrbs[orb.id]
+    return !state.triggeredOrbs[orb.id]
+  }
+
+  private isPointerTargetInteractable(target: PointerTarget, state = this.bridge.getState()): boolean {
+    if (target.kind === 'hotspot') {
+      const hotspot = this.hotspots.find((candidate) => candidate.id === target.id)
+      return hotspot ? this.isHotspotInteractable(hotspot, state) : false
+    }
+
+    const orb = this.orbSpots.find((candidate) => candidate.id === target.id)
+    return orb ? this.isOrbInteractable(orb, state) : false
   }
 
   private clearSelectionHalo(): void {
@@ -1348,13 +1281,13 @@ export class MirrorsScene extends Phaser.Scene {
 
   private updateInteractionTarget(): void {
     if (this.bridge.isDialogueOpen()) {
-      this.bridge.setInteraction(undefined)
+      this.notifyInteractionTarget(undefined)
       this.setActivePointerTarget(undefined)
       return
     }
 
     if (!this.activePointerTarget) {
-      this.bridge.setInteraction(undefined)
+      this.notifyInteractionTarget(undefined)
       this.lastLoggedActiveTarget = undefined
       return
     }
@@ -1368,6 +1301,23 @@ export class MirrorsScene extends Phaser.Scene {
         id: target.id,
         distance: Math.round(target.distance),
       })
+    }
+
+    this.notifyInteractionTarget(target)
+  }
+
+  private notifyInteractionTarget(target?: PointerTarget): void {
+    const nextKey = target ? `${target.kind}:${target.id}` : undefined
+
+    if (nextKey === this.lastNotifiedInteractionTarget) {
+      return
+    }
+
+    this.lastNotifiedInteractionTarget = nextKey
+
+    if (!target) {
+      this.bridge.setInteraction(undefined)
+      return
     }
 
     this.bridge.setInteraction({
