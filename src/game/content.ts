@@ -4,6 +4,7 @@ import mirrorsOrbsJson from '../content/locations/miroirs/orbs.json'
 import parasitesJson from '../content/parasites.json'
 import voicesJson from '../content/voices.json'
 import type {
+  DialogueNode,
   DialogueScript,
   OrbDefinition,
   ParasiteDefinition,
@@ -13,11 +14,16 @@ import type {
   VoiceId,
 } from './types'
 
+type DialogueNodeOverride = Partial<DialogueNode> & { id: string }
+type DialogueScriptOverride = Partial<Omit<DialogueScript, 'nodes'>> & {
+  nodes?: Record<string, DialogueNodeOverride>
+}
+
 export const voices = voicesJson as VoiceDefinition[]
 export const parasites = parasitesJson as ParasiteDefinition[]
 export const dialogues = mergeDialogueOverrides(
   dialoguesJson as Record<string, DialogueScript>,
-  dialogueOverridesJson as Record<string, Partial<DialogueScript>>,
+  dialogueOverridesJson as Record<string, DialogueScriptOverride>,
 )
 export const orbs = mirrorsOrbsJson as OrbDefinition[]
 const passiveModules = import.meta.glob<PassiveDefinition[]>(
@@ -50,7 +56,7 @@ export const parasiteById = parasites.reduce(
 
 function mergeDialogueOverrides(
   baseDialogues: Record<string, DialogueScript>,
-  overrides: Record<string, Partial<DialogueScript>>,
+  overrides: Record<string, DialogueScriptOverride>,
 ): Record<string, DialogueScript> {
   const mergedDialogues = { ...baseDialogues }
 
@@ -64,12 +70,31 @@ function mergeDialogueOverrides(
     mergedDialogues[scriptId] = {
       ...baseScript,
       ...scriptOverride,
-      nodes: {
-        ...baseScript.nodes,
-        ...(scriptOverride.nodes ?? {}),
-      },
+      nodes: mergeDialogueNodes(baseScript.nodes, scriptOverride.nodes ?? {}),
     }
   })
 
   return mergedDialogues
+}
+
+function mergeDialogueNodes(
+  baseNodes: Record<string, DialogueNode>,
+  nodeOverrides: Record<string, DialogueNodeOverride>,
+): Record<string, DialogueNode> {
+  const mergedNodes = { ...baseNodes }
+
+  Object.entries(nodeOverrides).forEach(([nodeId, nodeOverride]) => {
+    const baseNode = baseNodes[nodeId]
+
+    if (!baseNode) {
+      return
+    }
+
+    mergedNodes[nodeId] = {
+      ...baseNode,
+      ...nodeOverride,
+    }
+  })
+
+  return mergedNodes
 }
