@@ -105,6 +105,34 @@ const witnessReadySave = {
   completedChecks: completedEvidenceChecks,
 }
 
+const expectedMirrorsSceneAnchorTolerance = 12
+
+const expectedMirrorsSceneFixture = {
+  width: 1280,
+  height: 720,
+  hotspots: [
+    { id: 'utility_van', x: 185, y: 407.5 },
+    { id: 'leduc', x: 342.5, y: 435 },
+    { id: 'amar', x: 875, y: 277.5 },
+    { id: 'sofiane', x: 1022.5, y: 585 },
+  ],
+  orbs: [
+    { id: 'miroirs_orb_phone', x: 610, y: 437.5 },
+    { id: 'miroirs_orb_van', x: 190, y: 375 },
+    { id: 'miroirs_orb_body', x: 142.5, y: 417.5 },
+    { id: 'miroirs_orb_camera', x: 262.5, y: 112.5 },
+    { id: 'miroirs_orb_technical_room', x: 1080, y: 197.5 },
+    { id: 'miroirs_orb_neon', x: 635, y: 340 },
+    { id: 'miroirs_orb_residents', x: 1042.5, y: 635 },
+  ],
+} as const
+
+type ExpectedMirrorsSceneAnchor = {
+  id: string
+  x: number
+  y: number
+}
+
 test.beforeEach(async ({ page }) => {
   await gotoApp(page)
   await page.evaluate(() => localStorage.clear())
@@ -420,6 +448,29 @@ function boxesOverlap(firstBox: VisibleBox, secondBox: VisibleBox): boolean {
   return horizontalOverlap > 0 && verticalOverlap > 0
 }
 
+function expectSceneAnchorWithinTolerance(
+  productionAnchors: readonly ExpectedMirrorsSceneAnchor[],
+  expectedAnchor: ExpectedMirrorsSceneAnchor,
+  anchorKind: string,
+) {
+  const productionAnchor = productionAnchors.find((candidate) => candidate.id === expectedAnchor.id)
+
+  expect(productionAnchor, `${anchorKind} ${expectedAnchor.id} should exist in production scene data`).toBeDefined()
+
+  if (!productionAnchor) {
+    return
+  }
+
+  for (const axis of ['x', 'y'] as const) {
+    const drift = Math.abs(productionAnchor[axis] - expectedAnchor[axis])
+
+    expect(
+      drift,
+      `${anchorKind} ${expectedAnchor.id} ${axis} drifted ${drift} scene px from the visual fixture`,
+    ).toBeLessThanOrEqual(expectedMirrorsSceneAnchorTolerance)
+  }
+}
+
 function scenePointForHotspot(hotspotId: string): { x: number; y: number } {
   const hotspot = MIRRORS_HOTSPOTS.find((candidate) => candidate.id === hotspotId)
 
@@ -474,6 +525,19 @@ async function tapScenePoint(page: Page, x: number, y: number) {
     },
   })
 }
+
+test('keeps Mirrors interactable anchors aligned with the visual fixture', () => {
+  expect(MIRRORS_SCENE_WIDTH).toBe(expectedMirrorsSceneFixture.width)
+  expect(MIRRORS_SCENE_HEIGHT).toBe(expectedMirrorsSceneFixture.height)
+
+  expectedMirrorsSceneFixture.hotspots.forEach((expectedAnchor) => {
+    expectSceneAnchorWithinTolerance(MIRRORS_HOTSPOTS, expectedAnchor, 'hotspot')
+  })
+
+  expectedMirrorsSceneFixture.orbs.forEach((expectedAnchor) => {
+    expectSceneAnchorWithinTolerance(MIRRORS_ORB_SPOTS, expectedAnchor, 'orb')
+  })
+})
 
 test('starts with a bounded tutorial and opens the first dialogue', async ({ page }) => {
   await gotoApp(page)
