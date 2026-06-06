@@ -5,7 +5,7 @@ const { major, minor } = parseVersion(process.versions.node)
 
 if (major < minimumMajor || (major === minimumMajor && minor < minimumMinor) || major >= maximumMajor) {
   console.error(
-    `Node ${process.versions.node} is not supported. Run "nvm use" or "fnm use" in this repo; this project targets Node >=23.8.0 <24.`,
+    `Node ${process.versions.node} is not supported. Run project commands through npm scripts or run "nvm use" / "fnm use"; this project targets Node >=23.8.0 <24.`,
   )
   process.exit(1)
 }

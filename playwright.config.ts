@@ -16,7 +16,7 @@ if (
   nodeMajor >= maximumNodeMajor
 ) {
   throw new Error(
-    `Node ${process.versions.node} is not supported. Run "nvm use" or "fnm use"; this project targets Node >=23.8.0 <24.`,
+    `Node ${process.versions.node} is not supported. Run project commands through npm scripts or run "nvm use" / "fnm use"; this project targets Node >=23.8.0 <24.`,
   )
 }
 

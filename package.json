@@ -8,18 +8,18 @@
     "node": ">=23.8.0 <24"
   },
   "scripts": {
-    "check:node": "node scripts/check-node.mjs",
-    "check:types": "npm run check:node && tsc",
-    "dev": "npm run check:node && vite",
-    "e2e": "npm run check:node && playwright test",
-    "validate:content": "npm run check:node && node scripts/validate-content.mjs",
+    "check:node": "node scripts/with-node.mjs node scripts/check-node.mjs",
+    "check:types": "npm run check:node && node scripts/with-node.mjs tsc",
+    "dev": "node scripts/with-node.mjs vite",
+    "e2e": "FORCE_COLOR=0 node scripts/with-node.mjs playwright test",
+    "validate:content": "node scripts/with-node.mjs node scripts/validate-content.mjs",
     "test": "npm run validate:content && npm run check:types && npm run e2e",
-    "build": "npm run check:types && vite build",
-    "build:e2e": "npm run check:node && vite build --outDir dist-e2e",
-    "build:pages:e2e": "npm run check:node && GITHUB_PAGES=true vite build --outDir dist-pages",
+    "build": "npm run check:types && node scripts/with-node.mjs vite build",
+    "build:e2e": "node scripts/with-node.mjs vite build --outDir dist-e2e",
+    "build:pages:e2e": "GITHUB_PAGES=true node scripts/with-node.mjs vite build --outDir dist-pages",
     "build:pages": "GITHUB_PAGES=true npm run build",
-    "preview": "npm run check:node && vite preview",
-    "preview:pages": "npm run check:node && vite preview --base /dead-mans-papers/"
+    "preview": "node scripts/with-node.mjs vite preview",
+    "preview:pages": "node scripts/with-node.mjs vite preview --base /dead-mans-papers/"
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",
