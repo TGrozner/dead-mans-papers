@@ -18,6 +18,7 @@ Before editing:
 - Use `/home/thomas/dev/dead-mans-papers-workspace/dead-mans-papers-rules` and branch `codex/rules` for rules work.
 
 For parallel work:
+- Treat subagent fan-out as a standing user preference for non-trivial work; do not wait for a fresh per-task request when independent rules audits or verification can run in parallel.
 - Require one Git worktree per writing agent.
 - Require explicit ownership of files or modules before edits begin.
 - Treat shared files such as package manifests, lockfiles, Playwright config, and global styles as coordinator-owned unless explicitly assigned.

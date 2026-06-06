@@ -18,15 +18,25 @@
 - Use the rules worktree for durable Codex instructions, coordination docs, custom agents, and helper scripts.
 - Do not edit product code from the rules worktree unless the user explicitly widens the scope.
 
-## Agent Fan-Out
+## Mandatory Subagent Fan-Out
 
-- Treat subagent fan-out as a standing user preference for non-trivial work.
-- Start each non-trivial task with a fan-out preflight: identify independent
-  read-only audits, searches, test/log checks, verification passes, or disjoint
-  writing slices that can run in parallel.
-- Spawn useful independent subagents early instead of waiting for a per-task
-  request. If none are spawned, state why: trivial task, strictly linear path, a
-  single blocking result, or overlapping write ownership.
+- Treat subagent fan-out as a standing user preference for non-trivial work; do
+  not wait for another per-task request.
+- Start each non-trivial task with a visible fan-out preflight before the first
+  substantial local investigation or implementation step.
+- If two or more independent read-only questions, searches, verification checks,
+  or disjoint write slices exist, spawn useful subagents immediately in the
+  first round.
+- Parallel shell/tool calls are useful, but they do not satisfy this requirement
+  on substantial work when a subagent tool is available.
+- If no subagents are spawned, state the blocking reason in the first update:
+  no subagent tool is available, the task is tiny, the path is strictly linear,
+  the next step depends on one blocking result, or write ownership would overlap.
+- If no subagent tool is available, say so and use maximum safe parallel tool
+  calls as the fallback.
+- The QCM rule blocks writing decisions, not safe read-only fan-out. When the
+  repo target is clear, start independent read-only audits/searches in parallel
+  even if implementation choices still need clarification.
 - Read-only agents may inspect the foreground checkout. Writing agents must use
   isolated worktrees, explicit ownership, and claim files before editing.
 
