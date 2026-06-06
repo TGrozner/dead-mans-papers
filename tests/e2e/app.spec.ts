@@ -157,6 +157,24 @@ async function expectImageNaturalSize(page: Page, src: string, width: number, he
   expect(size.height).toBe(height)
 }
 
+async function expectRuntimeAssetVersioned(page: Page, assetPath: string) {
+  await expect
+    .poll(
+      async () => {
+        return await page.evaluate((expectedAssetPath) => {
+          return performance
+            .getEntriesByType('resource')
+            .map((entry) => entry.name)
+            .filter((name) => name.includes(expectedAssetPath))
+            .map((name) => new URL(name).searchParams.get('v'))
+            .some(Boolean)
+        }, assetPath)
+      },
+      { message: `${assetPath} should be requested with a build version` },
+    )
+    .toBe(true)
+}
+
 async function expectPageHasNoForcedScroll(page: Page) {
   const overflow = await page.evaluate(() => {
     return {
@@ -631,6 +649,7 @@ test('moves the objective from evidence checks to witness confrontation', async 
 
 test('serves the saved game from the Pages base path @pages', async ({ page }) => {
   await seedGame(page, progressedSave)
+  await page.evaluate(() => performance.clearResourceTimings())
 
   await gotoApp(page)
 
@@ -640,6 +659,7 @@ test('serves the saved game from the Pages base path @pages', async ({ page }) =
   const canvas = page.locator('#game-stage canvas')
   expect(backgroundResponse.ok()).toBe(true)
   expect(backgroundResponse.headers()['content-type']).toContain('image/png')
+  await expectRuntimeAssetVersioned(page, 'assets/miroirs/p2-background.png')
   await expectImageNaturalSize(page, 'assets/miroirs/p2-background.png', 2560, 1440)
   await expect(canvas).toBeVisible()
   await expectCanvasToHaveRenderedPixels(canvas)

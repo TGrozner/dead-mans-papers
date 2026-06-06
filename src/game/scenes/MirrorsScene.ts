@@ -2,6 +2,8 @@ import Phaser from 'phaser'
 import type { MirrorsGameBridge } from '../createMirrorsGame'
 import { debugLog } from '../debug'
 
+declare const __STATIC_ASSET_VERSION__: string
+
 const SCENE_WIDTH = 1280
 const SCENE_HEIGHT = 720
 const LEGACY_WIDTH = 960
@@ -151,7 +153,7 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private assetUrl(file: string): string {
-    return `${import.meta.env.BASE_URL}assets/miroirs/${file}`
+    return `${import.meta.env.BASE_URL}assets/miroirs/${file}?v=${encodeURIComponent(__STATIC_ASSET_VERSION__)}`
   }
 
   private sceneX(x: number): number {
