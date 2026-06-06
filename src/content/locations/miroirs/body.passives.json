@@ -1,5 +1,40 @@
 [
   {
+    "id": "miroirs_wake__procedure_names_first",
+    "contextId": "miroirs/wake-up",
+    "location": "miroirs",
+    "subject": "black-screen",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "minScore": 2,
+    "once": true,
+    "priority": 118,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "wake_up",
+      "nodeId": "start"
+    },
+    "text": "Non. D'abord les faits: lieu, heure, témoin, objet. S'il y a ton nom quelque part, il faut le lire avant quelqu'un d'autre."
+  },
+  {
+    "id": "miroirs_wake__dose_soft_lie",
+    "contextId": "miroirs/wake-up",
+    "location": "miroirs",
+    "subject": "black-screen",
+    "channel": "dialogue",
+    "parasite": "dose",
+    "once": true,
+    "priority": 116,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "wake_up",
+      "nodeId": "start"
+    },
+    "text": "Ferme encore les yeux. Une gorgée, un cachet, et le monde redeviendra assez simple pour mentir dedans."
+  },
+  {
     "id": "miroirs_body__ventre_before_morals",
     "contextId": "miroirs/body",
     "location": "miroirs",

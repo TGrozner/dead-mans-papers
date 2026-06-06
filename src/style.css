@@ -1039,6 +1039,7 @@ h1 {
   padding: 18px 18px 16px;
   overflow: auto;
   overscroll-behavior: contain;
+  animation: dialogue-snap 180ms cubic-bezier(0.2, 0.72, 0.18, 1);
 }
 
 .speaker-line {
@@ -1622,8 +1623,12 @@ h1 {
 
 .choice-button--important {
   border-color: #241817;
-  background: #fff1c3;
-  box-shadow: inset 6px 0 0 var(--rust);
+  background:
+    linear-gradient(90deg, rgba(183, 87, 56, 0.18), transparent 42%),
+    #fff1c3;
+  box-shadow:
+    inset 8px 0 0 var(--rust),
+    0 0 0 1px rgba(183, 87, 56, 0.18);
 }
 
 .choice-button--important:hover {
@@ -1663,6 +1668,24 @@ h1 {
   border-color: rgba(23, 28, 36, 0.52);
   background: #e9ddbf;
   box-shadow: inset 6px 0 0 rgba(183, 87, 56, 0.48);
+}
+
+@keyframes dialogue-snap {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) skewX(-0.4deg);
+    box-shadow: 0 18px 0 rgba(13, 17, 23, 0.22);
+  }
+
+  58% {
+    opacity: 1;
+    transform: translateY(-2px) skewX(0.2deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) skewX(0);
+  }
 }
 
 .choice-button--important.choice-button--visited:hover {

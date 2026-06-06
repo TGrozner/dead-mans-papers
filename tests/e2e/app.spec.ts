@@ -579,12 +579,12 @@ test('keeps Mirrors interactable anchors aligned with the visual fixture', () =>
 test('starts with a bounded tutorial and opens the first dialogue', async ({ page }) => {
   await gotoApp(page)
 
-  await expect(page.getByRole('dialog', { name: 'Observe, clique, choisis' })).toBeVisible()
+  await expect(page.getByRole('dialog', { name: "Avant d'ouvrir les yeux" })).toBeVisible()
   await expect(page.locator('#objective')).toContainText('Reprendre assez de corps')
   await expect(page.locator('#case-momentum')).toContainText('Appuis')
   await expect(page.locator('#case-momentum')).toContainText('Angles contre toi')
   await expect(page.locator('#lead-list')).toContainText('Téléphone fissuré')
-  await expect(page.getByText('Le dossier garde les indices.')).toHaveCount(1)
+  await expect(page.getByText("Une voix veut dormir. Une autre veut classer les preuves.")).toHaveCount(1)
   await expectFocusInside(page, '#tutorial-root')
   await page.keyboard.press('Tab')
   await expectFocusInside(page, '#tutorial-root')
@@ -602,9 +602,9 @@ test('starts with a bounded tutorial and opens the first dialogue', async ({ pag
 
   await page.getByRole('button', { name: 'Commencer' }).click()
 
-  await expect(page.getByRole('dialog', { name: 'Observe, clique, choisis' })).toBeHidden()
+  await expect(page.getByRole('dialog', { name: "Avant d'ouvrir les yeux" })).toBeHidden()
   await expect(page.locator('.dialogue-root')).toContainText('Parking P2')
-  await expect(page.locator('.dialogue-root')).toContainText('Tu reviens au monde')
+  await expect(page.locator('.dialogue-root')).toContainText("Tu n'as pas encore ouvert les yeux")
   await expect(page.getByRole('button', { name: "Laisser les 12 appels vibrer et aller vers l'utilitaire." })).toBeVisible()
   await page.keyboard.press('Tab')
   await expectFocusInside(page, '#dialogue-root')

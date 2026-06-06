@@ -218,7 +218,7 @@ export function createGameUi(options: GameUiOptions) {
     })
 
     const initialFocus = closeButton ?? firstChoiceButton
-    initialFocus?.focus()
+    initialFocus?.focus({ preventScroll: true })
   }
 
   function hideDialogueSurface(): void {

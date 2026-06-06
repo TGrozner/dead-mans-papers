@@ -3,7 +3,7 @@
     "nodes": {
       "start": {
         "id": "start",
-        "text": "Tu reviens au monde contre une borne en béton. Bouche brûlée. Main qui tremble. Sur ton téléphone: douze appels de Karine.",
+        "text": "Tu n'as pas encore ouvert les yeux. Le béton dit parking. Ta bouche dit alcool. Ta main dit cachets. À dix mètres, l'utilitaire municipal est entrouvert, et quelque chose dedans porte déjà ton nom.",
         "choices": [
           {
             "label": "Ramasser le téléphone. Comprendre qui te cherche.",
@@ -137,7 +137,7 @@
       },
       "phone": {
         "id": "phone",
-        "text": "Douze appels de Karine. Dernier message: \"pas la police, pas encore, viens seul.\" Elle ne demande pas de l'aide. Elle gagne du temps.",
+        "text": "Douze appels de Karine. Le premier date d'avant ton réveil. Dernier message: \"pas la police, pas encore, viens seul.\" Derrière sa voix, un hayon cogne. Elle ne demande pas de l'aide: elle retarde le moment où ton nom devient une preuve.",
         "choices": [
           {
             "label": "Rappeler Karine. Entrer dans son urgence.",
@@ -235,7 +235,7 @@
       },
       "stand": {
         "id": "stand",
-        "text": "Tu te lèves. Le parking penche. L'utilitaire attend plus loin. Tu n'as pas l'impression d'arriver sur une scène; tu as l'impression d'y être déjà placé."
+        "text": "Tu te lèves. Le parking penche. L'utilitaire attend plus loin, entrouvert comme une bouche. Tu n'as pas l'impression d'arriver sur une scène; tu as l'impression qu'elle t'a gardé une place."
       }
     }
   },
@@ -243,7 +243,7 @@
     "nodes": {
       "start": {
         "id": "start",
-        "text": "\"On va appeler ça un incident de chantier.\" Karine bloque l'utilitaire. \"Tu touches à rien. Normalement j'appelle. Là, j'ai six minutes avant que deux fenêtres nous filment.\""
+        "text": "\"On va appeler ça un incident de chantier.\" Karine bloque l'utilitaire. \"Pas un mort. Pas encore. Tu touches à rien. J'ai six minutes avant que deux fenêtres filment ton nom au mauvais endroit.\""
       },
       "leduc_frame": {
         "id": "leduc_frame",
@@ -307,7 +307,7 @@
       },
       "trunk_open": {
         "id": "trunk_open",
-        "text": "Le hayon monte. Froid. Javel. Un vieux corps. Ahmed, probablement. Sur sa poitrine: ta carte, ton badge, une ordonnance. Ton nom sur un mort.",
+        "text": "Le hayon monte. Froid. Javel. Un vieux corps plié dans la tôle. Ahmed, probablement. Sur sa poitrine, rangés comme une convocation: ta carte, ton badge municipal, une ordonnance. Pas dans ses poches. Sur lui. Ton nom posé sur un mort pour que le premier regard sache qui accuser.",
         "choices": [
           {
             "label": "Fixer ton nom sur le mort. Choisir ce que tu es dans cette scène.",
@@ -365,7 +365,7 @@
       },
       "papers_reveal": {
         "id": "papers_reveal",
-        "text": "Carte d'identité. Badge municipal. Ordonnance. Trois fois ton nom. Quelqu'un n'accuse pas seulement Zinédine Saïdi: il explique déjà pourquoi personne ne devrait le croire.",
+        "text": "Carte d'identité. Badge municipal. Ordonnance. Trois fois ton nom sur Ahmed. Quelqu'un n'a pas seulement fabriqué un suspect: quelqu'un a fabriqué la version de toi que la police préférera croire.",
         "choices": [
           {
             "label": "Assumer le nom. Reprendre Zinédine avant le rapport.",

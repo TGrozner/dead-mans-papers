@@ -102,6 +102,7 @@ export class MirrorsScene extends Phaser.Scene {
     this.configureCamera()
     this.bindSceneLifecycle()
     this.markSceneReady(true)
+    this.playOpeningShock()
 
     this.time.delayedCall(300, () => {
       if (!this.bridge.getState().flags.woke_up && !this.bridge.isDialogueOpen()) {
@@ -808,6 +809,45 @@ export class MirrorsScene extends Phaser.Scene {
     vignette.fillRect(0, SCENE_HEIGHT - 70, SCENE_WIDTH, 70)
     vignette.fillRect(0, 0, 28, SCENE_HEIGHT)
     vignette.fillRect(SCENE_WIDTH - 28, 0, 28, SCENE_HEIGHT)
+  }
+
+  private playOpeningShock(): void {
+    if (this.bridge.getState().flags.woke_up) {
+      return
+    }
+
+    const blackout = this.add.graphics().setDepth(9.7)
+    blackout.fillStyle(0x02060a, 0.92)
+    blackout.fillRect(0, 0, SCENE_WIDTH, SCENE_HEIGHT)
+    blackout.fillStyle(0xd45d59, 0.18)
+    blackout.fillRect(0, SCENE_HEIGHT * 0.48, SCENE_WIDTH, 22)
+    blackout.fillStyle(0x65d8e6, 0.16)
+    blackout.fillRect(0, SCENE_HEIGHT * 0.54, SCENE_WIDTH, 6)
+
+    const slit = this.add.graphics().setDepth(9.8)
+    slit.fillStyle(0xf4ecd8, 0.36)
+    slit.fillRect(0, SCENE_HEIGHT * 0.5 - 3, SCENE_WIDTH, 2)
+    slit.fillStyle(0xd45d59, 0.22)
+    slit.fillRect(0, SCENE_HEIGHT * 0.5 + 9, SCENE_WIDTH, 1)
+
+    this.cameras.main.shake(620, 0.006)
+    this.tweens.add({
+      targets: blackout,
+      alpha: 0,
+      delay: 180,
+      duration: 760,
+      ease: 'Cubic.easeOut',
+      onComplete: () => blackout.destroy(),
+    })
+    this.tweens.add({
+      targets: slit,
+      alpha: 0,
+      scaleY: 9,
+      delay: 110,
+      duration: 520,
+      ease: 'Cubic.easeOut',
+      onComplete: () => slit.destroy(),
+    })
   }
 
   private createActors(): void {

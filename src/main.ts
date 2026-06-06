@@ -113,12 +113,12 @@ appRoot.innerHTML = `
 
     <div id="tutorial-root" class="tutorial-root" role="dialog" aria-modal="true" aria-labelledby="tutorial-title" hidden>
       <article class="tutorial-panel">
-        <p class="panel-label">Avant de reprendre</p>
-        <h2 id="tutorial-title">Observe, clique, choisis</h2>
+        <p class="panel-label">Parking P2</p>
+        <h2 id="tutorial-title">Avant d'ouvrir les yeux</h2>
         <div class="tutorial-copy">
-          <p>Touche ou clique une cible surbrillante pour inspecter, parler ou écouter. Le bouton <strong>!</strong> reprend l'action active quand une cible est survolée.</p>
-          <p>Rien ne dépend d'une marche précise: prends une seconde, choisis ton angle, puis assume la scène que tu déclenches.</p>
-          <p>Le dossier garde les indices. Les voix internes ne sont pas des conseils sages: elles peuvent aider, mentir, paniquer ou pousser trop loin.</p>
+          <p>Le béton colle à ta joue. Quelqu'un parle dans le noir de ta tête et personne n'est d'accord sur ton nom.</p>
+          <p>Une voix veut dormir. Une autre veut classer les preuves. Une troisième a déjà senti le coffre.</p>
+          <p>Quand tes yeux s'ouvrent, touche ce qui insiste. Le dossier gardera les traces que ton corps essaie de perdre.</p>
         </div>
         <label class="tutorial-check">
           <input id="tutorial-hide" type="checkbox" />
