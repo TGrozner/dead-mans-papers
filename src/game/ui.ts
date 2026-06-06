@@ -36,11 +36,13 @@ interface GameUiOptions {
 export function createGameUi(options: GameUiOptions) {
   let activeDialogue: RenderedDialogue | undefined
   let interactionTarget: InteractionTarget | undefined
+  let restoreFocusTo: HTMLElement | undefined
+  const uiDocument = options.root.ownerDocument
 
   function syncState(): void {
     renderObjective(options.engine.state, options.objective)
-    renderClues(options.engine.state)
-    renderVoices(options.engine.state)
+    renderClues(options.engine.state, options.clueList)
+    renderVoices(options.engine.state, options.voiceList)
     options.onStateChanged(options.engine.state)
   }
 
@@ -60,7 +62,7 @@ export function createGameUi(options: GameUiOptions) {
       return
     }
 
-    setDialogueSurfaceOpen(true)
+    showDialogueSurface()
     const node = activeDialogue.node
     const voice = node.voice ? voiceById[node.voice] : undefined
     const parasite = node.parasite ? parasiteById[node.parasite] : undefined
@@ -73,7 +75,7 @@ export function createGameUi(options: GameUiOptions) {
     options.root.innerHTML = `
       <article class="dialogue-panel">
         <div class="speaker-line">
-          <span>${escapeHtml(node.speaker)}</span>
+          <span id="dialogue-title">${escapeHtml(node.speaker)}</span>
           <div class="speaker-actions">
             <span class="check-result">${escapeHtml(checkLabel)}</span>
             <button class="dialogue-close" type="button">Quitter</button>
@@ -97,10 +99,11 @@ export function createGameUi(options: GameUiOptions) {
     closeButton.addEventListener('click', () => {
       closeActiveSurface()
     })
+    closeButton.focus()
 
     activeDialogue.choices.forEach((renderedChoice) => {
       const choice = renderedChoice.choice
-      const button = document.createElement('button')
+      const button = uiDocument.createElement('button')
       button.type = 'button'
       button.className = [
         'choice-button',
@@ -112,13 +115,13 @@ export function createGameUi(options: GameUiOptions) {
       button.dataset.choiceKey = renderedChoice.key
       button.dataset.visited = String(renderedChoice.visited)
       button.dataset.important = String(renderedChoice.important)
-      const label = document.createElement('span')
+      const label = uiDocument.createElement('span')
       label.className = 'choice-copy'
       label.textContent = getChoiceLabel(choice, options.engine)
       button.append(label)
 
       if (renderedChoice.important || renderedChoice.visited) {
-        const meta = document.createElement('span')
+        const meta = uiDocument.createElement('span')
         meta.className = 'choice-meta'
         meta.textContent = renderedChoice.visited ? 'déjà lu' : 'important'
         button.append(meta)
@@ -139,7 +142,7 @@ export function createGameUi(options: GameUiOptions) {
   }
 
   function hideDialogueSurface(): void {
-    setDialogueSurfaceOpen(false)
+    setDialogueSurfaceOpen(options.root, false)
     options.root.hidden = true
     options.root.innerHTML = ''
   }
@@ -149,6 +152,7 @@ export function createGameUi(options: GameUiOptions) {
     activeDialogue = undefined
     hideDialogueSurface()
     syncState()
+    restoreSurfaceFocus()
   }
 
   function restoreActiveSurface(): boolean {
@@ -168,6 +172,7 @@ export function createGameUi(options: GameUiOptions) {
 
       activeDialogue = undefined
       const orb = options.engine.inspectOrb(surface.orbId, { restore: true })
+      showDialogueSurface()
       renderOrb(orb, options.root, closeActiveSurface)
       syncState()
       return true
@@ -197,6 +202,7 @@ export function createGameUi(options: GameUiOptions) {
 
   function openOrb(orbId: string): void {
     const orb = options.engine.inspectOrb(orbId)
+    showDialogueSurface()
     renderOrb(orb, options.root, closeActiveSurface)
     showPassiveToasts(
       orb.passives.filter((passive) => passive.display === 'toast'),
@@ -221,7 +227,34 @@ export function createGameUi(options: GameUiOptions) {
   }
 
   options.prompt.addEventListener('click', () => interactionTarget?.run())
+  uiDocument.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || options.root.hidden) {
+      return
+    }
+
+    event.preventDefault()
+    closeActiveSurface()
+  })
   syncState()
+
+  function showDialogueSurface(): void {
+    if (options.root.hidden) {
+      const activeElement = uiDocument.activeElement
+      restoreFocusTo = activeElement instanceof HTMLElement && !options.root.contains(activeElement)
+        ? activeElement
+        : undefined
+    }
+
+    setDialogueSurfaceOpen(options.root, true)
+  }
+
+  function restoreSurfaceFocus(): void {
+    if (restoreFocusTo?.isConnected) {
+      restoreFocusTo.focus()
+    }
+
+    restoreFocusTo = undefined
+  }
 
   return {
     openDialogue,
@@ -236,14 +269,14 @@ export function createGameUi(options: GameUiOptions) {
 }
 
 function renderOrb(orb: RenderedOrb, root: HTMLDivElement, onClose: () => void): void {
-  setDialogueSurfaceOpen(true)
+  setDialogueSurfaceOpen(root, true)
   const voice = orb.voice ? voiceById[orb.voice] : undefined
 
   root.hidden = false
   root.innerHTML = `
     <article class="dialogue-panel orb-panel">
       <div class="speaker-line">
-        <span>${escapeHtml(orb.title)}</span>
+        <span id="dialogue-title">${escapeHtml(orb.title)}</span>
         <button class="orb-close" type="button">Fermer</button>
       </div>
       <p class="dialogue-text">${escapeHtml(orb.text)}</p>
@@ -260,13 +293,16 @@ function renderOrb(orb: RenderedOrb, root: HTMLDivElement, onClose: () => void):
     </article>
   `
 
-  root.querySelector<HTMLButtonElement>('.orb-close')?.addEventListener('click', () => {
+  const closeButton = root.querySelector<HTMLButtonElement>('.orb-close')
+
+  closeButton?.addEventListener('click', () => {
     onClose()
   })
+  closeButton?.focus()
 }
 
-function setDialogueSurfaceOpen(open: boolean): void {
-  document.body.classList.toggle('dialogue-open', open)
+function setDialogueSurfaceOpen(root: HTMLElement, open: boolean): void {
+  root.ownerDocument.body.classList.toggle('dialogue-open', open)
 }
 
 function renderPassiveAside(passive: PassiveTrigger): string {
@@ -281,9 +317,11 @@ function renderPassiveAside(passive: PassiveTrigger): string {
 }
 
 function showPassiveToasts(passives: PassiveTrigger[], toastRoot: HTMLDivElement): void {
+  const toastDocument = toastRoot.ownerDocument
+
   passives.forEach((passive) => {
     const channel = getPassiveChannel(passive)
-    const toast = document.createElement('article')
+    const toast = toastDocument.createElement('article')
     toast.className = 'passive-toast'
     toast.style.setProperty('--voice-color', channel.color)
     toast.innerHTML = `
@@ -300,8 +338,9 @@ function showPassiveToasts(passives: PassiveTrigger[], toastRoot: HTMLDivElement
 }
 
 function showOrbToast(orb: RenderedOrb, toastRoot: HTMLDivElement): void {
+  const toastDocument = toastRoot.ownerDocument
   const voice = orb.voice ? voiceById[orb.voice] : undefined
-  const toast = document.createElement('article')
+  const toast = toastDocument.createElement('article')
   toast.className = 'passive-toast orb-toast'
   toast.style.setProperty('--voice-color', voice?.color ?? '#d7a84b')
   toast.innerHTML = `
@@ -400,17 +439,12 @@ function getObjective(state: GameState): string {
   return "Reconstruire qui a utilisé la ville, tes papiers et ton corps pour te déclarer mort à ta place."
 }
 
-function renderClues(state: GameState): void {
-  const clueList = document.querySelector<HTMLUListElement>('#clue-list')
-
-  if (!clueList) {
-    return
-  }
-
+function renderClues(state: GameState, clueList: HTMLUListElement): void {
+  const clueDocument = clueList.ownerDocument
   clueList.innerHTML = ''
 
   if (state.clues.length === 0) {
-    const empty = document.createElement('li')
+    const empty = clueDocument.createElement('li')
     empty.className = 'empty-line'
     empty.textContent = 'Rien qui tienne debout.'
     clueList.append(empty)
@@ -426,10 +460,10 @@ function renderClues(state: GameState): void {
       return
     }
 
-    const groupItem = document.createElement('li')
+    const groupItem = clueDocument.createElement('li')
     groupItem.className = 'clue-group'
 
-    const heading = document.createElement('div')
+    const heading = clueDocument.createElement('div')
     heading.className = 'clue-group-heading'
     heading.innerHTML = `
       <span>${escapeHtml(group.label)}</span>
@@ -437,14 +471,14 @@ function renderClues(state: GameState): void {
     `
     groupItem.append(heading)
 
-    const nestedList = document.createElement('ul')
+    const nestedList = clueDocument.createElement('ul')
     nestedList.className = 'clue-group-list'
 
     clues
       .slice()
       .reverse()
       .forEach((clue) => {
-        const item = document.createElement('li')
+        const item = clueDocument.createElement('li')
         item.textContent = clue
         nestedList.append(item)
       })
@@ -482,17 +516,12 @@ function getClueGroupScore(clue: string, keywords: readonly string[]): number {
   }, 0)
 }
 
-function renderVoices(state: GameState): void {
-  const voiceList = document.querySelector<HTMLDivElement>('#voice-list')
-
-  if (!voiceList) {
-    return
-  }
-
+function renderVoices(state: GameState, voiceList: HTMLDivElement): void {
+  const voiceDocument = voiceList.ownerDocument
   voiceList.innerHTML = ''
 
   voices.forEach((voice) => {
-    const row = document.createElement('div')
+    const row = voiceDocument.createElement('div')
     row.className = 'voice-row'
     row.title = voice.tagline
     row.innerHTML = `
@@ -505,7 +534,7 @@ function renderVoices(state: GameState): void {
 
   if (state.flags.dose_heard) {
     const dose = parasiteById.dose
-    const row = document.createElement('div')
+    const row = voiceDocument.createElement('div')
     row.className = 'voice-row voice-row--parasite'
     row.title = dose.tagline
     row.innerHTML = `

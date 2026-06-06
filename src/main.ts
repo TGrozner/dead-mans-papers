@@ -12,13 +12,9 @@ import { NarrativeEngine } from './game/narrative'
 import { createGameUi } from './game/ui'
 import { type DebugEntry, isDebugEnabled, setDebugEnabled } from './game/debug'
 
-const app = document.querySelector<HTMLDivElement>('#app')
+const appRoot = getAppRoot()
 
-if (!app) {
-  throw new Error('Missing #app mount node')
-}
-
-app.innerHTML = `
+appRoot.innerHTML = `
   <section class="game-shell" aria-label="Dead Man's Papers">
     <header class="topbar">
       <div>
@@ -78,7 +74,7 @@ app.innerHTML = `
       </aside>
     </div>
 
-    <div id="dialogue-root" class="dialogue-root" hidden></div>
+    <div id="dialogue-root" class="dialogue-root" role="dialog" aria-modal="true" aria-labelledby="dialogue-title" hidden></div>
 
     <div id="tutorial-root" class="tutorial-root" role="dialog" aria-modal="true" aria-labelledby="tutorial-title" hidden>
       <article class="tutorial-panel">
@@ -102,15 +98,34 @@ app.innerHTML = `
 const engine = new NarrativeEngine(loadGameState())
 let persistOnUnload = true
 let tutorialOpen = false
+let tutorialRestoreFocusTo: HTMLElement | undefined
+const refs = {
+  dialogueRoot: getRequiredElement<HTMLDivElement>('#dialogue-root'),
+  prompt: getRequiredElement<HTMLButtonElement>('#interaction-prompt'),
+  promptLabel: getRequiredElement<HTMLSpanElement>('#interaction-label'),
+  toastRoot: getRequiredElement<HTMLDivElement>('#passive-toast-root'),
+  objective: getRequiredElement<HTMLParagraphElement>('#objective'),
+  clueList: getRequiredElement<HTMLUListElement>('#clue-list'),
+  voiceList: getRequiredElement<HTMLDivElement>('#voice-list'),
+  tutorialRoot: getRequiredElement<HTMLDivElement>('#tutorial-root'),
+  tutorialClose: getRequiredElement<HTMLButtonElement>('#tutorial-close'),
+  tutorialHide: getRequiredElement<HTMLInputElement>('#tutorial-hide'),
+  resetButton: getRequiredElement<HTMLButtonElement>('#reset-save'),
+  casePanel: getRequiredElement<HTMLElement>('#case-panel'),
+  caseToggle: getRequiredElement<HTMLButtonElement>('#case-toggle'),
+  debugRoot: getRequiredElement<HTMLDivElement>('#debug-log'),
+  debugList: getRequiredElement<HTMLOListElement>('#debug-log-list'),
+  debugDisable: getRequiredElement<HTMLButtonElement>('#debug-log-disable'),
+}
 const ui = createGameUi({
   engine,
-  root: document.querySelector<HTMLDivElement>('#dialogue-root')!,
-  prompt: document.querySelector<HTMLButtonElement>('#interaction-prompt')!,
-  promptLabel: document.querySelector<HTMLSpanElement>('#interaction-label')!,
-  toastRoot: document.querySelector<HTMLDivElement>('#passive-toast-root')!,
-  objective: document.querySelector<HTMLParagraphElement>('#objective')!,
-  clueList: document.querySelector<HTMLUListElement>('#clue-list')!,
-  voiceList: document.querySelector<HTMLDivElement>('#voice-list')!,
+  root: refs.dialogueRoot,
+  prompt: refs.prompt,
+  promptLabel: refs.promptLabel,
+  toastRoot: refs.toastRoot,
+  objective: refs.objective,
+  clueList: refs.clueList,
+  voiceList: refs.voiceList,
   onStateChanged: (state) => saveGameState(state),
 })
 
@@ -149,38 +164,49 @@ async function loadGame(): Promise<void> {
 }
 
 function showTutorialIfNeeded(): void {
-  const tutorialRoot = document.querySelector<HTMLDivElement>('#tutorial-root')
-  const tutorialClose = document.querySelector<HTMLButtonElement>('#tutorial-close')
-  const tutorialHide = document.querySelector<HTMLInputElement>('#tutorial-hide')
-
-  if (!tutorialRoot || !tutorialClose || !tutorialHide || isTutorialHidden() || isTutorialSeen()) {
+  if (isTutorialHidden() || isTutorialSeen()) {
     return
   }
 
+  const activeElement = document.activeElement
+  tutorialRestoreFocusTo = activeElement instanceof HTMLElement ? activeElement : undefined
   tutorialOpen = true
-  tutorialRoot.hidden = false
-  tutorialClose.focus()
+  refs.tutorialRoot.hidden = false
+  refs.tutorialClose.focus()
+  document.addEventListener('keydown', handleTutorialKeydown)
 
-  tutorialClose.addEventListener('click', () => {
-    setTutorialHidden(tutorialHide.checked)
-    setTutorialSeen(true)
-    tutorialOpen = false
-    tutorialRoot.hidden = true
+  refs.tutorialClose.addEventListener('click', closeTutorial, { once: true })
+}
 
-    if (!engine.state.flags.woke_up && !ui.isDialogueOpen()) {
-      ui.openDialogue('wake_up')
-    }
-  })
+function closeTutorial(): void {
+  setTutorialHidden(refs.tutorialHide.checked)
+  setTutorialSeen(true)
+  tutorialOpen = false
+  refs.tutorialRoot.hidden = true
+  document.removeEventListener('keydown', handleTutorialKeydown)
+
+  if (!engine.state.flags.woke_up && !ui.isDialogueOpen()) {
+    tutorialRestoreFocusTo?.focus()
+    tutorialRestoreFocusTo = undefined
+    ui.openDialogue('wake_up')
+    return
+  }
+
+  tutorialRestoreFocusTo?.focus()
+  tutorialRestoreFocusTo = undefined
+}
+
+function handleTutorialKeydown(event: KeyboardEvent): void {
+  if (event.key !== 'Escape' || !tutorialOpen) {
+    return
+  }
+
+  event.preventDefault()
+  closeTutorial()
 }
 
 function setupResetButton(): void {
-  const resetButton = document.querySelector<HTMLButtonElement>('#reset-save')
-
-  if (!resetButton) {
-    return
-  }
-
-  const button = resetButton
+  const button = refs.resetButton
   let resetConfirmTimer: number | undefined
 
   function clearResetConfirmation(): void {
@@ -209,48 +235,67 @@ function setupResetButton(): void {
 }
 
 function setupCasePanel(): void {
-  const casePanel = document.querySelector<HTMLElement>('#case-panel')
-  const caseToggle = document.querySelector<HTMLButtonElement>('#case-toggle')
+  const panel = refs.casePanel
+  const toggle = refs.caseToggle
+  const playArea = panel.closest<HTMLElement>('.play-area')
 
-  if (!casePanel || !caseToggle) {
-    return
+  function setExpanded(expanded: boolean): void {
+    panel.hidden = !expanded
+    panel.classList.toggle('case-panel--expanded', expanded)
+    panel.classList.toggle('case-panel--collapsed', !expanded)
+    playArea?.classList.toggle('play-area--case-collapsed', !expanded)
+    toggle.textContent = expanded ? 'Dossier ouvert' : 'Dossier fermé'
+    toggle.setAttribute('aria-expanded', String(expanded))
   }
 
-  const panel = casePanel
-  const toggle = caseToggle
-
-  panel.classList.add('case-panel--expanded')
-  toggle.textContent = 'Dossier ouvert'
-  toggle.setAttribute('aria-expanded', 'true')
-  toggle.disabled = true
+  setExpanded(true)
+  toggle.addEventListener('click', () => {
+    setExpanded(toggle.getAttribute('aria-expanded') !== 'true')
+  })
 }
 
 function setupDebugLog(): void {
-  const debugRoot = document.querySelector<HTMLDivElement>('#debug-log')
-  const debugList = document.querySelector<HTMLOListElement>('#debug-log-list')
-  const debugDisable = document.querySelector<HTMLButtonElement>('#debug-log-disable')
-
-  if (!debugRoot || !debugList || !debugDisable || !isDebugEnabled()) {
+  if (!isDebugEnabled()) {
     return
   }
 
-  debugRoot.hidden = false
-  debugDisable.addEventListener('click', () => {
+  refs.debugRoot.hidden = false
+  refs.debugDisable.addEventListener('click', () => {
     setDebugEnabled(false)
     const url = new URL(window.location.href)
     url.searchParams.delete('debug')
     window.history.replaceState({}, '', url)
-    debugRoot.hidden = true
+    refs.debugRoot.hidden = true
   })
 
   window.addEventListener('dmp:debug', (event) => {
     const entry = (event as CustomEvent<DebugEntry>).detail
     const item = document.createElement('li')
     item.textContent = `${entry.scope}:${entry.event}${entry.data ? ` ${JSON.stringify(entry.data)}` : ''}`
-    debugList.prepend(item)
+    refs.debugList.prepend(item)
 
-    while (debugList.childElementCount > 18) {
-      debugList.lastElementChild?.remove()
+    while (refs.debugList.childElementCount > 18) {
+      refs.debugList.lastElementChild?.remove()
     }
   })
+}
+
+function getRequiredElement<T extends HTMLElement>(selector: string): T {
+  const element = appRoot.querySelector<T>(selector)
+
+  if (!element) {
+    throw new Error(`Missing required UI node: ${selector}`)
+  }
+
+  return element
+}
+
+function getAppRoot(): HTMLDivElement {
+  const root = document.querySelector<HTMLDivElement>('#app')
+
+  if (!root) {
+    throw new Error('Missing #app mount node')
+  }
+
+  return root
 }

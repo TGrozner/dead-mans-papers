@@ -208,6 +208,10 @@ export class MirrorsScene extends Phaser.Scene {
     height: number,
     rects: Array<[string, number, number, number, number]>,
   ): void {
+    if (this.textures.exists(key)) {
+      return
+    }
+
     const canvas = this.textures.createCanvas(key, width, height)
 
     if (!canvas) {

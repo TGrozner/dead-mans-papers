@@ -35,12 +35,13 @@
 
 html,
 body {
-  height: 100%;
-  overflow: hidden;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 body {
-  min-width: 900px;
+  min-width: 0;
   margin: 0;
   overscroll-behavior: none;
 }
@@ -54,16 +55,15 @@ button {
 }
 
 #app {
-  height: 100svh;
-  min-width: 900px;
-  overflow: hidden;
+  min-height: 100svh;
+  min-width: 0;
+  overflow: visible;
 }
 
 .game-shell {
   width: min(1420px, 100%);
-  min-width: 900px;
-  height: 100svh;
-  min-height: 0;
+  min-width: 0;
+  min-height: 100svh;
   margin: 0 auto;
   padding: 12px;
   display: flex;
@@ -74,8 +74,9 @@ button {
 .topbar {
   flex: 0 0 auto;
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 16px;
   padding: 6px 2px 2px;
 }
@@ -92,7 +93,7 @@ button {
 h1 {
   margin: 0;
   color: var(--paper);
-  font-size: 34px;
+  font-size: clamp(28px, 9vw, 34px);
   font-weight: 800;
   line-height: 1;
 }
@@ -114,26 +115,26 @@ h1 {
   touch-action: manipulation;
 }
 
-.case-toggle:disabled {
-  cursor: default;
-  opacity: 1;
-}
-
 .play-area {
   flex: 1 1 auto;
   min-width: 0;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 338px;
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
-  align-items: stretch;
-  overflow: hidden;
+  align-items: start;
+  overflow: visible;
+}
+
+.play-area--case-collapsed {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .stage-wrap {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 5 / 3;
   min-width: 0;
   min-height: 0;
   display: grid;
@@ -147,9 +148,8 @@ h1 {
 }
 
 #game-stage {
-  width: min(100%, calc((100svh - 86px) * 5 / 3));
+  width: 100%;
   aspect-ratio: 5 / 3;
-  max-height: 100%;
   touch-action: none;
 }
 
@@ -182,6 +182,9 @@ h1 {
 
 .interaction-prompt:focus-visible,
 .choice-button:focus-visible,
+.case-toggle:focus-visible,
+.dialogue-close:focus-visible,
+.orb-close:focus-visible,
 .reset-button:focus-visible,
 .case-danger-zone summary:focus-visible,
 .debug-log button:focus-visible,
@@ -253,8 +256,8 @@ h1 {
 
 .case-panel {
   min-height: 0;
-  height: 100%;
-  max-height: 100%;
+  height: auto;
+  max-height: none;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -264,7 +267,11 @@ h1 {
     linear-gradient(180deg, rgba(51, 69, 80, 0.42), transparent 128px),
     var(--panel);
   box-shadow: 0 20px 52px rgba(0, 0, 0, 0.38);
-  overflow: hidden;
+  overflow: visible;
+}
+
+.case-panel--collapsed {
+  display: none;
 }
 
 .case-section {
@@ -489,10 +496,10 @@ h1 {
 
 .dialogue-root {
   position: fixed;
-  inset: auto 16px 16px;
+  inset: auto 10px 10px;
   z-index: 10;
   max-width: 1040px;
-  max-height: min(44svh, 390px);
+  max-height: min(70svh, calc(100svh - 20px));
   margin: 0 auto;
   border: 2px solid var(--blackline);
   background:
@@ -614,6 +621,11 @@ h1 {
   text-transform: uppercase;
 }
 
+.passive-toast-head span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .passive-toast p {
   margin: 6px 0 0;
   font-size: 14px;
@@ -626,9 +638,12 @@ h1 {
 }
 
 .passive-toast button {
+  flex: 0 0 40px;
   pointer-events: auto;
-  width: 24px;
-  height: 24px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
   border: 2px solid var(--ink);
   border-radius: 50%;
   color: var(--ink);
@@ -641,15 +656,16 @@ h1 {
 .dialogue-panel {
   display: grid;
   gap: 12px;
-  max-height: min(44svh, 390px);
+  max-height: min(70svh, calc(100svh - 20px));
   padding: 18px 18px 16px;
   overflow: auto;
 }
 
 .speaker-line {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 10px;
   color: var(--rust);
   font-family: var(--mono);
@@ -658,15 +674,24 @@ h1 {
   text-transform: uppercase;
 }
 
+.speaker-line > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .speaker-actions {
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: end;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
 .dialogue-close,
 .orb-close {
+  flex: 0 0 auto;
   min-height: 34px;
   padding: 5px 10px;
   border: 2px solid var(--ink);
@@ -678,7 +703,9 @@ h1 {
 }
 
 .check-result {
+  min-width: 0;
   color: var(--cold-light);
+  overflow-wrap: anywhere;
 }
 
 .dialogue-text {
@@ -731,7 +758,7 @@ h1 {
   background: #fff8e8;
   text-align: left;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
   gap: 10px;
   cursor: pointer;
@@ -744,6 +771,8 @@ h1 {
 }
 
 .choice-meta {
+  width: max-content;
+  max-width: 100%;
   align-self: center;
   padding: 2px 5px;
   border: 1px solid rgba(23, 28, 36, 0.34);
@@ -754,6 +783,76 @@ h1 {
   line-height: 1;
   text-transform: uppercase;
   white-space: nowrap;
+}
+
+@media (min-width: 520px) {
+  .choice-button {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+@media (min-width: 900px) and (min-height: 560px) {
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    min-width: 900px;
+  }
+
+  #app {
+    height: 100svh;
+    min-width: 900px;
+    overflow: hidden;
+  }
+
+  .game-shell {
+    min-width: 900px;
+    height: 100svh;
+    min-height: 0;
+  }
+
+  .topbar {
+    flex-wrap: nowrap;
+    align-items: end;
+  }
+
+  .play-area {
+    grid-template-columns: minmax(0, 1fr) 338px;
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  .play-area--case-collapsed {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .stage-wrap {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  #game-stage {
+    width: min(100%, calc((100svh - 86px) * 5 / 3));
+    max-height: 100%;
+  }
+
+  .case-panel {
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
+  }
+
+  .dialogue-root {
+    inset: auto 16px 16px;
+    max-height: min(44svh, 390px);
+  }
+
+  .dialogue-panel {
+    max-height: min(44svh, 390px);
+  }
 }
 
 .choice-button:hover {

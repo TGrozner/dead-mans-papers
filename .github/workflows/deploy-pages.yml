@@ -27,16 +27,25 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version-file: .nvmrc
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate content
+        run: npm run validate:content
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
       - name: Build
         run: npm run build
         env:
           GITHUB_PAGES: 'true'
+
+      - name: E2E
+        run: npm run e2e
 
       - name: Configure Pages
         uses: actions/configure-pages@v6

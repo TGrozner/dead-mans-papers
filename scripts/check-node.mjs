@@ -1,10 +1,10 @@
-const minimumMajor = 22
-const minimumMinor = 12
+const minimumMajor = 23
+const minimumMinor = 8
 const { major, minor } = parseVersion(process.versions.node)
 
 if (major < minimumMajor || (major === minimumMajor && minor < minimumMinor)) {
   console.error(
-    `Node ${process.versions.node} is not supported. Run "nvm use" in this repo; Vite 8 needs Node >=22.12.0 here.`,
+    `Node ${process.versions.node} is not supported. Run "nvm use" or "fnm use" in this repo; this project targets Node >=23.8.0 <24.`,
   )
   process.exit(1)
 }

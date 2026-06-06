@@ -10,12 +10,21 @@ npm install
 npm run dev
 ```
 
-Le projet cible Node `23.8.0` via `.nvmrc`. Le Node global `21.x` casse Vite 8.
+Le projet cible Node `23.8.0` via `.nvmrc`. Un Node global plus ancien peut prendre le dessus sur `nvm`; vérifier `node -v` si le check runtime échoue.
 
 ```bash
-npm run validate:content
-npm run build
+npm test
 ```
+
+Pour comparer le rendu local avec GitHub Pages, utiliser le même `base` que la prod:
+
+```bash
+nvm use
+npm run build:pages
+npm run preview:pages -- --host 127.0.0.1 --port 4173
+```
+
+Ouvrir ensuite `http://127.0.0.1:4173/dead-mans-papers/`. `npm run dev` reste utile pour développer, mais il sert l'app à la racine `/`, alors que GitHub Pages la sert sous `/dead-mans-papers/`.
 
 ## Vertical Slice
 

@@ -7,22 +7,27 @@ const voices = new Set(readJson('src/content/voices.json').map((voice) => voice.
 const parasites = new Set(readJson('src/content/parasites.json').map((parasite) => parasite.id))
 const clueGroups = readJson('src/game/clue-groups.json')
 const orbs = readJson('src/content/locations/miroirs/orbs.json')
-const passives = [
-  'body',
-  'leduc',
-  'objects',
-  'residents',
-  'utility-van',
-].flatMap((name) => readJson(`src/content/locations/miroirs/${name}.passives.json`))
+const passiveFiles = fs
+  .readdirSync('src/content/locations/miroirs')
+  .filter((fileName) => fileName.endsWith('.passives.json'))
+  .sort()
+const passives = passiveFiles.flatMap((fileName) => readJson(`src/content/locations/miroirs/${fileName}`))
 
 const errors = []
-const warnings = []
 const emittedClues = new Set()
+const emittedFlags = new Set()
+const flagReferences = []
 const checkIds = new Map()
 const orbIds = new Set()
 const passiveIds = new Set()
+const effectTypes = new Set(['flag', 'clue', 'voice_bump', 'identity_posture'])
+const identityPostures = new Set(['accept', 'refuse', 'perform', 'defile'])
 const suspiciousMojibakePattern =
   /[A-Za-zÀ-ÿ]\?[A-Za-zÀ-ÿ]|[a-zàâçéèêëîïôùûüœ]\?(?=\s+[a-zàâçéèêëîïôùûüœ])|\?[a-zàâçéèêëîïôùûüœ]/u
+
+if (passiveFiles.length === 0) {
+  errors.push('No passive files found under src/content/locations/miroirs/*.passives.json')
+}
 
 function scanText(value, owner) {
   if (typeof value === 'string') {
@@ -53,16 +58,71 @@ scanText(clueGroups, 'clueGroups')
 
 validateClueGroups()
 
-function trackEffects(effects = [], owner) {
-  for (const effect of effects) {
-    if (effect.type === 'clue' && effect.clue) {
-      emittedClues.add(effect.clue)
+function trackEffects(effects = [], owner, property = 'effects') {
+  if (!Array.isArray(effects)) {
+    errors.push(`${owner} ${property} must be an array`)
+    return
+  }
+
+  effects.forEach((effect, index) => {
+    const effectOwner = `${owner}.${property}[${index}]`
+
+    if (!effect || typeof effect !== 'object') {
+      errors.push(`${effectOwner} must be an object`)
+      return
     }
 
-    if (effect.type === 'voice_bump' && effect.voice && !voices.has(effect.voice)) {
-      errors.push(`${owner} references unknown voice: ${effect.voice}`)
+    if (!effectTypes.has(effect.type)) {
+      errors.push(`${effectOwner} has unknown effect type: ${effect.type}`)
+      return
     }
+
+    if (effect.type === 'flag') {
+      if (!effect.flag) {
+        errors.push(`${effectOwner} flag effect is missing flag`)
+      } else {
+        emittedFlags.add(effect.flag)
+      }
+
+      return
+    }
+
+    if (effect.type === 'clue') {
+      if (!effect.clue) {
+        errors.push(`${effectOwner} clue effect is missing clue`)
+      } else {
+        emittedClues.add(effect.clue)
+      }
+
+      return
+    }
+
+    if (effect.type === 'voice_bump') {
+      if (!effect.voice) {
+        errors.push(`${effectOwner} voice_bump effect is missing voice`)
+      } else if (!voices.has(effect.voice)) {
+        errors.push(`${effectOwner} references unknown voice: ${effect.voice}`)
+      }
+
+      if (effect.amount !== undefined && typeof effect.amount !== 'number') {
+        errors.push(`${effectOwner} voice_bump amount must be numeric`)
+      }
+
+      return
+    }
+
+    if (effect.type === 'identity_posture' && !identityPostures.has(effect.posture)) {
+      errors.push(`${effectOwner} identity_posture uses unknown posture: ${effect.posture}`)
+    }
+  })
+}
+
+function trackFlagReference(flag, owner, field) {
+  if (!flag) {
+    return
   }
+
+  flagReferences.push({ flag, owner, field })
 }
 
 for (const [scriptId, script] of Object.entries(dialogues)) {
@@ -109,6 +169,9 @@ for (const [scriptId, script] of Object.entries(dialogues)) {
         errors.push(`${choiceOwner} points to missing node: ${choice.next}`)
       }
 
+      trackFlagReference(choice.requiresFlag, choiceOwner, 'requiresFlag')
+      trackFlagReference(choice.hiddenWhenFlag, choiceOwner, 'hiddenWhenFlag')
+
       if (!choice.next && !choice.close && !choice.check) {
         errors.push(`${choiceOwner} has no next, close, or check`)
       }
@@ -121,7 +184,7 @@ for (const [scriptId, script] of Object.entries(dialogues)) {
 
       const check = choice.check
       if (checkIds.has(check.id)) {
-        warnings.push(`Duplicate check id: ${check.id}`)
+        errors.push(`Duplicate check id: ${check.id}`)
       }
       checkIds.set(check.id, choiceOwner)
 
@@ -176,11 +239,16 @@ for (const orb of orbs) {
   trackEffects(orb.effects, orb.id)
 
   for (const variant of orb.variants ?? []) {
+    const variantOwner = `${orb.id}.variant`
+
+    trackFlagReference(variant.requiresFlag, variantOwner, 'requiresFlag')
+    trackFlagReference(variant.hiddenWhenFlag, variantOwner, 'hiddenWhenFlag')
+
     if (variant.voice && !voices.has(variant.voice)) {
       errors.push(`${orb.id} variant references unknown voice: ${variant.voice}`)
     }
 
-    trackEffects(variant.effects, `${orb.id}.variant`)
+    trackEffects(variant.effects, variantOwner)
   }
 }
 
@@ -202,6 +270,9 @@ for (const passive of passives) {
     errors.push(`${passive.id} cannot reference both a voice and a parasite`)
   }
 
+  trackFlagReference(passive.requiresFlag, passive.id, 'requiresFlag')
+  trackFlagReference(passive.hiddenWhenFlag, passive.id, 'hiddenWhenFlag')
+
   if (passive.channel !== passive.trigger?.type) {
     errors.push(`${passive.id} channel does not match trigger type: ${passive.channel} vs ${passive.trigger?.type}`)
   }
@@ -222,7 +293,13 @@ for (const passive of passives) {
     errors.push(`${passive.id} listens to a clue that is never emitted: ${passive.trigger.clue}`)
   }
 
-  trackEffects(passive.optionalEffects, passive.id)
+  trackEffects(passive.optionalEffects, passive.id, 'optionalEffects')
+}
+
+for (const { flag, owner, field } of flagReferences) {
+  if (!emittedFlags.has(flag)) {
+    errors.push(`${owner} ${field} references a flag that is never emitted: ${flag}`)
+  }
 }
 
 for (const clue of emittedClues) {
@@ -240,10 +317,6 @@ const summary = [
   `${passives.length} passives`,
   `${checkIds.size} checks`,
 ]
-
-if (warnings.length) {
-  console.warn(warnings.map((warning) => `Warning: ${warning}`).join('\n'))
-}
 
 if (errors.length) {
   console.error(errors.map((error) => `Error: ${error}`).join('\n'))

@@ -4,18 +4,22 @@
   "version": "0.0.0",
   "type": "module",
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=23.8.0 <24"
   },
   "scripts": {
     "check:node": "node scripts/check-node.mjs",
     "dev": "npm run check:node && vite",
     "e2e": "npm run check:node && playwright test",
     "validate:content": "npm run check:node && node scripts/validate-content.mjs",
+    "test": "npm run validate:content && npm run build && npm run e2e",
     "build": "npm run check:node && tsc && vite build",
-    "preview": "npm run check:node && vite preview"
+    "build:pages": "GITHUB_PAGES=true npm run build",
+    "preview": "npm run check:node && vite preview",
+    "preview:pages": "npm run check:node && vite preview --base /dead-mans-papers/"
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",
+    "@types/node": "^25.9.2",
     "typescript": "~6.0.2",
     "vite": "^8.0.12"
   },

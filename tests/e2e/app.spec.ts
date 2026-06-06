@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test, type Locator, type Page } from '@playwright/test'
 
 const saveKey = 'dead-mans-papers:v12'
 const tutorialSeenKey = 'dead-mans-papers:tutorial-seen-v2'
@@ -37,9 +37,13 @@ const progressedSave = {
 }
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/')
+  await gotoApp(page)
   await page.evaluate(() => localStorage.clear())
 })
+
+async function gotoApp(page: Page) {
+  await page.goto('./')
+}
 
 async function seedGame(page: Page, state: unknown) {
   await page.addInitScript(
@@ -49,6 +53,73 @@ async function seedGame(page: Page, state: unknown) {
     },
     { key: saveKey, tutorialKey: tutorialSeenKey, saveState: state },
   )
+}
+
+async function sampleCanvasPixels(canvas: Locator) {
+  return await canvas.evaluate((element) => {
+    const source = element as HTMLCanvasElement
+    const sampleWidth = 32
+    const sampleHeight = 32
+    const scratch = document.createElement('canvas')
+    scratch.width = sampleWidth
+    scratch.height = sampleHeight
+
+    const context = scratch.getContext('2d', { willReadFrequently: true })
+
+    if (!context || source.width === 0 || source.height === 0) {
+      return {
+        sourceWidth: source.width,
+        sourceHeight: source.height,
+        sampledPixels: sampleWidth * sampleHeight,
+        nonWhitePixels: 0,
+      }
+    }
+
+    context.drawImage(source, 0, 0, sampleWidth, sampleHeight)
+
+    const { data } = context.getImageData(0, 0, sampleWidth, sampleHeight)
+    const colors = new Set<string>()
+    let nonWhitePixels = 0
+
+    for (let index = 0; index < data.length; index += 4) {
+      const red = data[index]
+      const green = data[index + 1]
+      const blue = data[index + 2]
+      const alpha = data[index + 3]
+      const visible = alpha > 8
+      const white = red > 245 && green > 245 && blue > 245 && alpha > 245
+
+      if (visible && !white) {
+        nonWhitePixels += 1
+        colors.add(`${red >> 4}:${green >> 4}:${blue >> 4}`)
+      }
+    }
+
+    return {
+      sourceWidth: source.width,
+      sourceHeight: source.height,
+      sampledPixels: sampleWidth * sampleHeight,
+      nonWhitePixels,
+      colorBuckets: colors.size,
+    }
+  })
+}
+
+async function expectCanvasToHaveRenderedPixels(canvas: Locator) {
+  await expect
+    .poll(
+      async () => {
+        const pixels = await sampleCanvasPixels(canvas)
+
+        return pixels.nonWhitePixels
+      },
+      { message: 'canvas should contain non-white rendered pixels' },
+    )
+    .toBeGreaterThan(24)
+
+  const pixels = await sampleCanvasPixels(canvas)
+  expect(pixels.sourceWidth).toBeGreaterThan(100)
+  expect(pixels.sourceHeight).toBeGreaterThan(60)
 }
 
 async function expectPageHasNoForcedScroll(page: Page) {
@@ -77,8 +148,26 @@ async function expectInViewport(page: Page, selector: string) {
   expect(box!.y + box!.height).toBeLessThanOrEqual(viewport!.height)
 }
 
+async function expectNoHorizontalDocumentOverflow(page: Page) {
+  const overflow = await page.evaluate(() => {
+    const app = document.querySelector('#app')
+
+    return {
+      bodyScrollWidth: document.body.scrollWidth,
+      documentScrollWidth: document.documentElement.scrollWidth,
+      viewportWidth: document.documentElement.clientWidth,
+      appScrollWidth: app?.scrollWidth ?? 0,
+      appClientWidth: app?.clientWidth ?? 0,
+    }
+  })
+
+  expect(overflow.bodyScrollWidth).toBeLessThanOrEqual(overflow.viewportWidth)
+  expect(overflow.documentScrollWidth).toBeLessThanOrEqual(overflow.viewportWidth)
+  expect(overflow.appScrollWidth).toBeLessThanOrEqual(overflow.appClientWidth)
+}
+
 test('starts with a bounded tutorial and opens the first dialogue', async ({ page }) => {
-  await page.goto('/')
+  await gotoApp(page)
 
   await expect(page.getByRole('dialog', { name: 'Avance, observe, choisis' })).toBeVisible()
   await expect(page.locator('#objective')).toContainText('Reprendre assez de corps')
@@ -103,7 +192,7 @@ test('starts with a bounded tutorial and opens the first dialogue', async ({ pag
 test('renders Phaser canvas and grouped case clues from a saved game', async ({ page }) => {
   await seedGame(page, progressedSave)
 
-  await page.goto('/')
+  await gotoApp(page)
 
   const canvas = page.locator('#game-stage canvas')
   await expect(canvas).toBeVisible()
@@ -112,6 +201,7 @@ test('renders Phaser canvas and grouped case clues from a saved game', async ({ 
   expect(canvasBox).not.toBeNull()
   expect(canvasBox!.width).toBeGreaterThan(100)
   expect(canvasBox!.height).toBeGreaterThan(60)
+  await expectCanvasToHaveRenderedPixels(canvas)
 
   await expect(page.locator('.clue-group-heading')).toContainText([
     'Corps / Ahmed',
@@ -125,7 +215,7 @@ test('renders Phaser canvas and grouped case clues from a saved game', async ({ 
 test('keeps desktop play surfaces bounded without page scroll', async ({ page }) => {
   await seedGame(page, progressedSave)
 
-  await page.goto('/')
+  await gotoApp(page)
 
   await expect(page.locator('#game-stage canvas')).toBeVisible()
   await expect(page.locator('.case-panel')).toBeVisible()
@@ -174,7 +264,7 @@ test('keeps restored dialogue inside the viewport', async ({ page }) => {
     },
   })
 
-  await page.goto('/')
+  await gotoApp(page)
 
   await expect(page.locator('#game-stage canvas')).toBeVisible()
   await expect(page.locator('.dialogue-root')).toContainText('Coffre ouvert')
@@ -221,7 +311,7 @@ test('updates the case objective from saved progression', async ({ page }) => {
     { key: saveKey, tutorialKey: tutorialSeenKey, stats: voiceStats },
   )
 
-  await page.goto('/')
+  await gotoApp(page)
 
   await expect(page.locator('#objective')).toContainText('Traiter la piste badge')
 })
@@ -266,7 +356,34 @@ test('moves the objective from evidence checks to witness confrontation', async 
     },
   })
 
-  await page.goto('/')
+  await gotoApp(page)
 
   await expect(page.locator('#objective')).toContainText('Confronter Amar et Sofiane')
+})
+
+test('serves the saved game from the Pages base path @pages', async ({ page }) => {
+  await seedGame(page, progressedSave)
+
+  await gotoApp(page)
+
+  const canvas = page.locator('#game-stage canvas')
+  await expect(canvas).toBeVisible()
+  await expectCanvasToHaveRenderedPixels(canvas)
+  await expect(page.locator('#objective')).toContainText('Traiter la piste caméra')
+})
+
+test('keeps the minimum-width play layout unclipped @responsive', async ({ page }) => {
+  await seedGame(page, progressedSave)
+
+  await gotoApp(page)
+
+  const canvas = page.locator('#game-stage canvas')
+  await expect(canvas).toBeVisible()
+  await expectCanvasToHaveRenderedPixels(canvas)
+  await expect(page.getByRole('button', { name: 'Dossier ouvert' })).toBeVisible()
+  await expect(page.locator('.case-panel')).toBeVisible()
+  await expectNoHorizontalDocumentOverflow(page)
+  await expectInViewport(page, '.topbar')
+  await expectInViewport(page, '.stage-wrap')
+  await expectInViewport(page, '.case-panel')
 })

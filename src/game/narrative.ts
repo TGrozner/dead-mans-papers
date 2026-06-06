@@ -58,8 +58,12 @@ export class NarrativeEngine {
     }
 
     const choice = renderedChoice.choice
+    const wasVisited = Boolean(this.state.visitedChoices[renderedChoice.key])
     this.state.visitedChoices[renderedChoice.key] = true
-    this.pendingPassives.push(...this.applyEffects(choice.effects))
+
+    if (!wasVisited) {
+      this.pendingPassives.push(...this.applyEffects(choice.effects))
+    }
 
     if (choice.check) {
       const result = this.resolveCheck(choice.check)
