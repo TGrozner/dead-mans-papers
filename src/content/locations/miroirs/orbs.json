@@ -10,10 +10,10 @@
     "x": 456,
     "y": 350,
     "radius": 58,
-    "text": "Douze appels manqués de Karine Leduc. Les heures se chevauchent sur l'écran fissuré: assez pour sentir qu'elle insistait, pas assez pour prouver quand elle a commencé.",
+    "text": "Douze appels manqués de Karine Leduc. Les heures se chevauchent sur l'écran fissuré: tu vois l'insistance, pas encore le début.",
     "voice": "procedure",
     "minScore": 2,
-    "voiceText": "Douze appels, c'est une matière de chronologie. Si tu arrives à remettre les chiffres en ordre, elle dira plus qu'une panique.",
+    "voiceText": "Douze appels, ça se range. Remets-les dans l'ordre et tu obtiens autre chose qu'une panique.",
     "effects": [
       {
         "type": "clue",
@@ -24,18 +24,18 @@
       {
         "requiresFlag": "page_read",
         "priority": 10,
-        "text": "L'écran fissuré reprend vie avec un message de Karine: \"plus maintenant, on stabilise la version.\" Le téléphone n'est plus un rappel. C'est une laisse qui vibre.",
+        "text": "L'écran fissuré reprend vie avec un message de Karine: \"plus maintenant, on stabilise la version.\" Le téléphone ne rappelle plus. Il serre.",
         "voice": "procedure",
         "minScore": 2,
-        "voiceText": "Stabiliser la version. Même vocabulaire que La Dose, mais appliqué à un cadavre."
+        "voiceText": "Stabiliser la version: vocabulaire de chantier appliqué à un cadavre."
       },
       {
         "requiresFlag": "leduc_saw_withdrawal",
         "priority": 20,
-        "text": "Douze appels manqués, plus le vomi, plus ton silence. Dans une main hostile, ce téléphone raconte déjà que tu étais ingérable avant d'être utile.",
+        "text": "Douze appels manqués, plus le vomi, plus ton silence. Dans une main hostile, ce téléphone raconte déjà une matinée où tu n'étais pas fiable.",
         "voice": "honte_publique",
         "minScore": 2,
-        "voiceText": "Un historique d'appels peut devenir une chronologie de panique. Ou une chronologie de culpabilité."
+        "voiceText": "Un historique d'appels peut devenir une chronologie. Ça dépend de qui l'imprime."
       }
     ]
   },
@@ -50,10 +50,10 @@
     "x": 120,
     "y": 300,
     "radius": 74,
-    "text": "Utilitaire blanc du chantier. Hayon mal fermé, noir dedans. Assez pour comprendre que Karine ment avec le mot incident, pas assez pour comprendre ce que le coffre garde.",
+    "text": "Utilitaire blanc du chantier. Hayon mal fermé, noir dedans. Karine bloque le passage comme si le véhicule avait déjà choisi son propriétaire.",
     "voice": "symbole",
     "minScore": 2,
-    "voiceText": "Un véhicule de service n'est jamais neutre. Même garé, il transporte une autorisation.",
+    "voiceText": "Un véhicule de service transporte plus qu'un corps: il transporte une autorisation.",
     "effects": [
       {
         "type": "flag",
@@ -68,18 +68,18 @@
       {
         "requiresFlag": "papers_seen",
         "priority": 20,
-        "text": "Après les papiers, le message est clair: un corps, ton identité, un véhicule municipal. On ne t'accuse pas encore. On te prépare.",
+        "text": "Après les papiers, l'assemblage tient en trois objets: un corps, ton identité, un véhicule municipal. Pas une accusation encore. Une préparation.",
         "voice": "procedure",
         "minScore": 2,
-        "voiceText": "Corps, identité, accès. Trois pièces dans un même coffre. Trop organisé pour être une découverte simple."
+        "voiceText": "Corps, identité, accès. Trois pièces dans un coffre, aucune à sa place."
       },
       {
         "requiresFlag": "trunk_opened",
         "priority": 10,
-        "text": "Le coffre ouvert ne donne pas toute la scène. Il donne une odeur, une forme, et la nécessité dégueulasse de se pencher plus près.",
+        "text": "Le coffre ouvert ne donne pas toute la scène. Il donne une odeur, une forme, et une raison de se pencher trop près.",
         "voice": "faim",
         "minScore": 1,
-        "voiceText": "Le ventre comprend avant les yeux: si tu veux savoir, il va falloir payer avec la gorge."
+        "voiceText": "Le ventre comprend avant les yeux: si tu veux savoir, ça va passer par la gorge."
       }
     ]
   },
@@ -94,10 +94,10 @@
     "x": 82,
     "y": 334,
     "radius": 72,
-    "text": "De loin, le coffre ne montre qu'une masse sombre et du froid. Tu peux inventer des mots propres. Ton estomac, lui, a déjà choisi cadavre.",
+    "text": "De loin, le coffre ne montre qu'une masse sombre et du froid. Tu peux encore dire incident. Ton estomac, lui, a déjà changé de mot.",
     "voice": "faim",
     "minScore": 1,
-    "voiceText": "Ton corps se contracte. Ce n'est pas seulement la mort possible: c'est le manque qui veut décider à ta place.",
+    "voiceText": "Ton corps se contracte. Mort possible, manque réel: les deux veulent parler avant toi.",
     "effects": [
       {
         "type": "clue",
@@ -109,10 +109,10 @@
         "requiresFlag": "ahmed_identified",
         "priority": 20,
         "title": "Ahmed Berrichi",
-        "text": "Ahmed Berrichi, vieux locataire des Miroirs. Pas de carnet. Pas de clés. Pas de téléphone. On a laissé le corps et retiré les outils qui expliquaient sa vie.",
+        "text": "Ahmed Berrichi, vieux locataire des Miroirs. Pas de carnet. Pas de clés. Pas de téléphone. Le corps est là; les outils de sa vie ont disparu.",
         "voice": "faim",
         "minScore": 1,
-        "voiceText": "Ton estomac se contracte. Ce n'est pas seulement la mort: c'est le manque qui veut décider à ta place.",
+        "voiceText": "Ton estomac se contracte. Ce n'est pas seulement la mort: c'est ton corps qui cherche une sortie.",
         "effects": [
           {
             "type": "clue",
@@ -128,10 +128,10 @@
         "requiresFlag": "trunk_opened",
         "priority": 10,
         "title": "Corps dans le coffre",
-        "text": "Un vieux corps au fond. Visage dans l'ombre, mains vides à distance. Pas assez d'image pour conclure. Assez pour salir la matinée.",
+        "text": "Un vieux corps au fond. Visage dans l'ombre, mains vides à distance. Pas assez pour conclure. Assez pour comprendre qu'il n'est pas arrivé seul.",
         "voice": "faim",
         "minScore": 1,
-        "voiceText": "La bile arrive comme une collègue trop ponctuelle.",
+        "voiceText": "La bile arrive avant la méthode.",
         "effects": [
           {
             "type": "clue",
@@ -152,10 +152,10 @@
     "x": 178,
     "y": 90,
     "radius": 68,
-    "text": "La caméra pointe vers le P2. Voyant éteint. Support récent. Une panne qui regarde exactement le bon endroit devient une décision.",
+    "text": "La caméra pointe vers le P2. Voyant éteint. Support plus récent que la poussière autour. Une panne utile finit par ressembler à une consigne.",
     "voice": "nerfs",
     "minScore": 1,
-    "voiceText": "Angle parfait, oeil absent. Quelqu'un n'a pas seulement profité d'une caméra morte: quelqu'un l'a laissée mourir utile.",
+    "voiceText": "Oeil mort, angle propre. Quelqu'un n'avait pas besoin qu'elle filme. Il avait besoin qu'elle regarde au bon endroit sans voir.",
     "effects": [
       {
         "type": "flag",
@@ -178,10 +178,10 @@
     "x": 888,
     "y": 158,
     "radius": 86,
-    "text": "Une porte pour l'électricité, le nettoyage, les prestataires, parfois les badges. Quand trop de gens ont une clé, plus personne n'a l'air responsable.",
+    "text": "Porte technique: électricité, nettoyage, prestataires, parfois badges. Quand trop de gens ont une clé, chacun peut dire que ce n'était pas la sienne.",
     "voice": "procedure",
     "minScore": 2,
-    "voiceText": "Cherche un registre. Ou mieux: cherche l'absence de registre. Les deux peuvent accuser.",
+    "voiceText": "Cherche le registre. Ou l'endroit vide où il devrait être. Les deux parlent.",
     "effects": [
       {
         "type": "clue",
@@ -191,10 +191,10 @@
     "variants": [
       {
         "requiresFlag": "page_read",
-        "text": "Avec la page d'Ahmed en tête, ce local devient une piste directe: badge chantier, caméra morte, accès partagés. Pas une ambiance. Une méthode.",
+        "text": "Avec la page d'Ahmed, ce local devient une piste directe: badge chantier, caméra morte, accès partagés. Une porte, pas une ambiance.",
         "voice": "main_gauche",
         "minScore": 2,
-        "voiceText": "Une porte partagée se fouille comme une poche commune. Tout le monde y laisse un peu de faute."
+        "voiceText": "Une porte partagée se fouille comme une poche commune: on y trouve surtout des excuses."
       }
     ]
   },
@@ -210,10 +210,10 @@
     "x": 476,
     "y": 272,
     "radius": 96,
-    "text": "Ton reflet se coupe dans la flaque. Peau grise, bouche sèche, yeux pas encore alignés. Ça ne cache rien: tu es en manque et la scène le sait.",
+    "text": "Ton reflet se coupe dans la flaque. Peau grise, bouche sèche, yeux pas encore alignés. Tu n'as pas besoin de parler: ça se voit.",
     "voice": "memoire_saline",
     "minScore": 2,
-    "voiceText": "Sel de sueur, sel de béton, sel de déneigement. Les Miroirs gardent les traces chimiques mieux que les souvenirs.",
+    "voiceText": "Sueur, béton humide, sel de déneigement. Les Miroirs gardent mieux les traces que les souvenirs.",
     "effects": [
       {
         "type": "flag",
@@ -237,10 +237,10 @@
     "x": 704,
     "y": 454,
     "radius": 78,
-    "text": "Derrière la palissade, les voix tombent d'un ton quand tu approches. Quelqu'un lâche Le Gobelet. Un autre souffle le prénom de Sofiane et se tait. Le quartier sait déjà que la matinée pue.",
+    "text": "Derrière la palissade, les voix baissent quand tu approches. Quelqu'un lâche Le Gobelet. Un autre souffle Sofiane et se tait. Le quartier a déjà commencé son rapport oral.",
     "voice": "bouches",
     "minScore": 1,
-    "voiceText": "Sofiane. Un prénom qui traîne au bon endroit. Quelqu'un essaie de se faire petit derrière la palissade, mais certaines odeurs et certaines peurs passent quand même.",
+    "voiceText": "Sofiane. Un prénom au bon endroit. Les gens essaient de le protéger, mais une peur passe toujours par une bouche.",
     "effects": [
       {
         "type": "clue",
@@ -259,18 +259,18 @@
       {
         "requiresFlag": "sofiane_fled",
         "priority": 20,
-        "text": "Derrière la palissade, la place de Sofiane est vide. Le silence a une forme: un témoin qui a compris qu'il venait de trop parler.",
+        "text": "Derrière la palissade, la place de Sofiane est vide. Le silence a une forme: joint écrasé, témoin parti, information trop chère.",
         "voice": "bouches",
         "minScore": 1,
-        "voiceText": "Quand un témoin disparaît, le quartier ne devient pas muet. Il devient plus cher à faire parler."
+        "voiceText": "Un témoin qui disparaît ne rend pas le quartier muet. Il rend chaque phrase plus chère."
       },
       {
         "requiresFlag": "page_read",
         "priority": 10,
-        "text": "Derrière la palissade, les voix se coupent sur le nom de Sofiane. La page d'Ahmed n'a pas inventé un témoin: elle a désigné quelqu'un que tout le monde protège déjà mal.",
+        "text": "Derrière la palissade, les voix se coupent sur le nom de Sofiane. La page d'Ahmed n'a pas inventé un témoin: elle a pointé quelqu'un que tout le monde protège mal.",
         "voice": "bouches",
         "minScore": 1,
-        "voiceText": "Un prénom écrit sur une page devient dangereux dès qu'il circule dans des bouches qui ont peur."
+        "voiceText": "Un prénom écrit devient dangereux quand il passe dans des bouches qui ont peur."
       }
     ]
   }
