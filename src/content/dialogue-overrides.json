@@ -1,7 +1,7 @@
 {
   "wake_up": {
     "nodes": {
-      "start": {"id": "start", "text": "Tu reprends connaissance contre une borne en béton. Goût de vodka tiède. Coton de calmants dans le crâne. Ta main droite tremble avant toi."},
+      "start": {"id": "start", "text": "Tu reviens au monde contre une borne en béton. Goût de vodka tiède. Coton de calmants dans le crâne. Ta main droite tremble avant toi."},
       "ground": {"id": "ground", "text": "Un gobelet plastique vide traîne près de ta jambe. Alcool fort, bon marché, bu trop vite. Ton téléphone fissuré clignote à côté. Douze appels manqués."},
       "cup": {"id": "cup", "text": "Le plastique colle aux doigts. Ton corps reconnaît l'ordre avant toi: boire, avaler de quoi calmer la main, dire que ça ira mieux. Même vide, le gobelet peut te salir."},
       "cup_trace_success": {"id": "cup_trace_success", "text": "Tu inclines le gobelet. Pas seulement de l'alcool: un dépôt amer colle au fond. Ça ne dit pas pourquoi tu as décroché. Ça dit comment ton corps était disponible."},
@@ -90,7 +90,7 @@
   },
   "sofiane": {
     "nodes": {
-      "start": {"id": "start", "text": "Derrière la palissade, la fumée tient mieux que les témoins. Quand Sofiane est encore là, capuche basse et joint presque mort, il regarde les issues plus souvent que toi."},
+      "start": {"id": "start", "text": "La palissade garde Sofiane quand il est encore là: capuche basse, joint presque mort, yeux sur les issues plus souvent que sur toi."},
       "early_no_page": {"id": "early_no_page", "text": "\"Tu viens avec la tête de quelqu'un qu'on utilise, pas avec une question.\" Il garde le joint bas et les yeux ailleurs. \"Quand tu sauras ce qu'Ahmed a laissé, tu sauras peut-être quoi me demander.\""},
       "after_fled": {"id": "after_fled", "text": "Sofiane n'est plus là. Joint écrasé. Place vide. La palissade a gardé l'odeur, pas le témoin."},
       "keep_talking_success": {"id": "keep_talking_success", "text": "Tu ne le bloques pas avec ton corps. Tu bloques la sortie avec son intérêt. \"Si tu pars maintenant, ils vont dire témoin toxico et fermer ta bouche à ta place.\" Sofiane ravale la fumée. \"Le gars au badge chantier est revenu après. Il regardait toi, pas le coffre.\""},
