@@ -4,6 +4,7 @@ import mirrorsOrbsJson from '../content/locations/miroirs/orbs.json'
 import parasitesJson from '../content/parasites.json'
 import voicesJson from '../content/voices.json'
 import type {
+  DialogueChoice,
   DialogueNode,
   DialogueScript,
   OrbDefinition,
@@ -19,11 +20,24 @@ type DialogueScriptOverride = Partial<Omit<DialogueScript, 'nodes'>> & {
   nodes?: Record<string, DialogueNodeOverride>
 }
 
+const voiceDisplayAliases: Record<string, string> = {
+  'Le Sel': 'Mémoire',
+  'Le Dossier': 'Procédure',
+  'Le Nerf': 'Danger',
+  'Le Regard': 'Honte',
+  'Les Bouches': 'Rumeur',
+  'Le Ventre': 'Corps',
+  'Le Présage': 'Signes',
+  'La Main Basse': 'Débrouille',
+}
+
 export const voices = voicesJson as VoiceDefinition[]
 export const parasites = parasitesJson as ParasiteDefinition[]
-export const dialogues = mergeDialogueOverrides(
-  dialoguesJson as Record<string, DialogueScript>,
-  dialogueOverridesJson as Record<string, DialogueScriptOverride>,
+export const dialogues = normalizeDialogueDisplayNames(
+  mergeDialogueOverrides(
+    dialoguesJson as Record<string, DialogueScript>,
+    dialogueOverridesJson as Record<string, DialogueScriptOverride>,
+  ),
 )
 export const orbs = mirrorsOrbsJson as OrbDefinition[]
 const passiveModules = import.meta.glob<PassiveDefinition[]>(
@@ -97,4 +111,42 @@ function mergeDialogueNodes(
   })
 
   return mergedNodes
+}
+
+function normalizeDialogueDisplayNames(dialogues: Record<string, DialogueScript>): Record<string, DialogueScript> {
+  return Object.fromEntries(
+    Object.entries(dialogues).map(([scriptId, script]) => {
+      return [
+        scriptId,
+        {
+          ...script,
+          nodes: Object.fromEntries(
+            Object.entries(script.nodes).map(([nodeId, node]) => [nodeId, normalizeDialogueNode(node)]),
+          ),
+        },
+      ]
+    }),
+  )
+}
+
+function normalizeDialogueNode(node: DialogueNode): DialogueNode {
+  return {
+    ...node,
+    speaker: normalizeVoiceDisplayText(node.speaker),
+    text: normalizeVoiceDisplayText(node.text),
+    choices: node.choices.map(normalizeDialogueChoice),
+  }
+}
+
+function normalizeDialogueChoice(choice: DialogueChoice): DialogueChoice {
+  return {
+    ...choice,
+    label: normalizeVoiceDisplayText(choice.label),
+  }
+}
+
+function normalizeVoiceDisplayText(text: string): string {
+  return Object.entries(voiceDisplayAliases).reduce((result, [previousName, nextName]) => {
+    return result.replaceAll(previousName, nextName)
+  }, text)
 }
