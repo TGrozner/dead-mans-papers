@@ -1406,6 +1406,16 @@ h1 {
   }
 }
 
+@media (min-width: 1600px) and (min-height: 700px) {
+  .game-shell {
+    width: min(2580px, calc(100vw - 32px));
+  }
+
+  .play-area {
+    grid-template-columns: minmax(0, 1fr) clamp(380px, 22vw, 560px);
+  }
+}
+
 .choice-button:hover {
   background: #f1d99f;
   transform: translateY(-1px);
