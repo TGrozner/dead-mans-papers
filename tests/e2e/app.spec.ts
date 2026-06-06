@@ -334,8 +334,8 @@ test('triggers proximity orbs as one-shot toasts instead of modal inspections', 
   const canvasBox = await canvas.boundingBox()
   expect(canvasBox).not.toBeNull()
 
-  const flaqueX = canvasBox!.x + (476 / 960) * canvasBox!.width
-  const flaqueY = canvasBox!.y + (272 / 576) * canvasBox!.height
+  const flaqueX = canvasBox!.x + (635 / 1280) * canvasBox!.width
+  const flaqueY = canvasBox!.y + (340 / 720) * canvasBox!.height
   await page.mouse.click(flaqueX, flaqueY)
 
   await expect(page.locator('.orb-toast')).toContainText('Flaque sous néon')
