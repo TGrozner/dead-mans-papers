@@ -10,7 +10,8 @@ Examples:
   scripts/codex-worktree.sh rules main
   scripts/codex-worktree.sh ui-audit main
 
-Creates a sibling Git worktree for a Codex writing agent.
+Creates a sibling Git worktree for a Codex writing agent and a starter local
+claim file under .agents/claims/.
 
 Conventions:
   rules        -> ../dead-mans-papers-rules on branch codex/rules
@@ -81,11 +82,46 @@ worktree_for_branch() {
     '
 }
 
+ensure_claim() {
+  local claim_dir claim_file started_at
+  claim_dir="$workspace_dir/.agents/claims"
+  claim_file="$claim_dir/$safe_name.md"
+  started_at="$(date -Iseconds)"
+
+  mkdir -p "$claim_dir"
+
+  if [[ -e "$claim_file" ]]; then
+    echo "Claim already exists: $claim_file"
+    return
+  fi
+
+  cat >"$claim_file" <<EOF
+# $safe_name
+
+- Status: active
+- Worktree: \`$target_path\`
+- Branch: \`$branch_name\`
+- Base ref: \`$base_ref\`
+- Objective: TODO
+- Claimed files:
+  - TODO
+- Forbidden files:
+  - \`/home/thomas/dev/dead-mans-papers-workspace/dead-mans-papers\` unless explicitly assigned as integration owner
+  - files already owned by another active claim
+- Verification: TODO
+- Started: $started_at
+- Owner: TODO
+EOF
+
+  echo "Created claim: $claim_file"
+}
+
 if [[ -e "$target_path" ]]; then
   if git -C "$target_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     existing_top="$(git -C "$target_path" rev-parse --show-toplevel)"
     if [[ "$existing_top" == "$target_path" ]]; then
       echo "Worktree already exists: $target_path"
+      ensure_claim
       git -C "$target_path" status -sb
       exit 0
     fi
@@ -107,6 +143,8 @@ if git -C "$repo_root" show-ref --verify --quiet "refs/heads/$branch_name"; then
 else
   git -C "$repo_root" worktree add -b "$branch_name" "$target_path" "$base_ref"
 fi
+
+ensure_claim
 
 cat <<EOF
 Created worktree:

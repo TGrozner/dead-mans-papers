@@ -65,7 +65,7 @@ Ouvrir ensuite `http://127.0.0.1:4173/dead-mans-papers/`. `npm run dev` reste ut
 
 - Les fichiers source et narratifs restent en UTF-8: `.ts`, `.css`, `.html`, `.json`, `.md`.
 - Garder les accents dans les dialogues français; vérifier `Mémoire`, `Réussi`, `à`, `œ`, `É` dans le navigateur plutôt que dans l'affichage PowerShell.
-- Standard visuel runtime: scène logique `1280x720` en 16:9. Le fond legacy `960x576` reste un fallback centré sans déformation; les nouveaux masters doivent viser `2560x1440` avec foreground transparent aligné.
+- Standard visuel runtime: scène logique `1280x720` en 16:9. Le master courant `p2-background.png` est en `2560x1440`, avec `p2-foreground.png` transparent aligné pour les occlusions. Le fond `960x576` est conservé sous `p2-background-legacy.png` comme référence.
 
 ## Direction v0
 

@@ -19,6 +19,23 @@
 - Use the rules worktree for durable Codex instructions, coordination docs, custom agents, and helper scripts.
 - Do not edit product code from the rules worktree unless the user explicitly widens the scope.
 
+## Hard Stop For Writing Agents
+
+- The foreground checkout on `main` is for integration, inspection, and final
+  verification.
+- If you are a writing agent and you are in
+  `/home/thomas/dev/dead-mans-papers-workspace/dead-mans-papers` on `main`,
+  stop before editing unless the user explicitly made you the integration
+  owner.
+- If the session was launched from
+  `/home/thomas/dev/dead-mans-papers-workspace`, create and enter an agent
+  worktree before product edits.
+- Do not continue writing in `main` just because the working tree is already
+  dirty. Inspect the dirty paths, identify ownership, and return to the
+  coordinator if ownership is unclear.
+- Existing dirty changes from another agent are not permission to edit the same
+  files. Treat them as a conflict unless your ownership block says otherwise.
+
 ## Writing Agents
 
 - Default to one Git worktree per writing agent.
@@ -28,6 +45,8 @@
   objective, branch, worktree path, claimed files, and forbidden files.
 - Claims can be recorded locally under:
   `/home/thomas/dev/dead-mans-papers-workspace/.agents/claims/`
+- The worktree helper creates a starter claim file when possible. Fill it in
+  before editing.
 - If two agents need the same file, stop and return to the coordinator.
 - Read-only agents may inspect the foreground checkout, but they must not edit it.
 

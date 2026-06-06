@@ -179,5 +179,195 @@
       "nodeId": "joint"
     },
     "text": "Il fume, donc il se protège. Pas forcément qu'il ment. Mauvaise lecture de flic fatigué: les gens propres mentent aussi; ils ont juste une meilleure lumière."
+  },
+  {
+    "id": "miroirs_identity__accept_amar_tests_living_name",
+    "contextId": "miroirs/identity",
+    "location": "miroirs",
+    "subject": "identity-accept",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "requiresFlag": "identity_accept",
+    "minScore": 2,
+    "once": true,
+    "priority": 86,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "amar",
+      "nodeId": "start"
+    },
+    "text": "Porter ton nom devant Amar te donne une prise: il peut te contredire, donc il doit aussi te répondre. Un vivant pose des questions qu'un surnom ne peut pas poser."
+  },
+  {
+    "id": "miroirs_identity__refuse_amar_smells_crisis",
+    "contextId": "miroirs/identity",
+    "location": "miroirs",
+    "subject": "identity-refuse",
+    "channel": "dialogue",
+    "voice": "symbole",
+    "requiresFlag": "identity_refuse",
+    "minScore": 2,
+    "once": true,
+    "priority": 86,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "amar",
+      "nodeId": "start"
+    },
+    "text": "Refuser le nom te rend plus lucide et plus facile à classer. Amar l'entend: entre coup monté et crise, les gens pressés choisissent toujours crise."
+  },
+  {
+    "id": "miroirs_identity__perform_sofiane_talks_to_role",
+    "contextId": "miroirs/identity",
+    "location": "miroirs",
+    "subject": "identity-perform",
+    "channel": "dialogue",
+    "voice": "bouches",
+    "requiresFlag": "identity_perform",
+    "minScore": 1,
+    "once": true,
+    "priority": 87,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "sofiane",
+      "nodeId": "start"
+    },
+    "text": "Sofiane parle plus vite au rôle qu'à l'homme. Le médiateur sale, il connaît; le vivant piégé, il ne sait pas encore s'il doit l'aider."
+  },
+  {
+    "id": "miroirs_identity__defile_sofiane_fears_splash",
+    "contextId": "miroirs/identity",
+    "location": "miroirs",
+    "subject": "identity-defile",
+    "channel": "dialogue",
+    "voice": "honte_publique",
+    "requiresFlag": "identity_defile",
+    "minScore": 2,
+    "once": true,
+    "priority": 87,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "sofiane",
+      "nodeId": "start"
+    },
+    "text": "Quand tu salis ton propre nom, Sofiane mesure la projection. Un témoin qui sent qu'il va finir taché parle vite ou disparaît."
+  },
+  {
+    "id": "miroirs_amar__last_warning_hits",
+    "contextId": "miroirs/amar",
+    "location": "miroirs",
+    "subject": "ahmed-warning",
+    "channel": "dialogue",
+    "voice": "memoire_saline",
+    "requiresFlag": "ahmed_wanted_to_warn_zinedine",
+    "minScore": 2,
+    "once": true,
+    "priority": 89,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "amar",
+      "nodeId": "last_warning_success"
+    },
+    "text": "La veille revient par morceaux chimiques: odeur de centre municipal, métal de clés, haleine froide. Pas un souvenir complet. Assez pour savoir qu'Ahmed n'était pas une rencontre ratée."
+  },
+  {
+    "id": "miroirs_sofiane__returning_worker_alarm",
+    "contextId": "miroirs/sofiane",
+    "location": "miroirs",
+    "subject": "returning-worker",
+    "channel": "dialogue",
+    "voice": "nerfs",
+    "requiresFlag": "sofiane_saw_returning_worker",
+    "minScore": 1,
+    "once": true,
+    "priority": 90,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "sofiane",
+      "nodeId": "keep_talking_success"
+    },
+    "text": "Quelqu'un est revenu regarder ta réaction. Pas vérifier le corps. Vérifier si le piège prenait."
+  },
+  {
+    "id": "miroirs_amar__keller_named",
+    "contextId": "miroirs/amar",
+    "location": "miroirs",
+    "subject": "keller-security",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "requiresFlag": "keller_security_named",
+    "minScore": 2,
+    "once": true,
+    "priority": 90,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "amar",
+      "nodeId": "vendor_name_success"
+    },
+    "text": "Un nom de prestataire vaut mieux qu'une rumeur: Keller Sécurité peut être interrogé par factures, lecteurs, badges et horaires."
+  },
+  {
+    "id": "miroirs_amar__vendor_initials_dirty",
+    "contextId": "miroirs/amar",
+    "location": "miroirs",
+    "subject": "keller-security",
+    "channel": "dialogue",
+    "voice": "honte_publique",
+    "requiresFlag": "vendor_initials_seen",
+    "minScore": 2,
+    "once": true,
+    "priority": 89,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "amar",
+      "nodeId": "vendor_name_failure"
+    },
+    "text": "Tu n'obtiens pas le nom parce que ta gueule parle trop fort. Mais K.S. sur une facture reste une piste que même la honte ne peut pas avaler."
+  },
+  {
+    "id": "miroirs_sofiane__coping_trust",
+    "contextId": "miroirs/sofiane",
+    "location": "miroirs",
+    "subject": "coping-mirror",
+    "channel": "dialogue",
+    "voice": "bouches",
+    "requiresFlag": "sofiane_trusts_wreck",
+    "minScore": 1,
+    "once": true,
+    "priority": 91,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "sofiane",
+      "nodeId": "coping_mirror_success"
+    },
+    "text": "Reconnaître ta propre saleté t'achète trois secondes de vérité chez Sofiane. Pas du respect. Mieux: une baisse de défense."
+  },
+  {
+    "id": "miroirs_sofiane__coping_failure_flight",
+    "contextId": "miroirs/sofiane",
+    "location": "miroirs",
+    "subject": "coping-mirror",
+    "channel": "dialogue",
+    "voice": "honte_publique",
+    "requiresFlag": "sofiane_fled",
+    "minScore": 2,
+    "once": true,
+    "priority": 90,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "sofiane",
+      "nodeId": "coping_mirror_failure"
+    },
+    "text": "Tu voulais créer un pont, tu as montré une plaie. Le témoin fuit, mais l'odeur reste: Javel avant l'ouverture."
   }
 ]

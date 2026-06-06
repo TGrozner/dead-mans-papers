@@ -24,8 +24,11 @@ export function createMirrorsGame(bridge: MirrorsGameBridge): Phaser.Game {
     width: sceneWidth,
     height: sceneHeight,
     backgroundColor: '#171a1d',
-    pixelArt: true,
+    pixelArt: false,
     roundPixels: true,
+    render: {
+      preserveDrawingBuffer: true,
+    },
     scale: {
       mode: Phaser.Scale.FIT,
       autoCenter: Phaser.Scale.CENTER_BOTH,

@@ -3,6 +3,21 @@
 This project uses aggressive Codex fan-out, but writing agents must not share a
 checkout. The coordinator owns integration; workers own narrow slices.
 
+## Boot Rule
+
+If Codex starts in `/home/thomas/dev/dead-mans-papers-workspace`, it is not in a
+worker checkout. It may inspect and coordinate, but it must not edit product
+files until a dedicated worktree exists.
+
+Writing agents should start from a path like:
+
+```bash
+/home/thomas/dev/dead-mans-papers-workspace/dead-mans-papers-agent-ui-audit
+```
+
+The integration checkout remains available for review, integration, and final
+verification only.
+
 ## Current Layout
 
 - Integration checkout:
@@ -18,12 +33,26 @@ The workspace root has support files, but the Git repository is the
 `dead-mans-papers` directory. Run Git from a repo/worktree root, or use
 `git -C /home/thomas/dev/dead-mans-papers-workspace/dead-mans-papers ...`.
 
+## Current Failure Mode
+
+If multiple Codex sessions are launched with:
+
+```bash
+codex -C /home/thomas/dev/dead-mans-papers-workspace
+```
+
+they can all discover and edit the same foreground checkout. That is a process
+failure. Rehome each writing agent into its own worktree before further edits.
+
+Do not try to repair this by reverting shared `main` changes. First inspect
+ownership, then move or reapply each agent's changes from an isolated worktree.
+
 ## Creating A Writing Agent Worktree
 
 From any shell:
 
 ```bash
-/home/thomas/dev/dead-mans-papers-workspace/dead-mans-papers/scripts/codex-worktree.sh ui-audit main
+/home/thomas/dev/dead-mans-papers-workspace/scripts/codex-worktree.sh ui-audit main
 cd /home/thomas/dev/dead-mans-papers-workspace/dead-mans-papers-agent-ui-audit
 git status -sb
 ```
@@ -31,7 +60,7 @@ git status -sb
 For rules and coordination work:
 
 ```bash
-/home/thomas/dev/dead-mans-papers-workspace/dead-mans-papers/scripts/codex-worktree.sh rules main
+/home/thomas/dev/dead-mans-papers-workspace/scripts/codex-worktree.sh rules main
 cd /home/thomas/dev/dead-mans-papers-workspace/dead-mans-papers-rules
 git status -sb
 ```
@@ -92,6 +121,22 @@ Suggested content:
 ```
 
 Delete or archive the claim when the work is integrated or abandoned.
+
+## Rehoming A Mislaunched Agent
+
+If an agent has already started in the integration checkout:
+
+1. Stop product edits in that session.
+2. Record the dirty files it owns in `.agents/claims/<agent-name>.md`.
+3. Create a worktree:
+
+```bash
+/home/thomas/dev/dead-mans-papers-workspace/scripts/codex-worktree.sh <agent-name> main
+```
+
+4. Restart Codex with `-C` pointing at the new worktree.
+5. Reapply only that agent's owned changes there. Do not copy unrelated dirty
+   files from `main`.
 
 ## Integration Checklist
 

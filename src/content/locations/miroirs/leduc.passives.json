@@ -125,5 +125,195 @@
       "nodeId": "why_zinedine"
     },
     "text": "Elle t'a choisi par respect. Mauvaise lecture. Elle t'a choisi parce qu'un homme déjà abîmé coûte moins cher à contredire."
+  },
+  {
+    "id": "miroirs_leduc__ignored_calls_as_weapon",
+    "contextId": "miroirs/leduc",
+    "location": "miroirs",
+    "subject": "missed-calls",
+    "channel": "dialogue",
+    "voice": "honte_publique",
+    "requiresFlag": "karine_call_ignored",
+    "minScore": 2,
+    "once": true,
+    "priority": 91,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "start"
+    },
+    "text": "Tu n'as pas rappelé. Dans sa bouche, ça peut devenir panique, fuite, alcool, conscience coupable. Douze appels manqués, c'est déjà une déposition contre toi."
+  },
+  {
+    "id": "miroirs_leduc__withdrawal_aftershock",
+    "contextId": "miroirs/leduc",
+    "location": "miroirs",
+    "subject": "withdrawal",
+    "channel": "dialogue",
+    "voice": "honte_publique",
+    "requiresFlag": "leduc_saw_withdrawal",
+    "minScore": 2,
+    "once": true,
+    "priority": 90,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "leduc",
+      "nodeId": "start"
+    },
+    "text": "Depuis le vomi, Karine ne regarde plus seulement tes phrases. Elle regarde le dossier médical invisible qui marche derrière toi."
+  },
+  {
+    "id": "miroirs_leduc__first_call_order",
+    "contextId": "miroirs/leduc",
+    "location": "miroirs",
+    "subject": "official-version",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "requiresFlag": "leduc_called_cabinet_first",
+    "minScore": 2,
+    "once": true,
+    "priority": 92,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "leduc",
+      "nodeId": "first_call_success"
+    },
+    "text": "Cabinet, sécurité, secours. L'ordre des appels est une confession administrative: protéger la version avant de protéger la scène."
+  },
+  {
+    "id": "miroirs_leduc__agitation_frame",
+    "contextId": "miroirs/leduc",
+    "location": "miroirs",
+    "subject": "official-version",
+    "channel": "dialogue",
+    "voice": "symbole",
+    "requiresFlag": "leduc_can_frame_agitation",
+    "minScore": 2,
+    "once": true,
+    "priority": 91,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "leduc",
+      "nodeId": "first_call_failure"
+    },
+    "text": "Le piège ne se referme pas avec un bruit de métal. Il se referme avec un adjectif posé à côté de ton nom: agité."
+  },
+  {
+    "id": "miroirs_phone__timeline_before_wake",
+    "contextId": "miroirs/phone",
+    "location": "miroirs",
+    "subject": "missed-calls",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "requiresFlag": "karine_called_before_wake",
+    "minScore": 2,
+    "once": true,
+    "priority": 93,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "wake_up",
+      "nodeId": "phone_timeline_success"
+    },
+    "text": "Un appel avant le réveil n'est pas de l'urgence. C'est une position. Karine savait où tu étais quand toi tu n'étais pas encore revenu."
+  },
+  {
+    "id": "miroirs_phone__timeline_blurred",
+    "contextId": "miroirs/phone",
+    "location": "miroirs",
+    "subject": "missed-calls",
+    "channel": "dialogue",
+    "voice": "memoire_saline",
+    "requiresFlag": "migraine_seen",
+    "minScore": 2,
+    "once": true,
+    "priority": 92,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "wake_up",
+      "nodeId": "phone_timeline_failure"
+    },
+    "text": "Tu ne sais pas lire l'heure, mais tu sais lire l'ordre du corps: douleur, trou noir, obéissance. La mémoire cassée garde parfois le bon débris."
+  },
+  {
+    "id": "miroirs_hami__register_preservation",
+    "contextId": "miroirs/hami",
+    "location": "miroirs",
+    "subject": "health-registers",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "requiresFlag": "hami_register_preservation_possible",
+    "minScore": 2,
+    "once": true,
+    "priority": 94,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "leduc",
+      "nodeId": "hami_register_success"
+    },
+    "text": "Conservation, pas copie. La nuance est sale et utile: assez officielle pour empêcher l'effacement, pas assez visible pour protéger quelqu'un."
+  },
+  {
+    "id": "miroirs_hami__register_discredited",
+    "contextId": "miroirs/hami",
+    "location": "miroirs",
+    "subject": "health-registers",
+    "channel": "dialogue",
+    "voice": "honte_publique",
+    "requiresFlag": "hami_register_request_discredited",
+    "minScore": 2,
+    "once": true,
+    "priority": 93,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "leduc",
+      "nodeId": "hami_register_failure"
+    },
+    "text": "Elle n'a pas besoin de refuser la piste si elle peut salir celui qui la porte. C'est là que ton corps devient une contre-preuve."
+  },
+  {
+    "id": "miroirs_leduc__dates_are_weapon",
+    "contextId": "miroirs/leduc",
+    "location": "miroirs",
+    "subject": "ahmed-dates",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "requiresFlag": "karine_knows_ahmed_dates",
+    "minScore": 2,
+    "once": true,
+    "priority": 94,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "leduc",
+      "nodeId": "good_dates_success"
+    },
+    "text": "Des dates relient les services mieux qu'une confession. Ahmed ne menaçait pas quelqu'un: il menaçait l'alibi collectif."
+  },
+  {
+    "id": "miroirs_leduc__dates_failure_still_confirms",
+    "contextId": "miroirs/leduc",
+    "location": "miroirs",
+    "subject": "ahmed-dates",
+    "channel": "dialogue",
+    "voice": "bouches",
+    "requiresFlag": "leduc_can_frame_agitation",
+    "minScore": 1,
+    "once": true,
+    "priority": 88,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "leduc",
+      "nodeId": "good_dates_failure"
+    },
+    "text": "Elle t'a fermé la porte sur les doigts. Très bien. Maintenant tu sais quelle porte elle protégeait: les dates."
   }
 ]

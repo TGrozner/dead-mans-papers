@@ -25,7 +25,16 @@
           },
           {
             "label": "Essayer de te lever sans vomir.",
-            "next": "stand"
+            "check": {
+              "id": "wake_stand_control",
+              "voice": "faim",
+              "supportVoice": "honte_publique",
+              "difficulty": 6,
+              "successNode": "stand_control_success",
+              "failureNode": "stand_control_failure"
+            },
+            "hiddenWhenFlag": "wake_stand_checked",
+            "important": true
           },
           {
             "label": "Chercher le téléphone.",
@@ -64,7 +73,7 @@
         "id": "cup",
         "speaker": "Le Ventre",
         "voice": "faim",
-        "text": "Le plastique colle aux doigts. Ton corps reconnaît l'ordre des choses avant toi: boire, avaler de quoi calmer la main, dire que ça ira mieux après. Tant que personne ne te demande de signer quoi que ce soit.",
+        "text": "Le plastique colle aux doigts. Ton corps reconnaît l'ordre des choses avant toi: boire, avaler de quoi calmer la main, dire que ça ira mieux après. Sur le bord, ton empreinte colle aussi. Même vide, le gobelet peut encore parler pour toi contre toi.",
         "effects": [
           {
             "type": "flag",
@@ -77,19 +86,132 @@
         ],
         "choices": [
           {
+            "label": "Lire les traces au fond du gobelet.",
+            "check": {
+              "id": "cup_trace_read",
+              "voice": "faim",
+              "supportVoice": "procedure",
+              "difficulty": 7,
+              "successNode": "cup_trace_success",
+              "failureNode": "cup_trace_failure"
+            },
+            "hiddenWhenFlag": "cup_trace_checked",
+            "important": true
+          },
+          {
             "label": "Jeter le gobelet loin de toi.",
-            "next": "stand"
+            "next": "stand",
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "cup_discarded"
+              },
+              {
+                "type": "clue",
+                "clue": "Zinédine jette le gobelet vide qui pourrait documenter son état."
+              }
+            ]
           },
           {
             "label": "Le garder. On ne sait jamais.",
-            "next": "stand"
+            "next": "stand",
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "cup_kept"
+              },
+              {
+                "type": "clue",
+                "clue": "Zinédine garde le gobelet vide malgré le risque qu'il expose son alcool."
+              }
+            ]
+          }
+        ]
+      },
+      "cup_trace_success": {
+        "id": "cup_trace_success",
+        "speaker": "Le Ventre",
+        "voice": "faim",
+        "text": "Tu inclines le plastique. Pas seulement alcool fort: poudre blanche collée dans une goutte, goût amer qui remonte sans permission. Le gobelet ne dit pas pourquoi tu as décroché. Il dit comment ton corps a été rendu disponible.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "cup_trace_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "cup_residue_useful"
+          },
+          {
+            "type": "flag",
+            "flag": "withdrawal_seen"
+          },
+          {
+            "type": "clue",
+            "clue": "Le gobelet contient un résidu amer qui évoque alcool et calmants avant le trou noir."
+          },
+          {
+            "type": "clue",
+            "clue": "Synthèse gobelet: l'état de Zinédine peut documenter une mise à disposition de son corps."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "faim",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder la trace et te lever.",
+            "next": "stand",
+            "important": true
+          }
+        ]
+      },
+      "cup_trace_failure": {
+        "id": "cup_trace_failure",
+        "speaker": "La Dose",
+        "parasite": "dose",
+        "text": "Tu cherches une preuve et tu trouves surtout l'envie de lécher le fond. Voilà le niveau. La honte est informative: si ton corps réclame encore, quelqu'un a pu compter dessus. Le gobelet reste une piste, même quand ta main tremble autour.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "cup_trace_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "dose_heard"
+          },
+          {
+            "type": "flag",
+            "flag": "cup_craving_exposed"
+          },
+          {
+            "type": "clue",
+            "clue": "Même incapable de lire proprement le gobelet, Zinédine révèle une dépendance exploitable."
+          },
+          {
+            "type": "clue",
+            "clue": "Le gobelet rattache le trou noir à l'alcool, aux calmants et au besoin de stabilité."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "faim",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Refermer la main sur le plastique et avancer.",
+            "next": "stand",
+            "important": true
           }
         ]
       },
       "phone": {
         "id": "phone",
         "speaker": "Téléphone fissuré",
-        "text": "Douze appels manqués de Karine Leduc. Douze. Pas l'inquiétude d'une amie: la panique d'une cheffe de chantier qui veut garder une catastrophe dans son périmètre avant qu'elle devienne un dossier.",
+        "text": "Douze appels manqués de Karine Leduc. Douze. Le dernier message vocal dure six secondes: \"pas la police, pas encore, viens seul.\" Pas l'inquiétude d'une amie: la panique d'une cheffe de chantier qui veut garder une catastrophe dans son périmètre avant qu'elle devienne un dossier.",
         "effects": [
           {
             "type": "clue",
@@ -103,8 +225,31 @@
             "important": true
           },
           {
+            "label": "Reconstituer l'ordre des appels malgré l'écran cassé.",
+            "check": {
+              "id": "phone_call_timeline",
+              "voice": "procedure",
+              "supportVoice": "memoire_saline",
+              "difficulty": 7,
+              "successNode": "phone_timeline_success",
+              "failureNode": "phone_timeline_failure"
+            },
+            "hiddenWhenFlag": "phone_timeline_checked",
+            "important": true
+          },
+          {
             "label": "Éteindre l'écran. Trop de lumière.",
-            "next": "stand"
+            "next": "stand",
+            "effects": [
+              {
+                "type": "flag",
+                "flag": "karine_call_ignored"
+              },
+              {
+                "type": "clue",
+                "clue": "Zinédine ignore les appels de Karine avant d'aller vers l'utilitaire."
+              }
+            ]
           },
           {
             "label": "Compter les appels comme des dettes.",
@@ -116,7 +261,7 @@
       "karine_call": {
         "id": "karine_call",
         "speaker": "Karine Leduc",
-        "text": "Elle ne dit pas bonjour. \"Tu es au P2 ? Écoute-moi bien. Il y a un problème dans mon utilitaire. Pas au téléphone. Tu viens, tu regardes, tu ne fais pas ton numéro, et on évite que ça parte en procédure avant de comprendre.\"",
+        "text": "Elle ne dit pas bonjour. \"Tu es au P2 ? Écoute-moi bien. Il y a un problème dans mon utilitaire. Pas au téléphone. Tu viens, tu regardes, tu ne fais pas ton numéro, et on évite que ça parte en procédure avant de comprendre. J'ai déjà perdu trop de minutes.\"",
         "effects": [
           {
             "type": "clue",
@@ -152,6 +297,162 @@
           {
             "label": "Raccrocher et respirer par le nez.",
             "next": "dose_first"
+          }
+        ]
+      },
+      "phone_timeline_success": {
+        "id": "phone_timeline_success",
+        "speaker": "Le Dossier",
+        "voice": "procedure",
+        "text": "Tu forces les chiffres à rester en ligne. Premier appel: avant que tu reprennes conscience. Message vocal: \"pas la police, pas encore, viens seul.\" Dernier appel: deux minutes avant ton réveil. Karine ne te cherchait pas au hasard. Elle savait où poser la panique.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "phone_timeline_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "karine_called_before_wake"
+          },
+          {
+            "type": "clue",
+            "clue": "Karine appelait déjà Zinédine avant son réveil et lui demandait de ne pas appeler la police."
+          },
+          {
+            "type": "clue",
+            "clue": "Synthèse téléphone: Karine savait où trouver Zinédine avant qu'il comprenne lui-même où il était."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "procedure",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Rappeler avec cette chronologie en tête.",
+            "next": "karine_call",
+            "important": true
+          },
+          {
+            "label": "Garder le message et te lever.",
+            "next": "stand"
+          }
+        ]
+      },
+      "phone_timeline_failure": {
+        "id": "phone_timeline_failure",
+        "speaker": "Le Sel",
+        "voice": "memoire_saline",
+        "text": "Les heures bavent sur l'écran. Ton pouce tremble, la fissure double les chiffres, et ta tête refuse de classer. Tu ne tiens pas la chronologie. Tu tiens pire: Karine a dit pas la police, et ton corps a obéi avant toi.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "phone_timeline_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "migraine_seen"
+          },
+          {
+            "type": "clue",
+            "clue": "Même confuse, la lecture du téléphone confirme que Karine a demandé de ne pas appeler la police."
+          },
+          {
+            "type": "clue",
+            "clue": "Le trou noir empêche Zinédine de reconstituer précisément la chronologie des appels."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "memoire_saline",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Rappeler avant que l'écran devienne illisible.",
+            "next": "karine_call",
+            "important": true
+          },
+          {
+            "label": "Éteindre l'écran et avancer quand même.",
+            "next": "stand"
+          }
+        ]
+      },
+      "stand_control_success": {
+        "id": "stand_control_success",
+        "speaker": "Le Ventre",
+        "voice": "faim",
+        "text": "Tu te lèves en deux temps: d'abord le squelette, ensuite la dignité. La gorge brûle, mais rien ne sort. Fonctionnel, donc. Pas propre. Fonctionnel.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "wake_stand_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "withdrawal_seen"
+          },
+          {
+            "type": "clue",
+            "clue": "Zinédine réussit à se lever malgré le manque, assez fonctionnel pour continuer."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "faim",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Fixer l'utilitaire avant que le corps réclame autre chose.",
+            "next": "end",
+            "important": true
+          },
+          {
+            "label": "Laisser La Dose promettre la suite.",
+            "next": "dose_first"
+          }
+        ]
+      },
+      "stand_control_failure": {
+        "id": "stand_control_failure",
+        "speaker": "Le Regard",
+        "voice": "honte_publique",
+        "text": "Tu te lèves trop vite. Genou contre béton, bile dans la bouche, une main sur la borne comme un vieux client de bar à huit heures. Tu ne tombes pas. C'est le problème: même en ruine, tu restes utilisable.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "wake_stand_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "withdrawal_seen"
+          },
+          {
+            "type": "flag",
+            "flag": "wake_body_exposed"
+          },
+          {
+            "type": "clue",
+            "clue": "Zinédine se lève en épave fonctionnelle: bile, tremblements, mais encore utilisable."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "honte_publique",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "S'essuyer la bouche et continuer.",
+            "next": "dose_first",
+            "important": true
+          },
+          {
+            "label": "Fixer l'utilitaire comme si personne n'avait vu.",
+            "next": "end"
           }
         ]
       },
@@ -228,7 +529,7 @@
       "start": {
         "id": "start",
         "speaker": "Karine Leduc",
-        "text": "\"On va appeler ça un incident de chantier.\" Karine bloque le passage vers l'utilitaire, main levée, téléphone serré. \"Tu ne touches à rien tant qu'on n'a pas cadré. Tu t'es réveillé à dix mètres, Zinédine. Et moi j'ai un véhicule municipal que personne ne doit filmer.\"",
+        "text": "\"On va appeler ça un incident de chantier.\" Karine bloque le passage vers l'utilitaire, main levée, téléphone serré. \"Tu ne touches à rien tant qu'on n'a pas cadré. Tu t'es réveillé à dix mètres, Zinédine. Et moi j'ai un véhicule municipal que deux fenêtres peuvent filmer dans les six prochaines minutes.\"",
         "effects": [
           {
             "type": "flag",
@@ -263,7 +564,7 @@
       "leduc_frame": {
         "id": "leduc_frame",
         "speaker": "Karine Leduc",
-        "text": "\"Un incident, c'est ce qu'on dit tant qu'on ne sait pas qui signe. Un coffre, c'est ce que les gens filment quand quelqu'un ouvre trop vite. Je préfère un mot dégueulasse à une vidéo qui tourne dans les halls.\"",
+        "text": "\"Un incident, c'est ce qu'on dit tant qu'on ne sait pas qui signe. Un coffre, c'est ce que les gens filment quand quelqu'un ouvre trop vite. Je préfère un mot dégueulasse à une vidéo qui tourne dans les halls avant les gyrophares.\"",
         "choices": [
           {
             "label": "\"Tu préfères surtout contrôler la phrase.\"",
@@ -364,11 +665,11 @@
       "dead_name": {
         "id": "dead_name",
         "speaker": "Karine Leduc",
-        "text": "\"Je ne signe pas un nom à distance.\" Elle avale le reste trop vite. \"Je ne signe même pas une chose à distance. Tu regardes d'abord. Après, on parlera des noms que tu as envie de prononcer.\"",
+        "text": "\"Je ne signe pas un nom à distance.\" Elle avale le reste trop vite. \"Je ne signe même pas Ahmed à distance.\" Le prénom tombe, trop lourd pour être un hasard. Elle corrige avec deux secondes de retard: \"Tu regardes d'abord. Après, on parlera des noms.\"",
         "effects": [
           {
             "type": "clue",
-            "clue": "Karine refuse de nommer ce qui est dans le coffre avant son ouverture."
+            "clue": "Karine lâche le prénom Ahmed avant l'ouverture du coffre puis tente de corriger."
           }
         ],
         "choices": [
@@ -386,7 +687,7 @@
       "ahmed_questions": {
         "id": "ahmed_questions",
         "speaker": "Karine Leduc",
-        "text": "\"Parce que les noms ramènent des listes. Ascenseur C, caméras, badges, caves, relogements non faits. Des vieilles notes, des vieilles colères, des trucs que les réunions préfèrent perdre avant d'avoir à les lire.\"",
+        "text": "\"Parce que les noms ramènent des listes. Ascenseur C, caméras, badges, caves, relogements non faits. Et quand un vieux qui fait des listes finit dans mon utilitaire, je n'ai plus une matinée: j'ai une bombe sous néon.\"",
         "effects": [
           {
             "type": "clue",
@@ -408,7 +709,7 @@
       "leduc_interests": {
         "id": "leduc_interests",
         "speaker": "Karine Leduc",
-        "text": "\"Je protège un chantier, une mairie, des agents, des habitants, des prestataires, et peut-être toi. Dans cet ordre si tu continues à trembler comme ça.\"",
+        "text": "\"Je protège un chantier, une mairie, des agents, des habitants, des prestataires, et peut-être toi. Dans cet ordre si tu continues à trembler comme ça. La première version qui sortira gagnera contre toutes les autres.\"",
         "effects": [
           {
             "type": "flag",
@@ -465,11 +766,11 @@
       "leduc_hami_deflect": {
         "id": "leduc_hami_deflect",
         "speaker": "Karine Leduc",
-        "text": "\"La docteure Hami n'est pas dans mon périmètre.\" Trop vite. Trop net. Comme une porte qu'on claque sans bruit.",
+        "text": "\"La docteure Hami n'est pas dans mon périmètre.\" Trop vite. Trop net. Comme une porte qu'on claque sans bruit. Puis elle ajoute: \"Et le centre de santé a ses propres registres.\" Personne ne parlait encore de registre.",
         "effects": [
           {
             "type": "clue",
-            "clue": "Karine se ferme dès que le nom de la Dr Hami apparaît."
+            "clue": "Karine se ferme dès que le nom de la Dr Hami apparaît et mentionne les registres du centre de santé."
           }
         ],
         "choices": [
@@ -486,7 +787,7 @@
       "leduc_body_boundary": {
         "id": "leduc_body_boundary",
         "speaker": "Karine Leduc",
-        "text": "\"Je ne dis pas que quelqu'un a utilisé ton accès. Je dis que si quelqu'un l'a fait, on a besoin de savoir avant que ça devienne une phrase officielle.\"",
+        "text": "\"Je ne dis pas que quelqu'un a utilisé ton accès. Je dis que si quelqu'un l'a fait, on a besoin de savoir avant que ça devienne une phrase officielle. Une fois que c'est écrit, ton badge parle plus fort que toi.\"",
         "choices": [
           {
             "label": "\"Tu veux une vérité qui reste utile.\"",
@@ -502,7 +803,7 @@
         "id": "dose_smell",
         "speaker": "La Dose",
         "parasite": "dose",
-        "text": "Ça ne sent pas le chantier. ça sent le vieux froid dans une caisse chaude. Eau de Javel, plastique, quelque chose de gardé ailleurs puis ramené ici. Et par-dessus: ta sueur de manque. Deux saletés qui se reconnaissent.",
+        "text": "Ça ne sent pas le chantier. Ça sent le vieux froid dans une caisse chaude. Eau de Javel, plastique, quelque chose de gardé ailleurs puis ramené ici. Et par-dessus: ta sueur de manque. Deux saletés qui se reconnaissent.",
         "effects": [
           {
             "type": "flag",
@@ -549,7 +850,7 @@
       "trunk_block": {
         "id": "trunk_block",
         "speaker": "Karine Leduc",
-        "text": "Elle garde la main sur le hayon. \"Tu regardes, tu respires, tu ne me fais pas une scène de manque devant mon véhicule. Si tu tombes, quelqu'un écrira que tu étais instable avant même d'écrire ce qu'il y avait dedans.\"",
+        "text": "Elle garde la main sur le hayon. Son téléphone vibre deux fois; elle le retourne sans lire, geste de panique habillé en maîtrise. \"Tu regardes, tu respires, tu ne me fais pas une scène de manque devant mon véhicule. Si tu tombes, quelqu'un écrira que tu étais instable avant même d'écrire ce qu'il y avait dedans.\"",
         "effects": [
           {
             "type": "flag",
@@ -559,7 +860,15 @@
         "choices": [
           {
             "label": "Te tenir assez droit pour qu'elle ouvre.",
-            "next": "trunk_open",
+            "check": {
+              "id": "van_public_composure",
+              "voice": "honte_publique",
+              "supportVoice": "faim",
+              "difficulty": 7,
+              "successNode": "public_composure_success",
+              "failureNode": "public_composure_failure"
+            },
+            "hiddenWhenFlag": "van_composure_checked",
             "important": true
           },
           {
@@ -569,6 +878,78 @@
           {
             "label": "\"Qui d'autre a vu le coffre ?\"",
             "next": "seen_by_who",
+            "important": true
+          }
+        ]
+      },
+      "public_composure_success": {
+        "id": "public_composure_success",
+        "speaker": "Le Regard",
+        "voice": "honte_publique",
+        "text": "Tu ranges la tremble dans la poche, tu verrouilles la bouche, tu donnes à Karine cinq secondes de témoin présentable. Pas sobre. Pas sain. Présentable. Ça suffit pour qu'elle perde son dernier prétexte.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "van_composure_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "zinedine_presentable_enough"
+          },
+          {
+            "type": "clue",
+            "clue": "Zinédine se rend assez présentable pour forcer Karine à ouvrir le hayon."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "honte_publique",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Laisser Karine ouvrir.",
+            "next": "trunk_open",
+            "important": true
+          }
+        ]
+      },
+      "public_composure_failure": {
+        "id": "public_composure_failure",
+        "speaker": "Le Ventre",
+        "voice": "faim",
+        "text": "Tu rates la façade. La sueur coule, la bile gagne, ta main cherche un appui comme un chien cherche une porte. Karine voit tout. Elle ouvre quand même, parce qu'une épave fonctionnelle reste plus utile qu'une procédure qui arrive trop tôt.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "van_composure_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "leduc_saw_withdrawal"
+          },
+          {
+            "type": "flag",
+            "flag": "withdrawal_seen"
+          },
+          {
+            "type": "clue",
+            "clue": "Zinédine échoue à rester présentable devant l'utilitaire, mais Karine ouvre parce qu'il reste utile."
+          },
+          {
+            "type": "clue",
+            "clue": "Karine obtient une nouvelle preuve sociale de l'instabilité de Zinédine avant l'ouverture du coffre."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "faim",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Entrer dans la honte et regarder quand même.",
+            "next": "trunk_open",
             "important": true
           }
         ]
@@ -601,7 +982,7 @@
       "seen_by_who": {
         "id": "seen_by_who",
         "speaker": "Karine Leduc",
-        "text": "\"Un agent de nettoyage a prévenu. Il s'est barré direct. Deux habitants ont entendu. Amar traîne près du local technique. Et Sofiane reste derrière la palissade depuis trop longtemps pour n'avoir rien vu.\"",
+        "text": "\"Un agent de nettoyage a prévenu. Il s'est barré direct. Deux habitants ont entendu. Amar traîne près du local technique. Sofiane reste derrière la palissade depuis trop longtemps pour n'avoir rien vu. Et si un seul d'eux poste avant moi, tu deviens le type bourré trouvé à côté du coffre.\"",
         "effects": [
           {
             "type": "clue",
@@ -622,7 +1003,7 @@
       "trunk_open": {
         "id": "trunk_open",
         "speaker": "Parking P2",
-        "text": "Le hayon monte. Tout arrive d'un coup. L'odeur de vieux froid. La Javel. Le corps d'un vieil homme tassé dans la tôle. Et sur sa poitrine, pas cachés, pas subtils: ta carte, ton badge municipal, une ordonnance pliée. Ton nom posé sur un mort comme une étiquette de consigne.",
+        "text": "Le hayon monte. Tout arrive d'un coup. L'odeur de vieux froid. La Javel. Le corps d'un vieil homme tassé dans la tôle. Le profil te frappe avant le nom: Ahmed Berrichi, ou quelqu'un veut que tu le reconnaisses ainsi. Et sur sa poitrine, pas cachés, pas subtils: ta carte, ton badge municipal, une ordonnance pliée. Ton nom posé sur un mort comme une étiquette de consigne.",
         "effects": [
           {
             "type": "flag",
@@ -630,7 +1011,7 @@
           },
           {
             "type": "clue",
-            "clue": "Le corps d'un vieil homme est dans l'utilitaire avec la carte, le badge municipal et l'ordonnance de Zinédine posés sur lui."
+            "clue": "Le corps d'un vieil homme probablement Ahmed Berrichi est dans l'utilitaire avec la carte, le badge municipal et l'ordonnance de Zinédine posés sur lui."
           }
         ],
         "choices": [
@@ -657,7 +1038,7 @@
       "identity_accept": {
         "id": "identity_accept",
         "speaker": "Karine Leduc",
-        "text": "\"Bien. Alors le vivant m'aide à comprendre pourquoi son dossier sert de nappe à un cadavre.\" Elle aime les vivants quand ils restent administrables.",
+        "text": "\"Bien. Alors le vivant m'aide à comprendre pourquoi son dossier sert de nappe à un cadavre.\" Elle aime les vivants quand ils restent administrables. Ton choix vient de lui donner une ligne officielle: si tu tiens, tu témoignes; si tu tombes, tu mens.",
         "choices": [
           {
             "label": "Inspecter la scène.",
@@ -668,7 +1049,7 @@
       "identity_refuse": {
         "id": "identity_refuse",
         "speaker": "Karine Leduc",
-        "text": "\"Ne pars pas dans une théorie. Pas maintenant.\" Elle dit théorie pour ne pas dire coup monté. C'est sa manière de t'enlever une arme sans lever la main.",
+        "text": "\"Ne pars pas dans une théorie. Pas maintenant.\" Elle dit théorie pour ne pas dire coup monté. C'est sa manière de t'enlever une arme sans lever la main. Refuser ton nom l'inquiète, parce que ça force la scène à chercher une autre signature.",
         "choices": [
           {
             "label": "Garder le soupçon et inspecter.",
@@ -679,7 +1060,7 @@
       "identity_perform": {
         "id": "identity_perform",
         "speaker": "Karine Leduc",
-        "text": "\"Voilà. Tu sais encore jouer le type qu'on appelle quand le quartier part en couille.\" Une promotion sale. Une insulte utile.",
+        "text": "\"Voilà. Tu sais encore jouer le type qu'on appelle quand le quartier part en couille.\" Une promotion sale. Une insulte utile. Si tu joues assez juste, les témoins parleront au personnage avant de comprendre qu'ils livrent des preuves.",
         "choices": [
           {
             "label": "Jouer le rôle et inspecter.",
@@ -690,7 +1071,7 @@
       "identity_defile": {
         "id": "identity_defile",
         "speaker": "Karine Leduc",
-        "text": "\"Ne transforme pas ça en numéro, Zinédine.\" Mais elle recule quand même. Elle sait que la honte utilisée volontairement salit aussi les témoins.",
+        "text": "\"Ne transforme pas ça en numéro, Zinédine.\" Mais elle recule quand même. Elle sait que la honte utilisée volontairement salit aussi les témoins. Le risque: elle pourra écrire instable avec plus de conviction.",
         "choices": [
           {
             "label": "Laisser la honte travailler et inspecter.",
@@ -735,7 +1116,6 @@
             "label": "Lire la page arrachée serrée dans ta main.",
             "next": "page_surface",
             "requiresFlag": "page_found",
-            "hiddenWhenFlag": "page_read",
             "important": true
           },
           {
@@ -800,8 +1180,93 @@
         ],
         "choices": [
           {
+            "label": "Comparer la photo officielle avec ta gueule actuelle.",
+            "check": {
+              "id": "official_photo_mismatch",
+              "voice": "honte_publique",
+              "supportVoice": "procedure",
+              "difficulty": 7,
+              "successNode": "photo_mismatch_success",
+              "failureNode": "photo_mismatch_failure"
+            },
+            "hiddenWhenFlag": "photo_mismatch_checked",
+            "important": true
+          },
+          {
             "label": "Revenir aux papiers.",
             "next": "papers_surface"
+          }
+        ]
+      },
+      "photo_mismatch_success": {
+        "id": "photo_mismatch_success",
+        "speaker": "Le Regard",
+        "voice": "honte_publique",
+        "text": "La photo officielle gagne contre toi à tous les coups: sèche, droite, tamponnée, sans odeur. C'est elle qu'un rapport croira. Le vivant devant Karine, lui, a les yeux rouges et la bouche acide. Quelqu'un a choisi le meilleur Zinédine pour accuser le pire.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "photo_mismatch_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "official_photo_can_outweigh_witness"
+          },
+          {
+            "type": "clue",
+            "clue": "La photo officielle des papiers donne une version plus crédible de Zinédine que le témoin vivant en manque."
+          },
+          {
+            "type": "clue",
+            "clue": "Synthèse identité: la mise en scène oppose un Zinédine administratif propre à un Zinédine vivant discréditable."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "honte_publique",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder cette version propre contre la tienne.",
+            "next": "papers_surface",
+            "important": true
+          }
+        ]
+      },
+      "photo_mismatch_failure": {
+        "id": "photo_mismatch_failure",
+        "speaker": "Le Dossier",
+        "voice": "procedure",
+        "text": "Tu regardes la photo et la honte prend toute la place. Mauvaise odeur, mauvais matin, mauvais homme. Tu rates la distance froide. Elle reste là pourtant: ce papier propre n'a pas besoin que tu sois coupable. Il a besoin que tu sois moins croyable que lui.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "photo_mismatch_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "photo_shame_blurs_reading"
+          },
+          {
+            "type": "clue",
+            "clue": "Même brouillée par la honte, la carte d'identité oppose un papier propre à un témoin vivant discréditable."
+          },
+          {
+            "type": "clue",
+            "clue": "La honte de Zinédine rend la mise en scène des papiers plus efficace contre lui."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "procedure",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Revenir aux papiers avant de te croire moins qu'eux.",
+            "next": "papers_surface",
+            "important": true
           }
         ]
       },
@@ -834,7 +1299,7 @@
       "papers_dose": {
         "id": "papers_dose",
         "speaker": "Ordonnance",
-        "text": "Dr Nadia Hami. Renouvellement. Anxiolytique. Posologie soigneuse, presque maternelle. Le papier a été plié proprement, comme si même ton manque devait rester présentable.",
+        "text": "Dr Nadia Hami. Renouvellement daté d'hier, 18 h 40. Anxiolytique. Posologie soigneuse, presque maternelle. Le papier a été plié proprement, comme si même ton manque devait rester présentable.",
         "effects": [
           {
             "type": "flag",
@@ -847,6 +1312,10 @@
           {
             "type": "clue",
             "clue": "Une ordonnance de calmants signée Dr Nadia Hami est dans les papiers de Zinédine."
+          },
+          {
+            "type": "clue",
+            "clue": "L'ordonnance de Hami est datée de la veille à 18 h 40."
           }
         ],
         "choices": [
@@ -907,7 +1376,7 @@
         "id": "hami_prescription_success",
         "speaker": "Le Sel",
         "voice": "memoire_saline",
-        "text": "Tu relis lentement. Renouvellement. Posologie. Signature propre. Ce n'est pas seulement une ordonnance dans tes papiers: c'est une preuve que Hami peut fabriquer une continuité médicale pendant que ta mémoire, elle, décroche. Une absence avec tampon reste une absence.",
+        "text": "Tu relis lentement. Hier, 18 h 40. Renouvellement. Posologie. Signature propre. Si Ahmed t'a cherché la veille, ce papier fabrique une autre chronologie: toi suivi, toi régulé, toi médicalement présentable pendant que ta mémoire décroche. Une absence avec tampon reste une absence.",
         "effects": [
           {
             "type": "flag",
@@ -923,7 +1392,7 @@
           },
           {
             "type": "clue",
-            "clue": "L'ordonnance de Hami peut servir à couvrir une absence de Zinédine sous une continuité médicale propre."
+            "clue": "L'ordonnance de Hami datée de la veille peut servir à couvrir une absence de Zinédine sous une continuité médicale propre."
           },
           {
             "type": "clue",
@@ -1034,6 +1503,19 @@
             "important": true
           },
           {
+            "label": "Lire comment on l'a déplacé sans poser les mains.",
+            "check": {
+              "id": "body_handling_read",
+              "voice": "nerfs",
+              "supportVoice": "memoire_saline",
+              "difficulty": 7,
+              "successNode": "body_handling_success",
+              "failureNode": "body_handling_failure"
+            },
+            "hiddenWhenFlag": "body_handling_checked",
+            "important": true
+          },
+          {
             "label": "Te souvenir de ce qu'Ahmed disait de toi.",
             "next": "body_ahmed_history",
             "important": true
@@ -1062,7 +1544,86 @@
         "choices": [
           {
             "label": "Revenir à Ahmed.",
-            "next": "body_read"
+            "next": "body_read",
+            "requiresFlag": "identity_chosen"
+          },
+          {
+            "label": "Revenir aux papiers posés sur lui.",
+            "next": "papers_reveal",
+            "hiddenWhenFlag": "identity_chosen",
+            "important": true
+          }
+        ]
+      },
+      "body_handling_success": {
+        "id": "body_handling_success",
+        "speaker": "Le Nerf",
+        "voice": "nerfs",
+        "text": "Tu ne touches pas. Tu comptes. Épaule coincée trop haut, pantalon tiré au genou, traces pâles aux poignets, froid qui ne vient pas du parking. Ahmed n'a pas été trouvé ici. Il a été amené comme une charge encombrante par des gens qui savaient fermer un hayon.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "body_handling_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "body_moved_as_load"
+          },
+          {
+            "type": "clue",
+            "clue": "Le corps d'Ahmed porte des signes de déplacement: poignets marqués, vêtements tirés et froid extérieur au parking."
+          },
+          {
+            "type": "clue",
+            "clue": "Synthèse corps: Ahmed a probablement été amené au P2 comme une charge, pas découvert mort sur place."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "nerfs",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder le déplacement comme preuve et revenir à Ahmed.",
+            "next": "body_read",
+            "important": true
+          }
+        ]
+      },
+      "body_handling_failure": {
+        "id": "body_handling_failure",
+        "speaker": "Le Ventre",
+        "voice": "faim",
+        "text": "Tu veux lire le corps, mais ton propre corps parle plus fort. Bile, sueur, main humide. Les détails se mélangent. Pourtant une chose reste: le froid n'appartient pas au P2, et la position d'Ahmed n'a rien d'une chute.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "body_handling_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "body_reading_compromised"
+          },
+          {
+            "type": "clue",
+            "clue": "Même malade, Zinédine voit que le froid du corps et sa position ne correspondent pas à une mort sur place."
+          },
+          {
+            "type": "clue",
+            "clue": "L'état de Zinédine compromet sa lecture du corps devant Karine."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "faim",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Respirer sale et revenir à Ahmed.",
+            "next": "body_read",
+            "important": true
           }
         ]
       },
@@ -1101,8 +1662,118 @@
         ],
         "choices": [
           {
+            "label": "Mesurer la nausée au lieu de la subir.",
+            "check": {
+              "id": "withdrawal_body_measure",
+              "voice": "faim",
+              "supportVoice": "memoire_saline",
+              "difficulty": 7,
+              "successNode": "withdrawal_measure_success",
+              "failureNode": "withdrawal_measure_failure"
+            },
+            "hiddenWhenFlag": "body_withdrawal_measured",
+            "important": true
+          },
+          {
             "label": "Revenir au coffre.",
-            "next": "trunk_hub"
+            "next": "trunk_hub",
+            "requiresFlag": "identity_chosen"
+          },
+          {
+            "label": "Ramener cette nausée aux papiers sur le mort.",
+            "next": "papers_reveal",
+            "hiddenWhenFlag": "identity_chosen",
+            "important": true
+          }
+        ]
+      },
+      "withdrawal_measure_success": {
+        "id": "withdrawal_measure_success",
+        "speaker": "Le Ventre",
+        "voice": "faim",
+        "text": "Tu laisses la nausée parler sans lui donner le volant. Alcool acide: toi. Javel froide: pas toi. Odeur de frigo sale: pas le P2. Ton corps est une ruine, mais une ruine avec capteurs encore branchés.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "body_withdrawal_measured"
+          },
+          {
+            "type": "flag",
+            "flag": "wreck_has_sensors"
+          },
+          {
+            "type": "clue",
+            "clue": "En séparant sa nausée des odeurs du coffre, Zinédine confirme Javel froide et déplacement du corps."
+          },
+          {
+            "type": "clue",
+            "clue": "Synthèse corps de Zinédine: même en ruine, ses sensations peuvent produire des indices."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "faim",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder le corps comme capteur et revenir.",
+            "next": "trunk_hub",
+            "requiresFlag": "identity_chosen",
+            "important": true
+          },
+          {
+            "label": "Garder le corps comme capteur et regarder les papiers.",
+            "next": "papers_reveal",
+            "hiddenWhenFlag": "identity_chosen",
+            "important": true
+          }
+        ]
+      },
+      "withdrawal_measure_failure": {
+        "id": "withdrawal_measure_failure",
+        "speaker": "Le Regard",
+        "voice": "honte_publique",
+        "text": "Tu essaies de transformer la nausée en méthode. Elle te transforme en spectacle. Un haut-le-cœur, une main sur la tôle, Karine qui note sans carnet. Mais dans le goût qui reste, il y a encore deux choses: Javel et vieux froid. Pas parking.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "body_withdrawal_measured"
+          },
+          {
+            "type": "flag",
+            "flag": "leduc_saw_withdrawal"
+          },
+          {
+            "type": "flag",
+            "flag": "withdrawal_seen"
+          },
+          {
+            "type": "clue",
+            "clue": "Zinédine échoue à contrôler sa nausée devant Karine mais confirme Javel et vieux froid."
+          },
+          {
+            "type": "clue",
+            "clue": "L'échec corporel de Zinédine donne à Karine une nouvelle façon de discréditer sa lecture."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "honte_publique",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Revenir au coffre avec la honte et l'odeur.",
+            "next": "trunk_hub",
+            "requiresFlag": "identity_chosen",
+            "important": true
+          },
+          {
+            "label": "Revenir aux papiers avec la honte et l'odeur.",
+            "next": "papers_reveal",
+            "hiddenWhenFlag": "identity_chosen",
+            "important": true
           }
         ]
       },
@@ -1131,6 +1802,19 @@
             "important": true
           },
           {
+            "label": "Prouver que le carnet a été retiré avant la mise en scène.",
+            "check": {
+              "id": "notebook_absence_read",
+              "voice": "main_gauche",
+              "supportVoice": "procedure",
+              "difficulty": 8,
+              "successNode": "notebook_absence_success",
+              "failureNode": "notebook_absence_failure"
+            },
+            "hiddenWhenFlag": "notebook_absence_checked",
+            "important": true
+          },
+          {
             "label": "Regarder mieux la doublure du coffre.",
             "next": "trunk_hub"
           }
@@ -1150,6 +1834,78 @@
           {
             "label": "Revenir au coffre.",
             "next": "trunk_hub"
+          }
+        ]
+      },
+      "notebook_absence_success": {
+        "id": "notebook_absence_success",
+        "speaker": "La Main Basse",
+        "voice": "main_gauche",
+        "text": "La poche intérieure garde un rectangle plus clair, poussière coupée net. Le carnet était là assez longtemps pour marquer le tissu, retiré assez récemment pour laisser sa forme. Les papiers de Zinédine ont été ajoutés après. Quelqu'un a enlevé le cerveau d'Ahmed et laissé ton nom à la place.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "notebook_absence_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "notebook_removed_before_papers"
+          },
+          {
+            "type": "clue",
+            "clue": "La trace propre dans la poche d'Ahmed indique que son carnet a été retiré avant l'ajout des papiers de Zinédine."
+          },
+          {
+            "type": "clue",
+            "clue": "Synthèse carnet: quelqu'un a pris les notes utiles d'Ahmed et laissé l'identité de Zinédine comme écran."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "main_gauche",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder la trace du carnet et revenir au coffre.",
+            "next": "trunk_hub",
+            "important": true
+          }
+        ]
+      },
+      "notebook_absence_failure": {
+        "id": "notebook_absence_failure",
+        "speaker": "Le Dossier",
+        "voice": "procedure",
+        "text": "Tu vas trop vite. Karine dit contamination avant même que tu touches. Elle gagne le mot, pas le fait. Le fait reste têtu: carnet absent, papiers présents, et aucune version propre n'explique pourquoi on vole les notes d'un mort en oubliant son cadavre.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "notebook_absence_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "karine_frames_contamination"
+          },
+          {
+            "type": "clue",
+            "clue": "Karine tente de transformer la lecture du carnet manquant en contamination de scène."
+          },
+          {
+            "type": "clue",
+            "clue": "Même contestée, l'absence du carnet reste incompatible avec les papiers de Zinédine laissés en évidence."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "procedure",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Laisser Karine gagner le mot et garder le fait.",
+            "next": "trunk_hub",
+            "important": true
           }
         ]
       },
@@ -1178,8 +1934,8 @@
         ],
         "choices": [
           {
-            "label": "Regarder ce que ta main a ramené.",
-            "next": "papers_reveal",
+            "label": "Lire la page avant que Karine la voie.",
+            "next": "page_surface",
             "important": true
           }
         ]
@@ -1208,8 +1964,8 @@
         ],
         "choices": [
           {
-            "label": "Lire les papiers avant que Karine utilise ta faiblesse.",
-            "next": "papers_reveal",
+            "label": "Lire la page avant que Karine utilise ta faiblesse.",
+            "next": "page_surface",
             "important": true
           }
         ]
@@ -1217,7 +1973,7 @@
       "page_surface": {
         "id": "page_surface",
         "speaker": "Page arrachée",
-        "text": "L'écriture d'Ahmed penche sous l'humidité: \"P2 caméra morte / badge chantier / Hami ?\" Au verso, griffonné comme une insulte utile: \"Si Le Gobelet oublie, Amar sait. Sofiane a senti.\"",
+        "text": "L'écriture d'Ahmed penche sous l'humidité: \"P2 caméra morte / badge chantier / Hami ?\" Au verso, griffonné comme une insulte utile: \"Si Le Gobelet oublie, Amar sait. Sofiane a senti.\" Sous la dernière ligne, presque effacée: \"il était déjà mort dans leurs papiers.\"",
         "effects": [
           {
             "type": "flag",
@@ -1230,6 +1986,10 @@
           {
             "type": "clue",
             "clue": "Au verso de la page: Si Le Gobelet oublie, Amar sait. Sofiane a senti."
+          },
+          {
+            "type": "clue",
+            "clue": "La page d'Ahmed suggère qu'une personne était déjà morte administrativement avant le corps."
           }
         ],
         "choices": [
@@ -1478,8 +2238,97 @@
         ],
         "choices": [
           {
+            "label": "Forcer la mémoire du froid.",
+            "check": {
+              "id": "page_cold_memory",
+              "voice": "memoire_saline",
+              "supportVoice": "procedure",
+              "difficulty": 8,
+              "successNode": "page_cold_success",
+              "failureNode": "page_cold_failure"
+            },
+            "hiddenWhenFlag": "page_cold_checked",
+            "important": true
+          },
+          {
             "label": "Revenir à la page.",
             "next": "page_surface"
+          }
+        ]
+      },
+      "page_cold_success": {
+        "id": "page_cold_success",
+        "speaker": "Le Sel",
+        "voice": "memoire_saline",
+        "text": "Tu fermes les yeux et le papier devient une pièce: carrelage, bonde au sol, Javel diluée trop vite, néon blanc, chauffage trop haut dans le couloir. Pas une morgue. Pas un coffre. Un local sanitaire municipal où on nettoie assez pour croire qu'on efface.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "page_cold_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "sanitary_room_trail"
+          },
+          {
+            "type": "clue",
+            "clue": "Le froid humide de la page pointe vers un local sanitaire municipal lavé à la Javel."
+          },
+          {
+            "type": "clue",
+            "clue": "Synthèse froid: la page et peut-être le corps sont passés par un local lavé avant le coffre."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "memoire_saline",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder le local sanitaire comme piste et revenir à la page.",
+            "next": "page_surface",
+            "important": true
+          }
+        ]
+      },
+      "page_cold_failure": {
+        "id": "page_cold_failure",
+        "speaker": "La Dose",
+        "parasite": "dose",
+        "text": "Tu forces trop. Le froid devient migraine, la Javel devient salive amère, et La Dose propose une solution simple: arrêter de chercher dans les odeurs et trouver une main stable. Mauvaise proposition. Bonne direction quand même: local lavé, papier humide, santé municipale qui sait faire propre.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "dose_heard"
+          },
+          {
+            "type": "flag",
+            "flag": "page_cold_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "dose_blurs_cold_trail"
+          },
+          {
+            "type": "clue",
+            "clue": "Même brouillée par La Dose, la piste du froid renvoie à un local lavé et à la santé municipale."
+          },
+          {
+            "type": "clue",
+            "clue": "La Dose détourne la lecture matérielle de la page vers le besoin de stabilité."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "faim",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Refuser la solution simple et revenir à la page.",
+            "next": "page_surface",
+            "important": true
           }
         ]
       },
@@ -1508,7 +2357,7 @@
       "body_precheck": {
         "id": "body_precheck",
         "speaker": "Corps dans le coffre",
-        "text": "Un vieux. Plus vraiment une silhouette: un visage creusé, des vêtements d'habitant, pas de sang évident. Il a été déplacé, rangé, traité comme un problème logistique. Les papiers sur lui te regardent plus fort que ses yeux fermés.",
+        "text": "Un vieux. Plus vraiment une silhouette: un visage creusé, des vêtements d'habitant, pas de sang évident. La cicatrice près de l'oreille t'accroche la mémoire: Ahmed, probablement Ahmed. Il a été déplacé, rangé, traité comme un problème logistique. Les papiers sur lui te regardent plus fort que ses yeux fermés.",
         "effects": [
           {
             "type": "flag",
@@ -1516,7 +2365,7 @@
           },
           {
             "type": "clue",
-            "clue": "Le corps dans le coffre est celui d'un vieil homme, sans blessure évidente à distance."
+            "clue": "La cicatrice près de l'oreille fait penser que le corps dans le coffre est Ahmed Berrichi."
           }
         ],
         "choices": [
@@ -1760,8 +2609,93 @@
             "important": true
           },
           {
+            "label": "Lui arracher qui elle a appelé avant toi.",
+            "check": {
+              "id": "leduc_first_call",
+              "voice": "procedure",
+              "supportVoice": "nerfs",
+              "difficulty": 7,
+              "successNode": "first_call_success",
+              "failureNode": "first_call_failure"
+            },
+            "hiddenWhenFlag": "leduc_first_call_checked",
+            "important": true
+          },
+          {
             "label": "Quitter Karine.",
             "close": true
+          }
+        ]
+      },
+      "first_call_success": {
+        "id": "first_call_success",
+        "speaker": "Le Dossier",
+        "voice": "procedure",
+        "text": "Tu la coupes au bon endroit: pas sur l'émotion, sur l'ordre des appels. Karine lâche un nom avant de le reprendre: cabinet du maire. Puis Keller Sécurité, prestataire badges. Les secours, eux, viennent après. La version officielle n'est pas en attente. Elle est déjà en montage.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "leduc_first_call_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "leduc_called_cabinet_first"
+          },
+          {
+            "type": "clue",
+            "clue": "Karine a appelé le cabinet du maire et un prestataire sécurité avant les secours."
+          },
+          {
+            "type": "clue",
+            "clue": "Synthèse Karine: la version officielle se prépare avant la procédure."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "procedure",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder l'ordre des appels et revenir aux questions.",
+            "next": "start",
+            "important": true
+          }
+        ]
+      },
+      "first_call_failure": {
+        "id": "first_call_failure",
+        "speaker": "Le Regard",
+        "voice": "honte_publique",
+        "text": "Tu vas trop vite. Ta voix accroche sur un mot, ta main trahit le reste. Karine ne donne pas les noms. Elle gagne quelque chose de presque aussi dangereux: une raison de dire que tu l'agresses pendant qu'elle gère un incident.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "leduc_first_call_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "leduc_can_frame_agitation"
+          },
+          {
+            "type": "clue",
+            "clue": "Karine peut transformer la confrontation sur ses appels en agitation de Zinédine."
+          },
+          {
+            "type": "clue",
+            "clue": "Même sans les noms, les appels de Karine prouvent qu'une version officielle est en préparation."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "honte_publique",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Ravaler l'humiliation et revenir aux questions.",
+            "next": "start",
+            "important": true
           }
         ]
       },
@@ -1902,19 +2836,104 @@
         "text": "\"Personne n'est juste vieux et chiant quand il a les bonnes dates.\" Elle se reprend. Trop tard. \"Enfin. On ne sait pas encore s'il les avait.\"",
         "choices": [
           {
+            "label": "La coincer sur ces bonnes dates.",
+            "check": {
+              "id": "karine_good_dates_slip",
+              "voice": "procedure",
+              "supportVoice": "bouches",
+              "difficulty": 8,
+              "successNode": "good_dates_success",
+              "failureNode": "good_dates_failure"
+            },
+            "hiddenWhenFlag": "karine_dates_checked",
+            "important": true
+          },
+          {
             "label": "Noter qu'elle a lâché trop vite.",
             "next": "start"
+          }
+        ]
+      },
+      "good_dates_success": {
+        "id": "good_dates_success",
+        "speaker": "Le Dossier",
+        "voice": "procedure",
+        "text": "Tu ne lui laisses pas le temps de repeindre la phrase. Bonnes dates: pannes, badges, relogements, interventions. Karine savait qu'Ahmed n'avait pas seulement des plaintes. Il avait un calendrier capable de mettre des services dans le même couloir.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "karine_dates_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "karine_knows_ahmed_dates"
+          },
+          {
+            "type": "clue",
+            "clue": "Karine sait qu'Ahmed détenait des dates reliant pannes, badges, relogements et interventions."
+          },
+          {
+            "type": "clue",
+            "clue": "Synthèse Ahmed: les dates de son carnet menaçaient plusieurs services municipaux à la fois."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "procedure",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder les dates comme menace et revenir.",
+            "next": "start",
+            "important": true
+          }
+        ]
+      },
+      "good_dates_failure": {
+        "id": "good_dates_failure",
+        "speaker": "Les Bouches",
+        "voice": "bouches",
+        "text": "Tu répètes bonnes dates avec trop de faim. Karine entend l'accusation et range son visage. Elle ne donne plus rien. Mais la reprise trop rapide dit assez: ce n'est pas Ahmed qui était dangereux. C'est son calendrier.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "karine_dates_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "leduc_can_frame_agitation"
+          },
+          {
+            "type": "clue",
+            "clue": "Karine se ferme quand Zinédine insiste sur les bonnes dates d'Ahmed."
+          },
+          {
+            "type": "clue",
+            "clue": "Même sans détail, la réaction de Karine confirme que le calendrier d'Ahmed est dangereux."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "bouches",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Revenir avant qu'elle classe ça en agitation.",
+            "next": "start",
+            "important": true
           }
         ]
       },
       "hami_gloves": {
         "id": "hami_gloves",
         "speaker": "Karine Leduc",
-        "text": "\"La docteure Hami relève du centre municipal de santé. Pas de la rénovation.\" Elle sépare les services comme on met des gants avant de toucher un corps.",
+        "text": "\"La docteure Hami relève du centre municipal de santé. Pas de la rénovation.\" Elle sépare les services comme on met des gants avant de toucher un corps. \"Les registres santé ne sortent pas parce que tu as vu un coffre.\"",
         "effects": [
           {
             "type": "clue",
-            "clue": "Hami est protégée par la séparation officielle des services municipaux."
+            "clue": "Hami est protégée par la séparation officielle des services municipaux et les registres du centre de santé."
           }
         ],
         "choices": [
@@ -1931,14 +2950,27 @@
       "hami_boundary": {
         "id": "hami_boundary",
         "speaker": "Karine Leduc",
-        "text": "\"Alors on le prouve avant de dire son nom trop fort.\" Elle regarde ta main. \"Et toi, tu restes stable.\"",
+        "text": "\"Alors on le prouve avant de dire son nom trop fort.\" Elle regarde ta main. \"Et toi, tu restes stable. Le premier qui demande un registre santé avec les yeux rouges perd avant d'ouvrir la bouche.\"",
         "effects": [
           {
             "type": "clue",
-            "clue": "Karine associe la piste Hami à la stabilité médicale de Zinédine."
+            "clue": "Karine associe la piste Hami aux registres de santé et à la crédibilité médicale de Zinédine."
           }
         ],
         "choices": [
+          {
+            "label": "Exiger les registres santé sans trembler dans sa phrase.",
+            "check": {
+              "id": "hami_register_pressure",
+              "voice": "procedure",
+              "supportVoice": "honte_publique",
+              "difficulty": 8,
+              "successNode": "hami_register_success",
+              "failureNode": "hami_register_failure"
+            },
+            "hiddenWhenFlag": "hami_register_checked",
+            "important": true
+          },
           {
             "label": "Quitter Karine.",
             "close": true
@@ -1946,6 +2978,77 @@
           {
             "label": "Revenir.",
             "next": "start"
+          }
+        ]
+      },
+      "hami_register_success": {
+        "id": "hami_register_success",
+        "speaker": "Karine Leduc",
+        "text": "Tu poses la demande comme un dossier, pas comme une panique. Registres du centre, entrées de service, renouvellement Hami d'hier 18 h 40. Karine serre la mâchoire. \"Je peux demander une conservation. Pas une copie. Et tu n'as pas entendu ça de moi.\"",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "hami_register_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "hami_register_preservation_possible"
+          },
+          {
+            "type": "clue",
+            "clue": "Karine admet qu'une conservation des registres du centre de santé peut être demandée autour de Hami."
+          },
+          {
+            "type": "clue",
+            "clue": "Synthèse Hami: les registres santé et l'ordonnance de 18 h 40 deviennent une piste vérifiable."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "procedure",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder la conservation des registres et revenir.",
+            "next": "start",
+            "important": true
+          }
+        ]
+      },
+      "hami_register_failure": {
+        "id": "hami_register_failure",
+        "speaker": "Le Regard",
+        "voice": "honte_publique",
+        "text": "Tu dis registres, mais ta voix dit manque. Karine entend le deuxième mot. Elle recule d'un cran: \"Tu veux ouvrir un dossier médical dans ton état ?\" Elle gagne la façade. Elle perd quand même un détail: elle ne nie pas les entrées de service du centre.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "hami_register_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "hami_register_request_discredited"
+          },
+          {
+            "type": "clue",
+            "clue": "Karine discrédite Zinédine quand il demande les registres santé dans un état visible de manque."
+          },
+          {
+            "type": "clue",
+            "clue": "Même en refusant la demande, Karine ne nie pas l'existence d'entrées de service au centre de santé."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "honte_publique",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Ravaler le dossier médical et revenir.",
+            "next": "start",
+            "important": true
           }
         ]
       }
@@ -2043,8 +3146,91 @@
             "important": true
           },
           {
+            "label": "Lui faire cracher le nom du prestataire badges.",
+            "check": {
+              "id": "amar_vendor_name",
+              "voice": "bouches",
+              "supportVoice": "procedure",
+              "difficulty": 8,
+              "successNode": "vendor_name_success",
+              "failureNode": "vendor_name_failure"
+            },
+            "hiddenWhenFlag": "amar_vendor_checked",
+            "important": true
+          },
+          {
             "label": "Revenir.",
             "next": "start"
+          }
+        ]
+      },
+      "vendor_name_success": {
+        "id": "vendor_name_success",
+        "speaker": "Amar Boudiaf",
+        "text": "\"Keller Sécurité.\" Amar crache le nom comme une graine. \"Ils changent les lecteurs, ils gardent les anciens accès actifs parce que ça arrange tout le monde, et après ils appellent ça transition.\" Il te regarde la main. \"Ton badge, ils peuvent le faire parler même si toi tu te tais.\"",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "amar_vendor_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "keller_security_named"
+          },
+          {
+            "type": "clue",
+            "clue": "Amar nomme Keller Sécurité comme prestataire lié aux lecteurs de badges du P2."
+          },
+          {
+            "type": "clue",
+            "clue": "Keller Sécurité garderait d'anciens accès actifs pendant les transitions de lecteurs."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "bouches",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder Keller Sécurité dans le dossier.",
+            "next": "start",
+            "important": true
+          }
+        ]
+      },
+      "vendor_name_failure": {
+        "id": "vendor_name_failure",
+        "speaker": "Amar Boudiaf",
+        "text": "\"Tu veux un nom pendant que t'as encore la bouche qui sent le coffre ?\" Amar se ferme. Pas complètement. Il laisse passer des initiales sur une facture froissée: K.S., intervention lecteur P2, semaine dernière. Pas assez pour accuser. Assez pour demander le bon papier.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "amar_vendor_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "vendor_initials_seen"
+          },
+          {
+            "type": "clue",
+            "clue": "Même sans nom complet, Amar évoque une facture K.S. pour une intervention sur le lecteur P2."
+          },
+          {
+            "type": "clue",
+            "clue": "L'état de Zinédine rend Amar moins disposé à nommer directement le prestataire."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "honte_publique",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder les initiales et revenir.",
+            "next": "start",
+            "important": true
           }
         ]
       },
@@ -2129,15 +3315,98 @@
             "important": true
           },
           {
+            "label": "Le pousser sur ce qu'Ahmed voulait te remettre.",
+            "check": {
+              "id": "amar_last_warning",
+              "voice": "bouches",
+              "supportVoice": "procedure",
+              "difficulty": 7,
+              "successNode": "last_warning_success",
+              "failureNode": "last_warning_failure"
+            },
+            "hiddenWhenFlag": "amar_last_warning_checked",
+            "important": true
+          },
+          {
             "label": "Revenir.",
             "next": "start"
+          }
+        ]
+      },
+      "last_warning_success": {
+        "id": "last_warning_success",
+        "speaker": "Amar Boudiaf",
+        "text": "\"Il voulait pas te faire un discours. Il voulait te glisser une page et te dire d'aller au local technique avant Hami.\" Amar baisse enfin la voix. \"Il disait que si tu disparaissais encore une nuit, il y aurait un papier propre pour expliquer pourquoi.\"",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "amar_last_warning_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "ahmed_wanted_to_warn_zinedine"
+          },
+          {
+            "type": "clue",
+            "clue": "Ahmed voulait remettre une page à Zinédine et l'envoyer au local technique avant Hami."
+          },
+          {
+            "type": "clue",
+            "clue": "Amar dit qu'un papier médical propre pouvait couvrir une nouvelle disparition de Zinédine."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "bouches",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder l'avertissement d'Ahmed et revenir.",
+            "next": "start",
+            "important": true
+          }
+        ]
+      },
+      "last_warning_failure": {
+        "id": "last_warning_failure",
+        "speaker": "Amar Boudiaf",
+        "text": "\"Tu veux que je te sauve ta mémoire à ta place ?\" Amar claque ses clés dans sa paume. Il ne donne pas tout. Mais le morceau tombe quand même: Ahmed ne parlait pas d'un meurtre. Il parlait d'une absence que quelqu'un saurait justifier après coup.",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "amar_last_warning_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "amar_withholds_warning"
+          },
+          {
+            "type": "clue",
+            "clue": "Amar retient une partie de l'avertissement mais confirme qu'Ahmed craignait une absence justifiée après coup."
+          },
+          {
+            "type": "clue",
+            "clue": "Ahmed pensait qu'un papier médical pouvait effacer une absence réelle."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "honte_publique",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Encaisser et revenir.",
+            "next": "start",
+            "important": true
           }
         ]
       },
       "hami": {
         "id": "hami",
         "speaker": "Amar Boudiaf",
-        "text": "\"La docteure parle doux. Les gens doux font signer des papiers que les gens brutaux n'obtiennent jamais. Toi, elle te tient par la main stable.\"",
+        "text": "\"La docteure parle doux. Les gens doux font signer des papiers que les gens brutaux n'obtiennent jamais. Ahmed disait qu'elle savait dater une absence mieux qu'un gardien date une panne. Toi, elle te tient par la main stable.\"",
         "effects": [
           {
             "type": "flag",
@@ -2145,7 +3414,7 @@
           },
           {
             "type": "clue",
-            "clue": "Amar pense que Hami tient Zinédine par ses prescriptions."
+            "clue": "Amar pense que Hami tient Zinédine par ses prescriptions et ses papiers d'absence."
           }
         ],
         "choices": [
@@ -2207,7 +3476,7 @@
       "start": {
         "id": "start",
         "speaker": "Sofiane Zekraoui",
-        "text": "Sofiane reste collé à la palissade, capuche basse, joint presque éteint entre deux doigts. Il ne joue pas au dur. Il surveille les issues, les mots, les gens qui peuvent répéter. La fumée lui donne une raison de ne pas trembler.",
+        "text": "La palissade garde Sofiane tant qu'il accepte encore d'y être: capuche basse, joint presque éteint entre deux doigts, yeux sur les issues et les gens qui peuvent répéter. S'il a fui, elle garde seulement sa place vide, son joint écrasé et les mots qu'il a lâchés trop tard.",
         "effects": [
           {
             "type": "flag",
@@ -2220,37 +3489,151 @@
         ],
         "choices": [
           {
+            "label": "Lire la place vide qu'il a laissée.",
+            "next": "after_fled",
+            "requiresFlag": "sofiane_fled",
+            "important": true
+          },
+          {
             "label": "\"T'as vu l'utilitaire arriver ?\"",
             "next": "saw_van",
+            "hiddenWhenFlag": "sofiane_fled",
             "important": true
           },
           {
             "label": "\"Tu fumes pour pas parler, ou pour pas trembler ?\"",
-            "next": "joint"
+            "next": "joint",
+            "hiddenWhenFlag": "sofiane_fled"
           },
           {
             "label": "\"La caméra P2, elle est morte depuis quand ?\"",
             "next": "camera",
+            "hiddenWhenFlag": "sofiane_fled",
             "important": true
           },
           {
             "label": "\"Badge chantier. Tu connais ?\"",
             "next": "badge",
+            "hiddenWhenFlag": "sofiane_fled",
             "important": true
           },
           {
             "label": "\"Hami. Ce nom te parle ?\"",
             "next": "hami",
             "requiresFlag": "hami_named",
+            "hiddenWhenFlag": "sofiane_fled",
             "important": true
           },
           {
             "label": "\"Pourquoi tu m'appelles Le Gobelet ?\"",
-            "next": "gobelet"
+            "next": "gobelet",
+            "hiddenWhenFlag": "sofiane_fled"
+          },
+          {
+            "label": "Le retenir avant qu'il se fonde dans la palissade.",
+            "check": {
+              "id": "sofiane_keep_talking",
+              "voice": "bouches",
+              "supportVoice": "nerfs",
+              "difficulty": 7,
+              "successNode": "keep_talking_success",
+              "failureNode": "keep_talking_failure"
+            },
+            "hiddenWhenFlag": "sofiane_keep_talking_checked",
+            "important": true
           },
           {
             "label": "Le laisser reprendre son souffle.",
+            "hiddenWhenFlag": "sofiane_fled",
             "close": true
+          }
+        ]
+      },
+      "after_fled": {
+        "id": "after_fled",
+        "speaker": "Palissade",
+        "text": "Sofiane n'est plus là. La place vide dit assez: tu as serré trop fort ou trop juste, et un témoin a compris qu'il venait de coûter cher à quelqu'un. Il reste le joint écrasé, la Javel avant Karine, le logo santé sous le badge, et ta honte de l'avoir fait courir.",
+        "effects": [
+          {
+            "type": "clue",
+            "clue": "Après sa fuite, Sofiane n'est plus disponible: ses derniers mots restent la seule piste exploitable."
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder ce qu'il a laissé et ne pas courir derrière.",
+            "close": true,
+            "important": true
+          }
+        ]
+      },
+      "keep_talking_success": {
+        "id": "keep_talking_success",
+        "speaker": "Sofiane Zekraoui",
+        "text": "Tu ne le bloques pas avec ton corps. Tu bloques la sortie avec son intérêt. \"Si tu pars maintenant, ils vont dire témoin toxico et fermer ta bouche à ta place.\" Sofiane ravale la fumée. \"Le gars au badge chantier est revenu après. Il regardait toi, pas le coffre.\"",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "sofiane_keep_talking_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "sofiane_saw_returning_worker"
+          },
+          {
+            "type": "clue",
+            "clue": "Sofiane a vu l'homme au badge chantier revenir après la découverte et regarder Zinédine."
+          },
+          {
+            "type": "clue",
+            "clue": "Synthèse témoin: quelqu'un surveillait la réaction de Zinédine plus que le coffre."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "bouches",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder Sofiane dans la scène.",
+            "next": "start",
+            "important": true
+          }
+        ]
+      },
+      "keep_talking_failure": {
+        "id": "keep_talking_failure",
+        "speaker": "Sofiane Zekraoui",
+        "text": "Tu mets trop de pression. Il recule, joint écrasé, capuche déjà tournée. Avant de filer, il lâche une phrase comme on jette un caillou derrière soi: \"Le badge avait pas juste chantier. Y avait un logo du centre de santé dessous. J'ai pas vu plus.\"",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "sofiane_keep_talking_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "sofiane_fled"
+          },
+          {
+            "type": "clue",
+            "clue": "Sofiane fuit mais évoque un logo du centre de santé sous le badge chantier."
+          },
+          {
+            "type": "clue",
+            "clue": "La piste témoin relie badge chantier et centre de santé même après l'échec."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "nerfs",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Le laisser filer et garder le détail.",
+            "close": true,
+            "important": true
           }
         ]
       },
@@ -2331,6 +3714,19 @@
         ],
         "choices": [
           {
+            "label": "Lire ce que sa fumée dit de toi.",
+            "check": {
+              "id": "coping_mirror_read",
+              "voice": "bouches",
+              "supportVoice": "faim",
+              "difficulty": 7,
+              "successNode": "coping_mirror_success",
+              "failureNode": "coping_mirror_failure"
+            },
+            "hiddenWhenFlag": "sofiane_coping_mirror_checked",
+            "important": true
+          },
+          {
             "label": "\"Garde tes leçons pour quelqu'un d'autre.\"",
             "next": "gobelet"
           },
@@ -2341,6 +3737,81 @@
           {
             "label": "Revenir.",
             "next": "start"
+          }
+        ]
+      },
+      "coping_mirror_success": {
+        "id": "coping_mirror_success",
+        "speaker": "Les Bouches",
+        "voice": "bouches",
+        "text": "Tu ne lui fais pas la morale. Tu poses le miroir entre vous: lui met de la fumée devant le coffre, toi tu mets alcool et cachets devant les heures. Sofiane entend la différence entre accusation et reconnaissance. \"L'odeur venait déjà du coffre avant qu'ils l'ouvrent. Et le gars au badge a lavé ses gants dans une bouteille d'eau.\"",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "sofiane_coping_mirror_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "sofiane_trusts_wreck"
+          },
+          {
+            "type": "clue",
+            "clue": "Sofiane précise que l'odeur venait du coffre avant l'ouverture et que l'homme au badge a rincé ses gants."
+          },
+          {
+            "type": "clue",
+            "clue": "Zinédine gagne la confiance de Sofiane en reconnaissant leur usage parallèle de la fumée, de l'alcool et des calmants."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "bouches",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Garder la confiance fragile et revenir.",
+            "next": "start",
+            "important": true
+          }
+        ]
+      },
+      "coping_mirror_failure": {
+        "id": "coping_mirror_failure",
+        "speaker": "Sofiane Zekraoui",
+        "text": "\"Me compare pas à toi.\" Il recule sec. Tu as voulu lire son joint avec ta bouche de manque, il a entendu jugement. Il file presque, puis lâche quand même: \"Ça sentait la Javel avant Karine. Avant toi. Voilà.\"",
+        "effects": [
+          {
+            "type": "flag",
+            "flag": "sofiane_coping_mirror_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "sofiane_keep_talking_checked"
+          },
+          {
+            "type": "flag",
+            "flag": "sofiane_fled"
+          },
+          {
+            "type": "clue",
+            "clue": "Sofiane se ferme quand Zinédine moralise son joint, mais confirme que la Javel précédait l'ouverture du coffre."
+          },
+          {
+            "type": "clue",
+            "clue": "L'état de manque de Zinédine peut faire fuir un témoin même quand il obtient une information."
+          },
+          {
+            "type": "voice_bump",
+            "voice": "honte_publique",
+            "amount": 1
+          }
+        ],
+        "choices": [
+          {
+            "label": "Le laisser filer avec l'odeur en tête.",
+            "close": true,
+            "important": true
           }
         ]
       },
@@ -2381,11 +3852,11 @@
       "hami": {
         "id": "hami",
         "speaker": "Sofiane Zekraoui",
-        "text": "\"Hami ? Les vieux sortent de chez elle avec des papiers propres et des yeux pas tranquilles. Ahmed disait qu'elle savait signer une absence sans lever la voix. Moi, je l'ai surtout vu changer de trottoir quand il passait devant le centre de santé.\"",
+        "text": "\"Hami ? Les vieux sortent de chez elle avec des papiers propres et des yeux pas tranquilles. Ahmed disait qu'elle savait signer une absence sans lever la voix. Moi, je l'ai vu attendre derrière le centre de santé, pas devant. Comme quelqu'un qui évite les caméras et les salles d'attente.\"",
         "effects": [
           {
             "type": "clue",
-            "clue": "Sofiane dit qu'Ahmed avait peur de la Dr Hami et de ses papiers propres."
+            "clue": "Sofiane dit qu'Ahmed évitait l'entrée du centre de santé lié à la Dr Hami."
           }
         ],
         "choices": [

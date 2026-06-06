@@ -58,8 +58,8 @@ async function seedGame(page: Page, state: unknown) {
 async function sampleCanvasPixels(canvas: Locator) {
   return await canvas.evaluate((element) => {
     const source = element as HTMLCanvasElement
-    const sampleWidth = 32
-    const sampleHeight = 32
+    const sampleWidth = 64
+    const sampleHeight = 36
     const scratch = document.createElement('canvas')
     scratch.width = sampleWidth
     scratch.height = sampleHeight
@@ -72,6 +72,8 @@ async function sampleCanvasPixels(canvas: Locator) {
         sourceHeight: source.height,
         sampledPixels: sampleWidth * sampleHeight,
         nonWhitePixels: 0,
+        nonDarkPixels: 0,
+        colorBuckets: 0,
       }
     }
 
@@ -80,6 +82,7 @@ async function sampleCanvasPixels(canvas: Locator) {
     const { data } = context.getImageData(0, 0, sampleWidth, sampleHeight)
     const colors = new Set<string>()
     let nonWhitePixels = 0
+    let nonDarkPixels = 0
 
     for (let index = 0; index < data.length; index += 4) {
       const red = data[index]
@@ -93,6 +96,10 @@ async function sampleCanvasPixels(canvas: Locator) {
         nonWhitePixels += 1
         colors.add(`${red >> 4}:${green >> 4}:${blue >> 4}`)
       }
+
+      if (visible && red + green + blue > 64) {
+        nonDarkPixels += 1
+      }
     }
 
     return {
@@ -100,6 +107,7 @@ async function sampleCanvasPixels(canvas: Locator) {
       sourceHeight: source.height,
       sampledPixels: sampleWidth * sampleHeight,
       nonWhitePixels,
+      nonDarkPixels,
       colorBuckets: colors.size,
     }
   })
@@ -111,15 +119,42 @@ async function expectCanvasToHaveRenderedPixels(canvas: Locator) {
       async () => {
         const pixels = await sampleCanvasPixels(canvas)
 
-        return pixels.nonWhitePixels
+        return (
+          pixels.sourceWidth >= 1280 &&
+          pixels.sourceHeight >= 720 &&
+          pixels.nonWhitePixels > 24 &&
+          pixels.nonDarkPixels > 80 &&
+          pixels.colorBuckets > 16
+        )
       },
-      { message: 'canvas should contain non-white rendered pixels' },
+      { message: 'canvas should contain varied rendered pixels' },
     )
-    .toBeGreaterThan(24)
+    .toBe(true)
 
   const pixels = await sampleCanvasPixels(canvas)
   expect(pixels.sourceWidth).toBeGreaterThanOrEqual(1280)
   expect(pixels.sourceHeight).toBeGreaterThanOrEqual(720)
+  expect(pixels.nonDarkPixels).toBeGreaterThan(80)
+  expect(pixels.colorBuckets).toBeGreaterThan(16)
+}
+
+async function expectSceneReady(page: Page) {
+  await expect(page.locator('#game-stage')).toHaveAttribute('data-scene-ready', 'true')
+}
+
+async function expectImageNaturalSize(page: Page, src: string, width: number, height: number) {
+  const size = await page.evaluate(async (imageSrc) => {
+    return await new Promise<{ width: number; height: number; complete: boolean }>((resolve) => {
+      const image = new Image()
+      image.onload = () => resolve({ width: image.naturalWidth, height: image.naturalHeight, complete: true })
+      image.onerror = () => resolve({ width: 0, height: 0, complete: false })
+      image.src = new URL(imageSrc, window.location.href).toString()
+    })
+  }, src)
+
+  expect(size.complete).toBe(true)
+  expect(size.width).toBe(width)
+  expect(size.height).toBe(height)
 }
 
 async function expectPageHasNoForcedScroll(page: Page) {
@@ -221,7 +256,7 @@ test('renders Phaser canvas and grouped case clues from a saved game', async ({ 
   expect(canvasBox!.height).toBeGreaterThan(60)
   await expectCanvasToHaveRenderedPixels(canvas)
 
-  await expect(page.locator('.clue-group-heading')).toContainText([
+  await expect(page.locator('.clue-group-heading span:first-child')).toHaveText([
     'Corps / Ahmed',
     'Caméra P2',
     'Badge / accès',
@@ -272,6 +307,65 @@ test('keeps desktop play surfaces bounded without page scroll', async ({ page })
   }
 })
 
+test('keeps mobile play surfaces bounded with an internal case file scroll', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await seedGame(page, progressedSave)
+
+  await gotoApp(page)
+
+  await expect(page.locator('#game-stage canvas')).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Dossier fermé' })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Cadrer Zinédine' })).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.locator('.case-panel')).toBeHidden()
+  await expectPageHasNoForcedScroll(page)
+  await expectNoHorizontalDocumentOverflow(page)
+  await expectInViewport(page, '.stage-viewport')
+
+  const layout = await page.evaluate(() => {
+    const measure = (selector: string) => {
+      const element = document.querySelector(selector)
+      const box = element?.getBoundingClientRect()
+
+      return {
+        bottom: box?.bottom ?? 0,
+        clientWidth: element?.clientWidth ?? 0,
+        height: box?.height ?? 0,
+        scrollWidth: element?.scrollWidth ?? 0,
+        scrollHeight: element?.scrollHeight ?? 0,
+        clientHeight: element?.clientHeight ?? 0,
+        width: box?.width ?? 0,
+      }
+    }
+
+    return {
+      viewport: measure('.stage-viewport'),
+      stage: measure('.stage-wrap'),
+      panel: measure('.case-panel'),
+    }
+  })
+
+  expect(layout.viewport.height).toBeGreaterThan(360)
+  expect(layout.stage.height).toBeGreaterThan(300)
+  expect(layout.stage.width).toBeGreaterThan(layout.viewport.clientWidth)
+  expect(layout.viewport.scrollWidth).toBeGreaterThan(layout.viewport.clientWidth)
+
+  await page.getByRole('button', { name: 'Dossier fermé' }).click()
+  await expect(page.locator('.case-panel')).toBeVisible()
+  await expectInViewport(page, '.case-panel')
+
+  const panel = await page.evaluate(() => {
+    const element = document.querySelector('.case-panel')
+    return {
+      height: element?.getBoundingClientRect().height ?? 0,
+      scrollHeight: element?.scrollHeight ?? 0,
+      clientHeight: element?.clientHeight ?? 0,
+    }
+  })
+
+  expect(panel.height).toBeGreaterThan(320)
+  expect(panel.scrollHeight).toBeGreaterThan(panel.clientHeight)
+})
+
 test('keeps the action prompt attached to the rendered scene @responsive', async ({ page }) => {
   await seedGame(page, progressedSave)
 
@@ -281,7 +375,16 @@ test('keeps the action prompt attached to the rendered scene @responsive', async
   const prompt = page.getByRole('button', { name: 'Regarder le téléphone' })
 
   await expect(canvas).toBeVisible()
+  await expectSceneReady(page)
   await expectCanvasToHaveRenderedPixels(canvas)
+  const compactWidth = (page.viewportSize()?.width ?? 0) < 900
+
+  if (compactWidth) {
+    await page.locator('.stage-viewport').evaluate((element) => {
+      element.scrollLeft = element.scrollWidth * (610 / 1280) - element.clientWidth / 2
+    })
+  }
+
   const canvasBox = await canvas.boundingBox()
   expect(canvasBox).not.toBeNull()
   await page.mouse.move(canvasBox!.x + (610 / 1280) * canvasBox!.width, canvasBox!.y + (438 / 720) * canvasBox!.height, {
@@ -315,12 +418,49 @@ test('keeps the action prompt attached to the rendered scene @responsive', async
   expect(geometry.canvas).toBeDefined()
   expect(geometry.prompt).toBeDefined()
   expect(geometry.stage).toBeDefined()
-  expect(geometry.stage!.height - geometry.canvas!.height).toBeLessThanOrEqual(12)
-  expect(geometry.prompt!.bottom).toBeLessThanOrEqual(geometry.canvas!.bottom - 8)
-  expect(geometry.prompt!.left).toBeGreaterThanOrEqual(geometry.canvas!.left + 8)
-  expect(geometry.prompt!.right).toBeLessThanOrEqual(geometry.canvas!.right - 8)
+  if (compactWidth) {
+    await expectInViewport(page, '#interaction-prompt')
+    await expectInViewport(page, '.stage-viewport')
 
-  await expectInViewport(page, '.stage-wrap')
+    await page.locator('.stage-viewport').evaluate((element) => {
+      element.scrollLeft = element.scrollWidth * (1150 / 1280) - element.clientWidth / 2
+    })
+    const pannedCanvasBox = await canvas.boundingBox()
+    expect(pannedCanvasBox).not.toBeNull()
+    await page.mouse.move(
+      pannedCanvasBox!.x + (1150 / 1280) * pannedCanvasBox!.width,
+      pannedCanvasBox!.y + (198 / 720) * pannedCanvasBox!.height,
+      { steps: 6 },
+    )
+    await expect(page.getByRole('button', { name: 'Examiner le local technique' })).toBeVisible()
+  } else {
+    expect(geometry.stage!.height - geometry.canvas!.height).toBeLessThanOrEqual(12)
+    expect(geometry.prompt!.bottom).toBeLessThanOrEqual(geometry.canvas!.bottom - 8)
+    expect(geometry.prompt!.left).toBeGreaterThanOrEqual(geometry.canvas!.left + 8)
+    expect(geometry.prompt!.right).toBeLessThanOrEqual(geometry.canvas!.right - 8)
+    await expectInViewport(page, '.stage-wrap')
+  }
+})
+
+test('opens utility and trunk visible orbs apart from the utility hotspot', async ({ page }) => {
+  await seedGame(page, progressedSave)
+
+  await gotoApp(page)
+
+  const canvas = page.locator('#game-stage canvas')
+  await expect(canvas).toBeVisible()
+  await expectSceneReady(page)
+  await expectCanvasToHaveRenderedPixels(canvas)
+
+  const canvasBox = await canvas.boundingBox()
+  expect(canvasBox).not.toBeNull()
+
+  await page.mouse.click(canvasBox!.x + (190 / 1280) * canvasBox!.width, canvasBox!.y + (375 / 720) * canvasBox!.height)
+  await expect(page.locator('.dialogue-root')).toContainText('Utilitaire municipal')
+  await page.getByRole('button', { name: 'Fermer' }).click()
+
+  await page.mouse.click(canvasBox!.x + (143 / 1280) * canvasBox!.width, canvasBox!.y + (418 / 720) * canvasBox!.height)
+  await expect(page.locator('.dialogue-root')).toContainText('Corps dans le coffre')
 })
 
 test('triggers proximity orbs as one-shot toasts instead of modal inspections', async ({ page }) => {
@@ -330,6 +470,7 @@ test('triggers proximity orbs as one-shot toasts instead of modal inspections', 
 
   const canvas = page.locator('#game-stage canvas')
   await expect(canvas).toBeVisible()
+  await expectSceneReady(page)
   await expectCanvasToHaveRenderedPixels(canvas)
   const canvasBox = await canvas.boundingBox()
   expect(canvasBox).not.toBeNull()
@@ -499,6 +640,7 @@ test('serves the saved game from the Pages base path @pages', async ({ page }) =
   const canvas = page.locator('#game-stage canvas')
   expect(backgroundResponse.ok()).toBe(true)
   expect(backgroundResponse.headers()['content-type']).toContain('image/png')
+  await expectImageNaturalSize(page, 'assets/miroirs/p2-background.png', 2560, 1440)
   await expect(canvas).toBeVisible()
   await expectCanvasToHaveRenderedPixels(canvas)
   await expect(page.locator('#objective')).toContainText('Traiter la piste caméra')
@@ -512,10 +654,34 @@ test('keeps the minimum-width play layout unclipped @responsive', async ({ page 
   const canvas = page.locator('#game-stage canvas')
   await expect(canvas).toBeVisible()
   await expectCanvasToHaveRenderedPixels(canvas)
-  await expect(page.getByRole('button', { name: 'Dossier ouvert' })).toBeVisible()
-  await expect(page.locator('.case-panel')).toBeVisible()
   await expectNoHorizontalDocumentOverflow(page)
   await expectInViewport(page, '.topbar')
+
+  const compactWidth = (page.viewportSize()?.width ?? 0) < 900
+
+  if (compactWidth) {
+    await expect(page.getByRole('button', { name: 'Dossier fermé' })).toBeVisible()
+    await expect(page.locator('.case-panel')).toBeHidden()
+    await expectInViewport(page, '.stage-viewport')
+
+    const stage = await page.evaluate(() => {
+      const viewport = document.querySelector('.stage-viewport')
+      const wrap = document.querySelector('.stage-wrap')
+
+      return {
+        viewportWidth: viewport?.clientWidth ?? 0,
+        scrollWidth: viewport?.scrollWidth ?? 0,
+        wrapHeight: wrap?.getBoundingClientRect().height ?? 0,
+      }
+    })
+
+    expect(stage.scrollWidth).toBeGreaterThan(stage.viewportWidth)
+    expect(stage.wrapHeight).toBeGreaterThan(300)
+    return
+  }
+
+  await expect(page.getByRole('button', { name: 'Dossier ouvert' })).toBeVisible()
+  await expect(page.locator('.case-panel')).toBeVisible()
   await expectInViewport(page, '.stage-wrap')
   await expectInViewport(page, '.case-panel')
 })

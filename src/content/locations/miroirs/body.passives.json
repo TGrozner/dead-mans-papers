@@ -88,5 +88,80 @@
       "nodeId": "body_ventre"
     },
     "text": "Simple nausée, bien sûr. Rien à voir avec l'alcool, les calmants, les heures manquantes et la main qui réclame sa dose. Mauvaise lecture, mais confortable."
+  },
+  {
+    "id": "miroirs_body__sel_failure_contaminates_page",
+    "contextId": "miroirs/body",
+    "location": "miroirs",
+    "subject": "trunk-search",
+    "channel": "dialogue",
+    "voice": "memoire_saline",
+    "minScore": 2,
+    "once": true,
+    "priority": 87,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "search_failure"
+    },
+    "text": "Acide, sueur, papier humide. La preuve survit, mais elle porte maintenant ton corps dessus. Même utile, elle peut être retournée."
+  },
+  {
+    "id": "miroirs_wake__functional_wreck",
+    "contextId": "miroirs/wake-up",
+    "location": "miroirs",
+    "subject": "withdrawal",
+    "channel": "dialogue",
+    "voice": "honte_publique",
+    "requiresFlag": "wake_body_exposed",
+    "minScore": 2,
+    "once": true,
+    "priority": 90,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "wake_up",
+      "nodeId": "stand_control_failure"
+    },
+    "text": "Voilà le vrai statut: pas effondré, pas fiable. Entre les deux, la zone rentable où les gens peuvent encore te demander des services."
+  },
+  {
+    "id": "miroirs_body__handling_clean_read",
+    "contextId": "miroirs/body",
+    "location": "miroirs",
+    "subject": "body-handling",
+    "channel": "dialogue",
+    "voice": "nerfs",
+    "requiresFlag": "body_moved_as_load",
+    "minScore": 1,
+    "once": true,
+    "priority": 89,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "body_handling_success"
+    },
+    "text": "Un corps porté laisse une grammaire: appuis, frottements, angles. La violence n'a pas besoin de sang quand elle a de la logistique."
+  },
+  {
+    "id": "miroirs_body__handling_failed_but_dirty",
+    "contextId": "miroirs/body",
+    "location": "miroirs",
+    "subject": "body-handling",
+    "channel": "dialogue",
+    "voice": "faim",
+    "requiresFlag": "body_reading_compromised",
+    "minScore": 1,
+    "once": true,
+    "priority": 88,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "body_handling_failure"
+    },
+    "text": "Tu rates la lecture propre, mais ton corps attrape quand même le mensonge: ce froid n'a pas poussé ici. Une épave peut encore sentir une pièce froide."
   }
 ]

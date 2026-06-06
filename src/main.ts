@@ -14,6 +14,7 @@ import { type DebugEntry, isDebugEnabled, setDebugEnabled } from './game/debug'
 import { trapFocus } from './game/focus'
 
 const appRoot = getAppRoot()
+const INITIAL_MOBILE_SCENE_STOP = 0.5
 
 appRoot.innerHTML = `
   <section class="game-shell" aria-label="Dead Man's Papers">
@@ -28,20 +29,22 @@ appRoot.innerHTML = `
     </header>
 
     <div class="play-area">
-      <div class="stage-wrap">
-        <div class="stage-frame">
-          <div id="game-stage" aria-label="Les Miroirs, parking P2"></div>
-          <button id="interaction-prompt" class="interaction-prompt" type="button" hidden>
-            <span class="prompt-mark" aria-hidden="true">!</span>
-            <span id="interaction-label"></span>
-          </button>
-          <div id="passive-toast-root" class="passive-toast-root" aria-live="polite"></div>
-          <div id="debug-log" class="debug-log" aria-label="Debug log" hidden>
-            <div class="debug-log-head">
-              <span>debug</span>
-              <button id="debug-log-disable" type="button">off</button>
+      <div id="stage-viewport" class="stage-viewport">
+        <div class="stage-wrap">
+          <div class="stage-frame">
+            <div id="game-stage" aria-label="Les Miroirs, parking P2"></div>
+            <button id="interaction-prompt" class="interaction-prompt" type="button" hidden>
+              <span class="prompt-mark" aria-hidden="true">!</span>
+              <span id="interaction-label"></span>
+            </button>
+            <div id="passive-toast-root" class="passive-toast-root" aria-live="polite"></div>
+            <div id="debug-log" class="debug-log" aria-label="Debug log" hidden>
+              <div class="debug-log-head">
+                <span>debug</span>
+                <button id="debug-log-disable" type="button">off</button>
+              </div>
+              <ol id="debug-log-list"></ol>
             </div>
-            <ol id="debug-log-list"></ol>
           </div>
         </div>
       </div>
@@ -75,6 +78,18 @@ appRoot.innerHTML = `
           </button>
         </details>
       </aside>
+
+      <nav id="mobile-scene-nav" class="mobile-scene-nav" aria-label="Cadrage de la scène">
+        <button class="scene-nav-button" type="button" data-scene-stop="0" aria-label="Cadrer le coffre">
+          Coffre
+        </button>
+        <button class="scene-nav-button" type="button" data-scene-stop="0.5" aria-label="Cadrer Zinédine">
+          Moi
+        </button>
+        <button class="scene-nav-button" type="button" data-scene-stop="1" aria-label="Cadrer le local technique">
+          Local
+        </button>
+      </nav>
     </div>
 
     <div id="dialogue-root" class="dialogue-root" role="dialog" aria-modal="true" aria-labelledby="dialogue-title" hidden></div>
@@ -99,6 +114,7 @@ appRoot.innerHTML = `
 `
 
 const engine = new NarrativeEngine(loadGameState())
+const mobileSceneMedia = window.matchMedia('(max-width: 899px)')
 let persistOnUnload = true
 let tutorialOpen = false
 let tutorialRestoreFocusTo: HTMLElement | undefined
@@ -110,6 +126,8 @@ const refs = {
   objective: getRequiredElement<HTMLParagraphElement>('#objective'),
   clueList: getRequiredElement<HTMLUListElement>('#clue-list'),
   voiceList: getRequiredElement<HTMLDivElement>('#voice-list'),
+  stageViewport: getRequiredElement<HTMLDivElement>('#stage-viewport'),
+  sceneNav: getRequiredElement<HTMLElement>('#mobile-scene-nav'),
   tutorialRoot: getRequiredElement<HTMLDivElement>('#tutorial-root'),
   tutorialClose: getRequiredElement<HTMLButtonElement>('#tutorial-close'),
   tutorialHide: getRequiredElement<HTMLInputElement>('#tutorial-hide'),
@@ -134,6 +152,7 @@ const ui = createGameUi({
 
 setupDebugLog()
 setupCasePanel()
+setupMobileSceneNavigation()
 const restoredSurface = ui.restoreActiveSurface()
 
 void loadGame()
@@ -246,6 +265,7 @@ function setupCasePanel(): void {
   const panel = refs.casePanel
   const toggle = refs.caseToggle
   const playArea = panel.closest<HTMLElement>('.play-area')
+  let userToggled = false
 
   function setExpanded(expanded: boolean): void {
     panel.hidden = !expanded
@@ -256,9 +276,81 @@ function setupCasePanel(): void {
     toggle.setAttribute('aria-expanded', String(expanded))
   }
 
-  setExpanded(true)
+  setExpanded(!mobileSceneMedia.matches)
+  mobileSceneMedia.addEventListener('change', (event) => {
+    if (!userToggled) {
+      setExpanded(!event.matches)
+    }
+  })
+
   toggle.addEventListener('click', () => {
+    userToggled = true
     setExpanded(toggle.getAttribute('aria-expanded') !== 'true')
+  })
+}
+
+function setupMobileSceneNavigation(): void {
+  const viewport = refs.stageViewport
+  const nav = refs.sceneNav
+  const buttons = Array.from(nav.querySelectorAll<HTMLButtonElement>('[data-scene-stop]'))
+
+  function maxScroll(): number {
+    return Math.max(0, viewport.scrollWidth - viewport.clientWidth)
+  }
+
+  function scrollToStop(stop: number, behavior: ScrollBehavior = 'smooth'): void {
+    viewport.scrollTo({
+      left: maxScroll() * stop,
+      behavior,
+    })
+  }
+
+  function syncActiveStop(): void {
+    const max = maxScroll()
+    const progress = max > 0 ? viewport.scrollLeft / max : 0
+    let nearestButton = buttons[0]
+    let nearestDistance = Number.POSITIVE_INFINITY
+
+    buttons.forEach((button) => {
+      const stop = Number.parseFloat(button.dataset.sceneStop ?? '0')
+      const distance = Math.abs(stop - progress)
+      const active = distance < nearestDistance
+
+      if (active) {
+        nearestButton = button
+        nearestDistance = distance
+      }
+
+      button.setAttribute('aria-pressed', 'false')
+    })
+
+    nearestButton?.setAttribute('aria-pressed', 'true')
+    nav.style.setProperty('--scene-pan-progress', `${Math.round(progress * 100)}%`)
+  }
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      scrollToStop(Number.parseFloat(button.dataset.sceneStop ?? '0'))
+    })
+  })
+
+  viewport.addEventListener('scroll', syncActiveStop, { passive: true })
+  window.addEventListener('resize', () => {
+    syncActiveStop()
+  })
+
+  mobileSceneMedia.addEventListener('change', (event) => {
+    if (event.matches) {
+      requestAnimationFrame(() => scrollToStop(INITIAL_MOBILE_SCENE_STOP, 'auto'))
+    }
+  })
+
+  requestAnimationFrame(() => {
+    if (mobileSceneMedia.matches) {
+      scrollToStop(INITIAL_MOBILE_SCENE_STOP, 'auto')
+    }
+
+    syncActiveStop()
   })
 }
 

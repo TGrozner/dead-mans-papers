@@ -2,7 +2,7 @@
   {
     "id": "body",
     "label": "Corps / Ahmed",
-    "keywords": ["ahmed", "corps", "vieux", "vieil", "cadavre", "blessure", "coffre", "carnet", "page arrachée"]
+    "keywords": ["ahmed", "corps", "vieux", "vieil", "cadavre", "blessure", "coffre", "carnet", "page arrachée", "froid", "javel", "mort sur place"]
   },
   {
     "id": "camera",
@@ -12,17 +12,17 @@
   {
     "id": "access",
     "label": "Badge / accès",
-    "keywords": ["badge", "accès", "lecteur", "chantier", "prestataire", "local", "bungalow", "clés"]
+    "keywords": ["badge", "accès", "lecteur", "chantier", "prestataire", "local", "bungalow", "clés", "registre d'accès"]
   },
   {
     "id": "hami",
     "label": "Hami / santé",
-    "keywords": ["hami", "ordonnance", "prescription", "médical", "santé"]
+    "keywords": ["hami", "ordonnance", "prescription", "calmants", "médical", "santé", "centre de santé", "absence", "registre santé"]
   },
   {
     "id": "karine",
     "label": "Karine / mairie",
-    "keywords": ["karine", "mairie", "municipal", "nationale", "procédure", "utilitaire", "version simple", "accuse"]
+    "keywords": ["karine", "mairie", "maire", "cabinet", "municipal", "nationale", "procédure", "version officielle", "utilitaire", "version simple", "accuse"]
   },
   {
     "id": "witnesses",
@@ -32,12 +32,12 @@
   {
     "id": "body-state",
     "label": "Corps de Zinédine",
-    "keywords": ["alcool", "manque", "dose", "tremblements", "nausée", "vomis", "addiction", "dette"]
+    "keywords": ["alcool", "manque", "dose", "tremblements", "nausée", "vomis", "vomi", "addiction", "dette"]
   },
   {
     "id": "zinedine",
     "label": "Zinédine",
-    "keywords": ["zinédine", "papiers", "nom", "gobelet", "téléphone", "trou noir", "prénom", "surnom"]
+    "keywords": ["zinédine", "papiers au nom", "papiers de zinédine", "identité", "nom", "gobelet", "téléphone", "trou noir", "prénom", "surnom", "témoin", "discréditable"]
   },
   {
     "id": "other",

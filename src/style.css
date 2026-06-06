@@ -1,6 +1,7 @@
 :root {
   --ink: #171c24;
   --paper: #f4ecd8;
+  --paper-hot: #fff8e8;
   --panel: #223038;
   --panel-soft: #30434c;
   --panel-deep: #121820;
@@ -13,6 +14,7 @@
   --danger: #d45d59;
   --shadow: rgba(0, 0, 0, 0.35);
   --blackline: #0d1117;
+  --hairline: rgba(220, 235, 215, 0.14);
   --sans: Inter, ui-sans-serif, system-ui, "Segoe UI", Arial, sans-serif;
   --mono: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
 
@@ -35,9 +37,11 @@
 
 html,
 body {
+  width: 100%;
+  height: 100%;
   min-height: 100%;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 body {
@@ -55,30 +59,37 @@ button {
 }
 
 #app {
-  min-height: 100svh;
+  height: 100svh;
+  min-height: 0;
   min-width: 0;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .game-shell {
   width: min(1720px, 100%);
   min-width: 0;
-  min-height: 100svh;
+  height: 100svh;
+  min-height: 0;
   margin: 0 auto;
-  padding: clamp(10px, 1.2vw, 18px);
+  padding: clamp(8px, 1.2vw, 18px);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: clamp(8px, 1vw, 12px);
+  overflow: hidden;
 }
 
 .topbar {
   flex: 0 0 auto;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 8px 16px;
   padding: 2px 2px 0;
+}
+
+.topbar > div {
+  min-width: 0;
 }
 
 .kicker,
@@ -93,17 +104,22 @@ button {
 h1 {
   margin: 0;
   color: var(--paper);
-  font-size: clamp(28px, 9vw, 34px);
+  font-size: clamp(30px, 8vw, 40px);
   font-weight: 800;
   line-height: 1;
 }
 
 .case-stamp {
   flex: 0 0 auto;
-  padding: 7px 10px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 11px;
   border: 2px solid var(--rust);
   color: var(--paper);
   background: rgba(13, 17, 23, 0.36);
+  box-shadow: inset 0 0 0 1px rgba(244, 236, 216, 0.08);
   font-family: var(--mono);
   font-size: 12px;
   text-transform: uppercase;
@@ -116,18 +132,35 @@ h1 {
 }
 
 .play-area {
-  flex: 0 1 auto;
+  position: relative;
+  flex: 1 1 auto;
   min-width: 0;
   min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
   gap: 12px;
-  align-items: start;
-  overflow: visible;
+  align-items: stretch;
+  overflow: hidden;
 }
 
 .play-area--case-collapsed {
   grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto;
+  align-content: start;
+}
+
+.stage-viewport {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: visible;
+}
+
+.mobile-scene-nav {
+  display: none;
 }
 
 .stage-wrap {
@@ -135,15 +168,16 @@ h1 {
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 9;
+  align-self: start;
   min-width: 0;
   min-height: 0;
-  overflow: visible;
+  overflow: hidden;
   border: 2px solid var(--blackline);
+  border-radius: 3px;
   background: var(--blackline);
   box-shadow:
     0 0 0 1px rgba(244, 236, 216, 0.08),
-    0 14px 0 rgba(13, 17, 23, 0.88),
-    0 28px 58px rgba(0, 0, 0, 0.46);
+    0 18px 54px rgba(0, 0, 0, 0.48);
   touch-action: none;
   user-select: none;
 }
@@ -153,6 +187,7 @@ h1 {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  border-radius: 1px;
   background: var(--blackline);
 }
 
@@ -179,6 +214,12 @@ h1 {
   mix-blend-mode: screen;
 }
 
+.dialogue-open .stage-frame::before {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.38), transparent 16%, transparent 84%, rgba(0, 0, 0, 0.42)),
+    linear-gradient(180deg, rgba(3, 6, 10, 0.38), transparent 22%, transparent 68%, rgba(1, 4, 8, 0.58));
+}
+
 #game-stage {
   width: 100%;
   height: 100%;
@@ -190,7 +231,7 @@ h1 {
   display: block;
   width: 100% !important;
   height: 100% !important;
-  image-rendering: pixelated;
+  image-rendering: auto;
   touch-action: none;
 }
 
@@ -208,7 +249,7 @@ h1 {
   max-width: none;
   padding: 8px 14px;
   border: 2px solid var(--blackline);
-  border-radius: 6px;
+  border-radius: 7px;
   color: var(--paper);
   background:
     linear-gradient(90deg, rgba(183, 87, 56, 0.28), transparent 120px),
@@ -305,14 +346,15 @@ h1 {
 .case-panel {
   position: relative;
   min-height: 0;
-  height: auto;
-  max-height: none;
+  height: 100%;
+  max-height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 11px;
-  padding: 13px;
+  gap: clamp(10px, 1.3vw, 14px);
+  padding: clamp(12px, 1.3vw, 16px);
   border: 2px solid var(--blackline);
   border-left: 4px solid var(--rust);
+  border-radius: 3px;
   background:
     linear-gradient(90deg, rgba(244, 236, 216, 0.07), transparent 52px),
     repeating-linear-gradient(0deg, rgba(244, 236, 216, 0.03) 0 1px, transparent 1px 5px),
@@ -320,9 +362,10 @@ h1 {
     var(--panel);
   box-shadow:
     0 0 0 1px rgba(244, 236, 216, 0.06),
-    0 14px 0 rgba(13, 17, 23, 0.78),
-    0 24px 52px rgba(0, 0, 0, 0.38);
+    0 10px 0 rgba(13, 17, 23, 0.82),
+    0 22px 48px rgba(0, 0, 0, 0.4);
   overflow: auto;
+  overscroll-behavior: contain;
   scrollbar-color: rgba(215, 168, 75, 0.58) rgba(18, 24, 32, 0.42);
   scrollbar-width: thin;
 }
@@ -334,7 +377,7 @@ h1 {
 .case-section {
   min-height: 0;
   padding-bottom: 10px;
-  border-bottom: 1px solid rgba(220, 235, 215, 0.13);
+  border-bottom: 1px solid var(--hairline);
 }
 
 .case-section--objective {
@@ -359,10 +402,10 @@ h1 {
 }
 
 .objective {
-  margin: 7px 0 0;
+  margin: 8px 0 0;
   color: var(--paper);
-  font-size: 14.5px;
-  line-height: 1.34;
+  font-size: clamp(14.5px, 1.2vw, 16.5px);
+  line-height: 1.38;
 }
 
 .clue-list {
@@ -373,6 +416,7 @@ h1 {
   list-style: none;
   overflow: auto;
   padding-right: 4px;
+  overscroll-behavior: contain;
   scrollbar-color: rgba(215, 168, 75, 0.58) rgba(18, 24, 32, 0.42);
   scrollbar-width: thin;
 }
@@ -403,8 +447,8 @@ h1 {
 }
 
 .clue-list > li {
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(220, 235, 215, 0.14);
+  padding: 7px 0;
+  border-bottom: 1px solid var(--hairline);
   color: var(--foam);
   font-size: 13px;
   line-height: 1.3;
@@ -427,7 +471,14 @@ h1 {
 }
 
 .clue-group-heading span:last-child {
+  min-width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(220, 235, 215, 0.16);
+  border-radius: 999px;
   color: rgba(220, 235, 215, 0.58);
+  background: rgba(13, 17, 23, 0.34);
 }
 
 .clue-group-list {
@@ -441,7 +492,7 @@ h1 {
 .clue-group-list li {
   color: var(--foam);
   font-size: 12px;
-  line-height: 1.22;
+  line-height: 1.28;
 }
 
 .empty-line {
@@ -459,6 +510,7 @@ h1 {
   margin-top: 8px;
   overflow: auto;
   padding-right: 4px;
+  overscroll-behavior: contain;
   scrollbar-color: rgba(215, 168, 75, 0.58) rgba(18, 24, 32, 0.42);
   scrollbar-width: thin;
 }
@@ -473,6 +525,7 @@ h1 {
   overflow: hidden;
   padding: 6px 7px 8px;
   border: 1px solid rgba(220, 235, 215, 0.16);
+  border-radius: 2px;
   background:
     linear-gradient(90deg, rgba(18, 24, 32, 0.48), rgba(18, 24, 32, 0.22)),
     rgba(18, 24, 32, 0.42);
@@ -588,9 +641,10 @@ h1 {
   max-height: min(70svh, calc(100svh - 20px));
   margin: 0 auto;
   border: 2px solid var(--blackline);
+  border-radius: 5px;
   background:
     linear-gradient(90deg, rgba(183, 87, 56, 0.14), transparent 86px),
-    linear-gradient(180deg, #fff8e8, var(--paper));
+    linear-gradient(180deg, var(--paper-hot), var(--paper));
   color: var(--ink);
   box-shadow: 0 14px 0 var(--blackline), 0 26px 70px rgba(0, 0, 0, 0.56);
   overflow: hidden;
@@ -603,7 +657,9 @@ h1 {
   display: grid;
   place-items: center;
   padding: 16px;
-  background: rgba(13, 17, 23, 0.76);
+  background:
+    radial-gradient(circle at 50% 38%, rgba(42, 114, 129, 0.18), transparent 36%),
+    rgba(13, 17, 23, 0.78);
   overflow: hidden;
 }
 
@@ -613,12 +669,14 @@ h1 {
   max-height: calc(100svh - 32px);
   padding: 18px;
   border: 2px solid var(--blackline);
+  border-radius: 5px;
   color: var(--ink);
   background:
     linear-gradient(90deg, rgba(183, 87, 56, 0.13), transparent 92px),
-    linear-gradient(180deg, #fff8e8, var(--paper));
+    linear-gradient(180deg, var(--paper-hot), var(--paper));
   box-shadow: 0 14px 0 var(--blackline), 0 24px 60px rgba(0, 0, 0, 0.54);
   overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .tutorial-panel h2 {
@@ -668,6 +726,10 @@ h1 {
   touch-action: manipulation;
 }
 
+.tutorial-close:hover {
+  background: #a9462d;
+}
+
 .passive-toast-root {
   position: absolute;
   top: 12px;
@@ -684,9 +746,9 @@ h1 {
   padding: 10px 11px;
   border: 2px solid var(--blackline);
   border-left: 7px solid var(--voice-color, var(--cold-light));
-  border-radius: 7px;
+  border-radius: 6px;
   color: var(--ink);
-  background: #fff8e8;
+  background: var(--paper-hot);
   box-shadow: 0 7px 0 var(--blackline);
   transition: opacity 180ms ease, transform 180ms ease;
 }
@@ -745,6 +807,7 @@ h1 {
   max-height: min(70svh, calc(100svh - 20px));
   padding: 18px 18px 16px;
   overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .speaker-line {
@@ -783,9 +846,14 @@ h1 {
   border: 2px solid var(--ink);
   border-radius: 6px;
   color: var(--ink);
-  background: #fff8e8;
+  background: var(--paper-hot);
   cursor: pointer;
   touch-action: manipulation;
+}
+
+.dialogue-close:hover,
+.orb-close:hover {
+  background: #f1d99f;
 }
 
 .check-result {
@@ -841,7 +909,7 @@ h1 {
   border: 2px solid var(--ink);
   border-radius: 6px;
   color: var(--ink);
-  background: #fff8e8;
+  background: var(--paper-hot);
   text-align: left;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -849,6 +917,7 @@ h1 {
   gap: 10px;
   cursor: pointer;
   touch-action: manipulation;
+  transition: background 140ms ease, transform 140ms ease, box-shadow 140ms ease;
 }
 
 .choice-copy {
@@ -874,6 +943,292 @@ h1 {
 @media (min-width: 520px) {
   .choice-button {
     grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+@media (max-width: 899px), (max-height: 559px) {
+  .game-shell {
+    padding: 10px;
+  }
+
+  .topbar {
+    gap: 8px 10px;
+  }
+
+  .kicker,
+  .panel-label {
+    font-size: 10px;
+  }
+
+  h1 {
+    font-size: clamp(28px, 9vw, 38px);
+  }
+
+  .case-stamp {
+    min-height: 34px;
+    padding: 6px 9px;
+    font-size: 11px;
+    transform: rotate(0.8deg);
+  }
+
+  .stage-wrap {
+    box-shadow:
+      0 0 0 1px rgba(244, 236, 216, 0.08),
+      0 16px 36px rgba(0, 0, 0, 0.46);
+  }
+
+  .case-panel {
+    min-height: 0;
+    padding: 12px;
+  }
+
+  .objective {
+    font-size: 15px;
+  }
+
+  .clue-list > li {
+    font-size: 13.5px;
+  }
+
+  .clue-group-list li {
+    font-size: 13px;
+  }
+
+  .voice-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .voice-row {
+    min-height: 36px;
+    padding: 7px 8px 9px;
+  }
+
+  .voice-name {
+    font-size: 12px;
+  }
+
+  .passive-toast-root {
+    top: 8px;
+    left: 8px;
+    width: min(330px, calc(100% - 16px));
+  }
+
+  .passive-toast {
+    padding: 9px 10px;
+  }
+
+  .passive-toast p {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .dialogue-root {
+    inset: auto 8px 8px;
+    max-height: min(58svh, calc(100svh - 16px));
+  }
+
+  .dialogue-panel {
+    max-height: min(58svh, calc(100svh - 16px));
+    padding: 14px;
+  }
+
+  .dialogue-text {
+    font-size: 16px;
+  }
+
+  .passive-aside p {
+    font-size: 14.5px;
+  }
+
+  .choice-button {
+    min-height: 42px;
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 899px) {
+  .game-shell {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    flex-wrap: nowrap;
+  }
+
+  h1 {
+    font-size: clamp(30px, 9vw, 34px);
+  }
+
+  .case-stamp {
+    min-height: 36px;
+    margin-top: 6px;
+    white-space: nowrap;
+  }
+
+  .play-area,
+  .play-area--case-collapsed {
+    grid-template-rows: minmax(0, 1fr);
+    gap: 0;
+    overflow: hidden;
+  }
+
+  .stage-viewport {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+    touch-action: pan-x;
+  }
+
+  .stage-viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .stage-wrap {
+    width: auto;
+    height: 100%;
+    min-width: 100%;
+    flex: 0 0 auto;
+    max-width: none;
+    aspect-ratio: 16 / 9;
+    box-shadow:
+      0 0 0 1px rgba(244, 236, 216, 0.08),
+      0 18px 44px rgba(0, 0, 0, 0.48);
+    touch-action: pan-x;
+  }
+
+  .stage-frame,
+  #game-stage,
+  #game-stage canvas {
+    touch-action: pan-x;
+  }
+
+  .interaction-prompt {
+    position: fixed;
+    right: 8px;
+    left: 8px;
+    bottom: 8px;
+    z-index: 24;
+    width: auto;
+    max-width: none;
+    justify-content: flex-start;
+  }
+
+  .case-panel {
+    position: fixed;
+    inset: auto 8px 8px;
+    z-index: 22;
+    width: auto;
+    height: min(72svh, 620px);
+    max-height: calc(100svh - 86px);
+    box-shadow:
+      0 0 0 1px rgba(244, 236, 216, 0.08),
+      0 -18px 54px rgba(0, 0, 0, 0.6);
+  }
+
+  .case-panel--expanded {
+    animation: case-sheet-in 160ms ease-out;
+  }
+
+  .play-area--case-collapsed .mobile-scene-nav {
+    position: fixed;
+    right: 10px;
+    bottom: max(10px, env(safe-area-inset-bottom));
+    left: 10px;
+    z-index: 20;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+    padding: 7px;
+    border: 2px solid var(--blackline);
+    border-radius: 8px;
+    background:
+      linear-gradient(90deg, rgba(42, 114, 129, 0.18), transparent 38%, rgba(183, 87, 56, 0.14)),
+      rgba(13, 17, 23, 0.88);
+    box-shadow:
+      inset 0 0 0 1px rgba(244, 236, 216, 0.1),
+      0 10px 28px rgba(0, 0, 0, 0.52);
+  }
+
+  .play-area--case-collapsed .mobile-scene-nav::before {
+    position: absolute;
+    right: 12px;
+    bottom: calc(100% + 7px);
+    left: 12px;
+    height: 3px;
+    border-radius: 999px;
+    content: "";
+    background:
+      linear-gradient(90deg, var(--brass) var(--scene-pan-progress, 0%), rgba(220, 235, 215, 0.22) 0);
+    box-shadow: 0 0 0 1px rgba(13, 17, 23, 0.62);
+  }
+
+  .dialogue-open .mobile-scene-nav {
+    display: none;
+  }
+
+  .scene-nav-button {
+    min-height: 44px;
+    min-width: 0;
+    border: 1px solid rgba(220, 235, 215, 0.24);
+    border-radius: 6px;
+    color: var(--paper);
+    background: rgba(18, 24, 32, 0.78);
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .scene-nav-button[aria-pressed="true"] {
+    border-color: rgba(215, 168, 75, 0.78);
+    color: var(--blackline);
+    background: var(--brass);
+    box-shadow: 0 0 18px rgba(215, 168, 75, 0.28);
+  }
+
+  .scene-nav-button:focus-visible {
+    outline: 3px solid var(--paper);
+    outline-offset: 2px;
+  }
+
+  .dialogue-root {
+    z-index: 26;
+  }
+
+  .passive-toast-root {
+    position: fixed;
+    top: auto;
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+    width: auto;
+    z-index: 23;
+  }
+}
+
+@keyframes case-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -907,11 +1262,11 @@ h1 {
   }
 
   .play-area {
-    flex: 0 1 auto;
-    grid-template-columns: minmax(0, 1fr) clamp(330px, 22vw, 380px);
-    grid-template-rows: auto;
+    flex: 1 1 auto;
+    grid-template-columns: minmax(0, 1fr) clamp(320px, 21vw, 374px);
+    grid-template-rows: minmax(0, 1fr);
     align-items: start;
-    overflow: visible;
+    overflow: hidden;
   }
 
   .play-area--case-collapsed {
@@ -925,6 +1280,12 @@ h1 {
     justify-self: center;
   }
 
+  .interaction-prompt {
+    right: auto;
+    max-width: min(460px, calc(100% - 20px));
+    justify-content: flex-start;
+  }
+
   #game-stage {
     width: 100%;
     max-height: none;
@@ -932,8 +1293,8 @@ h1 {
 
   .case-panel {
     align-self: stretch;
-    height: auto;
-    max-height: calc(100svh - 90px);
+    height: 100%;
+    max-height: 100%;
     overflow: auto;
   }
 
@@ -946,7 +1307,7 @@ h1 {
   }
 
   .clue-list {
-    max-height: min(320px, 38svh);
+    max-height: none;
   }
 
   .voice-list {
@@ -966,6 +1327,7 @@ h1 {
 .choice-button:hover {
   background: #f1d99f;
   transform: translateY(-1px);
+  box-shadow: inset 0 0 0 1px rgba(23, 28, 36, 0.1);
 }
 
 .choice-button--important {

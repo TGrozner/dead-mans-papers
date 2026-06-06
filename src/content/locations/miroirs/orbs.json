@@ -10,14 +10,30 @@
     "x": 456,
     "y": 350,
     "radius": 58,
-    "text": "Douze appels manqués de Karine Leduc. Ils ont commencé avant que tu reprennes conscience. Elle ne cherchait pas un ami. Elle cherchait quelqu'un à mettre devant un problème.",
+    "text": "Douze appels manqués de Karine Leduc. Les heures se chevauchent sur l'écran fissuré: assez pour sentir qu'elle insistait, pas assez pour prouver quand elle a commencé.",
     "voice": "procedure",
     "minScore": 2,
-    "voiceText": "Douze appels, c'est une chronologie. Pas une panique. Elle savait où te trouver avant que toi tu saches où tu étais.",
+    "voiceText": "Douze appels, c'est une matière de chronologie. Si tu arrives à remettre les chiffres en ordre, elle dira plus qu'une panique.",
     "effects": [
       {
         "type": "clue",
         "clue": "Ton téléphone fissuré affiche 12 appels manqués de Karine Leduc."
+      }
+    ],
+    "variants": [
+      {
+        "requiresFlag": "page_read",
+        "text": "L'écran fissuré reprend vie avec un message de Karine: \"plus maintenant, on stabilise la version.\" Le téléphone n'est plus un rappel. C'est une laisse qui vibre.",
+        "voice": "procedure",
+        "minScore": 2,
+        "voiceText": "Stabiliser la version. Même vocabulaire que La Dose, mais appliqué à un cadavre."
+      },
+      {
+        "requiresFlag": "leduc_saw_withdrawal",
+        "text": "Douze appels manqués, plus le vomi, plus ton silence. Dans une main hostile, ce téléphone raconte déjà que tu étais ingérable avant d'être utile.",
+        "voice": "honte_publique",
+        "minScore": 2,
+        "voiceText": "Un historique d'appels peut devenir une chronologie de panique. Ou une chronologie de culpabilité."
       }
     ]
   },
@@ -86,7 +102,7 @@
     ],
     "variants": [
       {
-        "requiresFlag": "papers_seen",
+        "requiresFlag": "ahmed_identified",
         "title": "Ahmed Berrichi",
         "text": "Ahmed Berrichi, vieux locataire des Miroirs. Pas de carnet. Pas de clés. Pas de téléphone. On a laissé le corps et retiré les outils qui expliquaient sa vie.",
         "voice": "faim",
@@ -191,7 +207,17 @@
     "text": "Ton reflet se coupe dans la flaque. Peau grise, bouche sèche, yeux pas encore alignés. Ça ne cache rien: tu es en manque et la scène le sait.",
     "voice": "memoire_saline",
     "minScore": 2,
-    "voiceText": "Sel de sueur, sel de béton, sel de déneigement. Les Miroirs gardent les traces chimiques mieux que les souvenirs."
+    "voiceText": "Sel de sueur, sel de béton, sel de déneigement. Les Miroirs gardent les traces chimiques mieux que les souvenirs.",
+    "effects": [
+      {
+        "type": "flag",
+        "flag": "withdrawal_seen"
+      },
+      {
+        "type": "clue",
+        "clue": "Le reflet de Zinédine dans la flaque confirme le manque et les tremblements."
+      }
+    ]
   },
   {
     "id": "miroirs_orb_residents",
@@ -221,6 +247,22 @@
       {
         "type": "clue",
         "clue": "Sofiane fume derrière la palissade pendant la découverte du corps."
+      }
+    ],
+    "variants": [
+      {
+        "requiresFlag": "sofiane_fled",
+        "text": "Derrière la palissade, la place de Sofiane est vide. Le silence a une forme: un témoin qui a compris qu'il venait de trop parler.",
+        "voice": "bouches",
+        "minScore": 1,
+        "voiceText": "Quand un témoin disparaît, le quartier ne devient pas muet. Il devient plus cher à faire parler."
+      },
+      {
+        "requiresFlag": "page_read",
+        "text": "Derrière la palissade, les voix se coupent sur le nom de Sofiane. La page d'Ahmed n'a pas inventé un témoin: elle a désigné quelqu'un que tout le monde protège déjà mal.",
+        "voice": "bouches",
+        "minScore": 1,
+        "voiceText": "Un prénom écrit sur une page devient dangereux dès qu'il circule dans des bouches qui ont peur."
       }
     ]
   }

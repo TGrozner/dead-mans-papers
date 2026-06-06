@@ -9,6 +9,12 @@ const LEGACY_HEIGHT = 576
 const CONTENT_SCALE = SCENE_HEIGHT / LEGACY_HEIGHT
 const CONTENT_WIDTH = LEGACY_WIDTH * CONTENT_SCALE
 const CONTENT_OFFSET_X = (SCENE_WIDTH - CONTENT_WIDTH) / 2
+const FOREGROUND_DEPTH = 4.9
+const HD_SCENE_ASSET_SCALE = 4
+const ACTOR_DISPLAY_MULTIPLIER = 1.65
+const PROP_DISPLAY_MULTIPLIER = 1.55
+const SOFIANE_PALISADE_X = 786
+const SOFIANE_PALISADE_Y = 468
 
 interface Hotspot {
   id: string
@@ -65,7 +71,6 @@ export class MirrorsScene extends Phaser.Scene {
   private lastLoggedActiveTarget?: string
   private playerShadow?: Phaser.GameObjects.Graphics
   private idleActors: Phaser.GameObjects.Sprite[] = []
-  private foldedMapOrbIds = new Set(['miroirs_orb_van', 'miroirs_orb_body'])
 
   constructor(bridge: MirrorsGameBridge) {
     super('miroirs')
@@ -74,6 +79,7 @@ export class MirrorsScene extends Phaser.Scene {
 
   preload(): void {
     this.load.image('p2-background', this.assetUrl('p2-background.png'))
+    this.load.image('p2-foreground', this.assetUrl('p2-foreground.png'))
     this.load.image('actor-zinedine', this.assetUrl('actor-zinedine.png'))
     this.load.image('actor-leduc', this.assetUrl('actor-leduc.png'))
     this.load.image('actor-amar', this.assetUrl('actor-amar.png'))
@@ -94,6 +100,7 @@ export class MirrorsScene extends Phaser.Scene {
     this.createInput()
     this.configureCamera()
     this.bindSceneLifecycle()
+    this.markSceneReady(true)
 
     this.time.delayedCall(300, () => {
       if (!this.bridge.getState().flags.woke_up && !this.bridge.isDialogueOpen()) {
@@ -118,7 +125,19 @@ export class MirrorsScene extends Phaser.Scene {
       this.scale.off('resize', this.configureCamera, this)
       this.input.off('pointerdown', this.handlePointerDown, this)
       this.input.off('pointermove', this.handlePointerMove, this)
+      this.markSceneReady(false)
     })
+  }
+
+  private markSceneReady(ready: boolean): void {
+    const stageElement = this.scale.canvas.parentElement
+
+    if (ready) {
+      stageElement?.setAttribute('data-scene-ready', 'true')
+      return
+    }
+
+    stageElement?.removeAttribute('data-scene-ready')
   }
 
   private configureCamera(): void {
@@ -230,23 +249,14 @@ export class MirrorsScene extends Phaser.Scene {
       this.add
         .image(0, 0, 'p2-background')
         .setOrigin(0)
-        .setCrop(0, 0, 32, LEGACY_HEIGHT)
         .setDepth(0)
-        .setDisplaySize(CONTENT_OFFSET_X, SCENE_HEIGHT)
-      this.add
-        .image(CONTENT_OFFSET_X, 0, 'p2-background')
-        .setOrigin(0)
-        .setDepth(0)
-        .setDisplaySize(CONTENT_WIDTH, SCENE_HEIGHT)
-      this.add
-        .image(CONTENT_OFFSET_X + CONTENT_WIDTH, 0, 'p2-background')
-        .setOrigin(0)
-        .setCrop(LEGACY_WIDTH - 32, 0, 32, LEGACY_HEIGHT)
-        .setDepth(0)
-        .setDisplaySize(CONTENT_OFFSET_X, SCENE_HEIGHT)
+        .setDisplaySize(SCENE_WIDTH, SCENE_HEIGHT)
 
       if (this.textures.exists('prop-cup')) {
-        this.add.image(this.sceneX(430), this.sceneY(342), 'prop-cup').setDepth(3).setScale(CONTENT_SCALE)
+        this.add
+          .image(this.sceneX(430), this.sceneY(342), 'prop-cup')
+          .setDepth(3)
+          .setScale(this.textureDisplayScale('prop-cup'))
       }
 
       if (this.textures.exists('prop-phone')) {
@@ -254,7 +264,7 @@ export class MirrorsScene extends Phaser.Scene {
           .image(this.sceneX(456), this.sceneY(350), 'prop-phone')
           .setDepth(3)
           .setRotation(-0.18)
-          .setScale(CONTENT_SCALE)
+          .setScale(this.textureDisplayScale('prop-phone'))
       }
 
       return
@@ -804,29 +814,26 @@ export class MirrorsScene extends Phaser.Scene {
     const zinedine = this.add
       .sprite(this.sceneX(414), this.sceneY(352), playerKey)
       .setDepth(this.depthForY(this.sceneY(352)))
-      .setScale(CONTENT_SCALE)
+      .setScale(this.textureDisplayScale(playerKey))
 
     this.createActorShadow(242, 366, 32, 8)
     this.createActorShadow(668, 240, 32, 8)
-    this.createActorShadow(646, 404, 32, 8)
+    this.createActorShadow(SOFIANE_PALISADE_X, SOFIANE_PALISADE_Y + 18, 32, 8)
 
     const leduc = this.add
       .sprite(this.sceneX(242), this.sceneY(348), leducKey)
       .setDepth(this.depthForY(this.sceneY(348)))
-      .setScale(CONTENT_SCALE)
+      .setScale(this.textureDisplayScale(leducKey))
     const amar = this.add
       .sprite(this.sceneX(668), this.sceneY(222), amarKey)
       .setDepth(this.depthForY(this.sceneY(222)))
-      .setScale(CONTENT_SCALE)
+      .setScale(this.textureDisplayScale(amarKey))
     const sofiane = this.add
-      .sprite(this.sceneX(646), this.sceneY(386), sofianeKey)
-      .setDepth(this.depthForY(this.sceneY(386)))
-      .setScale(CONTENT_SCALE)
+      .sprite(this.sceneX(SOFIANE_PALISADE_X), this.sceneY(SOFIANE_PALISADE_Y), sofianeKey)
+      .setDepth(this.depthForY(this.sceneY(SOFIANE_PALISADE_Y)))
+      .setScale(this.textureDisplayScale(sofianeKey))
 
     this.idleActors.push(zinedine, leduc, amar, sofiane)
-    this.idleActors.forEach((actor, index) => {
-      this.createIdleTween(actor, index * 420)
-    })
     this.updateActorPresentation()
   }
 
@@ -841,16 +848,16 @@ export class MirrorsScene extends Phaser.Scene {
     return shadow
   }
 
-  private createIdleTween(actor: Phaser.GameObjects.Sprite, delay: number): void {
-    this.tweens.add({
-      targets: actor,
-      y: actor.y + this.sceneSize(1),
-      duration: 1500,
-      delay,
-      yoyo: true,
-      repeat: -1,
-      ease: 'Sine.easeInOut',
-    })
+  private textureDisplayScale(key: string): number {
+    if (key.startsWith('actor-')) {
+      return (CONTENT_SCALE / HD_SCENE_ASSET_SCALE) * ACTOR_DISPLAY_MULTIPLIER
+    }
+
+    if (key.startsWith('prop-')) {
+      return (CONTENT_SCALE / HD_SCENE_ASSET_SCALE) * PROP_DISPLAY_MULTIPLIER
+    }
+
+    return CONTENT_SCALE
   }
 
   private updateActorPresentation(): void {
@@ -869,24 +876,15 @@ export class MirrorsScene extends Phaser.Scene {
   }
 
   private createForegroundOccluders(): void {
-    if (!this.textures.exists('p2-background')) {
+    if (!this.textures.exists('p2-foreground')) {
       return
     }
 
-    const occluders = [
-      [672, 258, 240, 108],
-      [692, 350, 224, 86],
-      [594, 396, 342, 126],
-    ] as Array<[number, number, number, number]>
-
-    occluders.forEach(([x, y, width, height]) => {
-      this.add
-        .image(this.sceneX(x), this.sceneY(y), 'p2-background')
-        .setOrigin(0)
-        .setCrop(x, y, width, height)
-        .setScale(CONTENT_SCALE)
-        .setDepth(6)
-    })
+    this.add
+      .image(0, 0, 'p2-foreground')
+      .setOrigin(0)
+      .setDisplaySize(SCENE_WIDTH, SCENE_HEIGHT)
+      .setDepth(FOREGROUND_DEPTH)
   }
 
   private createHotspots(): void {
@@ -922,8 +920,8 @@ export class MirrorsScene extends Phaser.Scene {
         id: 'sofiane',
         label: 'Parler à Sofiane',
         scriptId: 'sofiane',
-        x: 646,
-        y: 386,
+        x: SOFIANE_PALISADE_X,
+        y: SOFIANE_PALISADE_Y,
         radius: 86,
         tapRadius: 60,
       },
@@ -995,8 +993,8 @@ export class MirrorsScene extends Phaser.Scene {
         id: 'miroirs_orb_residents',
         label: 'Écouter la palissade',
         mode: 'proximity',
-        x: 704,
-        y: 454,
+        x: SOFIANE_PALISADE_X + 16,
+        y: SOFIANE_PALISADE_Y + 40,
         radius: 78,
         tapRadius: 58,
       },
@@ -1038,34 +1036,28 @@ export class MirrorsScene extends Phaser.Scene {
   ): Phaser.GameObjects.Graphics {
     const marker = this.add.graphics({ x, y })
     const span = Phaser.Math.Clamp(
-      radius * (tone === 'primary' ? 0.32 : 0.26),
-      tone === 'primary' ? 18 : 14,
-      tone === 'primary' ? 30 : 24,
+      radius * (tone === 'primary' ? 0.24 : 0.2),
+      tone === 'primary' ? 16 : 13,
+      tone === 'primary' ? 28 : 22,
     )
-    const tick = tone === 'primary' ? 12 : 9
+    const tick = tone === 'primary' ? 9 : 7
     const color = tone === 'primary' ? 0x65d8e6 : 0xd7a84b
-    const alpha = tone === 'primary' ? 0.78 : 0.62
+    const alpha = tone === 'primary' ? 0.7 : 0.55
 
-    marker.setDepth(tone === 'primary' ? 7.6 : 7.25)
-    marker.fillStyle(0x02060a, tone === 'primary' ? 0.42 : 0.34)
-    marker.fillEllipse(0, span * 0.22, span * 1.3, 7)
-    marker.fillStyle(color, tone === 'primary' ? 0.18 : 0.14)
-    marker.fillEllipse(0, span * 0.22, span * 1.06, 4)
-    marker.fillStyle(0x02060a, 0.72)
-    marker.fillRect(-4, -4, 8, 8)
-    marker.fillStyle(color, tone === 'primary' ? 0.88 : 0.74)
-    marker.fillRect(-3, -3, 6, 6)
-    marker.fillStyle(0xe9fbff, tone === 'primary' ? 0.82 : 0.52)
-    marker.fillRect(-1, -1, 2, 2)
-    this.drawTargetCorners(marker, span, tick, tone === 'primary' ? 4 : 3, 0x02060a, 0.62)
-    this.drawTargetCorners(marker, span, tick, tone === 'primary' ? 2 : 1, color, alpha)
-    marker.lineStyle(1, 0xe9fbff, tone === 'primary' ? 0.42 : 0.28)
-    marker.lineBetween(-span + 4, 0, -span + 12, 0)
-    marker.lineBetween(span - 12, 0, span - 4, 0)
+    marker.setDepth(tone === 'primary' ? 7.4 : 7.15)
+    marker.fillStyle(0x02060a, tone === 'primary' ? 0.34 : 0.26)
+    marker.fillEllipse(0, span * 0.34, span * 1.58, 9)
+    marker.fillStyle(color, tone === 'primary' ? 0.14 : 0.1)
+    marker.fillEllipse(0, span * 0.34, span * 1.28, 5)
+    marker.lineStyle(1, color, alpha)
+    marker.strokeEllipse(0, span * 0.05, span * 1.35, span * 0.72)
+    this.drawMarkerTicks(marker, span, tick, color, alpha)
+    this.drawMarkerDiamond(marker, tone === 'primary' ? 4 : 3, color, tone === 'primary' ? 0.85 : 0.7)
+    this.drawMarkerDiamond(marker, 1.5, 0xe9fbff, tone === 'primary' ? 0.68 : 0.48)
 
     this.tweens.add({
       targets: marker,
-      alpha: tone === 'primary' ? 0.48 : 0.38,
+      alpha: tone === 'primary' ? 0.56 : 0.44,
       duration: tone === 'primary' ? 1450 : 1750,
       yoyo: true,
       repeat: -1,
@@ -1076,23 +1068,34 @@ export class MirrorsScene extends Phaser.Scene {
     return marker
   }
 
-  private drawTargetCorners(
+  private drawMarkerTicks(
     graphics: Phaser.GameObjects.Graphics,
     span: number,
     tick: number,
-    width: number,
     color: number,
     alpha: number,
   ): void {
-    graphics.lineStyle(width, color, alpha)
-    graphics.lineBetween(-span, -span, -span + tick, -span)
-    graphics.lineBetween(-span, -span, -span, -span + tick)
-    graphics.lineBetween(span - tick, -span, span, -span)
-    graphics.lineBetween(span, -span, span, -span + tick)
-    graphics.lineBetween(-span, span, -span + tick, span)
-    graphics.lineBetween(-span, span - tick, -span, span)
-    graphics.lineBetween(span - tick, span, span, span)
-    graphics.lineBetween(span, span - tick, span, span)
+    graphics.lineStyle(2, 0x02060a, alpha * 0.55)
+    graphics.lineBetween(-span, 0, -span + tick, 0)
+    graphics.lineBetween(span - tick, 0, span, 0)
+    graphics.lineBetween(0, -span * 0.48, 0, -span * 0.48 + tick * 0.65)
+    graphics.lineBetween(0, span * 0.48 - tick * 0.65, 0, span * 0.48)
+    graphics.lineStyle(1, color, alpha)
+    graphics.lineBetween(-span, 0, -span + tick, 0)
+    graphics.lineBetween(span - tick, 0, span, 0)
+    graphics.lineBetween(0, -span * 0.48, 0, -span * 0.48 + tick * 0.65)
+    graphics.lineBetween(0, span * 0.48 - tick * 0.65, 0, span * 0.48)
+  }
+
+  private drawMarkerDiamond(
+    graphics: Phaser.GameObjects.Graphics,
+    size: number,
+    color: number,
+    alpha: number,
+  ): void {
+    graphics.fillStyle(color, alpha)
+    graphics.fillTriangle(0, -size, size, 0, 0, size)
+    graphics.fillTriangle(0, -size, -size, 0, 0, size)
   }
 
   private auditInteractionTargets(): void {
@@ -1134,8 +1137,7 @@ export class MirrorsScene extends Phaser.Scene {
       return
     }
 
-    const x = Number.isFinite(pointer.worldX) ? pointer.worldX : pointer.x
-    const y = Number.isFinite(pointer.worldY) ? pointer.worldY : pointer.y
+    const { x, y } = this.getScenePointerPosition(pointer)
     const target = this.findPointerTarget(x, y)
     this.setActivePointerTarget(target)
 
@@ -1159,9 +1161,45 @@ export class MirrorsScene extends Phaser.Scene {
       return
     }
 
-    const x = Number.isFinite(pointer.worldX) ? pointer.worldX : pointer.x
-    const y = Number.isFinite(pointer.worldY) ? pointer.worldY : pointer.y
+    const { x, y } = this.getScenePointerPosition(pointer)
     this.setActivePointerTarget(this.findPointerTarget(x, y))
+  }
+
+  private getScenePointerPosition(pointer: Phaser.Input.Pointer): { x: number; y: number } {
+    const clientPoint = this.getPointerClientPoint(pointer.event as Event | undefined)
+    const bounds = this.game.canvas.getBoundingClientRect()
+
+    if (clientPoint && bounds.width > 0 && bounds.height > 0) {
+      return {
+        x: Phaser.Math.Clamp(((clientPoint.x - bounds.left) / bounds.width) * SCENE_WIDTH, 0, SCENE_WIDTH),
+        y: Phaser.Math.Clamp(((clientPoint.y - bounds.top) / bounds.height) * SCENE_HEIGHT, 0, SCENE_HEIGHT),
+      }
+    }
+
+    return {
+      x: Number.isFinite(pointer.worldX) ? pointer.worldX : pointer.x,
+      y: Number.isFinite(pointer.worldY) ? pointer.worldY : pointer.y,
+    }
+  }
+
+  private getPointerClientPoint(event: Event | undefined): { x: number; y: number } | undefined {
+    if (!event) {
+      return undefined
+    }
+
+    if (event instanceof MouseEvent || event instanceof PointerEvent) {
+      return { x: event.clientX, y: event.clientY }
+    }
+
+    if (event instanceof TouchEvent) {
+      const touch = event.changedTouches[0] ?? event.touches[0]
+
+      if (touch) {
+        return { x: touch.clientX, y: touch.clientY }
+      }
+    }
+
+    return undefined
   }
 
   private setActivePointerTarget(target?: PointerTarget): void {
@@ -1228,27 +1266,24 @@ export class MirrorsScene extends Phaser.Scene {
     }
 
     this.selectionHalo = this.add.graphics({ x: target.x, y: target.y })
-    const span = Phaser.Math.Clamp(target.radius * 0.34, 22, 42)
-    const tick = 13
+    const span = Phaser.Math.Clamp(target.radius * 0.28, 20, 38)
+    const tick = 11
     this.selectionHalo.setDepth(8.2)
-    this.selectionHalo.fillStyle(0x02060a, 0.5)
-    this.selectionHalo.fillEllipse(0, span * 0.24, span * 1.42, 9)
-    this.selectionHalo.fillStyle(0x65d8e6, 0.18)
-    this.selectionHalo.fillEllipse(0, span * 0.24, span * 1.1, 5)
-    this.drawTargetCorners(this.selectionHalo, span, tick, 5, 0x02060a, 0.72)
-    this.drawTargetCorners(this.selectionHalo, span, tick, 3, 0x65d8e6, 0.95)
-    this.selectionHalo.lineStyle(1, 0xe9fbff, 0.82)
-    this.selectionHalo.lineBetween(-span - 5, 0, -span - 12, 0)
-    this.selectionHalo.lineBetween(span + 5, 0, span + 12, 0)
-    this.selectionHalo.lineBetween(0, -span - 5, 0, -span - 12)
-    this.selectionHalo.lineBetween(0, span + 5, 0, span + 12)
-    this.selectionHalo.fillStyle(0xe9fbff, 0.92)
-    this.selectionHalo.fillRect(-2, -2, 4, 4)
+    this.selectionHalo.fillStyle(0x02060a, 0.42)
+    this.selectionHalo.fillEllipse(0, span * 0.34, span * 1.68, 10)
+    this.selectionHalo.fillStyle(0x65d8e6, 0.16)
+    this.selectionHalo.fillEllipse(0, span * 0.34, span * 1.32, 6)
+    this.selectionHalo.lineStyle(2, 0x02060a, 0.52)
+    this.selectionHalo.strokeEllipse(0, 0, span * 1.55, span * 0.86)
+    this.selectionHalo.lineStyle(1, 0x65d8e6, 0.9)
+    this.selectionHalo.strokeEllipse(0, 0, span * 1.55, span * 0.86)
+    this.drawMarkerTicks(this.selectionHalo, span, tick, 0x65d8e6, 0.95)
+    this.drawMarkerDiamond(this.selectionHalo, 4.5, 0xe9fbff, 0.86)
 
     this.tweens.add({
       targets: this.selectionHalo,
-      alpha: 0.56,
-      scale: 1.06,
+      alpha: 0.62,
+      scale: 1.04,
       duration: 700,
       yoyo: true,
       repeat: -1,
@@ -1291,13 +1326,9 @@ export class MirrorsScene extends Phaser.Scene {
       .sort((left, right) => left.distance - right.distance)[0]
   }
 
-  private isFoldedMapOrb(orbId: string): boolean {
-    return this.foldedMapOrbIds.has(orbId)
-  }
-
   private isOrbInteractable(orb: OrbSpot): boolean {
     if (orb.mode === 'visible') {
-      return !this.isFoldedMapOrb(orb.id)
+      return true
     }
 
     return !this.bridge.getState().triggeredOrbs[orb.id]

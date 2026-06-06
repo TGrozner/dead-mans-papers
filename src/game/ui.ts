@@ -13,6 +13,10 @@ import type {
 import type { NarrativeEngine } from './narrative'
 
 const MAX_DESKTOP_TOASTS = 5
+const MAX_COMPACT_TOASTS = 2
+const COMPACT_TOAST_MEDIA = '(max-width: 899px), (pointer: coarse)'
+const COMPACT_TOAST_TTL_MS = 6400
+const TOAST_LEAVE_MS = 190
 
 interface ClueGroup {
   id: string
@@ -376,14 +380,40 @@ function showOrbToast(orb: RenderedOrb, toastRoot: HTMLDivElement): void {
 function appendToast(toast: HTMLElement, toastRoot: HTMLDivElement): void {
   toastRoot.append(toast)
   pruneToastStack(toastRoot)
+
+  if (usesCompactToasts(toastRoot)) {
+    scheduleToastRemoval(toast)
+  }
 }
 
 function pruneToastStack(toastRoot: HTMLDivElement): void {
   const toasts = Array.from(toastRoot.querySelectorAll<HTMLElement>('.passive-toast'))
+  const maxToasts = usesCompactToasts(toastRoot) ? MAX_COMPACT_TOASTS : MAX_DESKTOP_TOASTS
 
-  while (toasts.length > MAX_DESKTOP_TOASTS) {
+  while (toasts.length > maxToasts) {
     toasts.shift()?.remove()
   }
+}
+
+function scheduleToastRemoval(toast: HTMLElement): void {
+  const toastWindow = toast.ownerDocument.defaultView
+
+  if (!toastWindow) {
+    return
+  }
+
+  toastWindow.setTimeout(() => {
+    if (!toast.isConnected) {
+      return
+    }
+
+    toast.classList.add('passive-toast--leaving')
+    toastWindow.setTimeout(() => toast.remove(), TOAST_LEAVE_MS)
+  }, COMPACT_TOAST_TTL_MS)
+}
+
+function usesCompactToasts(toastRoot: HTMLElement): boolean {
+  return Boolean(toastRoot.ownerDocument.defaultView?.matchMedia(COMPACT_TOAST_MEDIA).matches)
 }
 
 function getPassiveChannel(passive: PassiveTrigger): { name: string; color: string } {

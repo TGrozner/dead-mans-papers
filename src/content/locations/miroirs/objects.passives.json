@@ -160,7 +160,7 @@
       "scriptId": "utility_van",
       "nodeId": "notebook_absent"
     },
-    "text": "Un homme qui note tout sans carnet, c'est comme une serrure sans porte: quelqu'un a pris la partie utile."
+    "text": "Un homme qui note tout sans carnet, c'est une scène déjà nettoyée. Si Karine raconte l'absence du carnet avant toi, elle décide ce qui n'a jamais existé."
   },
   {
     "id": "miroirs_page__dossier_camera_as_decision",
@@ -196,7 +196,7 @@
       "scriptId": "utility_van",
       "nodeId": "page_badge"
     },
-    "text": "Le badge chantier est parfait pour un sale boulot: assez officiel pour passer, assez provisoire pour devenir flou."
+    "text": "Le badge chantier est parfait pour un sale boulot: assez officiel pour passer, assez provisoire pour devenir flou. Le danger suivant, c'est le registre qui dira que ton badge à toi a fini la phrase."
   },
   {
     "id": "miroirs_page__sel_local_washed",
@@ -214,6 +214,80 @@
       "scriptId": "utility_van",
       "nodeId": "page_fold"
     },
-    "text": "Humide, froid, lavé. La page ne vient pas seulement du coffre. Elle a connu un local où on nettoie pour oublier."
+    "text": "Humide, froid, lavé. La page ne vient pas seulement du coffre. Elle a connu un local où on nettoie pour oublier. Le Sel reconnaît une pièce avant de retrouver l'adresse."
+  },
+  {
+    "id": "miroirs_papers__sel_hami_date",
+    "contextId": "miroirs/papers",
+    "location": "miroirs",
+    "subject": "folded-prescription",
+    "channel": "dialogue",
+    "voice": "memoire_saline",
+    "minScore": 2,
+    "once": true,
+    "priority": 95,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "papers_dose"
+    },
+    "text": "18 h 40. L'heure colle à la langue comme un médicament mal avalé. Une ordonnance datée, ce n'est pas seulement un soin: c'est un alibi avec posologie."
+  },
+  {
+    "id": "miroirs_page__presage_admin_death",
+    "contextId": "miroirs/page",
+    "location": "miroirs",
+    "subject": "admin-death",
+    "channel": "dialogue",
+    "voice": "symbole",
+    "minScore": 2,
+    "once": true,
+    "priority": 94,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "page_surface"
+    },
+    "text": "Mort dans leurs papiers avant le corps. Le Présage n'a pas besoin de mystère: ici, un formulaire peut creuser le trou pendant que quelqu'un respire encore."
+  },
+  {
+    "id": "miroirs_page__dossier_camera_synthesis_pressure",
+    "contextId": "miroirs/page",
+    "location": "miroirs",
+    "subject": "dead-camera",
+    "channel": "dialogue",
+    "voice": "procedure",
+    "requiresFlag": "camera_dead_angle_understood",
+    "minScore": 2,
+    "once": true,
+    "priority": 88,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "page_camera_success"
+    },
+    "text": "L'angle mort ne disculpe personne. Il prouve pire: quelqu'un a choisi l'endroit exact où une preuve ne naîtrait pas."
+  },
+  {
+    "id": "miroirs_page__main_badge_synthesis_pressure",
+    "contextId": "miroirs/page",
+    "location": "miroirs",
+    "subject": "worksite-badge",
+    "channel": "dialogue",
+    "voice": "main_gauche",
+    "requiresFlag": "badge_access_chain_understood",
+    "minScore": 2,
+    "once": true,
+    "priority": 88,
+    "display": "dialogue",
+    "trigger": {
+      "type": "dialogue",
+      "scriptId": "utility_van",
+      "nodeId": "page_badge_success"
+    },
+    "text": "Deux badges propres peuvent fabriquer une scène sale. Le registre P2 devient une arme: s'il ment, il accuse; s'il dit vrai, il accuse aussi."
   }
 ]

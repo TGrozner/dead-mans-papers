@@ -46,6 +46,22 @@ export default defineConfig({
       },
     },
     {
+      name: 'short-height-chromium',
+      grep: /@responsive/,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 900, height: 560 },
+      },
+    },
+    {
+      name: 'mobile-portrait-chromium',
+      grep: /@responsive/,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 390, height: 844 },
+      },
+    },
+    {
       name: 'pages-chromium',
       grep: /@pages/,
       use: {
