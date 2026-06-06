@@ -30,14 +30,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Validate content
-        run: npm run validate:content
-
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Build
-        run: npm run build
-
-      - name: E2E
-        run: npm run e2e
+      - name: Test
+        run: npm test

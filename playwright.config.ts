@@ -73,13 +73,13 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: `npm run build -- --outDir dist-e2e && npm run preview -- --host 127.0.0.1 --port ${rootPort} --strictPort --outDir dist-e2e`,
+      command: `npm run build:e2e && npm run preview -- --host 127.0.0.1 --port ${rootPort} --strictPort --outDir dist-e2e`,
       url: rootBaseURL,
       reuseExistingServer: false,
       timeout: 120_000,
     },
     {
-      command: `GITHUB_PAGES=true npm run build -- --outDir dist-pages && npm run preview:pages -- --host 127.0.0.1 --port ${pagesPort} --strictPort --outDir dist-pages`,
+      command: `npm run build:pages:e2e && npm run preview:pages -- --host 127.0.0.1 --port ${pagesPort} --strictPort --outDir dist-pages`,
       url: pagesBaseURL,
       reuseExistingServer: false,
       timeout: 120_000,
