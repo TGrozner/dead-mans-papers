@@ -124,7 +124,7 @@
             "important": true
           },
           {
-            "label": "Écraser le gobelet. Sauver ta honte, perdre une trace.",
+            "label": "Écraser le gobelet. Cacher ta honte, perdre une trace.",
             "next": "stand",
             "effects": [
               {
@@ -146,7 +146,7 @@
       },
       "cup": {
         "id": "cup",
-        "text": "Le plastique colle aux doigts. Tu connais ce geste: boire, avaler, négocier cinq minutes de main stable. Même vide, ce gobelet peut te sauver ou te condamner. Il a exactement la taille d'une preuve qu'on préfère appeler déchet."
+        "text": "Le plastique colle aux doigts. Tu connais ce geste: boire, avaler, négocier cinq minutes de main stable. Même vide, ce gobelet peut te sauver ou te condamner. Il a la bonne taille pour une preuve qu'on préfère appeler déchet."
       },
       "cup_trace_success": {
         "id": "cup_trace_success",
@@ -154,7 +154,7 @@
       },
       "cup_trace_failure": {
         "id": "cup_trace_failure",
-        "text": "Tu cherches une preuve. Tu trouves surtout l'envie de finir le fond. Voilà le simulateur exact: une scène de crime dans les yeux, une pharmacie basse dans la gorge, et ton corps qui vote contre toi."
+        "text": "Tu cherches une preuve. Tu trouves surtout l'envie de finir le fond. Voilà le piège exact: une scène de crime dans les yeux, un goût de pharmacie au fond de la gorge, et ton corps qui vote contre toi."
       },
       "phone": {
         "id": "phone",
@@ -237,10 +237,10 @@
       },
       "karine_call": {
         "id": "karine_call",
-        "text": "\"P2. Maintenant.\" Karine coupe presque ta question. \"Tu viens, tu regardes, tu ne touches pas. Et tu ne dis pas dans quel état tu es.\"",
+        "text": "\"P2. Maintenant.\" Karine te coupe avant même la question. \"Tu viens, tu regardes, tu ne touches pas. Et tu ne dis pas dans quel état tu es.\"",
         "choices": [
           {
-            "label": "\"Je suis déjà là, et tu m'appelais avant que je revienne.\"",
+            "label": "\"Je suis déjà là, et tu m'appelais avant que je revienne à moi.\"",
             "next": "karine_cut",
             "important": true,
             "effects": [
@@ -256,7 +256,7 @@
             ]
           },
           {
-            "label": "\"Quel problème ? Dis le mot.\"",
+            "label": "\"Quel problème ? Dis-le.\"",
             "next": "karine_cut",
             "important": true,
             "effects": [
@@ -294,11 +294,11 @@
       },
       "karine_cut": {
         "id": "karine_cut",
-        "text": "\"Pas au téléphone. Si tu as bu ou pris un truc, tu te tais. J'ai besoin de cinq minutes propres.\" Elle dit propres comme si quelqu'un avait déjà lavé quelque chose."
+        "text": "\"Pas au téléphone. Si tu as bu ou pris un truc, tu te tais. J'ai besoin de cinq minutes propres.\" Elle appuie sur \"propres\", comme si quelqu'un avait déjà lavé quelque chose."
       },
       "phone_timeline_success": {
         "id": "phone_timeline_success",
-        "text": "Premier appel avant ton réveil. Dernier deux minutes après. Karine savait où te trouver avant toi."
+        "text": "Premier appel avant ton réveil. Le dernier, deux minutes avant que tu reviennes à toi. Karine savait où te trouver avant toi."
       },
       "phone_timeline_failure": {
         "id": "phone_timeline_failure",
@@ -309,7 +309,7 @@
         "text": "La Dose promet une main stable. Cinq minutes sans trembler. Ici, cinq minutes peuvent suffire à fabriquer une version. Elle parle doux parce qu'elle sait que tu as déjà payé pire pour moins que ça.",
         "choices": [
           {
-            "label": "Croire la promesse. Gagner la main, perdre une couche de toi.",
+            "label": "Croire la promesse. Gagner une main sûre, perdre encore un bout de toi.",
             "next": "stand",
             "important": true,
             "effects": [
@@ -394,7 +394,7 @@
             ]
           },
           {
-            "label": "\"Pas un mort pas encore ? Tu viens de choisir le mot.\"",
+            "label": "\"Pas un mort, pas encore ? Tu viens de choisir le mot.\"",
             "next": "leduc_frame",
             "important": true,
             "effects": [
@@ -474,7 +474,7 @@
       },
       "leduc_useful_suspect": {
         "id": "leduc_useful_suspect",
-        "text": "\"Utile et suspect, ça tient très bien dans la même personne.\" Elle regarde ta bouche. \"Surtout quand elle sent le verre.\""
+        "text": "\"Utile et suspect, ça tient très bien dans la même personne.\" Elle regarde ta bouche. \"Surtout quand elle sent l'alcool.\""
       },
       "dead_name": {
         "id": "dead_name",
@@ -486,7 +486,7 @@
       },
       "leduc_interests": {
         "id": "leduc_interests",
-        "text": "\"Je protège la mairie, le chantier, les prestataires, les habitants. Toi, tu arrives après. Sauf si tu me rends utile.\""
+        "text": "\"Je protège la mairie, le chantier, les prestataires, les habitants. Toi, tu arrives après. Sauf si tu me sers à quelque chose.\""
       },
       "leduc_badge_hint": {
         "id": "leduc_badge_hint",
@@ -525,7 +525,7 @@
         "text": "Le hayon monte. Froid. Javel. Un vieux corps plié dans la tôle. Ahmed, probablement. Sur sa poitrine, rangés comme une convocation: ta carte, ton badge municipal, une ordonnance. Pas dans ses poches. Sur lui. Ton nom posé sur un mort pour que le premier regard sache qui accuser.",
         "choices": [
           {
-            "label": "Fixer ton nom sur le mort. Choisir ce que tu es dans cette scène.",
+            "label": "Regarder ton nom sur le mort. Choisir ce que tu es dans cette scène.",
             "personality": [
               "procedure",
               "honte_publique"
@@ -590,7 +590,7 @@
         "text": "Carte d'identité. Badge municipal. Ordonnance. Trois fois ton nom sur Ahmed. Quelqu'un n'a pas seulement fabriqué un suspect: quelqu'un a fabriqué la version de toi que la police préférera croire.",
         "choices": [
           {
-            "label": "Assumer le nom. Reprendre Zinédine avant le rapport.",
+            "label": "Assumer le nom. Le reprendre avant le rapport.",
             "next": "identity_accept",
             "hiddenWhenFlag": "identity_chosen",
             "important": true,
@@ -702,7 +702,7 @@
       },
       "identity_accept": {
         "id": "identity_accept",
-        "text": "Tu gardes ton nom. Pas par confiance. Parce qu'un mort porte déjà ta version administrative, et qu'il faut lui reprendre."
+        "text": "Tu gardes ton nom. Pas par confiance. Parce qu'un mort porte déjà ta version administrative, et qu'il faut le reprendre au mort."
       },
       "identity_refuse": {
         "id": "identity_refuse",
@@ -734,7 +734,7 @@
             "important": true
           },
           {
-            "label": "Lire la page arrachée serrée dans ta main.",
+            "label": "Lire la page arrachée que tu serres dans ta main.",
             "personality": "memoire_saline",
             "next": "page_surface",
             "requiresFlag": "page_found",
@@ -780,7 +780,7 @@
       },
       "papers_surface": {
         "id": "papers_surface",
-        "text": "Carte. Badge. Ordonnance. Identité, accès, dépendance. Un kit complet pour te résumer en suspect."
+        "text": "Carte. Badge. Ordonnance. Identité, accès, dépendance. Un kit complet pour te réduire à un suspect."
       },
       "papers_regard": {
         "id": "papers_regard",
@@ -788,7 +788,7 @@
       },
       "photo_mismatch_success": {
         "id": "photo_mismatch_success",
-        "text": "Le piège est propre: un Zinédine administratif pour accuser un Zinédine vivant, rouge, malade, contestable."
+        "text": "Le piège est propre: un Zinédine administratif pour accuser un Zinédine vivant, rouge, malade, facile à discréditer."
       },
       "photo_mismatch_failure": {
         "id": "photo_mismatch_failure",
@@ -812,7 +812,7 @@
       },
       "hami_prescription_failure": {
         "id": "hami_prescription_failure",
-        "text": "Tu lis dose avant de lire preuve. Hami reste le robinet. C'est justement pour ça qu'il faut regarder."
+        "text": "Tu lis la dose avant la preuve. Hami reste le robinet. C'est justement pour ça qu'il faut regarder."
       },
       "hami_too_fast": {
         "id": "hami_too_fast",
@@ -820,7 +820,7 @@
       },
       "body_read": {
         "id": "body_read",
-        "text": "Ahmed n'a pas l'air mort ici. Il a l'air transporté, rangé, privé de ce qui expliquait sa vie."
+        "text": "Ahmed n'a pas l'air d'être mort ici. Il a l'air transporté, rangé, privé de ce qui expliquait sa vie."
       },
       "body_no_wounds": {
         "id": "body_no_wounds",
@@ -872,7 +872,7 @@
       },
       "search_failure": {
         "id": "search_failure",
-        "text": "Tu vomis. Public, impossible à rattraper. Mais ta main revient avec une page. Tu perds la façade, tu gagnes une preuve."
+        "text": "Tu vomis. En public, impossible à rattraper. Mais ta main revient avec une page. Tu perds la façade, tu gagnes une preuve."
       },
       "page_surface": {
         "id": "page_surface",
@@ -888,7 +888,7 @@
       },
       "page_camera_failure": {
         "id": "page_camera_failure",
-        "text": "Tu rates l'angle exact. Pas le geste: quelqu'un a touché la caméra après sa mort officielle."
+        "text": "Tu rates l'angle exact. Pas le geste: quelqu'un a touché la caméra après sa panne officielle."
       },
       "page_badge": {
         "id": "page_badge",
@@ -900,7 +900,7 @@
       },
       "page_badge_failure": {
         "id": "page_badge_failure",
-        "text": "Tu n'as pas le trajet complet. Tu as mieux: le lecteur exact à auditer."
+        "text": "Tu n'as pas le trajet complet. Tu as mieux: le lecteur précis à vérifier."
       },
       "page_fold": {
         "id": "page_fold",
@@ -912,7 +912,7 @@
       },
       "page_cold_failure": {
         "id": "page_cold_failure",
-        "text": "La Dose brouille tout. Mais même brouillé, le froid pointe vers un local lavé et la santé municipale."
+        "text": "La Dose brouille tout. Mais même brouillé, le froid pointe vers un local lavé et le centre de santé municipal."
       }
     }
   },
@@ -924,7 +924,7 @@
       },
       "first_call_success": {
         "id": "first_call_success",
-        "text": "Tu l'accroches sur l'ordre des appels. Cabinet du maire. Keller Sécurité. Les secours après. La version officielle était déjà en train de naître."
+        "text": "Tu la coinces sur l'ordre des appels. Cabinet du maire. Keller Sécurité. Les secours après. La version officielle était déjà en train de naître."
       },
       "first_call_failure": {
         "id": "first_call_failure",
@@ -932,7 +932,7 @@
       },
       "posture_accept": {
         "id": "posture_accept",
-        "text": "\"Reste vivant, joignable, utile. Si tu dévies, ils écriront confus.\""
+        "text": "\"Reste vivant, joignable, utile. Si tu dévies, ils noteront \"confus\".\""
       },
       "posture_refuse": {
         "id": "posture_refuse",
@@ -940,7 +940,7 @@
       },
       "posture_perform": {
         "id": "posture_perform",
-        "text": "\"Voilà. J'ai besoin du type à qui les habitants parlent avant de se méfier.\""
+        "text": "\"Voilà. J'ai besoin du type à qui les habitants parlent avant de se méfier de lui.\""
       },
       "posture_defile": {
         "id": "posture_defile",
@@ -948,7 +948,7 @@
       },
       "why_zinedine": {
         "id": "why_zinedine",
-        "text": "\"Parce que la mairie peut te nier si tu rates. Parce que le quartier te connaît. Parce que tu dois assez de choses pour ne pas jouer au chevalier.\""
+        "text": "\"Parce que la mairie peut nier t'avoir envoyé si tu rates. Parce que le quartier te connaît. Parce que tu dois assez de choses pour ne pas jouer au chevalier.\""
       },
       "gobelet_skill": {
         "id": "gobelet_skill",
@@ -972,7 +972,7 @@
       },
       "hami_gloves": {
         "id": "hami_gloves",
-        "text": "\"Hami relève de la santé, pas du chantier.\" Karine sépare les services comme on lave des mains."
+        "text": "\"Hami relève de la santé, pas du chantier.\" Karine sépare les services comme on se lave les mains."
       },
       "hami_boundary": {
         "id": "hami_boundary",
@@ -984,7 +984,7 @@
       },
       "hami_register_failure": {
         "id": "hami_register_failure",
-        "text": "Ta voix dit manque avant de dire registre. Karine gagne la posture. Elle ne nie pas les entrées du centre."
+        "text": "Ta voix dit le manque avant le registre. Karine gagne la posture. Elle ne nie pas les entrées du centre."
       }
     }
   },
@@ -996,7 +996,7 @@
       },
       "early_no_page": {
         "id": "early_no_page",
-        "text": "\"Tu viens les mains vides et la bouche pleine de parking. Va voir l'utilitaire. Après on parle.\""
+        "text": "\"Tu viens les mains vides et la gueule encore pleine de parking. Va voir l'utilitaire. Après on parle.\""
       },
       "ahmed_page": {
         "id": "ahmed_page",
@@ -1004,7 +1004,7 @@
       },
       "access": {
         "id": "access",
-        "text": "\"Caméra morte depuis mars. Support touché la semaine dernière. Badge chantier qui ouvre trop. C'est pas une faille, c'est une habitude.\""
+        "text": "\"Caméra morte depuis mars. Support touché la semaine dernière. Un badge chantier qui ouvre trop de portes. C'est pas une faille, c'est une habitude.\""
       },
       "vendor_name_success": {
         "id": "vendor_name_success",
@@ -1016,7 +1016,7 @@
       },
       "invoice": {
         "id": "invoice",
-        "text": "\"Nettoyage, sécurité, santé, rénovation. Une clé chacun. À la fin, personne n'a porté le corps entier.\""
+        "text": "\"Nettoyage, sécurité, santé, rénovation. Une clé chacun. À la fin, personne ne porte toute la responsabilité.\""
       },
       "surname": {
         "id": "surname",
@@ -1056,7 +1056,7 @@
     "nodes": {
       "start": {
         "id": "start",
-        "text": "La palissade garde Sofiane quand il est encore là: capuche basse, joint mort, yeux sur les sorties."
+        "text": "Sofiane est encore là, contre la palissade: capuche basse, joint mort, yeux sur les sorties."
       },
       "early_no_page": {
         "id": "early_no_page",
@@ -1068,19 +1068,19 @@
       },
       "keep_talking_success": {
         "id": "keep_talking_success",
-        "text": "\"Si tu pars, ils écriront témoin toxico.\" Ça le bloque. \"Le gars au badge est revenu après. Il regardait toi, pas le coffre.\""
+        "text": "\"Si tu pars, ils écriront témoin toxico.\" Ça le bloque. \"Le gars au badge est revenu après. Il te regardait, toi, pas le coffre.\""
       },
       "keep_talking_failure": {
         "id": "keep_talking_failure",
-        "text": "Tu serres trop. Il file, mais lâche une pierre: \"Badge chantier. Logo santé dessous. J'ai pas vu plus.\""
+        "text": "Tu serres trop. Il file, mais lâche un détail: \"Badge chantier. Logo santé dessous. J'ai pas vu plus.\""
       },
       "saw_van": {
         "id": "saw_van",
-        "text": "\"J'ai vu l'utilitaire avant le matin. Coffre fermé. Derrière, un gars en gilet chantier. Il connaissait le chemin.\""
+        "text": "\"J'ai vu l'utilitaire avant le lever du jour. Coffre fermé. Derrière, un gars en gilet chantier. Il connaissait le chemin.\""
       },
       "vest": {
         "id": "vest",
-        "text": "\"Gants bleus. Badge chantier bien visible. Le genre d'objet qui dit: ne me posez pas de question.\""
+        "text": "\"Gants bleus. Badge chantier bien visible. Le genre d'équipement qui dit: ne me posez pas de question.\""
       },
       "smell": {
         "id": "smell",

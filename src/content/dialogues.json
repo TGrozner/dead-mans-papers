@@ -38,7 +38,7 @@
             "important": true
           },
           {
-            "label": "Laisser les 12 appels vibrer et aller vers l'utilitaire.",
+            "label": "Laisser le téléphone vibrer et aller vers l'utilitaire.",
             "next": "end",
             "important": true,
             "effects": [
@@ -84,7 +84,7 @@
         "id": "cup",
         "speaker": "Le Ventre",
         "voice": "faim",
-        "text": "Le plastique colle aux doigts. Ton corps reconnaît l'ordre des choses avant toi: boire, avaler de quoi calmer la main, dire que ça ira mieux après. Sur le bord, ton empreinte colle aussi. Même vide, le gobelet peut encore parler pour toi contre toi.",
+        "text": "Le plastique colle aux doigts. Ton corps reconnaît l'ordre des choses avant toi: boire, avaler de quoi calmer la main, dire que ça ira mieux après. Sur le bord, ton empreinte colle aussi. Même vide, le gobelet peut encore témoigner contre toi.",
         "effects": [
           {
             "type": "flag",
@@ -359,7 +359,7 @@
         "id": "phone_timeline_failure",
         "speaker": "Le Sel",
         "voice": "memoire_saline",
-        "text": "Les heures bavent sur l'écran. Ton pouce tremble, la fissure double les chiffres, et ta tête refuse de classer. Tu ne tiens pas la chronologie. Tu tiens pire: Karine a dit pas la police, et ton corps a obéi avant toi.",
+        "text": "Les heures bavent sur l'écran. Ton pouce tremble, la fissure double les chiffres, et ta tête refuse de classer. Tu ne tiens pas la chronologie. Tu tiens quelque chose de pire: Karine a dit pas la police, et ton corps a obéi avant toi.",
         "effects": [
           {
             "type": "flag",
@@ -690,7 +690,7 @@
       "leduc_useful_suspect": {
         "id": "leduc_useful_suspect",
         "speaker": "Karine Leduc",
-        "text": "\"Les deux peuvent tenir dans la même personne.\" Elle regarde ta bouche, pas tes yeux. \"Surtout quand cette personne sent le verre et la pharmacie.\"",
+        "text": "\"Les deux peuvent tenir dans la même personne.\" Elle regarde ta bouche, pas tes yeux. \"Surtout quand cette personne sent l'alcool et la pharmacie.\"",
         "effects": [
           {
             "type": "flag",
@@ -936,7 +936,7 @@
         "id": "public_composure_success",
         "speaker": "Le Regard",
         "voice": "honte_publique",
-        "text": "Tu ranges la tremble dans la poche, tu verrouilles la bouche, tu donnes à Karine cinq secondes de témoin présentable. Pas sobre. Pas sain. Présentable. Ça suffit pour qu'elle perde son dernier prétexte.",
+        "text": "Tu fourres ta main tremblante dans ta poche, tu serres les dents, tu donnes à Karine cinq secondes de témoin présentable. Pas sobre. Pas sain. Présentable. Ça suffit pour qu'elle perde son dernier prétexte.",
         "effects": [
           {
             "type": "flag",
@@ -1053,7 +1053,7 @@
       "trunk_open": {
         "id": "trunk_open",
         "speaker": "Parking P2",
-        "text": "Le hayon monte. Tout arrive d'un coup. L'odeur de vieux froid. La Javel. Le corps d'un vieil homme tassé dans la tôle. Le profil te frappe avant le nom: Ahmed Berrichi, ou quelqu'un veut que tu le reconnaisses ainsi. Et sur sa poitrine, pas cachés, pas subtils: ta carte, ton badge municipal, une ordonnance pliée. Ton nom posé sur un mort comme une étiquette de consigne.",
+        "text": "Le hayon monte. Tout arrive d'un coup. L'odeur de vieux froid. La Javel. Le corps d'un vieil homme tassé dans la tôle. Le profil te frappe avant le nom: Ahmed Berrichi, ou quelqu'un veut que tu le reconnaisses ainsi. Et sur sa poitrine, bien visibles, sans subtilité: ta carte, ton badge municipal, une ordonnance pliée. Ton nom posé sur un mort comme une étiquette de consigne.",
         "effects": [
           {
             "type": "flag",
@@ -1163,7 +1163,7 @@
             "important": true
           },
           {
-            "label": "Lire la page arrachée serrée dans ta main.",
+            "label": "Lire la page arrachée que tu serres dans ta main.",
             "next": "page_surface",
             "requiresFlag": "page_found",
             "important": true
@@ -1417,7 +1417,7 @@
             "next": "hami_too_fast"
           },
           {
-            "label": "Ranger l'ordonnance dans les suspects.",
+            "label": "Ranger l'ordonnance parmi les pistes.",
             "next": "papers_surface"
           }
         ]
@@ -1523,7 +1523,7 @@
       "body_read": {
         "id": "body_read",
         "speaker": "Ahmed Berrichi",
-        "text": "Ahmed n'a pas l'air endormi. Il a l'air traité. Déplacé. Géré par des gens qui disent prise en charge quand ils veulent dire débarrassez-moi de ça.",
+        "text": "Ahmed n'a pas l'air endormi. Il a l'air traité. Déplacé. Géré par des gens qui disent prise en charge quand ils veulent dire débarrassez-nous de ça.",
         "effects": [
           {
             "type": "flag",
@@ -1741,7 +1741,7 @@
         "id": "withdrawal_measure_success",
         "speaker": "Le Ventre",
         "voice": "faim",
-        "text": "Tu laisses la nausée parler sans lui donner le volant. Alcool acide: toi. Javel froide: pas toi. Odeur de frigo sale: pas le P2. Ton corps est une ruine, mais une ruine avec capteurs encore branchés.",
+        "text": "Tu laisses la nausée parler sans lui donner le volant. Alcool acide: toi. Javel froide: pas toi. Odeur de frigo sale: pas le P2. Ton corps est une ruine, mais une ruine avec des capteurs encore branchés.",
         "effects": [
           {
             "type": "flag",
@@ -1963,7 +1963,7 @@
         "id": "search_success",
         "speaker": "La Main Basse",
         "voice": "main_gauche",
-        "text": "Tu bloques la bile, tu bloques le tremblement, et tu laisses la main faire. Sous la doublure du coffre, elle trouve une page arrachée que personne n'a pensée à retirer. Pas un miracle: une erreur de gens pressés.",
+        "text": "Tu bloques la bile, tu bloques le tremblement, et tu laisses la main faire. Sous la doublure du coffre, elle trouve une page arrachée que personne n'a pensé à retirer. Pas un miracle: une erreur de gens pressés.",
         "effects": [
           {
             "type": "flag",
@@ -2140,7 +2140,7 @@
         "id": "page_camera_failure",
         "speaker": "Le Sel",
         "voice": "memoire_saline",
-        "text": "Tu vois la panne, le support récent, le coffre. Les morceaux refusent encore de s'aligner. Une chose reste propre: quelqu'un a touché au regard du P2 après sa mort officielle, et ce geste vaut mieux qu'une rumeur.",
+        "text": "Tu vois la panne, le support récent, le coffre. Les morceaux refusent encore de s'aligner. Une chose reste propre: quelqu'un a touché au regard du P2 après sa panne officielle, et ce geste vaut mieux qu'une rumeur.",
         "effects": [
           {
             "type": "flag",
@@ -2346,7 +2346,7 @@
         "id": "page_cold_failure",
         "speaker": "La Dose",
         "parasite": "dose",
-        "text": "Tu forces trop. Le froid devient migraine, la Javel devient salive amère, et La Dose propose une solution simple: arrêter de chercher dans les odeurs et trouver une main stable. Mauvaise proposition. Bonne direction quand même: local lavé, papier humide, santé municipale qui sait faire propre.",
+        "text": "Tu forces trop. Le froid devient migraine, la Javel devient salive amère, et La Dose propose une solution simple: arrêter de chercher dans les odeurs et trouver une main stable. Mauvaise proposition. Bonne direction quand même: local lavé, papier humide, centre de santé municipal qui sait faire propre.",
         "effects": [
           {
             "type": "flag",
@@ -2362,7 +2362,7 @@
           },
           {
             "type": "clue",
-            "clue": "Même brouillée par La Dose, la piste du froid renvoie à un local lavé et à la santé municipale."
+            "clue": "Même brouillée par La Dose, la piste du froid renvoie à un local lavé et au centre de santé municipal."
           },
           {
             "type": "clue",
@@ -2659,7 +2659,7 @@
             "important": true
           },
           {
-            "label": "Lui arracher qui elle a appelé avant toi.",
+            "label": "Lui arracher le nom de ceux qu'elle a appelés avant toi.",
             "check": {
               "id": "leduc_first_call",
               "voice": "procedure",
@@ -2820,7 +2820,7 @@
       "why_zinedine": {
         "id": "why_zinedine",
         "speaker": "Karine Leduc",
-        "text": "\"Parce que la mairie peut te nier si tu rates. Parce que les habitants te connaissent. Parce que tu dois assez de choses à assez de gens pour ne pas jouer au chevalier. Et parce que tu étais déjà dans le périmètre avant même de savoir pourquoi.\"",
+        "text": "\"Parce que la mairie peut nier t'avoir envoyé si tu rates. Parce que les habitants te connaissent. Parce que tu dois assez de choses à assez de gens pour ne pas jouer au chevalier. Et parce que tu étais déjà dans le périmètre avant même de savoir pourquoi.\"",
         "effects": [
           {
             "type": "flag",
@@ -3009,7 +3009,7 @@
         ],
         "choices": [
           {
-            "label": "Exiger les registres santé sans trembler dans sa phrase.",
+            "label": "Exiger les registres santé sans laisser trembler ta voix.",
             "check": {
               "id": "hami_register_pressure",
               "voice": "procedure",
@@ -3070,7 +3070,7 @@
         "id": "hami_register_failure",
         "speaker": "Le Regard",
         "voice": "honte_publique",
-        "text": "Tu dis registres, mais ta voix dit manque. Karine entend le deuxième mot. Elle recule d'un cran: \"Tu veux ouvrir un dossier médical dans ton état ?\" Elle gagne la façade. Elle perd quand même un détail: elle ne nie pas les entrées de service du centre.",
+        "text": "Tu dis registres, mais ta voix dit le manque. Karine entend le deuxième mot. Elle recule d'un cran: \"Tu veux ouvrir un dossier médical dans ton état ?\" Elle gagne la façade. Elle perd quand même un détail: elle ne nie pas les entrées de service du centre.",
         "effects": [
           {
             "type": "flag",
@@ -3165,7 +3165,7 @@
       "early_no_page": {
         "id": "early_no_page",
         "speaker": "Amar Boudiaf",
-        "text": "\"Tu viens les mains vides et la bouche pleine de parking. Je te donne rien qui finira dans la phrase de Karine. Va regarder ce qu'elle garde dans son utilitaire, après on parle.\"",
+        "text": "\"Tu viens les mains vides et la gueule encore pleine de parking. Je te donne rien qui finira dans la phrase de Karine. Va regarder ce qu'elle garde dans son utilitaire, après on parle.\"",
         "effects": [
           {
             "type": "clue",
@@ -3563,7 +3563,7 @@
       "start": {
         "id": "start",
         "speaker": "Sofiane Zekraoui",
-        "text": "La palissade garde Sofiane tant qu'il accepte encore d'y être: capuche basse, joint presque éteint entre deux doigts, yeux sur les issues et les gens qui peuvent répéter. S'il a fui, elle garde seulement sa place vide, son joint écrasé et les mots qu'il a lâchés trop tard.",
+        "text": "Sofiane reste contre la palissade tant qu'il accepte encore d'y être: capuche basse, joint presque éteint entre deux doigts, yeux sur les issues et les gens qui peuvent répéter. S'il a fui, il ne reste que sa place vide, son joint écrasé et les mots qu'il a lâchés trop tard.",
         "effects": [
           {
             "type": "flag",
@@ -3683,7 +3683,7 @@
       "keep_talking_success": {
         "id": "keep_talking_success",
         "speaker": "Sofiane Zekraoui",
-        "text": "Tu ne le bloques pas avec ton corps. Tu bloques la sortie avec son intérêt. \"Si tu pars maintenant, ils vont dire témoin toxico et fermer ta bouche à ta place.\" Sofiane ravale la fumée. \"Le gars au badge chantier est revenu après. Il regardait toi, pas le coffre.\"",
+        "text": "Tu ne le bloques pas avec ton corps. Tu bloques la sortie avec son intérêt. \"Si tu pars maintenant, ils vont dire témoin toxico et fermer ta bouche à ta place.\" Sofiane ravale la fumée. \"Le gars au badge chantier est revenu après. Il te regardait, toi, pas le coffre.\"",
         "effects": [
           {
             "type": "flag",
@@ -3722,7 +3722,7 @@
       "keep_talking_failure": {
         "id": "keep_talking_failure",
         "speaker": "Sofiane Zekraoui",
-        "text": "Tu mets trop de pression. Il recule, joint écrasé, capuche déjà tournée. Avant de filer, il lâche une phrase comme on jette un caillou derrière soi: \"Le badge avait pas juste chantier. Y avait un logo du centre de santé dessous. J'ai pas vu plus.\"",
+        "text": "Tu mets trop de pression. Il recule, joint écrasé, capuche déjà tournée. Avant de filer, il lâche une phrase comme on jette un caillou derrière soi: \"Le badge n'avait pas juste chantier. Y avait un logo du centre de santé dessous. J'ai pas vu plus.\"",
         "effects": [
           {
             "type": "flag",
@@ -3761,7 +3761,7 @@
       "saw_van": {
         "id": "saw_van",
         "speaker": "Sofiane Zekraoui",
-        "text": "\"J'ai vu l'utilitaire avant le matin. Pas plein jour. Pas nuit non plus. L'heure où les livreurs se trompent d'entrée et où les gardiens font semblant de pas voir. Il roulait doucement, coffre fermé. Derrière, un gars en gilet chantier marchait tête basse, comme quelqu'un qui connaît déjà le chemin.\"",
+        "text": "\"J'ai vu l'utilitaire avant le lever du jour. Pas plein jour. Pas nuit non plus. L'heure où les livreurs se trompent d'entrée et où les gardiens font semblant de pas voir. Il roulait doucement, coffre fermé. Derrière, un gars en gilet chantier marchait tête basse, comme quelqu'un qui connaît déjà le chemin.\"",
         "effects": [
           {
             "type": "flag",
@@ -3773,7 +3773,7 @@
           },
           {
             "type": "clue",
-            "clue": "Sofiane a vu l'utilitaire entrer au P2 avant le matin avec un homme en gilet chantier."
+            "clue": "Sofiane a vu l'utilitaire entrer au P2 avant le lever du jour avec un homme en gilet chantier."
           }
         ],
         "choices": [
@@ -3796,7 +3796,7 @@
       "vest": {
         "id": "vest",
         "speaker": "Sofiane Zekraoui",
-        "text": "\"Gants bleus. Badge au cou. Pas ton badge à toi, pas celui des médiateurs. Un badge chantier propre, plastifié, tenu bien visible. Le genre d'objet qui dit: je suis autorisé, ne me posez pas de question.\"",
+        "text": "\"Gants bleus. Badge au cou. Pas ton badge à toi, pas celui des médiateurs. Un badge chantier propre, plastifié, tenu bien visible. Le genre d'équipement qui dit: je suis autorisé, ne me posez pas de question.\"",
         "effects": [
           {
             "type": "clue",

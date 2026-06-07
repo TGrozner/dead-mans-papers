@@ -69,7 +69,7 @@
       "scriptId": "utility_van",
       "nodeId": "start"
     },
-    "text": "Voilà. Main presque droite, regard presque stable. Presque est un luxe, ici. Maintenant avance avant que le prix remonte."
+    "text": "Voilà. Main presque stable, regard presque stable. Presque est un luxe, ici. Maintenant avance avant que le prix remonte."
   },
   {
     "id": "miroirs_wake__timeline_loaded",
@@ -141,7 +141,7 @@
       "scriptId": "utility_van",
       "nodeId": "search_failure"
     },
-    "text": "Voilà le prix d'une machine mal régulée. Tu voulais fouiller un mort avec une main de dette et un estomac vide. On reparlera dosage."
+    "text": "Voilà le prix d'une machine mal régulée. Tu voulais fouiller un mort avec une main tenue par la dette et un estomac vide. On reparlera dosage."
   },
   {
     "id": "miroirs_body__main_success_dirty_work",
@@ -196,7 +196,7 @@
       "scriptId": "utility_van",
       "nodeId": "search_failure"
     },
-    "text": "Acide, sueur, papier humide. La preuve survit, mais elle porte maintenant ton corps dessus. Même utile, elle peut être retournée."
+    "text": "Acide, sueur, papier humide. La preuve survit, mais elle porte maintenant la trace de ton corps. Même utile, elle peut être retournée."
   },
   {
     "id": "miroirs_wake__functional_wreck",
@@ -253,6 +253,6 @@
       "scriptId": "utility_van",
       "nodeId": "body_handling_failure"
     },
-    "text": "Tu rates la lecture propre, mais ton corps attrape quand même le mensonge: ce froid n'a pas poussé ici. Une épave peut encore sentir une pièce froide."
+    "text": "Tu rates la lecture propre, mais ton corps attrape quand même le mensonge: ce froid n'est pas né ici. Une épave peut encore sentir une pièce froide."
   }
 ]

@@ -88,7 +88,7 @@
       "scriptId": "utility_van",
       "nodeId": "papers_surface"
     },
-    "text": "Les papiers sont propres, donc tu veux les croire simples. Mauvaise lecture: ce qui est propre s'imprime plus vite."
+    "text": "Les papiers sont propres, donc tu veux les croire simples. Mauvaise lecture: ce qui est propre se classe plus vite."
   },
   {
     "id": "miroirs_body__ventre_counts_hours",
@@ -142,7 +142,7 @@
       "scriptId": "utility_van",
       "nodeId": "body_no_wounds"
     },
-    "text": "Pas de sang visible ne veut pas dire pas de violence. Ça peut vouloir dire ailleurs, avant, ou nettoyé."
+    "text": "Pas de sang visible ne veut pas dire pas de violence. Ça peut vouloir dire que la violence a eu lieu ailleurs, avant, ou qu'elle a été nettoyée."
   },
   {
     "id": "miroirs_notebook__main_missing",
@@ -214,7 +214,7 @@
       "scriptId": "utility_van",
       "nodeId": "page_fold"
     },
-    "text": "Humide, froid, lavé. La page a connu autre chose que le coffre: carrelage, bonde, Javel trop rapide."
+    "text": "Humide, froid, lavé. La page a connu autre chose que le coffre: carrelage, bonde, Javel passée trop vite."
   },
   {
     "id": "miroirs_papers__sel_hami_date",
@@ -250,7 +250,7 @@
       "scriptId": "utility_van",
       "nodeId": "page_surface"
     },
-    "text": "Mort dans leurs papiers avant le corps. Ici, un formulaire peut commencer le trou pendant que quelqu'un respire encore."
+    "text": "Mort dans leurs papiers avant le corps. Ici, un formulaire peut commencer à creuser le trou pendant que quelqu'un respire encore."
   },
   {
     "id": "miroirs_page__dossier_camera_synthesis_pressure",

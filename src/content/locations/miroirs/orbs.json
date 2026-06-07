@@ -10,7 +10,7 @@
     "x": 456,
     "y": 350,
     "radius": 58,
-    "text": "Douze appels manqués de Karine Leduc. Le premier date d'avant ton réveil. Le dernier de deux minutes après. Elle savait où te trouver pendant que toi, tu n'étais pas encore revenu.",
+    "text": "Douze appels manqués de Karine Leduc. Le premier date d'avant ton réveil. Le dernier, deux minutes avant que tu reviennes à toi. Elle savait où te trouver pendant que toi, tu n'étais pas encore revenu.",
     "voice": "procedure",
     "minScore": 2,
     "voiceText": "Douze appels, ça se range. Remets-les dans l'ordre et tu obtiens autre chose qu'une panique.",
@@ -24,7 +24,7 @@
       {
         "requiresFlag": "page_read",
         "priority": 10,
-        "text": "L'écran fissuré reprend vie avec un message de Karine: \"plus maintenant, on stabilise la version.\" Le téléphone ne rappelle plus. Il serre.",
+        "text": "L'écran fissuré reprend vie avec un message de Karine: \"plus maintenant, on stabilise la version.\" Le téléphone ne rappelle plus. Il serre la gorge.",
         "voice": "procedure",
         "minScore": 2,
         "voiceText": "Stabiliser la version: vocabulaire de chantier appliqué à un cadavre."

@@ -124,7 +124,7 @@
       "scriptId": "leduc",
       "nodeId": "why_zinedine"
     },
-    "text": "Elle t'a choisi par respect. Mauvaise lecture. Elle t'a choisi parce qu'un homme déjà abîmé coûte moins cher à contredire."
+    "text": "Si tu crois qu'elle t'a choisi par respect, tu lis mal. Elle t'a choisi parce qu'un homme déjà abîmé coûte moins cher à contredire."
   },
   {
     "id": "miroirs_leduc__ignored_calls_as_weapon",
@@ -162,7 +162,7 @@
       "scriptId": "leduc",
       "nodeId": "start"
     },
-    "text": "Depuis le vomi, Karine ne regarde plus seulement tes phrases. Elle regarde le dossier médical invisible qui marche derrière toi."
+    "text": "Depuis le vomi, Karine n'écoute plus seulement ce que tu dis. Elle regarde le dossier médical invisible qui marche derrière toi."
   },
   {
     "id": "miroirs_leduc__first_call_order",

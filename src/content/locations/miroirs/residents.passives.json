@@ -69,7 +69,7 @@
       "scriptId": "amar",
       "nodeId": "invoice"
     },
-    "text": "Quatre services, quatre petites responsabilités, un mort entier. Le système n'a pas besoin d'un grand méchant quand chacun fait sa petite partie."
+    "text": "Quatre services, quatre petites responsabilités, un mort entier. Le système n'a pas besoin d'un grand coupable quand chacun fait sa petite partie."
   },
   {
     "id": "miroirs_residents__forget_timing",
@@ -87,7 +87,7 @@
       "scriptId": "amar",
       "nodeId": "forget"
     },
-    "text": "Trou noir, c'est un vilain mot. Dis allégement. Dis régulation. Dis matinée rendue praticable. Les mots doux font moins peur que les trous."
+    "text": "Trou noir, c'est un vilain mot. Dis allégement. Dis régulation. Dis: matinée rendue praticable. Les mots doux font moins peur que les trous."
   },
   {
     "id": "miroirs_sofiane__bouches_dirty_witness",
@@ -178,7 +178,7 @@
       "scriptId": "sofiane",
       "nodeId": "joint"
     },
-    "text": "Il fume, donc il se protège. Pas forcément qu'il ment. Mauvaise lecture de flic fatigué: les gens propres mentent aussi; ils ont juste une meilleure lumière."
+    "text": "Il fume, donc il se protège. Ça ne veut pas forcément dire qu'il ment. Mauvaise lecture de flic fatigué: les gens propres mentent aussi; ils ont juste une meilleure lumière."
   },
   {
     "id": "miroirs_identity__accept_amar_tests_living_name",
@@ -254,7 +254,7 @@
       "scriptId": "sofiane",
       "nodeId": "start"
     },
-    "text": "Quand tu salis ton propre nom, Sofiane mesure la projection. Un témoin qui sent qu'il va finir taché parle vite ou disparaît."
+    "text": "Quand tu salis ton propre nom, Sofiane mesure ce qui peut l'éclabousser. Un témoin qui sent qu'il va finir taché parle vite ou disparaît."
   },
   {
     "id": "miroirs_amar__last_warning_hits",
@@ -349,7 +349,7 @@
       "scriptId": "sofiane",
       "nodeId": "coping_mirror_success"
     },
-    "text": "Reconnaître ta propre saleté t'achète trois secondes de vérité chez Sofiane. Pas du respect. Mieux: une baisse de défense."
+    "text": "Reconnaître ta propre saleté t'achète trois secondes de vérité chez Sofiane. Pas du respect. Mieux: sa garde qui baisse."
   },
   {
     "id": "miroirs_sofiane__coping_failure_flight",
