@@ -3,12 +3,16 @@ import clueGroupsJson from './clue-groups.json'
 import { trapFocus } from './focus'
 import type {
   CheckResult,
+  ChoicePersonalityTag,
   DialogueChoice,
   GameState,
+  IdentityPosture,
   InteractionTarget,
+  ParasiteId,
   PassiveTrigger,
   RenderedOrb,
   RenderedDialogue,
+  VoiceId,
 } from './types'
 import type { NarrativeEngine } from './narrative'
 
@@ -50,6 +54,39 @@ interface ActiveLead {
   label: string
   detail: string
   hot?: boolean
+}
+
+interface ChoicePersonalityBadge {
+  key: ChoicePersonalityTag
+  label: string
+  title: string
+  color: string
+}
+
+const POSTURE_PERSONALITY_DETAILS: Record<
+  `posture:${IdentityPosture}`,
+  { label: string; title: string; color: string }
+> = {
+  'posture:accept': {
+    label: 'Nom',
+    title: 'Assumer le nom et reprendre la version officielle avant les autres.',
+    color: '#d7a84b',
+  },
+  'posture:refuse': {
+    label: 'Refus',
+    title: "Refuser le rôle qu'on colle à Zinédine.",
+    color: '#8ea0ff',
+  },
+  'posture:perform': {
+    label: 'Masque',
+    title: 'Jouer le personnage que les autres croient déjà connaître.',
+    color: '#7bcf8e',
+  },
+  'posture:defile': {
+    label: 'Honte',
+    title: 'Utiliser la honte au lieu de la cacher.',
+    color: '#c77bb8',
+  },
 }
 
 const CASE_STEPS: CaseStep[] = [
@@ -179,6 +216,7 @@ export function createGameUi(options: GameUiOptions) {
     let firstChoiceButton: HTMLButtonElement | undefined
     activeDialogue.choices.forEach((renderedChoice) => {
       const choice = renderedChoice.choice
+      const personalityBadges = getChoicePersonalityBadges(choice)
       const button = uiDocument.createElement('button')
       button.type = 'button'
       firstChoiceButton ??= button
@@ -192,16 +230,20 @@ export function createGameUi(options: GameUiOptions) {
       button.dataset.choiceKey = renderedChoice.key
       button.dataset.visited = String(renderedChoice.visited)
       button.dataset.important = String(renderedChoice.important)
+      if (personalityBadges.length > 0) {
+        button.dataset.choicePersonality = personalityBadges.map((badge) => badge.key).join(' ')
+        button.dataset.choicePersonalityPrimary = personalityBadges[0].key
+        button.style.setProperty('--choice-personality-color', personalityBadges[0].color)
+        button.title = `Type d'option: ${personalityBadges.map((badge) => badge.label).join(' + ')}`
+      }
       const label = uiDocument.createElement('span')
       label.className = 'choice-copy'
       label.textContent = getChoiceLabel(choice, options.engine)
       button.append(label)
 
-      if (renderedChoice.important || renderedChoice.visited) {
-        const meta = uiDocument.createElement('span')
-        meta.className = 'choice-meta'
-        meta.textContent = renderedChoice.visited ? 'déjà lu' : 'important'
-        button.append(meta)
+      const asides = renderChoiceAsides(uiDocument, renderedChoice, personalityBadges)
+      if (asides) {
+        button.append(asides)
       }
       button.addEventListener('click', () => {
         activeDialogue = options.engine.choose(renderedChoice)
@@ -912,6 +954,148 @@ function renderVoices(state: GameState, voiceList: HTMLDivElement): void {
     `
     voiceList.append(row)
   }
+}
+
+function renderChoiceAsides(
+  choiceDocument: Document,
+  renderedChoice: RenderedDialogue['choices'][number],
+  personalityBadges: ChoicePersonalityBadge[],
+): HTMLSpanElement | undefined {
+  if (personalityBadges.length === 0 && !renderedChoice.important && !renderedChoice.visited) {
+    return undefined
+  }
+
+  const asides = choiceDocument.createElement('span')
+  asides.className = 'choice-asides'
+
+  personalityBadges.forEach((badge) => {
+    const tag = choiceDocument.createElement('span')
+    tag.className = 'choice-personality'
+    tag.dataset.choicePersonality = badge.key
+    tag.title = badge.title
+    tag.setAttribute('aria-hidden', 'true')
+    tag.style.setProperty('--choice-personality-color', badge.color)
+
+    const chip = choiceDocument.createElement('span')
+    chip.className = 'choice-personality-chip'
+
+    const label = choiceDocument.createElement('span')
+    label.textContent = badge.label
+
+    tag.append(chip, label)
+    asides.append(tag)
+  })
+
+  if (renderedChoice.important || renderedChoice.visited) {
+    const meta = choiceDocument.createElement('span')
+    meta.className = 'choice-meta'
+    meta.textContent = renderedChoice.visited ? 'déjà lu' : 'important'
+    asides.append(meta)
+  }
+
+  return asides
+}
+
+function getChoicePersonalityBadges(choice: DialogueChoice): ChoicePersonalityBadge[] {
+  const tags: ChoicePersonalityTag[] = []
+
+  for (const tag of getExplicitChoicePersonalityTags(choice)) {
+    addChoicePersonalityTag(tags, tag)
+  }
+
+  if (choice.check) {
+    addChoicePersonalityTag(tags, choice.check.voice)
+    if (choice.check.supportVoice) {
+      addChoicePersonalityTag(tags, choice.check.supportVoice)
+    }
+  }
+
+  for (const effect of choice.effects ?? []) {
+    if (effect.type === 'identity_posture' && effect.posture) {
+      addChoicePersonalityTag(tags, `posture:${effect.posture}`)
+    }
+
+    if (effect.type === 'voice_bump' && effect.voice) {
+      addChoicePersonalityTag(tags, effect.voice)
+    }
+
+    if (effect.type === 'flag' && effect.flag && isDoseFlag(effect.flag)) {
+      addChoicePersonalityTag(tags, 'dose')
+    }
+  }
+
+  if (choice.next?.startsWith('dose_') || choice.next === 'dose_first' || choice.label.includes('La Dose')) {
+    addChoicePersonalityTag(tags, 'dose')
+  }
+
+  return tags.flatMap((tag) => {
+    const badge = getChoicePersonalityBadge(tag)
+    return badge ? [badge] : []
+  })
+}
+
+function getExplicitChoicePersonalityTags(choice: DialogueChoice): ChoicePersonalityTag[] {
+  if (!choice.personality) {
+    return []
+  }
+
+  return Array.isArray(choice.personality) ? choice.personality : [choice.personality]
+}
+
+function addChoicePersonalityTag(tags: ChoicePersonalityTag[], tag: ChoicePersonalityTag): void {
+  if (!tags.includes(tag)) {
+    tags.push(tag)
+  }
+}
+
+function getChoicePersonalityBadge(tag: ChoicePersonalityTag): ChoicePersonalityBadge | undefined {
+  if (isVoiceId(tag)) {
+    const voice = voiceById[tag]
+    return {
+      key: tag,
+      label: voice.name,
+      title: voice.tagline,
+      color: getSafeColor(voice.color) ?? '#d7a84b',
+    }
+  }
+
+  if (isParasiteId(tag)) {
+    const parasite = parasiteById[tag]
+    return {
+      key: tag,
+      label: parasite.name,
+      title: parasite.tagline,
+      color: getSafeColor(parasite.color) ?? '#9a6a3f',
+    }
+  }
+
+  if (isPosturePersonalityTag(tag)) {
+    const posture = POSTURE_PERSONALITY_DETAILS[tag]
+    return {
+      key: tag,
+      label: posture.label,
+      title: posture.title,
+      color: getSafeColor(posture.color) ?? '#c77bb8',
+    }
+  }
+
+  return undefined
+}
+
+function isVoiceId(value: string): value is VoiceId {
+  return Object.hasOwn(voiceById, value)
+}
+
+function isParasiteId(value: string): value is ParasiteId {
+  return Object.hasOwn(parasiteById, value)
+}
+
+function isPosturePersonalityTag(value: string): value is `posture:${IdentityPosture}` {
+  return Object.hasOwn(POSTURE_PERSONALITY_DETAILS, value)
+}
+
+function isDoseFlag(flag: string): boolean {
+  return flag === 'dose_heard' || flag === 'dose_bargained' || flag === 'dose_refused_at_wake'
 }
 
 function getChoiceLabel(choice: DialogueChoice, engine: NarrativeEngine): string {

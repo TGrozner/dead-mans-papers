@@ -7,6 +7,7 @@
         "choices": [
           {
             "label": "Chercher le téléphone à l'aveugle. Garder une preuve.",
+            "personality": "procedure",
             "next": "phone",
             "important": true
           },
@@ -32,6 +33,7 @@
           },
           {
             "label": "Sentir le béton: gobelet, flotte sale, métal froid.",
+            "personality": "memoire_saline",
             "next": "ground"
           },
           {
@@ -87,12 +89,14 @@
         "choices": [
           {
             "label": "Prendre le téléphone avant qu'il redisparaisse sous l'eau sale.",
+            "personality": "procedure",
             "next": "phone",
             "hiddenWhenFlag": "phone_left_ground",
             "important": true
           },
           {
             "label": "Laisser le téléphone sonner dans la flaque. Refuser sa laisse.",
+            "personality": "symbole",
             "next": "stand",
             "important": true,
             "effects": [
@@ -112,6 +116,10 @@
           },
           {
             "label": "Retourner le gobelet. Savoir si ton corps a été utilisé.",
+            "personality": [
+              "procedure",
+              "faim"
+            ],
             "next": "cup",
             "important": true
           },
@@ -154,6 +162,7 @@
         "choices": [
           {
             "label": "Rappeler Karine. Entrer dans son urgence.",
+            "personality": "bouches",
             "next": "karine_call",
             "important": true,
             "effects": [
@@ -337,6 +346,7 @@
           },
           {
             "label": "Ramasser le téléphone avant que la voix gagne.",
+            "personality": "procedure",
             "next": "phone",
             "hiddenWhenFlag": "phone_checked",
             "important": true
@@ -516,11 +526,16 @@
         "choices": [
           {
             "label": "Fixer ton nom sur le mort. Choisir ce que tu es dans cette scène.",
+            "personality": [
+              "procedure",
+              "honte_publique"
+            ],
             "next": "papers_reveal",
             "important": true
           },
           {
             "label": "Regarder Ahmed sans toucher. Le mort d'abord.",
+            "personality": "memoire_saline",
             "next": "body_precheck",
             "important": true
           },
@@ -546,6 +561,7 @@
           },
           {
             "label": "Accuser Karine d'avoir su trop tôt.",
+            "personality": "symbole",
             "next": "leduc_after_open",
             "effects": [
               {
@@ -556,6 +572,7 @@
           },
           {
             "label": "Reculer avant que ton corps décide pour toi.",
+            "personality": "faim",
             "next": "open_sickness"
           }
         ]
@@ -718,22 +735,29 @@
           },
           {
             "label": "Lire la page arrachée serrée dans ta main.",
+            "personality": "memoire_saline",
             "next": "page_surface",
             "requiresFlag": "page_found",
             "important": true
           },
           {
             "label": "Lire les papiers de Zinédine.",
+            "personality": "procedure",
             "next": "papers_surface",
             "important": true
           },
           {
             "label": "Revenir au corps d'Ahmed.",
+            "personality": "memoire_saline",
             "next": "body_read",
             "important": true
           },
           {
             "label": "Chercher le carnet manquant.",
+            "personality": [
+              "procedure",
+              "main_gauche"
+            ],
             "next": "notebook_absent",
             "important": true
           },

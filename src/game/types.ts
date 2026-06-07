@@ -12,6 +12,8 @@ export type ParasiteId = 'dose'
 
 export type IdentityPosture = 'accept' | 'refuse' | 'perform' | 'defile'
 
+export type ChoicePersonalityTag = VoiceId | ParasiteId | `posture:${IdentityPosture}`
+
 export interface VoiceDefinition {
   id: VoiceId
   name: string
@@ -48,6 +50,7 @@ export interface Effect {
 export interface DialogueChoice {
   id?: string
   label: string
+  personality?: ChoicePersonalityTag | ChoicePersonalityTag[]
   next?: string
   close?: boolean
   important?: boolean

@@ -26,6 +26,11 @@ const orbIds = new Set()
 const passiveIds = new Set()
 const effectTypes = new Set(['flag', 'clue', 'voice_bump', 'identity_posture'])
 const identityPostures = new Set(['accept', 'refuse', 'perform', 'defile'])
+const choicePersonalities = new Set([
+  ...voices,
+  ...parasites,
+  ...[...identityPostures].map((posture) => `posture:${posture}`),
+])
 const colorPattern = /^#[0-9a-fA-F]{6}$/
 const suspiciousMojibakePattern =
   /[A-Za-zÀ-ÿ]\?[A-Za-zÀ-ÿ]|[a-zàâçéèêëîïôùûüœ]\?(?=\s+[a-zàâçéèêëîïôùûüœ])|\?[a-zàâçéèêëîïôùûüœ]/u
@@ -252,6 +257,7 @@ for (const [scriptId, script] of Object.entries(isRecord(dialogues) ? dialogues 
         errors.push(`${choiceOwner}.important must be a boolean`)
       }
 
+      validateChoicePersonality(choice.personality, choiceOwner)
       trackFlagReference(choice.requiresFlag, choiceOwner, 'requiresFlag')
       trackFlagReference(choice.hiddenWhenFlag, choiceOwner, 'hiddenWhenFlag')
 
@@ -525,6 +531,31 @@ function validateIdentityChoice(choice, owner) {
   if (!hasFlagEffect(choice.effects, 'identity_chosen')) {
     errors.push(`${owner} identity posture choice must set identity_chosen`)
   }
+}
+
+function validateChoicePersonality(personality, owner) {
+  if (personality === undefined) {
+    return
+  }
+
+  const values = Array.isArray(personality) ? personality : [personality]
+
+  if (Array.isArray(personality) && personality.length === 0) {
+    errors.push(`${owner}.personality must not be empty`)
+  }
+
+  values.forEach((tag, index) => {
+    const tagOwner = Array.isArray(personality) ? `${owner}.personality[${index}]` : `${owner}.personality`
+
+    if (!isNonEmptyString(tag)) {
+      errors.push(`${tagOwner} must be a non-empty string`)
+      return
+    }
+
+    if (!choicePersonalities.has(tag)) {
+      errors.push(`${tagOwner} uses unknown personality: ${tag}`)
+    }
+  })
 }
 
 function validateScriptReachability(scriptId, script, nodes) {

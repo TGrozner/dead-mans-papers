@@ -1157,6 +1157,41 @@ h1 {
   overflow-wrap: anywhere;
 }
 
+.choice-asides {
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  justify-self: start;
+}
+
+.choice-personality {
+  max-width: 100%;
+  padding: 2px 5px;
+  border: 1px solid color-mix(in srgb, var(--choice-personality-color, var(--ink)) 58%, rgba(23, 28, 36, 0.26));
+  border-radius: 4px;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--choice-personality-color, var(--paper-hot)) 18%, rgba(255, 255, 255, 0.58));
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.choice-personality-chip {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--choice-personality-color, var(--ink));
+  box-shadow: 0 0 0 1px rgba(23, 28, 36, 0.28);
+  flex: 0 0 auto;
+}
+
 .choice-meta {
   width: max-content;
   max-width: 100%;
@@ -1175,6 +1210,12 @@ h1 {
 @media (min-width: 520px) {
   .choice-button {
     grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .choice-asides {
+    max-width: min(250px, 32vw);
+    justify-content: flex-end;
+    justify-self: end;
   }
 }
 
@@ -1647,6 +1688,33 @@ h1 {
   text-decoration-thickness: 1px;
 }
 
+.choice-button[data-choice-personality] {
+  border-left-color: var(--choice-personality-color, var(--ink));
+  box-shadow: inset 6px 0 0 var(--choice-personality-color, var(--rust));
+}
+
+.choice-button[data-choice-personality]:hover {
+  box-shadow:
+    inset 6px 0 0 var(--choice-personality-color, var(--rust)),
+    inset 0 0 0 1px rgba(23, 28, 36, 0.1);
+}
+
+.choice-button--important[data-choice-personality] {
+  box-shadow:
+    inset 8px 0 0 var(--choice-personality-color, var(--rust)),
+    0 0 0 1px rgba(183, 87, 56, 0.18);
+}
+
+.choice-button--important[data-choice-personality]:hover {
+  box-shadow:
+    inset 8px 0 0 var(--choice-personality-color, var(--rust)),
+    inset 0 0 0 1px rgba(23, 28, 36, 0.1);
+}
+
+.choice-button--visited .choice-personality {
+  opacity: 0.58;
+}
+
 .choice-button--important .choice-meta {
   border-color: rgba(183, 87, 56, 0.48);
   color: #5a2418;
@@ -1670,6 +1738,10 @@ h1 {
   box-shadow: inset 6px 0 0 rgba(183, 87, 56, 0.48);
 }
 
+.choice-button--important.choice-button--visited[data-choice-personality] {
+  box-shadow: inset 6px 0 0 color-mix(in srgb, var(--choice-personality-color, var(--rust)) 72%, transparent);
+}
+
 @keyframes dialogue-snap {
   0% {
     opacity: 0;
@@ -1690,4 +1762,10 @@ h1 {
 
 .choice-button--important.choice-button--visited:hover {
   background: #e2cfaa;
+}
+
+.choice-button--important.choice-button--visited[data-choice-personality]:hover {
+  box-shadow:
+    inset 6px 0 0 color-mix(in srgb, var(--choice-personality-color, var(--rust)) 72%, transparent),
+    inset 0 0 0 1px rgba(23, 28, 36, 0.1);
 }
