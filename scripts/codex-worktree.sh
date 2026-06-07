@@ -84,7 +84,7 @@ worktree_for_branch() {
 
 ensure_claim() {
   local claim_dir claim_file started_at
-  claim_dir="$workspace_dir/.agents/claims"
+  claim_dir="$repo_root/.agents/claims"
   claim_file="$claim_dir/$safe_name.md"
   started_at="$(date -Iseconds)"
 
@@ -106,7 +106,7 @@ ensure_claim() {
 - Claimed files:
   - TODO
 - Forbidden files:
-  - \`/home/thomas/dev/dead-mans-papers-workspace/dead-mans-papers\` unless explicitly assigned as integration owner
+  - \`/home/thomas/dev/dead-mans-papers\` unless explicitly assigned as integration owner
   - files already owned by another active claim
 - Verification: TODO
 - Started: $started_at

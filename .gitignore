@@ -15,6 +15,7 @@ dist-ssr
 playwright-report
 test-results
 *.local
+.agents/
 
 # Editor directories and files
 .vscode/*
